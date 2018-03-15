@@ -1,0 +1,146 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  outline: none;
+}
+
+b {
+  font-weight: normal;
+}
+
+em,
+i {
+  font-style: normal;
+}
+
+ul,
+ol {
+  list-style: none;
+}
+
+html {
+  font-size: 625%;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+body {
+  background-color: #F1F2F3;
+  margin: auto;
+  color: #48576a;
+  font-family: "Microsoft YaHei", "Arial", "微软雅黑";
+  -webkit-overflow-scrolling: touch;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-size: 0.13rem;
+}
+
+#app {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  min-width: 300px;
+}
+
+
+/*公共基础*/
+.f-tar{
+    text-align: right;
+}
+.f-tas{
+  text-align: center;
+}
+.clr:after {
+  content: '';
+  display: table;
+  clear: both;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.red {
+  color: #E13722;
+}
+
+.blue {
+  color: #20A0FF
+}
+
+.green {
+  color: #13ce66;
+}
+
+.yellow {
+  color: #ffc333;
+}
+
+.grey {
+  color: #A5A5A5;
+}
+
+.purple {
+  color: #4b3887;
+}
+
+.black {
+  color: #000;
+}
+
+[class*=" u-icon"],
+[class^="u-icon-"] {
+  display: inline-block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 100%;
+  vertical-align: middle;
+}
+
+
+/*body滚动条*/
+/*滚动条整体部分*/
+.f-scroll-lt::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+/*滚动条两端的按钮*/
+.f-scroll-lt::-webkit-scrollbar-button {
+  display: none !important;
+}
+/*外层轨道*/
+.f-scroll-lt::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+/*内层轨道*/
+.f-scroll-lt::-webkit-scrollbar-track-piece {
+  background-color: #fff;
+}
+/*滚动条里面可以拖动的那部分*/
+.f-scroll-lt::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
+}
+/*边角*/
+.f-scroll-lt::-webkit-scrollbar-corner {}
+/*定义右下角拖动块的样式*/
+.f-scroll-lt::-webkit-scrollbar-resizer {
+  background-color: rgba(0, 0, 0, 0.3);
+}
