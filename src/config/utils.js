@@ -110,6 +110,7 @@ export const getDateTime= e =>{
     a >= 10 ? a : a = "0" + a, r >= 10 ? r : r = "0" + r, o >= 10 ? o : o = "0" + o, i >= 10 ? i : i = "0" + i, c >= 10 ? c : c = "0" + c, k[0]=n,k[1]=a,k[2]=r,k[3]=n+'-'+a,k[4]=a+'-'+r,k[5]=o+":"+i+":"+c,k[6]=n + "-" + a + "-" + r + " " + o + ":" + i + ":" + c,k[7]=o+":"+i;
     return k;
 }
+
 /**
  * 日期转时间戳
  */
@@ -165,4 +166,18 @@ export const translateData=(type,v)=> {
 			break;
 	}
 }
+
+export const deepCopy=(p, c)=> {
+    　　　　var c = c || {};
+    　　　　for (var i in p) {
+    　　　　　　if (typeof p[i] === 'object') {
+    　　　　　　　　c[i] = (p[i].constructor === Array) ? [] : {};
+    　　　　　　　　deepCopy(p[i], c[i]);
+    　　　　　　} else {
+    　　　　　　　　　c[i] = p[i];
+    　　　　　　}
+    　　　　}
+    　　　　return c;
+    　　}
+
 

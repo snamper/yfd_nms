@@ -6,13 +6,16 @@
 import Vue from 'vue';
 import store from './store';
 import router from './router';
-import App from './App';
-
-
-import { Button } from 'element-ui';
-Vue.use(Button);
+import ElementUI from 'element-ui';
+import 'element-ui/lib/theme-chalk/index.css';
+import App from './App.vue';
+Vue.use(ElementUI);
 
 require("./assets/css/style.css");
+require("./assets/css/common.css");
+require("./assets/css/search.css");
+require("./assets/css/layer.css");
+require("./assets/js/layer.js");
 require("./config/service.js");
 
 new Vue({

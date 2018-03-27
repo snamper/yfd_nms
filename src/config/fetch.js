@@ -1,7 +1,7 @@
-import {getStore,errorDeal} from '../config/utils';
+import {getStore,errorDeal} from '../config/utils.js';
 
 export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') => {
-	if(!load){
+    if(!load){
 		var layerIndex=layer.open({type: 2,shadeClose:false});
 	}
 	type = type.toUpperCase();
@@ -10,13 +10,12 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
     };
 	
 //--------------------------------------------------------------------
-	let userInfo=getStore("KA_ECS_USER");
+    let userInfo=getStore("KA_ECS_USER");
     if(userInfo){
-        data.customerId=userInfo.customerId;
-        data.codeId=userInfo.codeId;
+        Object.assign(data,userInfo);
     }else{
-         errorDeal({'code':648},closeLoadLayout);
-         return false;
+         // errorDeal({'code':648},closeLoadLayout);
+         // return false;
     }
 //--------------------------------------------------------------------
 	if (type == 'GET') {
@@ -35,7 +34,7 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 			credentials: 'include',
 			method: type,
 			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded'
+				'Content-Type': 'application/json'
 			},
 			mode: "cors",
 			cache: "force-cache"
@@ -61,7 +60,7 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
                 return false;
             }
         })
-        .catch(error=>errorDeal(error));
+        .catch(error=>errorDeal(error),closeLoadLayout());
 	} else {//XHR对象
 		return new Promise((resolve, reject) => {
 			let requestObj;

@@ -9,13 +9,13 @@
 				<tr>
 					<td>
 						<a class="m-navside-show" @click="headMenu"><i class="u-icon-menu"></i></a>
-						<span v-if="crumb[1].name" class="f-inline-block m-crumb">
+						<span v-if="crumb[1].name" class="f-inline-block m-crumb" style="color:blue">
 							<a>{{crumb[0].name}}</a>
-							<a class="u-icon-right mid"></a>
+							<i class="el-icon-arrow-right"></i>
 							<a v-show="!crumb[1].href">{{crumb[1].name}}</a>
 							<router-link v-show="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
 							<span v-show="crumb[2].name">
-								<a class="u-icon-right mid"></a>
+							    <i class="el-icon-arrow-right"></i>								
 								<a>{{crumb[2].name}}</a>
 							</span>
 						</span>
@@ -34,7 +34,6 @@
 								<li><a @click="clickSignOut">退出</a></li>
 							</ul>
 						</div>
-
 					</td>
 				</tr>
 			</tbody>
@@ -42,23 +41,66 @@
   	</header>
   	<aside class="g-side">
 		<nav class="g-side-nav">
-			<header class="g-side-head"><img src="../assets/images/logo_page.png" alt="titleLogo"></header>
+			<header class="g-side-head"><img src="../assets/images/logo.png" alt="titleLogo"></header>
 			<ul class="g-side-ul">
-				<li :class="{active:crumb[0].name=='订单查询'}">
+				<li :class="{active:crumb[0].name=='架构管理'}">
 					<b></b>
-					<router-link to="/home/search">
+					<router-link to="/home/organization">
 						<div>
-							<i class="u-icon-search"></i>
-							<span>订单查询</span>
+							<i class="u-icon-jiagou"></i>
+							<span>架构管理</span>
 						</div>
 					</router-link>
 					<ul class="g-side-subul nav2">
-						<li><router-link to="/home/"><b></b>开卡订单</router-link></li>
-						<li><router-link to="/home/"><b></b>充值订单</router-link></li>
-						<li><router-link to="/home/"><b></b>网厅订单</router-link></li>
+						<li><router-link to="/home/organization/yfd"><b></b>亚非达管理</router-link></li>
+						<li><router-link to="/home/organization/agent"><b></b>代理商管理</router-link></li>
+						<li><router-link to="/home/organization/staff"><b></b>员工管理</router-link></li>
 					</ul>
 				</li>
 			</ul>
+            <ul class="g-side-ul">
+				<li :class="{active:crumb[0].name=='码号管理'}">
+					<b></b>
+					<router-link to="/home/card">
+						<div>
+							<i class="u-icon-mahao"></i>
+							<span>码号管理</span>
+						</div>
+					</router-link>
+				</li>
+			</ul>
+            <!-- <ul class="g-side-ul">
+				<li :class="{active:crumb[0].name=='操作日志'}">
+					<b></b>
+					<router-link to="/home/operationLog">
+						<div>
+							<i class="u-icon-rizhi"></i>
+							<span>操作日志</span>
+						</div>
+					</router-link>
+					<ul class="g-side-subul nav2">
+						<li><router-link to="/home/operationLog/cardmanage"><b></b>码号管理日志</router-link></li>
+						<li><router-link to="/home/operationLog/synclog"><b></b>同步日志</router-link></li>
+						<li><router-link to="/home/operationLog/loginlog"><b></b>登录日志</router-link></li>
+					</ul>
+				</li>
+			</ul>
+            <ul class="g-side-ul">
+				<li :class="{active:crumb[0].name=='浏览记录'}">
+					<b></b>
+					<router-link to="/home/browsingHistory">
+						<div>
+							<i class="u-icon-jilu"></i>
+							<span>浏览记录</span>
+						</div>
+					</router-link>
+					<ul class="g-side-subul nav2">
+						<li><router-link to="/home/browsingHistory/yfd"><b></b>亚非达管理</router-link></li>
+						<li><router-link to="/home/browsingHistory/agent"><b></b>代理商管理</router-link></li>
+						<li><router-link to="/home/browsingHistory/staff"><b></b>员工管理</router-link></li>
+					</ul>
+				</li>
+			</ul> -->
 		</nav>
 	</aside>
   	<section class="g-main" id="main">
@@ -121,15 +163,37 @@ export default{
 		headMenu:function(){//侧边导航show or hide
 			this.off.headMenu?this.off.headMenu=false:this.off.headMenu=true;
 		},
-		routeChange:function(){//路由变化
+        routeChange:function(){//路由变化
 			this.windowChange();
 			var path=this.$route.path,
 				crumb=[{"name":""},{"name":""},{"name":""}],
 				mainDom=document.getElementById("main");
-            if(path.indexOf("/home/search")>-1){
-				crumb[0]={"name":"订单查询","href":"/home/search"}
-			}
-		
+            if(path.indexOf("/home/organization")>-1){
+                crumb[0]={"name":"架构管理","href":"/home/organization"}
+                if(path.indexOf("home/organization/yfd")>-1){
+                    crumb[1]={"name":"亚飞达管理","href":"yfd"}
+                }else  if(path.indexOf("home/organization/agent")>-1){
+                    crumb[1]={"name":"代理商管理","href":"agent"}
+                }else  if(path.indexOf("home/organization/staff")>-1){
+                    crumb[1]={"name":"员工管理","href":"staff"}
+                }
+            }
+            if(path.indexOf("/home/card")>-1){
+                crumb[0]={"name":"码号管理","href":"/home/card"}
+            }
+            if(path.indexOf("/home/operationLog")>-1){
+                crumb[0]={"name":"操作日志","href":"/home/operationLog"}
+                 if(path.indexOf("home/operationLog/cardmanage")>-1){
+                    crumb[1]={"name":"码号管理日志","href":"cardmanage"}
+                }else  if(path.indexOf("home/operationLog/synclog")>-1){
+                    crumb[1]={"name":"同步日志","href":"synclog"}
+                }else  if(path.indexOf("home/operationLog/loginlog")>-1){
+                    crumb[1]={"name":"登录日志","href":"loginlog"}
+                }
+            }
+            if(path.indexOf("/home/browsingHistory")>-1){
+				crumb[0]={"name":"浏览记录","href":"/home/browsingHistory"}
+            }
 			this.crumb=crumb;
 			mainDom.style.overflowY='hidden';
 			var timer=setTimeout(()=>mainDom.style.overflowY='',500);

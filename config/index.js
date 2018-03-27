@@ -11,23 +11,23 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/km-ecs/w':{
-            target:'http://192.168.10.24:6086',
+        '/yfd-ums/':{
+            target:'http://192.168.10.211:10022/',
             changeOrigin:true,
             pathRewrite:{
-                '^/km-ecs/w':'/ecs/w'
+                '^/yfd-ums' : '/' 
             }
         },
-        '/ym-ecs/c':{
-            target:'http://192.168.10.24:6086',
+        '/yfd-nms/':{
+            target:'http://192.168.10.211:10023/',
             changeOrigin:true,
             pathRewrite:{
-                '^/ym-ecs/c':'/ecs/c'
+                '^/yfd-nms' : '/'
             }
         },
     },
     // Various Dev Server settings
-    host:"192.168.10.138",
+    host:"192.168.10.24",
     port: 8081, // can be overwritten by process.env.HOST, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

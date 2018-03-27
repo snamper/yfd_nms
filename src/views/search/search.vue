@@ -1,5 +1,4 @@
 <style>
-
 </style>
 <template>
   <section>
@@ -7,6 +6,7 @@
   </section>
 </template>
 <script>
+
 
 export default{
 	data (){
