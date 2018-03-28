@@ -224,7 +224,7 @@
 <script>
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal } from "../../config/utils.js";
-import {requestMethod} from "../../config/service.js"; 
+import {requestMethod,requestMethod2} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layer from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
@@ -266,7 +266,6 @@ export default{
 			form:{
                 page:50
             },
-            
 		}
 	},
 	components:{
@@ -323,15 +322,17 @@ export default{
                 "sessionType":2,
                 "pageSize":10
                 ,"pageNum":p||1}
-            requestMethod(data,url)
+            requestMethod2(data,url,function(){load.close()})
             .then((data)=>{
-                vm.off.searchList=true;
-                vm.searchList=data.data.products;
                 if(data.code==200){
-                }  
+                    vm.off.searchList=true;
+                    vm.searchList=data.data.products;
+                }else{
+                    errorDeal(data);
+                }
             }).then(()=>{
                 load.close(); 
-            }).catch(e=>errorDeal(e));
+            }).catch(e=>errorDeal(e),function(){load.close()});
         }
         ,doFilter(s){//状态过滤操作
             if(s=="all"){
@@ -396,7 +397,7 @@ export default{
             }
         }
         ,getAuthCode(){
-            let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
+            let load=Loading.service(options),data={},url='/yfd-ums/uus/w/user/getAuthCode',vm=this;
             data={"phone":vm.userId}
             requestMethod(data,url)
             .then((data)=>{
@@ -414,7 +415,6 @@ export default{
                     vm.off.modify=true;
                 }
             }
-            debugger;
             url=vm.dourl;
             // this.off.cardDetails=true;
             // this.off.notDlsDetails=false;

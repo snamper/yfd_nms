@@ -266,7 +266,7 @@ export default{
                 this.a="强制离线";
             }else if(val=='addBlack'){
                 this.a="加入黑名单"
-            }else if(val=='calcelBalck'){
+            }else if(val=='cancelBlack'){
                  this.a="解除黑名单"
             }else if(val=='delete'){
                  this.a="删除"

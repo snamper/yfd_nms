@@ -155,3 +155,9 @@ div.el-row{line-height: 45px;}
 .f-scroll-lt::-webkit-scrollbar-resizer {
   background-color: rgba(0, 0, 0, 0.3);
 }
+.u-icon-success-no-circle{
+    background-image: url("../images/rightssss.png");
+}
+.u-icon-clear{
+    background-image: url("../images/error.png");
+}

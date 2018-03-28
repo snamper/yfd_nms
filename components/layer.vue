@@ -86,7 +86,7 @@ tbody tr{height: 36px;}
 			</thead>
 			<tbody v-if="true">
                 <tr colspan="2">
-                    <td class="fl"><p>验证号码:<span v-model="userId">{{userId}}</span></p></td>
+                    <td class="fl"><p>验证号码:<span v-model="user.userId">{{user.userId}}</span></p></td>
                 </tr>
                 <tr colspan="2">
 					<el-input v-model="authCode" size="mini" style="width:60%" placeholder="请输入短信验证码"></el-input><el-button size="mini" type="primary" @click="getAuthCode(userId)">获取验证码</el-button>
@@ -132,6 +132,9 @@ export default{
             authCode:'',//验证码
             phone:'',
             userId:'',
+            authCodeUrl:'',//验证码url
+            syncUrl:'',//同步时间url
+            user:'',//token的值
              options: [{
                 value: '选项1',
                 label: '黄金糕'
@@ -155,11 +158,11 @@ export default{
             }
 		}
 		
-	},
+    },
 	created:function(){
         let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
         let Info=JSON.parse(userInfo);
-        vm.userId=Info.userId;
+        vm.user=Info;
 		if(vm.$parent.off.setSync==true){
             vm.off.set=true;
             vm.off.sync=false;
@@ -170,50 +173,42 @@ export default{
 	},
 	methods:{
         getAuthCode(v){//获取验证码
-            let url="/w/user/getAuthCode",data={"userId":"zhangsan","phone":v}
-            requestMethod(data,url)
+            let vm=this,load=Loading.service(options),data={"userId":vm.user.username,"phone":vm.user.userId};
+            if(window.location.hash.indexOf("agent")>-1){
+                vm.authCodeUrl="/yfd-ums/uus/w/user/getAuthCode";
+            }else if(window.location.hash.indexOf("card">-1)){
+                vm.authCodeUrl="/yfd-ums/nus/w/number/getAuthCode";
+            }
+            requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
-                layer.open({
-                    content:data.msg,
-                    skin: 'msg',
-                    time: 4,
-                    msgSkin:'error',
-                });
-            })
-            .catch(error=>errorDeal(error))
+                if(data.code==200){
+                    layer.open({
+                        content:'验证码已发送',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }  
+            }).then(()=>{
+                load.close(); 
+            }).catch(e=>errorDeal(e));
         }
         ,btnYes(v){//同步时间设置确认
+            let vm=this,load=Loading.service(options),data={"userId":vm.user.username,"phone":vm.user.userId,"authCode":vm.authCode};
             if(window.location.hash.indexOf("agent")>-1){
-                
-            }else if(window.location.hash.indexOf("yfd")){
-                
+                vm.syncUrl="/yfd-ums/uus/w/user/sync";
+            }else if(window.location.hash.indexOf("card">-1)){
+                vm.syncUrl="/yfd-ums/nus/w/number/sync"
             }
-            if(v==1){
-                let data={},url='',vm=this,load=Loading.service(options);
-                data={"date":vm.date,"time":vm.time,"value":vm.value};
-                url="abc";
-                requestMethod(data,url)
-                .then((data)=>{
-                    if(data.code==200){
-                    }  
-                }).then(()=>{
-                    load.close(); 
-                    vm.close();
-                }).catch(e=>errorDeal(e));
-            }else if(v==2){
-                let data={},url='',vm=this,load=Loading.service(options);
-                data={"userId":"zhangsan","phone":"13881702448","authCode":vm.authCode};
-                url="/w/user/sync";
-                requestMethod(data,url)
-                .then((data)=>{
-                    if(data.code==200){
-                    }  
-                }).then(()=>{
-                    load.close(); 
+            requestMethod(data,vm.syncUrl)
+            .then((data)=>{
+                if(data.code==200){
                     vm.off.sync=false;
                     vm.off.rsync=true;
-                }).catch(e=>errorDeal(e));
-            }
+                }  
+            }).then(()=>{
+                load.close(); 
+            }).catch(e=>errorDeal(e));
         },
 		close:function(){
             var vm=this;

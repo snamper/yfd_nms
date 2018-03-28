@@ -78,6 +78,7 @@
             <button  class="searchBtn" @click="search()">搜索</button>
         </el-row>
     </div>  
+    
     <!-- 查询结果模块 -->
     <div v-if="searchList">
         <div class="listTitleFoot">
@@ -174,14 +175,17 @@
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal } from "../../config/utils";
-import {requestMethod} from "../../config/service.js"; 
+import {requestMethod,requestMethod2} from "../../config/service.js"; 
 import search from "../../../components/search";
-import layer from "../../../components/layer";
+import layers from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
 export default{
     name:'dls',
     data (){
         return {
+            hesdUserName:"",
+            headPhone:"",
+            total:"",
             startTime: "",
             endTime: "",
             cname: "",
@@ -191,7 +195,9 @@ export default{
             timeType:"1",
             detailsList:[],
             pa:1,
-            companyName:"",
+            companyName:"",//..
+            managerName:"",//..
+            managerPhone:"",//..
             off:{
                 dlsList:false,
                 layer:false,
@@ -208,11 +214,11 @@ export default{
     },
     components:{
         "common-search":search,
-        "common-layer":layer,
+        "common-layer":layers,
         "dls-Details":dlsDetails
     },
     created:function(){
-       console.log(this.lists);
+
     },
     methods:{
         openSet(){//设置
@@ -227,6 +233,15 @@ export default{
             vm.off.setSync=false;
             vm.off.sync=true;
         },search(p){//查询
+            if(this.startTime.length==0||this.endTime.length==0){
+                layer.open({
+                    content:'请选择开始和结束时间',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
             let load=Loading.service(options),data={},url='/yfd-ums/w/user/departSearch',vm=this;
             vm.pa=p||1;
             data={
@@ -242,13 +257,20 @@ export default{
             requestMethod(data,url)
             .then((data)=>{
                 load.close()
-                vm.total=data.data.total;//查询总数
-                vm.searchList=data.data.departs;//查询内容
-                vm.form.page=data.data.total/10
                 // vm.total=5;
                 // vm.searchList=vm.ix;
                 if(data.code==200){
-                }  
+                    vm.total=data.data.total;//查询总数
+                    vm.searchList=data.data.departs;//查询内容
+                    vm.form.page=data.data.total/10
+                }else{
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }
             })
             .then(()=>{}).catch(e=>errorDeal(e));
         }
@@ -256,16 +278,26 @@ export default{
             let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
             data={'searchDepartId':v.departId};
             vm.companyName=v.departName;
+            vm.manageName=v.managerName;
+            vm.managerPhone=v.phone;
             requestMethod(data,url)
             .then((data)=>{
                 load.close();
-                vm.off.notDlsDetails=false;
-                vm.off.dlsDetails=true;
-                vm.detailsList=data.data.users;
-                // vm.detailsList=vm.ix;
                 if(data.code==200){
+                    if(data.data.users.length>0){
+                        vm.off.notDlsDetails=false;
+                        vm.off.dlsDetails=true;
+                        vm.detailsList=data.data.users;
+                        vm.headUserName=data.data.users[0].username;
+                        vm.headPhone=data.data.users[0].phone;
+                    }else{
+                        vm.off.notDlsDetails=false;
+                        vm.off.dlsDetails=true;
+                        vm.detailsList=[];
+                        vm.detailsList.username='';
+                        vm.detailsList.phone='';
+                    }
                 }
-            }).then(()=>{
             })
             .catch(e=>errorDeal(e));
         },

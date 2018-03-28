@@ -11,15 +11,29 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
+        '/yfd-ums/nus/':{
+            target:'http://192.168.10.162:10022/',
+            changeOrigin:true,
+            pathRewrite:{
+                '/yfd-ums/nus':'/nus'
+            }
+        },
+        '/yfd-ums/uus/':{
+            target:'http://192.168.10.162:10022/',
+            changeOrigin:true,
+            pathRewrite:{
+                '/yfd-ums/uus':'/uus'
+            }
+        },
         '/yfd-ums/':{
-            target:'http://192.168.10.211:10022/',
+            target:'http://192.168.10.105:10022/',
             changeOrigin:true,
             pathRewrite:{
                 '^/yfd-ums' : '/' 
             }
         },
         '/yfd-nms/':{
-            target:'http://192.168.10.211:10023/',
+            target:'http://192.168.10.105:10023/',
             changeOrigin:true,
             pathRewrite:{
                 '^/yfd-nms' : '/'

@@ -1,6 +1,5 @@
 module.exports = {
   apps : [
-
     // First application
     {
       name      : 'ka_ecs',

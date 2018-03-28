@@ -10,14 +10,14 @@
       <div v-if="off.noStaffd">
         <div class="yfd">
                 <el-container>
-                <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
-                    <el-row>
-                        <el-col :span="10"><div class="grid-content bg-purple">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{company}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{lists[0].username}}</span></div></el-col>
-                        <el-col :span="4"><div class="grid-content bg-purple">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{lists[0].phone}}</span></div></el-col>
-                        <el-col :span="4"><div class="grid-content bg-purple-light fr"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
-                    </el-row>
-                </el-header>
+                    <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
+                        <el-row>
+                            <el-col :span="10"><div class="grid-content bg-purple">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{company}}</span></div></el-col>
+                            <el-col :span="6"><div class="grid-content bg-purple-light">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span >{{managerName}}</span></div></el-col>
+                            <el-col :span="4"><div class="grid-content bg-purple">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{managerPhone}}</span></div></el-col>
+                            <el-col :span="4"><div class="grid-content bg-purple-light fr"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                        </el-row>
+                    </el-header>
                 <el-row>
                     <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle">搜索条件</div></el-col>
                 </el-row>
@@ -111,15 +111,17 @@
                        {{v.userRole}}
                     </td>
                     <td >
-                       {{v.userState}}
+                       <span v-if="v.userState==1">正常</span>
+                       <span v-if="v.userState==2">黑名单</span>
+                       <span v-if="v.userState==3">注销</span>
                     </td>
                     <td >
                        {{new Date(v.lastLoginTime).toLocaleString()}}
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8" class="fl">
-                        选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 在线 </a>-<a href="javascript:void(0)" @click="doFilter('off')"> 离线 </a>-<a href="javascript:void(0)" @click="doFilter('black')"> 黑名单 </a>
+                    <td colspan="8">
+                       <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 正常 </a>-<a href="javascript:void(0)" @click="doFilter('off')"> 注销 </a>-<a href="javascript:void(0)" @click="doFilter('black')"> 黑名单 </a></span>
                     </td>
                 </tr>
             </table>
@@ -148,8 +150,8 @@
                 <el-input v-model="reason" size="small" placeholder="请输入原因，不能为空"></el-input>
             </div> 
             <div class="listTitleFoot">
-                <p style="text-align:right">验证号码:aaaaaa2223333
-                    <el-input v-model="item" size="mini" style="width:26%" placeholder="请输入内容"></el-input>
+                <p style="text-align:right">验证号码:{{user.userId}}
+                    <el-input v-model="authCode" size="mini" style="width:26%" placeholder="请输入内容"></el-input>
                     <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button>
                 </p> 
             </div> 
@@ -161,7 +163,7 @@
        </div>
       </div> 
       <!-- 代理商员工个人详情和编辑模块 -->
-      <dlsStaff v-if="off.staffD">
+      <dlsStaff v-if="off.staffD" :forms="searchRes">
 
       </dlsStaff>
     </div>  
@@ -178,18 +180,27 @@ export default{
     props:{lists:Array},
     data (){
         return {
-            conpany:"",
+            a:'',//操作内容
+            forms:"",
+            headUserName:"",
+            headPhone:"",
+            searchRes:"",
+            companyName:"",//..
+            managerName:"",//..
+            managerPhone:"",//..
             name:'',
             phone:'',
             radio:'1',
             checked:true,
             checked2:true,
-            reason:'',
+            reason:'',//操作原因
+            authCode:"",//验证码
             item:'',
+            doUrl:'',//强制离线，加入黑名单，解除黑名单，删除
             form:{
                 page:0,
             },
-            list: [{a: '', b: '',checked:false,checked2:true},]
+            list: [{a: '', b: '',checked:false,checked2:false},]
             ,off:{
                 addList:false,
                 noStaffd:true,
@@ -203,35 +214,66 @@ export default{
         "dlsStaff":dlsStaffDetails
     },
     created:function(){
-        let vm=this;
+        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
         vm.p=1;
+        let Info=JSON.parse(userInfo);
+        vm.user=Info;        
         vm.form.page=vm.lists.length/10;
         vm.company=vm.$parent.companyName;
-        console.log(vm.$parent);
+        vm.managerPhone=vm.$parent.managerPhone;
+        vm.managerName=vm.$parent.managerName;
     },
     methods:{
-        goBack(){
+        goBack(){//返回上级
             let vm=this;
             vm.$parent.off.dlsDetails=false;
             vm.$parent.off.notDlsDetails=true;
         },   
-         AddList(){
-            this.list.push({a: '', b: '',checked:true,checked2:false})
+         AddList(){//添加员工状态操作
+            this.list.push({a: '', b: '',checked:false,checked2:false})
         },
-        AddStaffDiv(){
+        AddStaffDiv(){//添加员工模块开关
             this.off.addList=!this.off.addList;
         },
         AddStaff(){//添加员工按钮
-            let load=Loading.service(options),data={"newUsers":[],authCode:''},url='/yfd-ums/w/user/addUsers',vm=this;
+            let data={"newUsers":[],authCode:''},url='/yfd-ums/w/user/addUsers',vm=this;
             for(let i=0;i<this.list.length;i++){
                if(this.list[i].a&&this.list[i].b&&this.list[i].checked||this.list[i].checked2){
+                  this.list[i].username=this.list[i].a;
+                  this.list[i].phone=this.list[i].b;
+                  if(this.list[i].checked&&!this.list[i].checked2){
+                      this.list[i].userRole='1'
+                  }else if(!this.list[i].checked&&this.list[i].checked2){
+                      this.list[i].userRole='2'
+                  }else if(this.list[i].checked&&this.list[i].checked2){
+                      this.list[i].userRole='1,2'
+                  }
+                  this.list[i].departName=vm.company;
+                  delete this.list[i].a;
+                  delete this.list[i].b;
+                  delete this.list[i].checked;
+                  delete this.list[i].checked2;
                   data.newUsers.push(this.list[i])
                }
             }
+            let load=Loading.service(options);
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
-                }
+                    layer.open({
+                        content:'操作成功',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                }else{
+                     layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }  
             }).then(()=>{
                 load.close();
             }).catch(e=>errorDeal(e))
@@ -243,39 +285,28 @@ export default{
                     data.operateUserIds.push(vm.lists[v].username);
                     che+=vm.lists[v].username+',';
                     vm.off.modify=true;
+                }else{
+                    layer.open({
+                        content:'请选择要操作的用户',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                    vm.off.modify=false;
                 }
             }
-            console.log(typeof che);
             if(val=='offLine'){
-                this.a="";
-                data.remark="1";
-                url="/yfd-ums/w/user/blacklistUsers";
-                this.a=che+"强制离线";
-                che="";
-                requestMethod(data,url)
-                .then((data)=>{
-                    if(data.code==200){
-                    }
-                }).then(()=>{
-                }).catch(e=>errorDeal(e))
-            }else if(val=='addBlack'){
-                this.a="";                
-                data.remark="2";
-                url="/yfd-ums/w/user/kickoutUsers";
-                this.a=che+"加入黑名单";
-                che=""
-            }else if(val=='calcelBalck'){
-                this.a="";                
-                data.remark="3";
-                url="/yfd-ums/w/user/unblacklistUsers";
-                 this.a=che+"解除黑名单";
-                 che=""
+                vm.doUrl="/yfd-ums/w/user/kickoutUsers";
+                vm.a=che+"强制离线";
+            }else if(val=='addBlack'){               
+                vm.doUrl="/yfd-ums/w/user/blacklistUsers";
+                vm.a=che+"加入黑名单";
+            }else if(val=='cancelBlack'){              
+                vm.doUrl="/yfd-ums/w/user/unblacklistUsers";
+                vm.a=che+"解除黑名单";
             }else if(val=='delete'){
-                this.a="";                
-                 data.remark="4";
-                 url="/yfd-ums/w/user/delUsers";
-                 this.a=che+"删除";
-                 che=""
+                 vm.doUrl="/yfd-ums/w/user/delUsers";
+                 vm.a=che+"删除";
             }
         }
         ,doFilter(s){//状态过滤操作
@@ -285,7 +316,7 @@ export default{
                 }
             }else if(s=="off"){
                 for(let v=0;v<this.lists.length;v++){
-                    if(this.lists[v].s=='off'){
+                    if(this.lists[v].userState==2){
                        this.$set(this.lists[v],'ischecked',true);
                     }else{
                        this.$set(this.lists[v],'ischecked',false);
@@ -293,7 +324,7 @@ export default{
                 }
             }else if(s=="on"){
                 for(let v=0;v<this.lists.length;v++){
-                    if(this.lists[v].s=='on'){
+                    if(this.lists[v].userState==1){
                         this.$set(this.lists[v],'ischecked',true);
                     }else{
                          this.$set(this.lists[v],'ischecked',false);
@@ -301,7 +332,7 @@ export default{
                 }
             }else if(s=="black"){
                 for(let v=0;v<this.lists.length;v++){
-                    if(this.lists[v].s=='black'){
+                    if(this.lists[v].userState==3){
                         this.$set(this.lists[v],'ischecked',true);
                     }else{
                          this.$set(this.lists[v],'ischecked',false);
@@ -310,12 +341,24 @@ export default{
             }
         }
         ,getAuthCode(){
-            let load=Loading.service(options),data={},url='',vm=this;
-            data={"phone":vm.phone}
-            url="abc";
+            let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
+            data={"phone":vm.user.userId}
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
+                    layer.open({
+                        content:'验证码发送成功',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                }else{
+                     layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
                 }  
             }).then(()=>{
                 load.close(); 
@@ -332,7 +375,7 @@ export default{
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.dlsList=true;
-                vm.searchList=vm.ix;
+                vm.$parent.detailsList=data.data.users;
                 if(data.code==200){
                 }  
             }).then(()=>{
@@ -341,11 +384,12 @@ export default{
         }
         ,getStaffDetails(p){
             let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
-             data={"searchUserId": "15684765209"}
+            data={"searchUserId": "15684765209"}
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.noStaffd=false;
                 vm.off.staffD=true;
+                vm.searchRes=data.data;
                 if(data.code==200){
                 }  
             }).then(()=>{
@@ -353,19 +397,51 @@ export default{
             }).catch(e=>errorDeal(e));
         } 
         ,btnYes(){
-             let load=Loading.service(options),data={"do":[]},url='',vm=this;
-             for(let v in vm.searchList){
-                if(vm.searchList[v].ischecked==true){
-                    data.do.push(vm.searchList[v])
-                }
+            let data={},vm=this;
+                for(let v in vm.searchList){
+                    if(vm.searchList[v].ischecked==true){
+                            data.operateUserIds.push(vm.searchList[v])
+                    }
             }
+            if(vm.reason==""){
+                layer.open({
+                    content:'请输入操作原因',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            if(vm.authCode==""){
+                layer.open({
+                    content:'请输入验证码',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            let load=Loading.service(options);
+            data.reason=vm.reason;//操作原因
             data.authCode=vm.item;
-            console.log(data);
-            requestMethod(data,url)
+            requestMethod(data,vm.doUrl)
             .then((data)=>{
+                console.log(data)
                 if(data.code==200){
-                    
-                }  
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                }else{
+                     layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }
             }).then(()=>{
                 load.close(); 
             }).catch(e=>errorDeal(e));

@@ -8,7 +8,6 @@
     .detailsUlDiv ul li {padding: 6px 18px;border-bottom: 1px solid #ccc}
     .detailsUlDiv ul li:nth-child(even){background: #ccc;}
     div.el-row{line-height:30px}
-    input.modifyInput{height: 28px;border-radius: 6px;outline: none;border: 1px solid #ccc;padding-left: 10px;}
 </style>
 <template>
     <div>
@@ -16,9 +15,9 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="6"><div class="grid-content bg-purple">公司名称:<span>{{company}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{managerName}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{managerPhone}}</span></div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">公司名称:<span>{{headCompany}}</span></div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{headUserName}}</span></div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{headPhone}}</span></div></el-col>
                         <el-col :span="6"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
@@ -36,7 +35,7 @@
                         <el-col :span="4"><div class="grid-content bg-purple">用户姓名:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.username}}</p>
-                            <input class="modifyInput" v-if="off.modify" type="text" v-model="forms.username">
+                            <input v-if="off.modify" type="text" v-model="forms.username">
                         </div></el-col>
                     </el-row>
                 </li>
@@ -45,7 +44,7 @@
                         <el-col :span="4"><div class="grid-content bg-purple">手机号码:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.phone}}</p>
-                            <input class="modifyInput" v-if="off.modify" type="text" v-model="forms.phone">    
+                            <input v-if="off.modify" type="text" v-model="forms.phone">    
                         </div></el-col>
                     </el-row>
                 </li>
@@ -129,12 +128,11 @@ export default{
     props:{forms:Object},
 	data (){
 		return {
-            oldName:"",
-            oldPhone:"",
             company:"",
-            managerName:"",
-            managerPhone:"",
+            headUserName:"",
+            headPhone:"",
             company:"",
+            headerUser:"",
             name:'',
             phone:'',
             radio:'1',
@@ -142,7 +140,6 @@ export default{
             checked2:true,
             reason:'',
             item:'',
-            user:"",//登录信息
             ix:[{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'}],            
 			off:{
                 showSearch:"",
@@ -164,12 +161,10 @@ export default{
        
 	},
 	created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
-        vm.user=Info;
+        let vm=this;
         vm.company=vm.$parent.company;        
-        vm.managerName=vm.$parent.managerName;
-        vm.managerPhone=vm.$parent.managerPhone;
+        vm.headPhone=vm.$parent.headPhone;
+        vm.headUserName=vm.$parent.headUserName;
     },
 	methods:{
 		goBack(){
@@ -181,41 +176,23 @@ export default{
             let vm=this;
             vm.off.noModify=false;
             vm.off.modify=true;
-            vm.oldName=vm.forms.username;
-            vm.oldPhone=vm.forms.phone
         }
         ,checkNo(){
             let vm=this;
             vm.off.noModify=true;
             vm.off.modify=false;
-            vm.forms.username=vm.oldName;
-            vm.forms.phone=vm.oldPhone;
         }
         ,checkYes(v){
-            debugger;
-            let vm=this,url="/yfd-ums/w/user/updateUserDetail",data={};
+            let vm=this,url="";
             vm.off.noModify=true;
             vm.off.modify=false;
+            url="/yfd-ums/w/user/updateUserDetail";
             data.newName=vm.forms.username;
             data.newPhone=vm.forms.phone;
             data.searchUserId=v;
             requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    layer.open({
-                        content:'操作成功',
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                }else{
-                     layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                } 
+            .then(()=>{
+
             }).then(()=>{
 
             }).catch(e=>errorDeal(e))

@@ -56,11 +56,9 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 			if(data.code==200){
                 return data;
             }else{
-                errorDeal(data);
-                return false;
+                return data;
             }
-        })
-        .catch(error=>errorDeal(error),closeLoadLayout());
+        }).catch(error=>errorDeal(error));
 	} else {//XHR对象
 		return new Promise((resolve, reject) => {
 			let requestObj;
@@ -94,7 +92,6 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 				        }else{
 				        	errorDeal(response);
 				        }
-						
 					} else {
 						reject(requestObj);
 					}
