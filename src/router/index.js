@@ -182,11 +182,11 @@ router.beforeEach((to, from, next) => {
             t=BASE64.decode(t);
         localStorage.setItem("KA_ECS_USER",t);
     }else{
-        // let token = localStorage.getItem("KA_ECS_USER");
-        // if (!token&&to.path!=="/login"||to.path=="/"){
-        //     next({path:"/login"});
-        //     return false;
-        // }
+        let token = localStorage.getItem("KA_ECS_USER");
+        if (!token&&to.path!=="/login"||to.path=="/"){
+            next({path:"/nbs/login"});
+            return false;
+        }
     }
      next();
 });

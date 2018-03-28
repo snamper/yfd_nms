@@ -14,8 +14,8 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
     if(userInfo){
         Object.assign(data,userInfo);
     }else{
-         // errorDeal({'code':648},closeLoadLayout);
-         // return false;
+         errorDeal({'code':648},closeLoadLayout);
+         return false;
     }
 //--------------------------------------------------------------------
 	if (type == 'GET') {
