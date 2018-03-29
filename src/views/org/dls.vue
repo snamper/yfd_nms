@@ -272,6 +272,7 @@ export default{
         ,getDetails(v){//查看详情
             let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
             vm.searchDetailsType=1;
+            vm.searchDepartId=v.departId;
             data={'searchDepartId':v.departId};
             vm.companyName=v.departName;
             vm.managerName=v.managerName;

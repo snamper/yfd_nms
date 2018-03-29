@@ -206,6 +206,7 @@ export default{
             addAble:'0',
             addUsersData:'',//添加员工信息
             searchType:0,//
+            searchDepartId:'',//部门Id
             form:{
                 page:0,
             },
@@ -230,6 +231,7 @@ export default{
         let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
         vm.p=1;
         vm.searchType=vm.$parent.searchDetailsType;
+        vm.searchDepartId=vm.$parent.searchDepartId;
         let Info=JSON.parse(userInfo);
         vm.user=Info;        
         vm.form.page=vm.lists.length/10;
@@ -448,7 +450,6 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                    this.search();
                 }else{
                      layer.open({
                         content:data.msg,

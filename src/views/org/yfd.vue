@@ -234,7 +234,6 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                    this.search();   
                     for(let i=0;i<this.list.length;i++){
                        this.list[i].username="",
                        this.list[i].phone="",

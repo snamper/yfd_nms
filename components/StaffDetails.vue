@@ -15,9 +15,9 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="6"><div class="grid-content bg-purple">公司名称:<span>{{headCompany}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{headUserName}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{headPhone}}</span></div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">公司名称:<span>--</span></div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{forms.username}}</span></div></el-col>
+                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{forms.phone}}</span></div></el-col>
                         <el-col :span="6"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
@@ -123,10 +123,10 @@
             </ul>
             <div class="mt8">
                 <el-row v-if="off.noModify" >
-                <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="success" @click="checkBtn">修改</el-button></div></el-col>
+                <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="success" @click="checkBtn()">修改</el-button></div></el-col>
                 </el-row>
                 <el-row v-if="off.modify" >
-                    <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="danger" @click="checkNo">取消</el-button><el-button type="success" @click="checkYes(forms.userId)">确定</el-button></div></el-col>
+                    <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="danger" @click="checkNo()">取消</el-button><el-button type="success" @click="checkYes(forms.userId)">确定</el-button></div></el-col>
                 </el-row>
             </div>
         </div>
@@ -141,9 +141,6 @@ export default{
 	data (){
 		return {
             company:"",
-            headUserName:"",
-            headPhone:"",
-            company:"",
             headerUser:"",
             name:'',
             phone:'',
@@ -152,6 +149,7 @@ export default{
             checked2:true,
             reason:'',
             item:'',
+            searchData:'',
             ix:[{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'}],            
 			off:{
                 showSearch:"",
@@ -174,15 +172,13 @@ export default{
 	},
 	created:function(){
         let vm=this;
-        vm.company=vm.$parent.company;        
-        vm.headPhone=vm.$parent.headPhone;
-        vm.headUserName=vm.$parent.headUserName;
+        vm.searchData=vm.$parent.searchData;
     },
 	methods:{
 		goBack(){
             let vm=this;
-            this.$parent.off.staffD=false;
-            this.$parent.off.noStaffd=true;
+            this.$parent.off.staffDetails=false;
+            this.$parent.off.searchStaff=true;
         }
         ,checkBtn(){
             let vm=this;
@@ -195,7 +191,8 @@ export default{
             vm.off.modify=false;
         }
         ,checkYes(v){
-            let vm=this,url="";
+            debugger;
+            let vm=this,url="",data={};
             vm.off.noModify=true;
             vm.off.modify=false;
             url="/yfd-ums/w/user/updateUserDetail";
@@ -203,10 +200,22 @@ export default{
             data.newPhone=vm.forms.phone;
             data.searchUserId=v;
             requestMethod(data,url)
-            .then(()=>{
-
-            }).then(()=>{
-
+            .then((data)=>{
+                if(data.code==200){
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                }else{
+                   layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    }); 
+                }
             }).catch(e=>errorDeal(e))
         }
 	}

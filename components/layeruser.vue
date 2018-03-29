@@ -224,8 +224,7 @@ export default{
                 ) 
             }).catch(e=>errorDeal(e));
         }
-        ,btnYes(v){//同步时间设置确认
-            console.log(this.searchType);
+        ,btnYes(v){//确认添加员工
             let vm=this,url='/yfd-ums/w/user/addUsers',data='',load=Loading.service(options);
             data=vm.$parent.addUsersData;
             if(vm.authCode==''){
@@ -239,6 +238,7 @@ export default{
             }
             requestMethod(data,url)
             .then((data)=>{
+                vm.$parent.off.layer=false;
                 if(data.code==200){
                     layer.open({
                         content:'操作成功',
@@ -246,16 +246,41 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                    this.search();   
-                    for(let i=0;i<this.list.length;i++){
-                       this.$parent.list=[],
-                       this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
-                    }
+                    this.$parent.list=[],
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
+                    if(this.searchType!=1){
+                        this.search();
+                    }else if(this.searchType==1){
+                        let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
+                        vm.searchDetailsType=1;
+                        vm.searchDepartId=vm.$parent.searchDepartId;
+                        data={'searchDepartId':vm.searchDepartId};
+                        vm.companyName=v.departName;
+                        vm.managerName=v.managerName;
+                        vm.managerPhone=v.phone;
+                        requestMethod(data,url)
+                        .then((data)=>{
+                            load.close();
+                            if(data.code==200){
+                                if(data.data.users.length>0){
+                                    vm.$parent.off.notDlsDetails=false;
+                                    vm.$parent.off.dlsDetails=true;
+                                }else{
+                                    vm.$parent.off.notDlsDetails=false;
+                                    vm.$parent.off.dlsDetails=true;
+                                }
+                            }else{
+                                errorDeal(data);
+                            }
+                        }).catch(e=>errorDeal(e));
+                    } 
                 }else{
                     //    this.list[i].username="",
                     //    this.list[i].phone="",
                     //    this.list[i].checked=false,
                     //    this.list[i].checked2=false
+
+
                        this.$parent.list=[],
                        this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
                     layer.open({

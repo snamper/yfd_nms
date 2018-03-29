@@ -130,6 +130,7 @@ export default{
             phone:'',
             radio:'2',
             pa:'',
+            searchData:'',//查询人
             ix:[{color:'red1',age:18,sex:'girl'},{color:'red2',age:18,sex:'girl'},{color:'red3',age:18,sex:'girl'},{color:'red4',age:18,sex:'girl'}],            
 			off:{
                 showSearch:"",
@@ -175,6 +176,7 @@ export default{
         ,getStaffDetails(p){
             let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
             data={"searchUserId":p.userId,"sessionType":"2"}
+            vm.searchData=data;
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.searchStaff=false;
