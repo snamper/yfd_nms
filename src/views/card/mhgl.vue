@@ -248,11 +248,10 @@ export default{
             productType:"1",
             searchList:"",
             timeType:"a",
-            checkedCities: [],
+            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
             cities: cityOptions,
             dourl:'',
             pa:'',
-            ix:[{color:'red',age:18,sex:'girl',s:"on"},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'}],
 			off:{
                 layer:false,
                 // dlsDetails:false,
