@@ -45,7 +45,7 @@
                         <el-col :span="4"><div class="grid-content bg-purple">手机号码:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.phone}}</p>
-                            <input class="modifyInput" v-if="off.modify" type="text" v-model="forms.phone">    
+                            <input class="modifyInput" maxlength=11 v-if="off.modify" type="text" v-model="forms.phone">    
                         </div></el-col>
                     </el-row>
                 </li>
@@ -70,13 +70,25 @@
                 <li>
                     <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">职务:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{forms.userRole}}</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light">
+                            <span v-for="(v,i) in forms.userRole" :key="i">
+                                <span v-if="v==1">管理员</span>
+                                <span v-if="v==2">销售</span>
+                                <span v-if="v==3">店长</span>
+                                <span v-if="v==4">采购员</span>
+                                <span v-if="v==5">业务员</span>
+                            </span>
+                        </div></el-col>
                     </el-row>
                 </li>
                 <li>
                     <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">当前状态:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{forms.userState}}</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light">
+                            <span v-if="forms.userState==1">正常</span>
+                            <span v-if="forms.userState==2">黑名单</span>
+                            <span v-if="forms.userState==3">注销</span>
+                        </div></el-col>
                     </el-row>
                 </li>
                 <li>

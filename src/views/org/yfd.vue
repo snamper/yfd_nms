@@ -17,7 +17,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">用户姓名：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" size="small" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name" maxlength=10 size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -26,7 +26,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" size="small" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" maxlength=11 size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -62,79 +62,69 @@
                 <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
             </div>
             <div v-for="(v,i) in list" :key="i" class="mt8">
-                用户姓名:<el-input style="width:25%" size="mini" v-model="list[i].a" placeholder="请输入内容"></el-input>
-                手机号码:<el-input style="width:25%" size="mini" v-model="list[i].b" placeholder="请输入内容"></el-input>
+                用户姓名:<el-input style="width:25%" size="mini" v-model="list[i].username" placeholder="请输入内容"></el-input>
+                手机号码:<el-input style="width:25%" size="mini" v-model="list[i].phone" placeholder="请输入内容"></el-input>
                 职务:<el-checkbox v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox>
             </div>
         </div>
         <!-- 查询结果 员工列表 -->
-        <div v-if="off.searchList">
-            <div class="listTitleFoot">
-                <el-row>
-                    <el-col :span="20"><div class="grid-content bg-purple">员工列表&nbsp;({{}})</div></el-col>
-                </el-row>        
-            </div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
-                    <tr>
-                        <td></td>
-                        <td>序号</td>
-                        <td>用户姓名</td>
-                        <td>手机号码</td>
-                        <td>创建时间</td>
-                        <td>职务</td>
-                        <td>当前状态</td>
-                        <td>最后登录时间</td>
-                    </tr>
-                    <tr v-for="(v,i) of searchRes" :key="i">
-                        <td>
-                            <el-checkbox v-model="v.ischecked" :checked="v.ischecked"></el-checkbox>
-                        </td>
-                        <td>
-                        {{v.color}}
-                        </td>
-                        <td >
-                        {{v.color}}
-                        </td>
-                        <td >
-                            <a href="javascript:void(0)" @click="getDetails()">{{v.color}}</a>
-                        </td>
-                        <td >
-                        {{v.color}}
-                        </td>
-                        <td >
-                        {{v.color}}
-                        </td>
-                        <td >
-                        {{v.color}}
-                        </td>
-                        <td >
-                        {{v.color}}
-                        </td>
-                    </tr>
-                    <tr>
-                        <td style="text-align:left" colspan="8">
-                            选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 在线 </a>-<a href="javascript:void(0)" @click="doFilter('off')"> 离线 </a>-<a href="javascript:void(0)" @click="doFilter('black')"> 黑名单 </a>
-                        </td>
-                    </tr>
-                </table>
-            </div>
-            <div class="listTitleFoot">
-                <el-row>
-                    <el-col :span="12"><div class="grid-content bg-purple">
-                        <el-pagination
-                        layout="prev, pager, next"
-                        :page-size="5"
-                        @current-change="search"
-                        :total="form.page">
-                        </el-pagination>
-                    </div></el-col>
-                    <el-col :span="12">
-                        <div class="grid-content bg-purple-light fr">操作 : <el-button size="mini" @click="doFunction('offLine')">强制离线</el-button><el-button size="mini" @click="doFunction('addBlack')">加入黑名单</el-button><el-button size="mini" @click="doFunction('cancelBlack')">解除黑名单</el-button><el-button size="mini" @click="doFunction('delete')">删除</el-button></div>
-                    </el-col>
-                </el-row>
-            </div>   
-        </div>  
+    <div v-if="off.searchList">
+        <div class="listTitleFoot">
+            <el-row>
+                <el-col :span="20"><div class="grid-content bg-purple">员工列表</div></el-col>
+            </el-row>        
+        </div>
+        <div class="detailsListDiv">
+            <table class="searchTab" style="width:100%;height:100%;">
+                <tr>
+                    <td>序号</td>
+                    <td>用户姓名</td>
+                    <td>手机号码</td>
+                    <td>创建时间</td>
+                    <td>职务</td>
+                    <td>当前状态</td>
+                    <td>最后登录时间</td>
+                </tr>
+                <tr v-for="(v,i) of detailsList" :key="i">
+                    <td>
+                        {{((pa-1)*10+(i+1))}}
+                    </td>
+                    <td >
+                       <a style="" href="javascript:void(0)" @click="getStaffDetails(v.username)">{{v.username}}</a>
+                    </td>
+                    <td >
+                       {{v.phone}}
+                    </td>
+                    <td >
+                       {{new Date(v.createTime).toLocaleString()}}
+                    </td>
+                    <td >
+                       {{v.userRole}}
+                    </td>
+                    <td >
+                       {{v.userState}}
+                    </td>
+                    <td >
+                       {{new Date(v.lastLoginTime).toLocaleString()}}
+                    </td>
+                </tr>
+                <tr>
+                </tr>
+            </table>
+        </div>
+        <div class="listTitleFoot">
+            <el-row>
+            <el-col :span="12"><div class="grid-content bg-purple">
+                <el-pagination
+                    layout="prev, pager, next"
+                    :page-size="5"
+                    @current-change="search"
+                    :total="form.page">
+                </el-pagination>    
+            </div></el-col>
+            </el-row>
+        </div>
+        </div> 
          <!--操作编辑模块  -->
         <div v-if="off.modify">
             <div class="listTitleFoot">
@@ -167,6 +157,8 @@ import layerVue from '../../../components/layer.vue';
 export default{
 	data (){
 		return {
+            addAble:'',//员工可添加
+            pa:"",//页码
             phone: "",
             name: "",
             radio: "2",//当前状态
@@ -183,9 +175,9 @@ export default{
                 addList:false,
 			},
 			form:{
-                page:50
+                page:1
             },
-            list: [{a: '', b: '',checked:false,checked2:true}],
+            list: [{username: '', phone: '',checked:false,checked2:false}],
             //ix:[],
             ix:[{color:'red11',age:18,sex:'girl',s:'off'},{color:'red22',age:18,sex:'girl',s:'on'},{color:'red33',age:18,sex:'girl',s:'black'},{color:'red44',age:18,sex:'girl',s:'on'}],      
             ix2:[],
@@ -202,21 +194,67 @@ export default{
             this.off.addList=!this.off.addList;
         }
         ,AddList(){//员工添加增加一行按钮
-            this.list.push({a: '', b: '',checked:true,checked2:false})
+            this.list.push({username: '', phone: '',checked:true,checked2:false})
         },
         AddStaff(){//添加员工按钮
-            let load=Loading.service(options),data={"add":[]},url='',vm=this;
+            let data={"newUsers":[],authCode:'123456'},url='/yfd-ums/w/user/addUsers',vm=this;
             for(let i=0;i<this.list.length;i++){
-               if(this.list[i].a&&this.list[i].b&&this.list[i].checked||this.list[i].checked2){
-                  data.add.push(this.list[i])
-               }
+                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true){
+                    if(this.list[i].checked==true&&this.list[i].checked2==false){
+                        this.list[i].userRole='1'
+                    }else if(this.list[i].checked==false&&this.list[i].checked2==true){
+                        this.list[i].userRole='2'
+                    }else if(this.list[i].checked==true&&this.list[i].checked2==true){
+                        this.list[i].userRole='1,2'
+                    }
+                    this.list[i].departName=vm.company;
+                    delete this.list[i].checked;
+                    delete this.list[i].checked2;
+                    data.newUsers.push(this.list[i])
+                    this.addAble='1';
+                }
             }
+            if(this.addAble=='0'){
+                layer.open({
+                    content:'请输入添加的员工信息',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            let load=Loading.service(options);
             requestMethod(data,url)
             .then((data)=>{
-                if(data.code==200){
-                }
-            }).then(()=>{
                 load.close();
+                if(data.code==200){
+                    layer.open({
+                        content:'操作成功',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                    this.search();   
+                    for(let i=0;i<this.list.length;i++){
+                       this.list[i].username="",
+                       this.list[i].phone="",
+                       this.list[i].checked=false,
+                       this.list[i].checked2=false
+                    }
+                }else{
+                    for(let i=0;i<this.list.length;i++){
+                       this.list[i].username="",
+                       this.list[i].phone="",
+                       this.list[i].checked=false,
+                       this.list[i].checked2=false
+                    }
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }  
             }).catch(e=>errorDeal(e))
         },
         doFilter(s){//状态过滤操作
@@ -273,22 +311,31 @@ export default{
             }
         },
         search(p){
-            let load=Loading.service(options),data={},url='',vm=this;
-            data={"name":vm.name
-            ,"phone":vm.phone
-            ,"radio":vm.radio
-            ,"pageSize":10
-            ,"pageNum":p||1}
-            url="abc";
+            let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/userSearch',vm=this;
+             vm.pa=p||1;
+                data={
+                "departName":'yfd',
+                "username":vm.name
+                ,"phone":vm.phone
+                ,"userstate":vm.radio
+                ,"pageSize":10
+                ,"pageNum":p||1}
             requestMethod(data,url)
             .then((data)=>{
-                vm.off.searchList=true;
-                vm.searchRes=vm.ix;
                 if(data.code==200){
-                }  
+                    vm.off.searchList=true;
+                    vm.detailsList=data.data.users;
+                }else{
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                } 
             }).then(()=>{
                 load.close(); 
-            }).catch(e=>errorDeal(e));
+            }).catch(e=>errorDeal(e),load.close());  
         }
         ,getDetails(){
 

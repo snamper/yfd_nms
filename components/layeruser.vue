@@ -80,7 +80,7 @@ tbody tr{height: 36px;}
 			<thead>
 				<tr>
 					<th colspan="2">
-						手动同步
+						添加员工
 					</th>
 				</tr>
 			</thead>
@@ -139,6 +139,7 @@ export default{
             syncUrl:'',//同步时间url
             user:'',//token的值
             btnDisabled:false,
+            searchType:'',//
              options: [{
                 value: '选项1',
                 label: '黄金糕'
@@ -167,6 +168,7 @@ export default{
         let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
         let Info=JSON.parse(userInfo);
         vm.user=Info;
+        vm.searchType=vm.$parent.searchType;
 		if(vm.$parent.off.setSync==true){
             vm.off.set=true;
             vm.off.sync=false;
@@ -188,17 +190,14 @@ export default{
                     } else {
                     this.btnDisabled=false;                        
                     this.show = true;
+                    this.count="点击获取验证码"
                     clearInterval(this.timer);
                     this.timer = null;
                     }
                 }, 1000)
             }
             let vm=this, data={"userId":vm.user.username,"phone":vm.user.userId};
-            if(window.location.hash.indexOf("agent")>-1){
-                vm.authCodeUrl="/yfd-ums/uus/w/user/getAuthCode";
-            }else if(window.location.hash.indexOf("card">-1)){
-                vm.authCodeUrl="/yfd-ums/nus/w/number/getAuthCode";
-            }
+                vm.authCodeUrl="/yfd-ums/w/user/getAuthCode";
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
                 if(data.hasOwnProperty('code')&&data.code==200){
@@ -226,8 +225,9 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,btnYes(v){//同步时间设置确认
-            let vm=this;
-            console.log(vm.authCode);
+            console.log(this.searchType);
+            let vm=this,url='/yfd-ums/w/user/addUsers',data='',load=Loading.service(options);
+            data=vm.$parent.addUsersData;
             if(vm.authCode==''){
                 layer.open({
                     content:'请输入验证码',
@@ -237,40 +237,37 @@ export default{
                 })
                 return false;
             }
-            let load=Loading.service(options),data={"userId":vm.user.username,"phone":vm.user.userId,"authCode":vm.authCode};
-            if(window.location.hash.indexOf("agent")>-1){
-                vm.syncUrl="/yfd-ums/uus/w/user/sync";
-            }else if(window.location.hash.indexOf("card">-1)){
-                vm.syncUrl="/yfd-ums/nus/w/number/sync"
-            }
-            requestMethod(data,vm.syncUrl)
+            requestMethod(data,url)
             .then((data)=>{
-                 load.close();
-                 if(data.hasOwnProperty('code')&&data.code==200){
-                    vm.off.sync=false;
-                    vm.off.rsync=true; 
+                if(data.code==200){
                     layer.open({
-                        content:data.msg,
+                        content:'操作成功',
                         skin: 'msg',
                         time: 2,
                         msgSkin:'success',
                     });
-                }else if(data.hasOwnProperty('code')&&data.code!=200){
+                    this.search();   
+                    for(let i=0;i<this.list.length;i++){
+                       this.$parent.list=[],
+                       this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
+                    }
+                }else{
+                    //    this.list[i].username="",
+                    //    this.list[i].phone="",
+                    //    this.list[i].checked=false,
+                    //    this.list[i].checked2=false
+                       this.$parent.list=[],
+                       this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
                     layer.open({
                         content:data.msg,
                         skin: 'msg',
                         time: 2,
                         msgSkin:'error',
                     });
-                }else(
-                    layer.open({
-                        content:data,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    })
-                ) 
-            }).catch(e=>errorDeal(e));
+                }  
+            }).then(()=>{
+                load.close();
+            }).catch(e=>errorDeal(e))
         },
 		close:function(){
             var vm=this;

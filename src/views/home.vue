@@ -21,14 +21,14 @@
 						</span>
 					</td>
 					<td class="f-tar">
-						<div class="m-info-user"><i></i><span>{{userInfo.name}}</span></div>
+						<div class="m-info-user"><i></i><span  style="color:black">{{user.username}}</span></div>
 						<div class="m-menu-user">
 							<a @click="userMenu"><i class="u-icon-menu2"></i></a>
 							<ul class="m-user-dropdown f-tas" :class="{active:off.userMenu}">
 								<li>
 									<a class="user clr">
 										<div class="logo fl"></div>
-										<div class="info f-tal"><div class="author">{{userInfo.name}}</div></div>
+										<div class="info f-tal" ><div class="author" style="color:black">{{user.username}}</div></div>
 									</a>
 								</li>
 								<li><a @click="clickSignOut">退出</a></li>
@@ -117,6 +117,7 @@ import { signOut } from '../config/service';
 export default{
 	data (){
 		return {
+            user:"",
 			off:{
 				headMenu:true,//导航栏开关
 				window:0,//浏览器窗口宽度
@@ -125,6 +126,11 @@ export default{
 			userInfo:{isadmin:''},
             crumb:[{'name':''},{'name':''},{'name':''}],//面包屑
 		}
+    },
+    created:function(){
+    let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
+    let Info=JSON.parse(userInfo);
+    vm.user=Info;
 	},
 	watch:{
 		'$route':'routeChange',

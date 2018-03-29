@@ -15,7 +15,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="packagename" size="mini" placeholder="请输入号包名称"></el-input>
+                     <el-input v-model="packagename" size="mini" maxlength=15 placeholder="请输入号包名称"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -24,7 +24,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" size="mini" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name" size="mini" maxlength=10 placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -47,7 +47,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" size="mini" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" size="mini" maxlength=11 placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -229,7 +229,7 @@ import search from "../../../components/search";
 import layer from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
 import cardDetails from "../../../components/cardDetails";
-const cityOptions = ['远特', '蜗牛', '迪信通', '极信通','海航通信','乐语通信','苏宁互联'];
+const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'];
 const options={text:"正在加载",}
 export default{
 	data (){
@@ -305,11 +305,12 @@ export default{
             }
         }
         ,search(p){//查询
-            let load=Loading.service(options),checked="",data={},url='/yfd-nms/w/number/productSearch',vm=this;
+            let load=Loading.service(options),checked=[],data={},url='/yfd-nms/w/number/productSearch',vm=this;
             vm.pa=p||1;
             for(let i in vm.checkedCities){
-                checked+=vm.checkedCities[i]
+                checked.push(cityOptions.indexOf(vm.checkedCities[i])+1);
             }
+            checked=checked.join(",");
             data={
                 "brand":checked,
                 // "isp":vm.radio,

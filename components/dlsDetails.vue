@@ -68,8 +68,8 @@
                 <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
             </div>
             <div v-for="(v,i) in list" :key="i" class="mt8">
-                用户姓名:<el-input style="width:25%" size="mini" v-model="list[i].a" placeholder="请输入内容"></el-input>
-                手机号码:<el-input style="width:25%" size="mini" v-model="list[i].b" placeholder="请输入内容"></el-input>
+                用户姓名:<el-input style="width:25%" size="mini" maxlength=10 v-model="list[i].username" placeholder="请输入内容"></el-input>
+                手机号码:<el-input style="width:25%" size="mini" maxlength=11 v-model="list[i].phone" placeholder="请输入内容"></el-input>
                 职务:<el-checkbox v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox>
             </div>
         </div>
@@ -99,7 +99,7 @@
                         {{((p-1)*10+(i+1))}}
                     </td>
                     <td >
-                       <a style="" href="javascript:void(0)" @click="getStaffDetails(v.username)">{{v.username}}</a>
+                       <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
                     </td>
                     <td >
                        {{v.phone}}
@@ -108,7 +108,13 @@
                        {{new Date(v.createTime).toLocaleString()}}
                     </td>
                     <td >
-                       {{v.userRole}}
+                        <span v-for="(v,i) in v.userRole" :key="i">
+                            <span v-if="v==1">管理员</span>
+                            <span v-if="v==2">销售</span>
+                            <span v-if="v==3">店长</span>
+                            <span v-if="v==4">采购员</span>
+                            <span v-if="v==5">业务员</span>
+                        </span>
                     </td>
                     <td >
                        <span v-if="v.userState==1">正常</span>
@@ -121,7 +127,7 @@
                 </tr>
                 <tr>
                     <td colspan="8">
-                       <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 正常 </a>-<a href="javascript:void(0)" @click="doFilter('off')"> 注销 </a>-<a href="javascript:void(0)" @click="doFilter('black')"> 黑名单 </a></span>
+                       <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 取消全选 </a></span>
                     </td>
                 </tr>
             </table>
@@ -144,7 +150,7 @@
         <!-- 代理商员工操作模块 -->
         <div v-if="off.modify">
             <div class="listTitleFoot">
-                <p style="text-align:right">将已选择内容{{a}}</p>
+                <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容{{a}}</p>
             </div>
             <div class="listTitleFoot">
                 <el-input v-model="reason" size="small" placeholder="请输入原因，不能为空"></el-input>
@@ -166,6 +172,7 @@
       <dlsStaff v-if="off.staffD" :forms="searchRes">
 
       </dlsStaff>
+      <common-layer v-if="off.layer"></common-layer>
     </div>  
 </template>
 <script>
@@ -175,6 +182,7 @@ import {requestMethod} from "../src/config/service";
 import { getDateTime,getUnixTime,errorDeal } from "../src/config/utils";
 import search from "./search";
 import dlsStaffDetails from "./dlsStaffDetails";
+import layers from "./layeruser";
 export default{
     name:'dlsDetails',
     props:{lists:Array},
@@ -182,8 +190,6 @@ export default{
         return {
             a:'',//操作内容
             forms:"",
-            headUserName:"",
-            headPhone:"",
             searchRes:"",
             companyName:"",//..
             managerName:"",//..
@@ -197,25 +203,33 @@ export default{
             authCode:"",//验证码
             item:'',
             doUrl:'',//强制离线，加入黑名单，解除黑名单，删除
+            addAble:'0',
+            addUsersData:'',//添加员工信息
+            searchType:0,//
             form:{
                 page:0,
             },
-            list: [{a: '', b: '',checked:false,checked2:false},]
+            list: [{username: '', phone: '',checked:false,checked2:false},]
             ,off:{
                 addList:false,
                 noStaffd:true,
                 staffD:false,
-                modify:false
+                modify:false,
+                layer:false,
+                sync:false,
+                userAdd:false
             }
         }
     },
     components:{
         "common-search":search,
-        "dlsStaff":dlsStaffDetails
+        "dlsStaff":dlsStaffDetails,
+        "common-layer":layers,
     },
     created:function(){
         let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
         vm.p=1;
+        vm.searchType=vm.$parent.searchDetailsType;
         let Info=JSON.parse(userInfo);
         vm.user=Info;        
         vm.form.page=vm.lists.length/10;
@@ -230,53 +244,73 @@ export default{
             vm.$parent.off.notDlsDetails=true;
         },   
          AddList(){//添加员工状态操作
-            this.list.push({a: '', b: '',checked:false,checked2:false})
+            this.list.push({username: '', phone: '',checked:false,checked2:false})
         },
         AddStaffDiv(){//添加员工模块开关
             this.off.addList=!this.off.addList;
         },
         AddStaff(){//添加员工按钮
-            let data={"newUsers":[],authCode:''},url='/yfd-ums/w/user/addUsers',vm=this;
+            let data={"newUsers":[],authCode:'123456'},vm=this;
             for(let i=0;i<this.list.length;i++){
-               if(this.list[i].a&&this.list[i].b&&this.list[i].checked||this.list[i].checked2){
-                  this.list[i].username=this.list[i].a;
-                  this.list[i].phone=this.list[i].b;
-                  if(this.list[i].checked&&!this.list[i].checked2){
-                      this.list[i].userRole='1'
-                  }else if(!this.list[i].checked&&this.list[i].checked2){
-                      this.list[i].userRole='2'
-                  }else if(this.list[i].checked&&this.list[i].checked2){
-                      this.list[i].userRole='1,2'
-                  }
-                  this.list[i].departName=vm.company;
-                  delete this.list[i].a;
-                  delete this.list[i].b;
-                  delete this.list[i].checked;
-                  delete this.list[i].checked2;
-                  data.newUsers.push(this.list[i])
-               }
+                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true){
+                    if(this.list[i].checked==true&&this.list[i].checked2==false){
+                        this.list[i].userRole='1'
+                    }else if(this.list[i].checked==false&&this.list[i].checked2==true){
+                        this.list[i].userRole='2'
+                    }else if(this.list[i].checked==true&&this.list[i].checked2==true){
+                        this.list[i].userRole='1,2'
+                    }
+                    this.list[i].departName=vm.company;
+                    delete this.list[i].checked;
+                    delete this.list[i].checked2;
+                    data.newUsers.push(this.list[i])
+                    this.addAble='1';
+                }
             }
-            let load=Loading.service(options);
-            requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    layer.open({
-                        content:'操作成功',
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                }else{
-                     layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }  
-            }).then(()=>{
-                load.close();
-            }).catch(e=>errorDeal(e))
+            if(this.addAble=='0'){
+                layer.open({
+                    content:'请输入添加的员工信息',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            this.off.layer=true;
+            this.off.sync=true;
+            this.off.userAdd=true;
+            this.addUsersData=data;
+            // requestMethod(data,url)
+            // .then((data)=>{
+            //     if(data.code==200){
+            //         layer.open({
+            //             content:'操作成功',
+            //             skin: 'msg',
+            //             time: 2,
+            //             msgSkin:'success',
+            //         });
+            //         this.search();   
+            //         for(let i=0;i<this.list.length;i++){
+            //            this.list=[],
+            //            this.list.push({username: '', phone: '',checked:false,checked2:false})
+            //         }
+            //     }else{
+            //         //    this.list[i].username="",
+            //         //    this.list[i].phone="",
+            //         //    this.list[i].checked=false,
+            //         //    this.list[i].checked2=false
+            //            this.list=[],
+            //            this.list.push({username: '', phone: '',checked:false,checked2:false})
+            //         layer.open({
+            //             content:data.msg,
+            //             skin: 'msg',
+            //             time: 2,
+            //             msgSkin:'error',
+            //         });
+            //     }  
+            // }).then(()=>{
+            //     load.close();
+            // }).catch(e=>errorDeal(e))
         }
         ,doFunction(val){
             let vm=this,data={"operateUserIds":[]},url='',che='';
@@ -314,29 +348,9 @@ export default{
                 for(let v=0;v<this.lists.length;v++){
                     this.$set(this.lists[v],'ischecked',true);
                 }
-            }else if(s=="off"){
-                for(let v=0;v<this.lists.length;v++){
-                    if(this.lists[v].userState==2){
-                       this.$set(this.lists[v],'ischecked',true);
-                    }else{
-                       this.$set(this.lists[v],'ischecked',false);
-                    }
-                }
             }else if(s=="on"){
                 for(let v=0;v<this.lists.length;v++){
-                    if(this.lists[v].userState==1){
-                        this.$set(this.lists[v],'ischecked',true);
-                    }else{
-                         this.$set(this.lists[v],'ischecked',false);
-                    }
-                }
-            }else if(s=="black"){
-                for(let v=0;v<this.lists.length;v++){
-                    if(this.lists[v].userState==3){
-                        this.$set(this.lists[v],'ischecked',true);
-                    }else{
-                         this.$set(this.lists[v],'ischecked',false);
-                    }
+                    this.$set(this.lists[v],'ischecked',false);
                 }
             }
         }
@@ -366,6 +380,7 @@ export default{
         }
         ,search(p){//查询
             let data={},url='/yfd-ums/w/user/userSearch',vm=this,load=Loading.service(options);
+            vm.searchType=0;
             data={
                 "username":vm.name
                 ,"phone":vm.phone
@@ -384,7 +399,7 @@ export default{
         }
         ,getStaffDetails(p){
             let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
-            data={"searchUserId": "15684765209"}
+            data={"searchUserId":p.userId,"sessionType":"2"}
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.noStaffd=false;
@@ -426,7 +441,6 @@ export default{
             data.authCode=vm.item;
             requestMethod(data,vm.doUrl)
             .then((data)=>{
-                console.log(data)
                 if(data.code==200){
                     layer.open({
                         content:data.msg,
@@ -434,6 +448,7 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
+                    this.search();
                 }else{
                      layer.open({
                         content:data.msg,

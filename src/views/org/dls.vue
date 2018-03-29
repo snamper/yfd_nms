@@ -37,7 +37,7 @@
             <el-col :span="12"><div class="grid-content bg-purple">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="cname"  size="small" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="cname" maxlength=25 size="small" placeholder="请输入查询的公司名称"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -45,7 +45,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name"  size="small" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name"  maxlength=20 size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -66,9 +66,9 @@
                 </el-col> 
             </div></el-col>
             <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone"  size="small" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" maxlength=11 size="small"  placeholder="请输入联系人号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -191,13 +191,14 @@ export default{
             cname: "",
             phone: "",
             name: "",
-            radio: "1",
+            radio: "1,3",
             timeType:"1",
             detailsList:[],
             pa:1,
             companyName:"",//..
             managerName:"",//..
             managerPhone:"",//..
+            searchDetailsType:"",//查看员工详情
             off:{
                 dlsList:false,
                 layer:false,
@@ -257,28 +258,23 @@ export default{
             requestMethod(data,url)
             .then((data)=>{
                 load.close()
-                // vm.total=5;
-                // vm.searchList=vm.ix;
                 if(data.code==200){
                     vm.total=data.data.total;//查询总数
                     vm.searchList=data.data.departs;//查询内容
                     vm.form.page=data.data.total/10
                 }else{
-                    layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
+                    errorDeal(data);
                 }
-            })
-            .then(()=>{}).catch(e=>errorDeal(e));
+            }).then(()=>{
+
+            }).catch(e=>errorDeal(e));
         }
         ,getDetails(v){//查看详情
             let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
+            vm.searchDetailsType=1;
             data={'searchDepartId':v.departId};
             vm.companyName=v.departName;
-            vm.manageName=v.managerName;
+            vm.managerName=v.managerName;
             vm.managerPhone=v.phone;
             requestMethod(data,url)
             .then((data)=>{
@@ -297,9 +293,10 @@ export default{
                         vm.detailsList.username='';
                         vm.detailsList.phone='';
                     }
+                }else{
+                    errorDeal(data);
                 }
-            })
-            .catch(e=>errorDeal(e));
+            }).catch(e=>errorDeal(e));
         },
     }
 }

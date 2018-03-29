@@ -180,15 +180,15 @@ router.beforeEach((to, from, next) => {
     if(to.query&&to.query.auth){
         let t=to.query.auth;
             t=BASE64.decode(t);
+            delete t.departName;
         localStorage.setItem("KA_ECS_USER",t);
     }else{
-        let token = localStorage.getItem("KA_ECS_USER");
-        if (!token&&to.path!=="/login"||to.path=="/"){
-            next({path:"/nbs/login"});
-            return false;
-        }
+        // let token = localStorage.getItem("KA_ECS_USER");
+        // if (!token&&to.path!=="/login"||to.path=="/"){
+        //     to.path="/nbs/login";
+        // }
     }
-     next();
+    next();
 });
 export default router;
 

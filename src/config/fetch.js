@@ -14,8 +14,8 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
     if(userInfo){
         Object.assign(data,userInfo);
     }else{
-         errorDeal({'code':648},closeLoadLayout);
-         return false;
+        //  errorDeal({'code':648},closeLoadLayout);
+        //  return false;
     }
 //--------------------------------------------------------------------
 	if (type == 'GET') {
@@ -53,7 +53,9 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
                 return response.status;
 	        }
         }).then(data=>{
-			if(data.code==200){
+			if(data.hasOwnProperty('code')&&data.code==200){
+                return data;
+            }else if(data.hasOwnProperty('code')&&data.code!=200){
                 return data;
             }else{
                 return data;

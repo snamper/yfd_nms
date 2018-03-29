@@ -12,7 +12,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" size="mini" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name" maxlength=10 size="mini" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -21,7 +21,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" size="mini" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" maxlength=11 size="mini" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -66,7 +66,7 @@
                         {{((pa-1)*10+(i+1))}}
                     </td>
                     <td >
-                       <a style="" href="javascript:void(0)" @click="getStaffDetails(v.username)">{{v.username}}</a>
+                       <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
                     </td>
                     <td >
                        {{v.phone}}
@@ -75,10 +75,18 @@
                        {{new Date(v.createTime).toLocaleString()}}
                     </td>
                     <td >
-                       {{v.userRole}}
+                        <span v-for="(v,i) in v.userRole" :key="i">
+                            <span v-if="v==1">管理员</span>
+                            <span v-if="v==2">销售</span>
+                            <span v-if="v==3">店长</span>
+                            <span v-if="v==4">采购员</span>
+                            <span v-if="v==5">业务员</span>
+                        </span>
                     </td>
                     <td >
-                       {{v.userState}}
+                       <span v-if="v.userState==1">正常</span>
+                       <span v-if="v.userState==2">黑名单</span>
+                       <span v-if="v.userState==3">注销</span>
                     </td>
                     <td >
                        {{new Date(v.lastLoginTime).toLocaleString()}}
@@ -166,7 +174,7 @@ export default{
         }
         ,getStaffDetails(p){
             let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
-             data={"searchUserId": "15684765209"}
+            data={"searchUserId":p.userId,"sessionType":"2"}
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.searchStaff=false;
