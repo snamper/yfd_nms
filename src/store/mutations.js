@@ -16,6 +16,6 @@ export default {
 		state.userInfo={};
 		removeStore("KA_ECS_USER");
 		removeStore("KA_ECS_ONLINE_TIME");
-		window.location.href='#/login';
+		window.location.href='/nbs/login';
 	}
 };

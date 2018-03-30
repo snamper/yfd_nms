@@ -3,4 +3,5 @@
 .buttonAddStaff:active{box-shadow: 0 0 5px grey}
 .greyFont{color:#959595}
 .redFont{color: red};
+.blueFont{color:blue};
 .fontWeight{font-weight: bold};

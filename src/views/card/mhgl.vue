@@ -15,7 +15,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="packagename" size="mini" maxlength=15 placeholder="请输入号包名称"></el-input>
+                     <el-input v-model="packagename" size="mini"  placeholder="请输入号包名称" ></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -24,7 +24,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" size="mini" maxlength=10 placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name" size="mini"  placeholder="请输入查询的联系人姓名" ></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -47,7 +47,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" size="mini" maxlength=11 placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" size="mini"  placeholder="请输入查询的手机号码" ></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -100,7 +100,7 @@
       <div v-if="off.searchList">
         <div class="listTitleFoot">
             <el-row>
-                <el-col :span="20"><div class="grid-content bg-purple">员工列表</div></el-col>
+                <el-col :span="20"><div class="grid-content bg-purple">号包列表：{{total}}</div></el-col>
             </el-row>        
         </div>
 		<div class="detailsListDiv">
@@ -144,7 +144,7 @@
                         {{((pa-1)*10+(i+1))}}
                     </td>
                     <td >
-                       <a href="javascript:void(0)" @click="getDetails()">{{v.productName}}</a>
+                       <a href="javascript:void(0)" @click="getDetails(v)">{{v.productName}}</a>
                     </td>
                     <td >
                        {{v.productType}}
@@ -183,7 +183,7 @@
             <el-col :span="12"><div class="grid-content bg-purple">
                 <el-pagination
                 layout="prev, pager, next"
-                :page-size="5"
+                :page-size="10"
                 @current-change="search"
                 :total="form.page">
                 </el-pagination>
@@ -196,14 +196,14 @@
     </div>
     <div v-if="off.modify">
         <div class="listTitleFoot">
-            <p style="text-align:right">将已选择内容批量加入黑名单</p>
+            <p style="text-align:right;color:red;font-size:14px">将已选择内容批量:{{a}}</p>
         </div>
         <div class="listTitleFoot">
             <el-input v-model="reason" placeholder="请输入原因，不能为空" size="small"></el-input>
         </div> 
         <div class="listTitleFoot">
-            <p style="text-align:right">验证号码:aaaaaa2223333
-                <el-input v-model="item" size="mini" style="width:30%" placeholder="请输入内容"></el-input>
+            <p style="text-align:right">验证号码:{{user.phone}}
+                <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入内容"></el-input>
                 <el-button size="mini" type="primary" @click="getAuthCode()">获取验证码</el-button>
             </p> 
         </div> 
@@ -218,7 +218,7 @@
     <common-layer v-if="off.layer"></common-layer>
         <!-- 代理商详情 -->
     <!-- <dls-Details v-if="off.dlsDetails"></dls-Details> -->
-    <card-Details v-if="off.cardDetails"></card-Details>	 
+    <card-Details  v-if="off.cardDetails" :dataList="searchResData" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-Details>	 
 </section>
 </template>
 <script>
@@ -226,7 +226,7 @@ import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal } from "../../config/utils.js";
 import {requestMethod,requestMethod2} from "../../config/service.js"; 
 import search from "../../../components/search";
-import layer from "../../../components/layer";
+import layerSync from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
 import cardDetails from "../../../components/cardDetails";
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'];
@@ -234,6 +234,13 @@ const options={text:"正在加载",}
 export default{
 	data (){
 		return {
+            total:"",//号包总数
+            searchResData:{},//号包详情查询结果
+            searchLiang:{},
+            searchPu:{},
+            dataList:{},
+            dataListLiang:{},
+            dataListPu:{},
             userId:"",
             packagename:"",
             startTime: "",
@@ -248,10 +255,16 @@ export default{
             productType:"1",
             searchList:"",
             timeType:"a",
+            pageNumDetails:"",//子页面号包详情
+            pageNumLiang:"",//靓号详情
+            pageNumPu:"",//普号详情
             checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
             cities: cityOptions,
             dourl:'',
             pa:'',
+            reason:"",//操作理由
+            authCode:"",//验证码
+            searchData:"",
 			off:{
                 layer:false,
                 // dlsDetails:false,
@@ -263,25 +276,55 @@ export default{
                 modify:false//编辑栏
 			},
 			form:{
-                page:50
+                page:0
             },
 		}
 	},
 	components:{
         "common-search":search,
-        "common-layer":layer,
+        "common-layer":layerSync,
         "dls-Details":dlsDetails,
         "card-Details":cardDetails
 	},
 	created:function(){
         let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
         let Info=JSON.parse(userInfo);
-        vm.userId=Info.userId;
+        vm.user=Info;
 	},
 	methods:{
-		getDetails(){
-            this.off.notCardDetails=false;
-            this.off.cardDetails=true;
+		getDetails(v){
+            let vm=this;
+            let data={},url="/yfd-nms/w/number/getProductDetail";
+            data.searchProductId=v.productId;
+            data.sessionType="2";
+            requestMethod(data,url)
+            .then((data)=>{
+                if(data.code==200){
+                    // vm.pageNumDetails=data.data;
+                    vm.searchResData=data.data
+                }
+            }).catch(e=>errorDeal(e),function(){load.close()});
+            url="/yfd-nms/w/number/getProductNumbers";
+            data.searchProductId=v.productId;
+            data.sessionType="2";
+            data.phoneLevel=1;
+            requestMethod(data,url)
+            .then((data)=>{
+                if(data.code==200){
+                    // vm.pageNumPu=data.data.numbers;
+                    vm.searchLiang=data.data.numbers
+                }
+            }).catch(e=>errorDeal(e),function(){load.close()}); 
+            data.phoneLevel=2;
+            requestMethod(data,url)
+            .then((data)=>{
+                if(data.code==200){
+                    //vm.pageNumLiang=data.data.numbers;
+                    vm.searchPu=data.data.numbers
+                    this.off.notCardDetails=false;
+                    this.off.cardDetails=true;
+               }
+            }).catch(e=>errorDeal(e),function(){load.close()});        
         },
         openSet(){//同步设置
             let vm=this;
@@ -322,11 +365,14 @@ export default{
                 "sessionType":2,
                 "pageSize":10
                 ,"pageNum":p||1}
+            vm.searchData=data;
             requestMethod2(data,url,function(){load.close()})
             .then((data)=>{
                 if(data.code==200){
                     vm.off.searchList=true;
                     vm.searchList=data.data.products;
+                    vm.total=data.data.total;
+                    vm.form.page=data.data.total;
                 }else{
                     errorDeal(data);
                 }
@@ -397,34 +443,80 @@ export default{
             }
         }
         ,getAuthCode(){
-            let load=Loading.service(options),data={},url='/yfd-ums/uus/w/user/getAuthCode',vm=this;
-            data={"phone":vm.userId}
+            let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
+            data={"phone":vm.phone||""}
+            // data={"phone":15684765209}
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                }else{
+                     layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
                 }  
             }).then(()=>{
                 load.close(); 
             }).catch(e=>errorDeal(e));
         }
-        ,success(){
-            let vm=this,data={"operateProductIds":[],"authCode":123456},url='',che='';
+        ,success(v){
+            let data={'operateProductIds':[]},vm=this,url="/yfd-ums/w/number/pullOffProducts"
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
-                    data.operateProductIds.push(vm.searchList[v].productId);
-                    vm.off.modify=true;
+                    data.operateProductIds.push(vm.searchList[v].productId)
                 }
             }
-            url=vm.dourl;
-            // this.off.cardDetails=true;
-            // this.off.notDlsDetails=false;
+            if(vm.reason==""){
+                layer.open({
+                    content:'请输入操作原因',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            if(vm.authCode==""){
+                layer.open({
+                    content:'请输入验证码',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            let load=Loading.service(options);
+            data.reason=vm.reason;//操作原因
+            data.authCode=vm.authCode;
             requestMethod(data,url)
             .then((data)=>{
-
+                vm.off.modify=false;
+                if(data.code==200){
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                     this.search();
+                }else{
+                     layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }
             }).then(()=>{
-
-            }).catch(err=>errorDeal(err)
-            );
+                load.close(); 
+            }).catch(e=>errorDeal(e));
         }
     }
 }

@@ -37,7 +37,7 @@
             <el-col :span="12"><div class="grid-content bg-purple">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="cname" maxlength=25 size="small" placeholder="请输入查询的公司名称"></el-input>
+                     <el-input v-model="cname" :maxlength="25" size="small" placeholder="请输入查询的公司名称"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -45,7 +45,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name"  maxlength=20 size="small" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name"  :maxlength="20" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -57,7 +57,7 @@
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                 <el-col :span="18">
                     <el-radio v-model="radio"  label="1,3">全部</el-radio>
-                    <el-radio v-model="radio"  label="1">在线</el-radio>
+                    <el-radio v-model="radio"  label="1">正常</el-radio>
                     <el-radio v-model="radio"  label="3">注销</el-radio>
                     <!-- <el-radio v-model="radio"  label="2">注销</el-radio> -->
                 </el-col>
@@ -68,7 +68,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" maxlength=11 size="small"  placeholder="请输入联系人号码"></el-input>
+                     <el-input v-model="phone" :maxlength="11" size="small"  placeholder="请输入联系人号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -115,7 +115,7 @@
                     <td>创建时间</td>
                     <td>员工详情</td>
                 </tr>
-                <tr v-for="(v,i) of searchList" :key="i">
+                <tr v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
                     <td >
                        {{((pa-1)*10+(i+1))}}
                     </td>

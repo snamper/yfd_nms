@@ -8,6 +8,7 @@
     .detailsUlDiv ul li {padding: 6px 18px;border-bottom: 1px solid #ccc}
     .detailsUlDiv ul li:nth-child(even){background: #ccc;}
     div.el-row{line-height:30px}
+    input.modifyInput{height: 28px;border-radius: 6px;outline: none;border: 1px solid #ccc;padding-left: 10px;}    
 </style>
 <template>
     <div>
@@ -35,7 +36,7 @@
                         <el-col :span="4"><div class="grid-content bg-purple">用户姓名:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.username}}</p>
-                            <input v-if="off.modify" type="text" v-model="forms.username">
+                            <input class="modifyInput" v-if="off.modify" type="text" v-model="forms.username">
                         </div></el-col>
                     </el-row>
                 </li>
@@ -44,7 +45,7 @@
                         <el-col :span="4"><div class="grid-content bg-purple">手机号码:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.phone}}</p>
-                            <input v-if="off.modify" type="text" v-model="forms.phone">    
+                            <input class="modifyInput" v-if="off.modify" type="text" v-model="forms.phone">    
                         </div></el-col>
                     </el-row>
                 </li>
@@ -184,14 +185,17 @@ export default{
             let vm=this;
             vm.off.noModify=false;
             vm.off.modify=true;
+            vm.oldName=vm.forms.username;
+            vm.oldPhone=vm.forms.phone
         }
         ,checkNo(){
             let vm=this;
             vm.off.noModify=true;
             vm.off.modify=false;
+            vm.forms.username=vm.oldName;
+            vm.forms.phone=vm.oldPhone;
         }
         ,checkYes(v){
-            debugger;
             let vm=this,url="",data={};
             vm.off.noModify=true;
             vm.off.modify=false;
@@ -209,6 +213,8 @@ export default{
                         msgSkin:'success',
                     });
                 }else{
+                    vm.forms.username=vm.oldName;
+                    vm.forms.phone=vm.oldPhone;
                    layer.open({
                         content:data.msg,
                         skin: 'msg',

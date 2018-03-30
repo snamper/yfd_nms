@@ -16,10 +16,10 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="6"><div class="grid-content bg-purple">公司名称:<span>{{company}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{managerName}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{managerPhone}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple">公司名称  :  <span style="color:blue">亚非达</span></div></el-col>
+                        <!-- <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{managerName}}</span></div></el-col> -->
+                        <!-- <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{managerPhone}}</span></div></el-col> -->
+                        <el-col :span="12"><div class="grid-content bg-purple-light fr" style="padding-right:40px"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
             </el-container>
@@ -45,7 +45,7 @@
                         <el-col :span="4"><div class="grid-content bg-purple">手机号码:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.phone}}</p>
-                            <input class="modifyInput" maxlength=11 v-if="off.modify" type="text" v-model="forms.phone">    
+                            <input class="modifyInput" :maxlength="11" v-if="off.modify" type="text" v-model="forms.phone">    
                         </div></el-col>
                     </el-row>
                 </li>
@@ -112,7 +112,10 @@
                 <li>
                     <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">登陆地址:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{forms.latitude}}--{{forms.longitude}}</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light">
+                            {{forms.latitude}}--{{forms.longitude}}
+                            <a href="javascript:void(0)" @click="toMap" >查看地图</a>
+                        </div></el-col>
                     </el-row>
                 </li>
                 <li>
@@ -186,8 +189,8 @@ export default{
 	methods:{
 		goBack(){
             let vm=this;
-            this.$parent.off.staffD=false;
-            this.$parent.off.noStaffd=true;
+            this.$parent.off.staffDetails=false;
+            this.$parent.off.searchStaff=true;
         }
         ,checkBtn(){
             let vm=this;
@@ -232,7 +235,15 @@ export default{
             }).then(()=>{
 
             }).catch(e=>errorDeal(e))
-        }
+        },
+        toMap(){//查看地图
+			var w=document.documentElement.clientWidth,url='',vm=this;
+			let latitude=parseFloat(vm.forms.latitude);
+            let longitude=parseFloat(vm.forms.longitude);
+            debugger;
+			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
+			window.open(url);
+		}
 	}
 }
 </script>

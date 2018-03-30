@@ -12,7 +12,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" maxlength=10 size="mini" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name" :maxlength="10" size="mini" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -21,7 +21,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" maxlength=11 size="mini" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" :maxlength="11" size="mini" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -61,7 +61,7 @@
                     <td>当前状态</td>
                     <td>最后登录时间</td>
                 </tr>
-                <tr v-for="(v,i) of detailsList" :key="i">
+                <tr v-for="(v,i) of detailsList" :key="i" :class="{'greyFont':v.departState==3}">
                     <td>
                         {{((pa-1)*10+(i+1))}}
                     </td>
@@ -101,7 +101,7 @@
             <el-col :span="12"><div class="grid-content bg-purple">
                 <el-pagination
                     layout="prev, pager, next"
-                    :page-size="5"
+                    :page-size="10"
                     @current-change="search"
                     :total="form.page">
                 </el-pagination>    
@@ -131,7 +131,6 @@ export default{
             radio:'2',
             pa:'',
             searchData:'',//查询人
-            ix:[{color:'red1',age:18,sex:'girl'},{color:'red2',age:18,sex:'girl'},{color:'red3',age:18,sex:'girl'},{color:'red4',age:18,sex:'girl'}],            
 			off:{
                 showSearch:"",
                 searchList:false,
@@ -139,7 +138,7 @@ export default{
                 searchStaff:true,
 			},
 			form:{
-			
+                page:1
 			},
 		}
 	},
@@ -161,10 +160,17 @@ export default{
                 ,"pageNum":p||1}
             requestMethod(data,url)
             .then((data)=>{
-                vm.off.searchList=true;
-                vm.detailsList=data.data.users;
                 if(data.code==200){
-                    
+                    vm.off.searchList=true;
+                    vm.form.page=data.data.total;                    
+                    vm.detailsList=data.data.users;
+                }else{
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
                 }  
             }).then(()=>{
                 load.close(); 
@@ -181,8 +187,8 @@ export default{
             .then((data)=>{
                 vm.off.searchStaff=false;
                 vm.off.staffDetails=true;
-                vm.searchRes=data.data;
                 if(data.code==200){
+                    vm.searchRes=data.data;
                 }  
             }).then(()=>{
                 load.close(); 

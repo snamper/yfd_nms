@@ -3,6 +3,7 @@
     .listTitleFoot label{display:block;width: 50%;}
     label.el-checkbox{display: inline}
     .searchTab tr{padding-left: 20px;}
+    .searchTab tr td{text-align: left;padding-left: 80px;}
 </style>
 <template>
     <section>
@@ -13,24 +14,24 @@
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
                 <tr>
-                    <td>号包名称 ：</td>
+                    <td>号包名称 ：{{dataList.productName||'--'}}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>号包类型 ：</td>
-                    <td>当前状态 ：</td>
+                    <td>号包类型 ：{{dataList.productType||'--'}}</td>
+                    <td>当前状态 ：{{dataList.productState||'--'}}</td>
                 </tr>
                 <tr>
-                    <td>码号数量 ：</td>
-                    <td>修改时间 ：</td>
+                    <td>码号数量 ：{{dataList.total||'--'}}</td>
+                    <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td>
                 </tr>
                   <tr>
-                    <td>归属品牌 ：</td>
-                    <td>操作人 ：</td>
+                    <td>归属品牌 ：{{dataList.brand||'--'}}</td>
+                    <td>操作人 ：{{dataList.operatorName||'--'}}</td>
                 </tr>
                 <tr>
-                    <td>运营商 ：</td>
-                    <td>手机号码 ：</td>
+                    <td>运营商 ：{{dataList.isp||'--'}}</td>
+                    <td>手机号码 ：{{dataList.phone||'--'}}</td>
                 </tr>
 			</table>
         </div>
@@ -41,13 +42,12 @@
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
-                <tr v-for="(v,i) of ix" :key="i">
-                    <td>{{ix[i].color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
+                <tr v-for="(v,i) of dataListLiang" :key="i">
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
                 </tr>
 			</table>
         </div> 
@@ -58,13 +58,13 @@
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
-                <tr v-for="(v,i) of ix" :key="i">
-                    <td>{{ix[i].color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
-                    <td>{{v.color}}</td>
+                <tr v-for="(v,i) of dataListPu" :key="i">
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
+                    <td>{{v.phone}}</td>
                 </tr>
 			</table>
         </div> 
@@ -74,9 +74,13 @@
 <script>
 import { getDateTime,getUnixTime,errorDeal } from "../src/config/utils";
 export default{
-	data (){
+    props:{dataList:Object,dataListLiang:Object,dataListPu:Object},        
+    data (){
 		return {
-            ix:[{color:'red',age:18,sex:'girl'},{color:'green',age:18,sex:'girl'},{color:'blue',age:18,sex:'girl'},{color:'yellow',age:18,sex:'girl'}],
+            pageNumDetails:"",//号包详情
+            pageNumLiang:"",//靓号详情
+            pageNumPu:"",//普号详情
+            ix:[{}],
 			off:{
                 layer:false,
                 dlsDetails:false,
@@ -91,8 +95,15 @@ export default{
         
 	},
 	created:function(){
-    
-	},
+        let vm=this;
+        // vm.pageNumDetails=vm.$parent.pageNumDetails;
+        // vm.pageNumLiang=vm.$parent.pageNumLiang;
+        // vm.pageNumPu=vm.$parent.pageNumPu;
+        // console.log(vm.dataList)
+},
+    computed:{
+        
+    },
 	methods:{
         goBack(){
             this.$parent.off.cardDetails=false;

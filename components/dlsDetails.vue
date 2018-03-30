@@ -12,7 +12,7 @@
                 <el-container>
                     <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                         <el-row>
-                            <el-col :span="10"><div class="grid-content bg-purple">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{company}}</span></div></el-col>
+                            <el-col :span="10"><div class="grid-content bg-purple">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span  style="color:blue">{{company}}</span></div></el-col>
                             <el-col :span="6"><div class="grid-content bg-purple-light">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span >{{managerName}}</span></div></el-col>
                             <el-col :span="4"><div class="grid-content bg-purple">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{managerPhone}}</span></div></el-col>
                             <el-col :span="4"><div class="grid-content bg-purple-light fr"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
@@ -96,7 +96,7 @@
                         <el-checkbox v-model="v.ischecked" ></el-checkbox>
                     </td>
                     <td>
-                        {{((p-1)*10+(i+1))}}
+                        {{((pa-1)*10+(i+1))}}
                     </td>
                     <td >
                        <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
@@ -137,7 +137,7 @@
             <el-col :span="12"><div class="grid-content bg-purple">
                 <el-pagination
                     layout="prev, pager, next"
-                    :page-size="5"
+                    :page-size="10"
                     @current-change="search"
                     :total="form.page">
                 </el-pagination>    
@@ -156,8 +156,8 @@
                 <el-input v-model="reason" size="small" placeholder="请输入原因，不能为空"></el-input>
             </div> 
             <div class="listTitleFoot">
-                <p style="text-align:right">验证号码:{{user.userId}}
-                    <el-input v-model="authCode" size="mini" style="width:26%" placeholder="请输入内容"></el-input>
+                <p style="text-align:right">验证号码:{{user.phone}}
+                    <el-input v-model="authCode" size="mini" style="width:26%" placeholder="请输入验证码"></el-input>
                     <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button>
                 </p> 
             </div> 
@@ -169,9 +169,7 @@
        </div>
       </div> 
       <!-- 代理商员工个人详情和编辑模块 -->
-      <dlsStaff v-if="off.staffD" :forms="searchRes">
-
-      </dlsStaff>
+      <dlsStaff v-if="off.staffD" :forms="searchRes"></dlsStaff>
       <common-layer v-if="off.layer"></common-layer>
     </div>  
 </template>
@@ -201,7 +199,6 @@ export default{
             checked2:true,
             reason:'',//操作原因
             authCode:"",//验证码
-            item:'',
             doUrl:'',//强制离线，加入黑名单，解除黑名单，删除
             addAble:'0',
             addUsersData:'',//添加员工信息
@@ -229,11 +226,11 @@ export default{
     },
     created:function(){
         let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        vm.p=1;
-        vm.searchType=vm.$parent.searchDetailsType;
-        vm.searchDepartId=vm.$parent.searchDepartId;
         let Info=JSON.parse(userInfo);
         vm.user=Info;        
+        vm.searchType=vm.$parent.searchDetailsType;
+        vm.searchDepartId=vm.$parent.searchDepartId;
+        vm.pa=1;
         vm.form.page=vm.lists.length/10;
         vm.company=vm.$parent.companyName;
         vm.managerPhone=vm.$parent.managerPhone;
@@ -321,15 +318,17 @@ export default{
                     data.operateUserIds.push(vm.lists[v].username);
                     che+=vm.lists[v].username+',';
                     vm.off.modify=true;
-                }else{
-                    layer.open({
-                        content:'请选择要操作的用户',
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                    vm.off.modify=false;
                 }
+            }
+            if(vm.off.modify==false){
+                layer.open({
+                    content:'请选择要操作的用户',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                vm.off.modify=false;
+                return false;
             }
             if(val=='offLine'){
                 vm.doUrl="/yfd-ums/w/user/kickoutUsers";
@@ -358,7 +357,8 @@ export default{
         }
         ,getAuthCode(){
             let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
-            data={"phone":vm.user.userId}
+            data={"phone":vm.user.phone}
+            // data={"phone":15684765209}
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
@@ -393,6 +393,8 @@ export default{
             .then((data)=>{
                 vm.off.dlsList=true;
                 vm.$parent.detailsList=data.data.users;
+                vm.form.page=data.data.total;
+                vm.pa=p||1;
                 if(data.code==200){
                 }  
             }).then(()=>{
@@ -414,11 +416,11 @@ export default{
             }).catch(e=>errorDeal(e));
         } 
         ,btnYes(){
-            let data={},vm=this;
-                for(let v in vm.searchList){
-                    if(vm.searchList[v].ischecked==true){
-                            data.operateUserIds.push(vm.searchList[v])
-                    }
+            let data={'operateUserIds':[]},vm=this;
+            for(let v in vm.lists){
+                if(vm.lists[v].ischecked==true){
+                    data.operateUserIds.push(vm.lists[v].userId)
+                }
             }
             if(vm.reason==""){
                 layer.open({
@@ -440,9 +442,10 @@ export default{
             }
             let load=Loading.service(options);
             data.reason=vm.reason;//操作原因
-            data.authCode=vm.item;
+            data.authCode=vm.authCode;
             requestMethod(data,vm.doUrl)
             .then((data)=>{
+                vm.off.modify=false;
                 if(data.code==200){
                     layer.open({
                         content:data.msg,
@@ -450,6 +453,35 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
+
+                    if(this.searchType!=1){
+                        this.search();
+                    }else if(this.searchType==1){
+                        let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
+                        vm.searchDetailsType=1;
+                        vm.searchDepartId=vm.$parent.searchDepartId;
+                        data={'searchDepartId':vm.searchDepartId};
+                        // vm.companyName=v.departName;
+                        // vm.managerName=v.managerName;
+                        // vm.managerPhone=v.phone;
+                        requestMethod(data,url)
+                        .then((data)=>{
+                            load.close();
+                            if(data.code==200){
+                                if(data.data.users.length>0){
+                                    vm.$parent.off.notDlsDetails=false;
+                                    vm.$parent.off.dlsDetails=true;
+                                    vm.$parent.detailsList=data.data.users;                                    
+                                }else{
+                                    vm.$parent.off.notDlsDetails=false;
+                                    vm.$parent.off.dlsDetails=true;
+                                    vm.$parent.detailsList=data.data.users;
+                                }
+                            }else{
+                                errorDeal(data);
+                            }
+                        }).catch(e=>errorDeal(e));
+                    } 
                 }else{
                      layer.open({
                         content:data.msg,

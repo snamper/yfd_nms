@@ -196,7 +196,9 @@ export default{
                     }
                 }, 1000)
             }
-            let vm=this, data={"userId":vm.user.username,"phone":vm.user.userId};
+            let vm=this, 
+            // data={"userId":vm.user.username,"phone":15684765209};
+            data={"userId":vm.user.userId,"phone":vm.user.phone||""};
                 vm.authCodeUrl="/yfd-ums/w/user/getAuthCode";
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
@@ -265,9 +267,11 @@ export default{
                                 if(data.data.users.length>0){
                                     vm.$parent.off.notDlsDetails=false;
                                     vm.$parent.off.dlsDetails=true;
+                                    vm.$parent.$parent.detailsList=data.data.users;
                                 }else{
                                     vm.$parent.off.notDlsDetails=false;
                                     vm.$parent.off.dlsDetails=true;
+                                    vm.$parent.$parent.detailsList=data.data.users;                                    
                                 }
                             }else{
                                 errorDeal(data);

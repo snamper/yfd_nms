@@ -89,7 +89,7 @@ tbody tr{height: 36px;}
                     <td class="fl"><p>验证号码:<span v-model="user.userId">{{user.userId}}</span></p></td>
                 </tr>
                 <tr colspan="2">
-					<el-input v-model="authCode" size="mini" maxlength=6 style="width:60%" placeholder="请输入短信验证码"></el-input><el-button style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
+					<el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%" placeholder="请输入短信验证码"></el-input><el-button style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
 				</tr>
                 <tr class="tdBtn" colspan="2">
                     <span @click="close()">取消</span>
@@ -193,7 +193,9 @@ export default{
                     }
                 }, 1000)
             }
-            let vm=this, data={"userId":vm.user.username,"phone":vm.user.userId};
+            let vm=this, 
+            // data={"userId":vm.user.username,"phone":15684765209};
+            data={"userId":vm.user.userId,"phone":vm.user.phone||""};
             if(window.location.hash.indexOf("agent")>-1){
                 vm.authCodeUrl="/yfd-ums/uus/w/user/getAuthCode";
             }else if(window.location.hash.indexOf("card">-1)){
@@ -237,7 +239,7 @@ export default{
                 })
                 return false;
             }
-            let load=Loading.service(options),data={"userId":vm.user.username,"phone":vm.user.userId,"authCode":vm.authCode};
+            let load=Loading.service(options),data={"userId":vm.user.userId,"phone":vm.user.phone||"","authCode":vm.authCode};
             if(window.location.hash.indexOf("agent")>-1){
                 vm.syncUrl="/yfd-ums/uus/w/user/sync";
             }else if(window.location.hash.indexOf("card">-1)){

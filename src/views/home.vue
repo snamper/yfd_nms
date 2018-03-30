@@ -117,7 +117,7 @@ import { signOut } from '../config/service';
 export default{
 	data (){
 		return {
-            user:"",
+            user:{"username":"admin"},
 			off:{
 				headMenu:true,//导航栏开关
 				window:0,//浏览器窗口宽度
@@ -128,9 +128,9 @@ export default{
 		}
     },
     created:function(){
-    let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-    let Info=JSON.parse(userInfo);
-    vm.user=Info;
+        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
+        let Info=JSON.parse(userInfo);
+        vm.user=Info;
 	},
 	watch:{
 		'$route':'routeChange',
