@@ -222,6 +222,18 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
+                    let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+                    data=vm.$parent.searchDetailsYfdData;
+                    requestMethod(data,url)
+                    .then((data)=>{
+                        if(data.code==200){
+                            vm.off.searchStaff=false;
+                            vm.off.staffDetails=true;
+                            vm.$parent.searchRes=data.data;
+                        }  
+                    }).then(()=>{
+                        load.close(); 
+                    }).catch(e=>errorDeal(e));
                 }else{
                     vm.forms.username=vm.oldName;
                     vm.forms.phone=vm.oldPhone;

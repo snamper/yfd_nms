@@ -68,9 +68,9 @@
                 <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
             </div>
             <div v-for="(v,i) in list" :key="i" class="mt8">
-                用户姓名:<el-input style="width:25%" size="mini" maxlength=10 v-model="list[i].username" placeholder="请输入内容"></el-input>
-                手机号码:<el-input style="width:25%" size="mini" maxlength=11 v-model="list[i].phone" placeholder="请输入内容"></el-input>
-                职务:<el-checkbox v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox>
+                用户姓名 : <el-input style="width:25%" size="mini" maxlength=10 v-model="list[i].username" placeholder="请输入内容"></el-input>
+                &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="mini" maxlength=11 v-model="list[i].phone" placeholder="请输入内容"></el-input>
+                &nbsp;&nbsp;&nbsp;职务 : <el-checkbox v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox>
             </div>
         </div>
         <!-- 代理商员工查询结果 -->
@@ -153,7 +153,7 @@
                 <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容{{a}}</p>
             </div>
             <div class="listTitleFoot">
-                <el-input v-model="reason" size="small" placeholder="请输入原因，不能为空"></el-input>
+                <el-input v-model="reason" size="small" :maxlength="20" placeholder="请输入原因，字数限制20个字符，必填"></el-input>
             </div> 
             <div class="listTitleFoot">
                 <p style="text-align:right">验证号码:{{user.phone}}
@@ -194,7 +194,7 @@ export default{
             managerPhone:"",//..
             name:'',
             phone:'',
-            radio:'1',
+            radio:'1,2',
             checked:true,
             checked2:true,
             reason:'',//操作原因
@@ -253,11 +253,11 @@ export default{
             for(let i=0;i<this.list.length;i++){
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true){
                     if(this.list[i].checked==true&&this.list[i].checked2==false){
-                        this.list[i].userRole='1'
+                        this.list[i].userRole='4'
                     }else if(this.list[i].checked==false&&this.list[i].checked2==true){
-                        this.list[i].userRole='2'
+                        this.list[i].userRole='4'
                     }else if(this.list[i].checked==true&&this.list[i].checked2==true){
-                        this.list[i].userRole='1,2'
+                        this.list[i].userRole='4,5'
                     }
                     this.list[i].departName=vm.company;
                     delete this.list[i].checked;
@@ -381,24 +381,28 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,search(p){//查询
-            let data={},url='/yfd-ums/w/user/userSearch',vm=this,load=Loading.service(options);
-            vm.searchType=0;
-            data={
-                "username":vm.name
-                ,"phone":vm.phone
-                ,"userstate":vm.radio
-                ,"pageSize":10
-                ,"pageNum":p||1}
+            let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
+            data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.radio,username:vm.name,phone:vm.phone,pageNum:p||1,pageSize:"10"};
             requestMethod(data,url)
             .then((data)=>{
-                vm.off.dlsList=true;
-                vm.$parent.detailsList=data.data.users;
-                vm.form.page=data.data.total;
-                vm.pa=p||1;
+                load.close();
                 if(data.code==200){
-                }  
-            }).then(()=>{
-                load.close(); 
+                    if(data.data.users.length>0){
+                        vm.$parent.off.notDlsDetails=false;
+                        vm.$parent.off.dlsDetails=true;
+                        vm.$parent.detailsList=data.data.users;
+                        vm.$parent.headUserName=data.data.users[0].username;
+                        vm.$parent.headPhone=data.data.users[0].phone;
+                    }else{
+                        vm.$parent.off.notDlsDetails=false;
+                        vm.$parent.off.dlsDetails=true;
+                        vm.$parent.detailsList=[];
+                        vm.$parent.detailsList.username='';
+                        vm.$parent.detailsList.phone='';
+                    }
+                }else{
+                    errorDeal(data);
+                }
             }).catch(e=>errorDeal(e));
         }
         ,getStaffDetails(p){
@@ -460,7 +464,7 @@ export default{
                         let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
                         vm.searchDetailsType=1;
                         vm.searchDepartId=vm.$parent.searchDepartId;
-                        data={'searchDepartId':vm.searchDepartId};
+                        data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.radio,username:vm.name,phone:vm.phone,pageNum:1,pageSize:"10"};
                         // vm.companyName=v.departName;
                         // vm.managerName=v.managerName;
                         // vm.managerPhone=v.phone;

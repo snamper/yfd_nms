@@ -12,7 +12,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" :maxlength="10" size="mini" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -21,7 +21,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" :maxlength="11" size="mini" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -31,7 +31,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                 <el-col :span="18">
-                    <el-radio v-model="radio"  label="1,2" >全部</el-radio>
+                    <el-radio v-model="radio"  label="1,2">全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
                     <el-radio v-model="radio"  label="2" >黑名单</el-radio>
                 </el-col>
@@ -128,9 +128,12 @@ export default{
             detailsList:'',
             name:'',
             phone:'',
-            radio:'2',
+            radio:'1,2',
             pa:'',
             searchData:'',//查询人
+            searchDetailsYfdData:'',
+            searchUserId:'',
+            searchRes:'',
 			off:{
                 showSearch:"",
                 searchList:false,
@@ -150,7 +153,7 @@ export default{
     },
 	methods:{
         search(p){//查询
-            let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/userSearch',vm=this;
+            let load=Loading.service(options),data={},url='/yfd-ums/w/user/userSearch',vm=this;
              vm.pa=p||1;
                 data={
                 "username":vm.name
@@ -182,7 +185,8 @@ export default{
         ,getStaffDetails(p){
             let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
             data={"searchUserId":p.userId,"sessionType":"2"}
-            vm.searchData=data;
+            vm.searchUserId=p.userId;
+            vm.searchDetailsYfdData=data;
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.searchStaff=false;

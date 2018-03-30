@@ -137,6 +137,7 @@
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service"; 
+import {errorDeal} from "../src/config/utils"
 export default{
     props:{forms:Object},
 	data (){
@@ -202,20 +203,33 @@ export default{
             url="/yfd-ums/w/user/updateUserDetail";
             data.newName=vm.forms.username;
             data.newPhone=vm.forms.phone;
-            data.searchUserId=v;
+            data.searchUserId=vm.$parent.searchUserId;
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
+                    debugger;
                     layer.open({
-                        content:data.msg,
+                        content:'请求成功',
                         skin: 'msg',
                         time: 2,
                         msgSkin:'success',
                     });
+                    let data="",url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+                    data=vm.$parent.searchDetailsYfdData;
+                    requestMethod(data,url)
+                    .then((data)=>{
+                        vm.off.searchStaff=false;
+                        vm.off.staffDetails=true;
+                        if(data.code==200){
+                            vm.$parent.searchRes=data.data;
+                        }  
+                    }).then(()=>{
+                        load.close(); 
+                    }).catch(e=>errorDeal(e));
                 }else{
                     vm.forms.username=vm.oldName;
                     vm.forms.phone=vm.oldPhone;
-                   layer.open({
+                    layer.open({
                         content:data.msg,
                         skin: 'msg',
                         time: 2,

@@ -183,10 +183,10 @@ router.beforeEach((to, from, next) => {
             delete t.departName;
         localStorage.setItem("KA_ECS_USER",t);
     }else{
-        let token = localStorage.getItem("KA_ECS_USER");
-        if (!token){
-            window.location.href="/nbs/login"
-        }
+        // let token = localStorage.getItem("KA_ECS_USER");
+        // if (!token){
+        //     window.location.href="/nbs/login"
+        // }
     }
     next();
 });

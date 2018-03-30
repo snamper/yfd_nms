@@ -1,5 +1,6 @@
 <style scoped>
  .listTitleFoot{width: 96%;margin: 10px 18px;}
+ .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}     
 </style>
 <template>
   <div>
@@ -12,7 +13,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" :maxlength="10" size="mini" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -21,7 +22,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" :maxlength="11" size="mini" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
@@ -44,6 +45,20 @@
             <button class="searchBtn" @click="search()">搜索</button>
         </el-row>
     </div>
+    <el-row>
+            <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini">添加员工</el-button></div></el-col>
+        </el-row>
+        <div class="listTitleFoot addList" v-if="off.addList">
+            <div style="float:right">
+                <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
+                <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
+            </div>
+            <div v-for="(v,i) in list" :key="i" class="mt8">
+                用户姓名 : <el-input style="width:25%" size="small" maxlength=10 v-model="list[i].username" placeholder="请输入内容"></el-input>
+                &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="small" maxlength=11 v-model="list[i].phone" placeholder="请输入内容"></el-input>
+                &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked">店长</el-checkbox><el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
+            </div>
+        </div>
     <div v-if="off.searchList">
         <div class="listTitleFoot">
             <el-row>
@@ -111,6 +126,7 @@
       <yfdStaff v-if="off.staffDetails" :forms="searchRes">
 
       </yfdStaff>
+      <common-layer v-if="off.layer"></common-layer>      
   </div>	 
 </template>
 <script>
@@ -118,6 +134,7 @@ const options={text:"正在加载"}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { getDateTime,getUnixTime,errorDeal } from "../../config/utils.js";
+import layerAddStaff from "../../../components/layeruseryfd";
 import yfdStaffDetails from "../../../components/yfdStaffDetails";
 export default{
 	data (){
@@ -125,14 +142,19 @@ export default{
             detailsList:'',
             name:'',
             phone:'',
-            radio:'2',
+            radio:'1,2',
             pa:'',
-            searchData:'',//查询人
+            searchDetailsYfdData:'',//查询人
+            searchRes:"",
+            addAble:0,//是否可以添加
+            list: [{username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"},],//添加员工            
 			off:{
                 showSearch:"",
                 searchList:false,
                 staffDetails:false,
                 searchStaff:true,
+                addList:false,
+                layer:false,
 			},
 			form:{
                 page:1
@@ -140,19 +162,57 @@ export default{
 		}
 	},
 	components:{
-        "yfdStaff":yfdStaffDetails
+        "yfdStaff":yfdStaffDetails,
+        "common-layer":layerAddStaff,        
 	},
 	created:function(){
        
     },
 	methods:{
+         AddList(){//添加员工状态操作
+            this.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"})
+        },
+        AddStaffDiv(){//添加员工模块开关
+            this.off.addList=!this.off.addList;
+        },
+        AddStaff(){//添加员工按钮
+            let data={"newUsers":[],authCode:''},vm=this;
+            for(let i=0;i<this.list.length;i++){
+                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
+                    if(this.list[i].checked==true){
+                        this.list[i].userRole='4'}
+                    if(this.list[i].checked2==true){
+                        this.list[i].userRole+=',5'}
+                    if(this.list[i].checked3==true){
+                        this.list[i].userRole+=',6'}
+                    delete this.list[i].checked;
+                    delete this.list[i].checked2;
+                    delete this.list[i].checked3;
+                    data.newUsers.push(this.list[i])
+                    this.addAble='1';
+                }
+            }
+            if(this.addAble=='0'){
+                layer.open({
+                    content:'请输入添加的员工信息',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            this.off.layer=true;
+            this.off.sync=true;
+            this.off.userAdd=true;
+            this.addUsersData=data;
+        },
         search(p){//查询
             let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/userSearch',vm=this;
              vm.pa=p||1;
                 data={
                 "username":vm.name
                 ,"phone":vm.phone
-                ,"userstate":vm.radio
+                ,"userState":vm.radio
                 ,"pageSize":10
                 ,"pageNum":p||1}
             requestMethod(data,url)
@@ -176,7 +236,7 @@ export default{
         ,getStaffDetails(p){
             let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
             data={"searchUserId":p.userId,"sessionType":"2"}
-            vm.searchData=data;
+            vm.searchDetailsYfdData=data;
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.searchStaff=false;

@@ -17,6 +17,7 @@
                     v-model="startTime"
                     type="datetime"
                     size="small"
+                    editable=false
                     placeholder="选择开始时间">
                     </el-date-picker>
                     <span>——</span>
@@ -24,6 +25,7 @@
                     v-model="endTime"
                     type="datetime"
                     size="small"
+                    editable=false                    
                     placeholder="选择结束时间">
                     </el-date-picker>
                 </el-col>
@@ -273,7 +275,7 @@ export default{
             let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
             vm.searchDetailsType=1;
             vm.searchDepartId=v.departId;
-            data={'searchDepartId':v.departId};
+            data={'searchDepartId':v.departId,userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};
             vm.companyName=v.departName;
             vm.managerName=v.managerName;
             vm.managerPhone=v.phone;

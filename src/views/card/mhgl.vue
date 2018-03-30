@@ -15,7 +15,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="packagename" size="mini"  placeholder="请输入号包名称" ></el-input>
+                     <el-input v-model="packagename" size="mini"  placeholder="请输入号包名称" :maxlength="15"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -24,7 +24,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="name" size="mini"  placeholder="请输入查询的联系人姓名" ></el-input>
+                     <el-input v-model="name" size="mini"  placeholder="请输入查询的联系人姓名" :maxlength="10"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -47,7 +47,7 @@
             <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :span="18">
-                     <el-input v-model="phone" size="mini"  placeholder="请输入查询的手机号码" ></el-input>
+                     <el-input v-model="phone" size="mini"  placeholder="请输入查询的手机号码" :maxlength="11"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -71,10 +71,10 @@
            <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
                 <el-col :span="18">
-                    <el-radio v-model="radio"  label="1">全部</el-radio>
-                    <el-radio v-model="radio"  label="2">移动</el-radio>
-                    <el-radio v-model="radio"  label="3">联通</el-radio>
-                    <el-radio v-model="radio"  label="4">电信</el-radio>
+                    <el-radio v-model="radio"  label="0">全部</el-radio>
+                    <el-radio v-model="radio"  label="1">移动</el-radio>
+                    <el-radio v-model="radio"  label="2">联通</el-radio>
+                    <el-radio v-model="radio"  label="3">电信</el-radio>
                 </el-col>
                 <el-col :span="2">
                    
@@ -83,14 +83,17 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :span="24"><div class="grid-content bg-purple-light">
-                <el-col :span="2"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
-                <el-col :span="18">
-                    <el-checkbox-group v-model="checkedCities">
-                        <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                    </el-checkbox-group>
+                <el-col :span="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
+                <el-col :span="20">
+                    <el-col :span="20">
+                         <el-checkbox-group v-model="checkedCities">
+                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+                        </el-checkbox-group>
+                    </el-col>
+                   <el-col :span="1">
+                    <el-checkbox  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
+                   </el-col>
                 </el-col>
-                <el-col :span="2">
-                </el-col> 
             </div></el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
@@ -147,25 +150,44 @@
                        <a href="javascript:void(0)" @click="getDetails(v)">{{v.productName}}</a>
                     </td>
                     <td >
-                       {{v.productType}}
+                       <span v-if="v.productType==1">整号包</span>
+                       <span v-if="v.productType==2">靓号包</span>
+                       <span v-if="v.productType==3">普号包</span>
                     </td>
                     <td >
-                       {{v.brand}}
+                       <span v-if="v.brand==1">远特</span>
+                       <span v-if="v.brand==2">蜗牛</span>
+                       <span v-if="v.brand==3">迪信通</span>
+                       <span v-if="v.brand==4">极信</span>
+                       <span v-if="v.brand==5">小米</span>
+                       <span v-if="v.brand==6">海航</span>
+                       <span v-if="v.brand==7">乐语</span>
+                       <span v-if="v.brand==8">苏宁互联</span>
+                       <span v-if="v.brand==9">国美</span>
+                       <span v-if="v.brand==10">联想</span>
+                       <span v-if="v.brand==11">蓝猫移动</span>
+                       <span v-if="v.brand==12">长城</span>
                     </td>
                     <td >
-                       {{v.isp}}
+                       <span v-if="v.isp==0">移动联通电信</span>                        
+                       <span v-if="v.isp==1">移动</span>
+                       <span v-if="v.isp==2">联通</span>
+                       <span v-if="v.isp==3">电信</span>
                     </td>
                     <td >
-                       {{v.nodifyTime}}
+                       {{new Date(v.modifyTime).toLocaleString()}}
                     </td>
                     <td >
                        {{v.operatorName}}
                     </td>
                      <td >
-                       {{v.operatorPhone}}
+                       {{v.operatorPhone||'--'}}
                     </td>
                     <td >
-                       {{v.productState}}
+                       <span v-if="v.productState==1">未上架</span>                        
+                       <span v-if="v.productState==2">已上架</span>
+                       <span v-if="v.productState==3">已下架</span>
+                       <span v-if="v.productState==4">已出售</span>
                     </td>
                     <td v-show="false">
                         {{v.productId}}
@@ -199,11 +221,11 @@
             <p style="text-align:right;color:red;font-size:14px">将已选择内容批量:{{a}}</p>
         </div>
         <div class="listTitleFoot">
-            <el-input v-model="reason" placeholder="请输入原因，不能为空" size="small"></el-input>
+            <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
         </div> 
         <div class="listTitleFoot">
             <p style="text-align:right">验证号码:{{user.phone}}
-                <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入内容"></el-input>
+                <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
                 <el-button size="mini" type="primary" @click="getAuthCode()">获取验证码</el-button>
             </p> 
         </div> 
@@ -234,37 +256,37 @@ const options={text:"正在加载",}
 export default{
 	data (){
 		return {
+            checkAll: false,
+            isIndeterminate: true,
             total:"",//号包总数
             searchResData:{},//号包详情查询结果
-            searchLiang:{},
-            searchPu:{},
-            dataList:{},
-            dataListLiang:{},
-            dataListPu:{},
-            userId:"",
-            packagename:"",
-            startTime: "",
-            endTime: "",
-            cname: "",
-            cardType:"",
-            nowStatus:"1",
-            phone: "",
-            name: "",
-            radio: "2",
-            cardType:"1",
-            productType:"1",
-            searchList:"",
-            timeType:"a",
+            searchLiang:{},//靓号详情查询结果
+            searchPu:{},//谱号详情查询结果
+            dataList:{},//号包详情页面
+            dataListLiang:{},//号包详情页面
+            dataListPu:{},//号包详情页面
+            packagename:"",//号包名称
+            cardType:"1",//号包类型
+            nowStatus:"1",//号包状态
+            phone: "",//查询的手机号码
+            radio: "0",//运营商
+            name: "",//联系人姓名
             pageNumDetails:"",//子页面号包详情
             pageNumLiang:"",//靓号详情
             pageNumPu:"",//普号详情
-            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
-            cities: cityOptions,
-            dourl:'',
-            pa:'',
+            pa:'',//页码
             reason:"",//操作理由
             authCode:"",//验证码
+            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
+            cities: cityOptions,//选中的虚商
+            startTime: "",
+            endTime: "",
+            cname: "",
+            productType:"1",
+            searchList:"",
+            timeType:"a",
             searchData:"",
+            dourl:'',
 			off:{
                 layer:false,
                 // dlsDetails:false,
@@ -273,7 +295,8 @@ export default{
                 setSync:false,//同步时间设置
                 sync:false,//手动同步
                 searchList:false,//查询结果
-                modify:false//编辑栏
+                modify:false,//编辑栏
+                isCheckAll:true,//是否全选
 			},
 			form:{
                 page:0
@@ -292,6 +315,15 @@ export default{
         vm.user=Info;
 	},
 	methods:{
+        handleCheckAllChange(val) {
+            this.checkedCities = val ? cityOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        },
 		getDetails(v){
             let vm=this;
             let data={},url="/yfd-nms/w/number/getProductDetail";
@@ -444,7 +476,7 @@ export default{
         }
         ,getAuthCode(){
             let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
-            data={"phone":vm.phone||""}
+            data={"phone":vm.user.phone}
             // data={"phone":15684765209}
             requestMethod(data,url)
             .then((data)=>{

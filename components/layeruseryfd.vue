@@ -16,71 +16,12 @@ tbody tr{height: 36px;}
 </style>
 <template>
 <section  id="detailsView" class="greyFont">
-	<!-- 同步时间设置 -->
-    <div v-if="off.set">
-		<table >
-			<thead>
-				<tr>
-					<th colspan="2">
-						同步设置
-					</th>
-				</tr>
-			</thead>
-			<tbody v-if="true">
-				<tr>
-					<td>
-						<span class="demonstration">同步开始日期&nbsp;&nbsp;:&nbsp;&nbsp;</span>
-                        <el-date-picker
-                        v-model="date"
-                        size="small"
-                        type="date"
-                        placeholder="选择日期">
-                        </el-date-picker>				
-					</td>
-				</tr>
-                <tr>
-                    <td>
-						<span class="demonstration">同步开始时间&nbsp;&nbsp;:&nbsp;&nbsp;</span>                        
-                        <el-time-select
-                        v-model="time"
-                        size="small"
-                        :picker-options="{
-                            start: '08:30',
-                            step: '00:15',
-                            end: '18:30'
-                        }"
-                        placeholder="选择时间">
-                        </el-time-select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-						<span class="demonstration">同步间隔时间&nbsp;&nbsp;:&nbsp;&nbsp;</span>                                                
-                        <el-select v-model="value" size="small" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </td>
-                </tr>
-                <tr class="tdBtn" colspan="2">
-                    <span @click="close()">取消</span>
-                    <span @click="btnYes(1)">确认</span>
-                </tr>
-			</tbody>
-		</table>
-		<div class="lay-mask"></div>
-	</div>
-    <!-- 手动同步 -->
     <div v-if="off.sync">
         <table >
 			<thead>
 				<tr>
 					<th colspan="2">
-						手动同步
+						添加员工
 					</th>
 				</tr>
 			</thead>
@@ -94,23 +35,6 @@ tbody tr{height: 36px;}
                 <tr class="tdBtn" colspan="2">
                     <span @click="close()">取消</span>
                     <span @click="btnYes(2)">确认</span>
-                </tr>
-			</tbody>
-		</table>
-		<div class="lay-mask"></div>
-    </div>
-    <!-- 手动同步操作结果 -->
-    <div v-if="off.rsync">
-        <table >
-			<tbody v-if="true">
-                <tr colspan="2">
-                    <img src="../src/assets/images/icon_wenhao.png" alt="">
-                </tr>
-                <tr colspan="2">
-					码号手动同步已受理，请耐心等待结果
-				</tr>
-                <tr class="tdBtn2" colspan="2">
-                    <span @click="close()">确认</span>
                 </tr>
 			</tbody>
 		</table>
@@ -139,22 +63,7 @@ export default{
             syncUrl:'',//同步时间url
             user:'',//token的值
             btnDisabled:false,
-             options: [{
-                value: '选项1',
-                label: '黄金糕'
-                }, {
-                value: '选项2',
-                label: '双皮奶'
-                }, {
-                value: '选项3',
-                label: '蚵仔煎'
-                }, {
-                value: '选项4',
-                label: '龙须面'
-                }, {
-                value: '选项5',
-                label: '北京烤鸭'
-            }],
+            searchType:'',//
             off:{
                 set:false,//同步时间设置
                 sync:false,//手动同步
@@ -167,6 +76,7 @@ export default{
         let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
         let Info=JSON.parse(userInfo);
         vm.user=Info;
+        vm.searchType=vm.$parent.searchType;
 		if(vm.$parent.off.setSync==true){
             vm.off.set=true;
             vm.off.sync=false;
@@ -188,6 +98,7 @@ export default{
                     } else {
                     this.btnDisabled=false;                        
                     this.show = true;
+                    this.count="点击获取验证码"
                     clearInterval(this.timer);
                     this.timer = null;
                     }
@@ -196,11 +107,7 @@ export default{
             let vm=this, 
             // data={"userId":vm.user.username,"phone":15684765209};
             data={"userId":vm.user.userId,"phone":vm.user.phone||""};
-            if(window.location.hash.indexOf("agent")>-1){
-                vm.authCodeUrl="/yfd-ums/uus/w/user/getAuthCode";
-            }else if(window.location.hash.indexOf("card">-1)){
-                vm.authCodeUrl="/yfd-ums/nus/w/number/getAuthCode";
-            }
+                vm.authCodeUrl="/yfd-ums/w/user/getAuthCode";
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
                 if(data.hasOwnProperty('code')&&data.code==200){
@@ -227,9 +134,10 @@ export default{
                 ) 
             }).catch(e=>errorDeal(e));
         }
-        ,btnYes(v){//同步时间设置确认
-            let vm=this;
-            console.log(vm.authCode);
+        ,btnYes(v){//确认添加员工
+            let vm=this,url='/yfd-ums/w/user/addUsers',data={},load=Loading.service(options);
+            data=vm.$parent.addUsersData;
+            data.authCode=vm.authCode;
             if(vm.authCode==''){
                 layer.open({
                     content:'请输入验证码',
@@ -239,40 +147,31 @@ export default{
                 })
                 return false;
             }
-            let load=Loading.service(options),data={"userId":vm.user.userId,"phone":vm.user.phone||"","authCode":vm.authCode};
-            if(window.location.hash.indexOf("agent")>-1){
-                vm.syncUrl="/yfd-ums/uus/w/user/sync";
-            }else if(window.location.hash.indexOf("card">-1)){
-                vm.syncUrl="/yfd-ums/nus/w/number/sync"
-            }
-            requestMethod(data,vm.syncUrl)
+            requestMethod(data,url)
             .then((data)=>{
-                 load.close();
-                 if(data.hasOwnProperty('code')&&data.code==200){
-                    vm.off.sync=false;
-                    vm.off.rsync=true; 
+                vm.$parent.off.layer=false;
+                if(data.code==200){
                     layer.open({
-                        content:data.msg,
+                        content:'操作成功',
                         skin: 'msg',
                         time: 2,
                         msgSkin:'success',
                     });
-                }else if(data.hasOwnProperty('code')&&data.code!=200){
+                    this.$parent.list=[],
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"}) 
+                }else{
+                    this.$parent.list=[],
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"})
                     layer.open({
                         content:data.msg,
                         skin: 'msg',
                         time: 2,
                         msgSkin:'error',
                     });
-                }else(
-                    layer.open({
-                        content:data,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    })
-                ) 
-            }).catch(e=>errorDeal(e));
+                }  
+            }).then(()=>{
+                load.close();
+            }).catch(e=>errorDeal(e))
         },
 		close:function(){
             var vm=this;

@@ -15,23 +15,37 @@
 			<table class="searchTab" style="width:100%;height:100%;">
                 <tr>
                     <td>号包名称 ：{{dataList.productName||'--'}}</td>
-                    <td></td>
+                    <td>运营商 ：
+                       <span v-if="dataList.isp==1">移动</span>
+                       <span v-if="dataList.isp==2">联通</span>
+                       <span v-if="dataList.isp==3">电信</span>
+                    </td>
                 </tr>
                 <tr>
-                    <td>号包类型 ：{{dataList.productType||'--'}}</td>
+                    <td>号包类型 ：<span v-if="dataList.productType==1">整号包</span>
+                                  <span v-if="dataList.productType==2">靓号包</span>
+                                  <span v-if="dataList.productType==3">普号包</span>
+                    </td>
                     <td>当前状态 ：{{dataList.productState||'--'}}</td>
                 </tr>
                 <tr>
-                    <td>码号数量 ：{{dataList.total||'--'}}</td>
+                    <td>码号数量 ：{{dataList.cuteTotal}}</td>
                     <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td>
                 </tr>
                   <tr>
-                    <td>归属品牌 ：{{dataList.brand||'--'}}</td>
+                    <td>归属品牌 ：<span v-if="dataList.brand==1">远特</span>
+                       <span v-if="dataList.brand==2">蜗牛</span>
+                       <span v-if="dataList.brand==3">迪信通</span>
+                       <span v-if="dataList.brand==4">极信</span>
+                       <span v-if="dataList.brand==5">小米</span>
+                       <span v-if="dataList.brand==6">海航</span>
+                       <span v-if="dataList.brand==7">乐语</span>
+                       <span v-if="dataList.brand==8">苏宁互联</span>
+                       <span v-if="dataList.brand==9">国美</span>
+                       <span v-if="dataList.brand==10">联想</span>
+                       <span v-if="dataList.brand==11">蓝猫移动</span>
+                       <span v-if="dataList.brand==12">长城</span></td>
                     <td>操作人 ：{{dataList.operatorName||'--'}}</td>
-                </tr>
-                <tr>
-                    <td>运营商 ：{{dataList.isp||'--'}}</td>
-                    <td>手机号码 ：{{dataList.phone||'--'}}</td>
                 </tr>
 			</table>
         </div>

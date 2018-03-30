@@ -86,10 +86,10 @@ tbody tr{height: 36px;}
 			</thead>
 			<tbody v-if="true">
                 <tr colspan="2">
-                    <td class="fl"><p>验证号码:<span v-model="user.userId">{{user.userId}}</span></p></td>
+                    <td class="fl"><p>验证号码:<span v-model="user.phone">{{user.phone}}</span></p></td>
                 </tr>
                 <tr colspan="2">
-					<el-input v-model="authCode" size="mini" maxlength=6 style="width:60%" placeholder="请输入短信验证码"></el-input><el-button style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
+					<el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%" placeholder="请输入短信验证码"></el-input><el-button style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
 				</tr>
                 <tr class="tdBtn" colspan="2">
                     <span @click="close()">取消</span>
@@ -229,6 +229,7 @@ export default{
         ,btnYes(v){//确认添加员工
             let vm=this,url='/yfd-ums/w/user/addUsers',data='',load=Loading.service(options);
             data=vm.$parent.addUsersData;
+            // data={'searchDepartId':vm.$parent.$parent.searchDepartId,userState:vm.$parent.radio,username:vm.$parent.name,phone:vm.$parent.phone,pageNum:v||1,pageSize:"10"};            
             if(vm.authCode==''){
                 layer.open({
                     content:'请输入验证码',
@@ -256,7 +257,8 @@ export default{
                         let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
                         vm.searchDetailsType=1;
                         vm.searchDepartId=vm.$parent.searchDepartId;
-                        data={'searchDepartId':vm.searchDepartId};
+                        // data={'searchDepartId':vm.searchDepartId};
+                        data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.$parent.radio,username:vm.$parent.name,phone:vm.$parent.phone,pageNum:1,pageSize:"10"};            
                         vm.companyName=v.departName;
                         vm.managerName=v.managerName;
                         vm.managerPhone=v.phone;
