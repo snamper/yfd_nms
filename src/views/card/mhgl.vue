@@ -71,7 +71,7 @@
            <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
                 <el-col :span="18">
-                    <el-radio v-model="radio"  label="0">全部</el-radio>
+                    <el-radio v-model="radio"  label="1,2,3">全部</el-radio>
                     <el-radio v-model="radio"  label="1">移动</el-radio>
                     <el-radio v-model="radio"  label="2">联通</el-radio>
                     <el-radio v-model="radio"  label="3">电信</el-radio>
@@ -100,141 +100,146 @@
             <button class="searchBtn" @click="search()">搜索</button>
         </el-row>
       </div> 
-      <div v-if="off.searchList">
-        <div class="listTitleFoot">
-            <el-row>
-                <el-col :span="20"><div class="grid-content bg-purple">号包列表：{{total}}</div></el-col>
-            </el-row>        
+      <div v-if="searchList">
+            <div v-if="searchList.length>0">       
+                <div class="listTitleFoot">
+                    <el-row>
+                        <el-col :span="20"><div class="grid-content bg-purple">号包列表<span v-if="total" class="greyFont fontWeight"> ({{total}})</span></div></el-col>
+                    </el-row>        
+                </div>
+                <div class="detailsListDiv">
+                    <table class="searchTab" style="width:100%;height:100%;">
+                        <tr>
+                            <td colspan="10">
+                                <el-row>
+                                <!-- <el-col :span="7"><div class="grid-content bg-purple">
+                                    最后同步成功时间:<span></span>
+                                </div></el-col>
+                                <el-col :span="7"><div class="grid-content bg-purple-light">
+                                    下次同步成功时间:<span></span>
+                                </div></el-col>
+                                <el-col :span="6"><div class="grid-content bg-purple">
+                                    同步间隔时间:<span></span>
+                                    <el-button type="primary" size="mini" @click="openSet()">设置</el-button>
+                                </div></el-col> -->
+                                <el-col :span="24"><div class="fr grid-content bg-purple-light">
+                                    <el-button type="success" size="mini" @click="sync()">手动同步</el-button>
+                                </div></el-col>
+                                </el-row>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>序号</td>
+                            <td>号包名称</td>
+                            <td>号包类型</td>
+                            <td>归属品牌</td>
+                            <td>运营商</td>
+                            <td>修改时间</td>
+                            <td>操作人</td>
+                            <td>手机号码</td>
+                            <td>当前状态</td>
+                        </tr>
+                        <tr v-for="(v,i) of searchList" :key="i">
+                            <td>
+                                <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
+                            </td>
+                            <td>
+                                {{((pa-1)*10+(i+1))}}
+                            </td>
+                            <td >
+                            <a href="javascript:void(0)" @click="getDetails(v)">{{v.productName}}</a>
+                            </td>
+                            <td >
+                            <span v-if="v.productType==1">整号包</span>
+                            <span v-if="v.productType==2">靓号包</span>
+                            <span v-if="v.productType==3">普号包</span>
+                            </td>
+                            <td >
+                            <span v-if="v.brand==1">远特</span>
+                            <span v-if="v.brand==2">蜗牛</span>
+                            <span v-if="v.brand==3">迪信通</span>
+                            <span v-if="v.brand==4">极信</span>
+                            <span v-if="v.brand==5">小米</span>
+                            <span v-if="v.brand==6">海航</span>
+                            <span v-if="v.brand==7">乐语</span>
+                            <span v-if="v.brand==8">苏宁互联</span>
+                            <span v-if="v.brand==9">国美</span>
+                            <span v-if="v.brand==10">联想</span>
+                            <span v-if="v.brand==11">蓝猫移动</span>
+                            <span v-if="v.brand==12">长城</span>
+                            </td>
+                            <td >
+                            <span v-if="v.isp==1,2,3">移动联通电信</span>                        
+                            <span v-if="v.isp==1">移动</span>
+                            <span v-if="v.isp==2">联通</span>
+                            <span v-if="v.isp==3">电信</span>
+                            </td>
+                            <td >
+                            {{new Date(v.modifyTime).toLocaleString()}}
+                            </td>
+                            <td >
+                            {{v.operatorName}}
+                            </td>
+                            <td >
+                            {{v.operatorPhone||'--'}}
+                            </td>
+                            <td >
+                            <span v-if="v.productState==1">未上架</span>                        
+                            <span v-if="v.productState==2">已上架</span>
+                            <span v-if="v.productState==3">已下架</span>
+                            <span v-if="v.productState==4">已出售</span>
+                            </td>
+                            <td v-show="false">
+                                {{v.productId}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="10" style="text-align:left">
+                                选择:<a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>       
+                <div class="listTitleFoot">
+                    <el-row>
+                    <el-col :span="12"><div class="grid-content bg-purple">
+                        <el-pagination
+                        layout="prev, pager, next"
+                        :page-size="10"
+                        @current-change="search"
+                        :total="form.page">
+                        </el-pagination>
+                    </div></el-col>
+                    <el-col :span="12">
+                        <div class="grid-content bg-purple-light fr">操作:<el-button size="mini" @click="doFounction(1)">上架</el-button><el-button size="mini" @click="doFounction(2)">下架</el-button></div>
+                    </el-col>
+                    </el-row>
+                </div>
         </div>
-		<div class="detailsListDiv">
-			<table class="searchTab" style="width:100%;height:100%;">
-                <tr>
-                    <td colspan="10">
-                        <el-row>
-                        <!-- <el-col :span="7"><div class="grid-content bg-purple">
-                            最后同步成功时间:<span></span>
-                        </div></el-col>
-                        <el-col :span="7"><div class="grid-content bg-purple-light">
-                            下次同步成功时间:<span></span>
-                        </div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple">
-                            同步间隔时间:<span></span>
-                            <el-button type="primary" size="mini" @click="openSet()">设置</el-button>
-                        </div></el-col> -->
-                        <el-col :span="24"><div class="fr grid-content bg-purple-light">
-                            <el-button type="success" size="mini" @click="sync()">手动同步</el-button>
-                        </div></el-col>
-                        </el-row>
-                    </td>
-				</tr>
-                <tr>
-                    <td></td>
-                    <td>序号</td>
-                    <td>号包名称</td>
-                    <td>号包类型</td>
-                    <td>归属品牌</td>
-                    <td>运营商</td>
-                    <td>修改时间</td>
-                    <td>操作人</td>
-                    <td>手机号码</td>
-                    <td>当前状态</td>
-                </tr>
-                <tr v-for="(v,i) of searchList" :key="i">
-                    <td>
-                         <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
-                    </td>
-                    <td>
-                        {{((pa-1)*10+(i+1))}}
-                    </td>
-                    <td >
-                       <a href="javascript:void(0)" @click="getDetails(v)">{{v.productName}}</a>
-                    </td>
-                    <td >
-                       <span v-if="v.productType==1">整号包</span>
-                       <span v-if="v.productType==2">靓号包</span>
-                       <span v-if="v.productType==3">普号包</span>
-                    </td>
-                    <td >
-                       <span v-if="v.brand==1">远特</span>
-                       <span v-if="v.brand==2">蜗牛</span>
-                       <span v-if="v.brand==3">迪信通</span>
-                       <span v-if="v.brand==4">极信</span>
-                       <span v-if="v.brand==5">小米</span>
-                       <span v-if="v.brand==6">海航</span>
-                       <span v-if="v.brand==7">乐语</span>
-                       <span v-if="v.brand==8">苏宁互联</span>
-                       <span v-if="v.brand==9">国美</span>
-                       <span v-if="v.brand==10">联想</span>
-                       <span v-if="v.brand==11">蓝猫移动</span>
-                       <span v-if="v.brand==12">长城</span>
-                    </td>
-                    <td >
-                       <span v-if="v.isp==0">移动联通电信</span>                        
-                       <span v-if="v.isp==1">移动</span>
-                       <span v-if="v.isp==2">联通</span>
-                       <span v-if="v.isp==3">电信</span>
-                    </td>
-                    <td >
-                       {{new Date(v.modifyTime).toLocaleString()}}
-                    </td>
-                    <td >
-                       {{v.operatorName}}
-                    </td>
-                     <td >
-                       {{v.operatorPhone||'--'}}
-                    </td>
-                    <td >
-                       <span v-if="v.productState==1">未上架</span>                        
-                       <span v-if="v.productState==2">已上架</span>
-                       <span v-if="v.productState==3">已下架</span>
-                       <span v-if="v.productState==4">已出售</span>
-                    </td>
-                    <td v-show="false">
-                        {{v.productId}}
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="10" style="text-align:left">
-                        选择:<a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a>
-                    </td>
-                </tr>
-			</table>
-        </div>       
-        <div class="listTitleFoot">
-            <el-row>
-            <el-col :span="12"><div class="grid-content bg-purple">
-                <el-pagination
-                layout="prev, pager, next"
-                :page-size="10"
-                @current-change="search"
-                :total="form.page">
-                </el-pagination>
-            </div></el-col>
-            <el-col :span="12">
-                <div class="grid-content bg-purple-light fr">操作:<el-button size="mini" @click="doFounction(1)">上架</el-button><el-button size="mini" @click="doFounction(2)">下架</el-button></div>
-            </el-col>
-            </el-row>
+        <div v-if="searchList.length==0" class="searchResultInfoNone">
+             查询结果为空!
         </div>
-    </div>
-    <div v-if="off.modify">
-        <div class="listTitleFoot">
-            <p style="text-align:right;color:red;font-size:14px">将已选择内容批量:{{a}}</p>
-        </div>
-        <div class="listTitleFoot">
-            <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
+    </div>   
+        <div v-if="off.modify">
+            <div class="listTitleFoot">
+                <p style="text-align:right;color:red;font-size:14px">将已选择内容批量:{{a}}</p>
+            </div>
+            <div class="listTitleFoot">
+                <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
+            </div> 
+            <div class="listTitleFoot">
+                <p style="text-align:right">验证号码:{{user.phone}}
+                    <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
+                    <el-button size="mini" type="primary" @click="getAuthCode()">获取验证码</el-button>
+                </p> 
+            </div> 
+            <div class="listTitleFoot">
+                <p style="float:right">
+                <el-button type="success" size="small" @click="success()">确定</el-button>
+                </p>
+            </div>
         </div> 
-        <div class="listTitleFoot">
-            <p style="text-align:right">验证号码:{{user.phone}}
-                <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
-                <el-button size="mini" type="primary" @click="getAuthCode()">获取验证码</el-button>
-            </p> 
-        </div> 
-        <div class="listTitleFoot">
-            <p style="float:right">
-            <el-button type="success" size="small" @click="success()">确定</el-button>
-            </p>
-        </div>
-    </div>    
 	</div>
         <!-- 同步时间弹框 -->
     <common-layer v-if="off.layer"></common-layer>
@@ -260,8 +265,8 @@ export default{
             isIndeterminate: true,
             total:"",//号包总数
             searchResData:{},//号包详情查询结果
-            searchLiang:{},//靓号详情查询结果
-            searchPu:{},//谱号详情查询结果
+            searchLiang:[],//靓号详情查询结果
+            searchPu:[],//谱号详情查询结果
             dataList:{},//号包详情页面
             dataListLiang:{},//号包详情页面
             dataListPu:{},//号包详情页面
@@ -269,7 +274,7 @@ export default{
             cardType:"1",//号包类型
             nowStatus:"1",//号包状态
             phone: "",//查询的手机号码
-            radio: "0",//运营商
+            radio: "1,2,3",//运营商
             name: "",//联系人姓名
             pageNumDetails:"",//子页面号包详情
             pageNumLiang:"",//靓号详情
@@ -335,6 +340,46 @@ export default{
                     // vm.pageNumDetails=data.data;
                     vm.searchResData=data.data
                 }
+            }).then(()=>{
+                url="/yfd-nms/w/number/getProductNumbers";
+                /*data.searchProductId=v.productId;
+                data.sessionType="2";*/
+                data.phoneLevel=1;
+                requestMethod(data,url)
+                .then((data)=>{
+                    if(data.code==200){
+                        // vm.pageNumPu=data.data.numbers;
+                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                           vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                        }
+                        console.log(vm.searchLiang);
+                    }
+                }).catch(e=>errorDeal(e),function(){load.close()});
+            }).then(()=>{
+                data.phoneLevel=2;
+                requestMethod(data,url)
+                .then((data)=>{
+                    if(data.code==200){
+                        //vm.pageNumLiang=data.data.numbers;
+                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                           vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                        }
+                        console.log(vm.searchPu);
+                        this.off.notCardDetails=false;
+                        this.off.cardDetails=true;
+                }
+                }).catch(e=>errorDeal(e),function(){load.close()});
+            }).catch(e=>errorDeal(e))
+            
+             
+           
+            
+         /*   requestMethod(data,url)
+            .then((data)=>{
+                if(data.code==200){
+                    // vm.pageNumDetails=data.data;
+                    vm.searchResData=data.data
+                }
             }).catch(e=>errorDeal(e),function(){load.close()});
             url="/yfd-nms/w/number/getProductNumbers";
             data.searchProductId=v.productId;
@@ -356,7 +401,7 @@ export default{
                     this.off.notCardDetails=false;
                     this.off.cardDetails=true;
                }
-            }).catch(e=>errorDeal(e),function(){load.close()});        
+            }).catch(e=>errorDeal(e),function(){load.close()}); */       
         },
         openSet(){//同步设置
             let vm=this;
@@ -387,8 +432,8 @@ export default{
             checked=checked.join(",");
             data={
                 "brand":checked,
-                // "isp":vm.radio,
-                "isp":0,
+                "isp":vm.radio,
+                // "isp":0,
                 "operatorName":vm.name,
                 "operatorPhone":vm.phone,
                 "productName":vm.packagename,

@@ -100,13 +100,19 @@
                 <li>
                      <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">登陆方式:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light"></div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light"><span v-if="forms.sessionPlatform==1">Web在线</span><span v-if="forms.sessionPlatform==2">App在线</span></div></el-col>
                     </el-row>
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="4"><div class="grid-content bg-purple">登陆版本号/IP:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{forms.osVersion}}</div></el-col>
+                        <el-col :span="4"><div class="grid-content bg-purple">在线平台:</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light"><span v-if="forms.sessionType==1">业务平台</span><span v-if="forms.sessionType==2">管理平台</span></div></el-col>
+                    </el-row>
+                </li>
+                <li>
+                     <el-row>
+                        <el-col :span="4"><div class="grid-content bg-purple">IP:</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light"></div></el-col>
                     </el-row>
                 </li>
                 <li>

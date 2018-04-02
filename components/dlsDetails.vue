@@ -163,7 +163,7 @@
             </div> 
             <div class="listTitleFoot">
                 <p style="float:right">
-                    <el-button type="success" @click="btnYes()" >确定</el-button>
+                    <el-button type="success" size="small" @click="btnYes()" >确定</el-button>
                 </p>
             </div>
        </div>

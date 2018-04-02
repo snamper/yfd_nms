@@ -16,10 +16,10 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="6"><div class="grid-content bg-purple">公司名称:<span>--</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{forms.username}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{forms.phone}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                        <el-col :span="9"><div class="grid-content bg-purple">公司名称:<span>--</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple-light">联系人:<span>{{forms.username}}</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple">手机号码:<span>{{forms.phone}}</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
             </el-container>
@@ -97,22 +97,31 @@
                         <el-col :span="20"><div class="grid-content bg-purple-light">{{new Date(forms.lastLoginTime).toLocaleString()}}</div></el-col>
                     </el-row>
                 </li>
-                <li>
+                 <li>
                      <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">登陆方式:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light"></div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light"><span v-if="forms.sessionPlatform==1">Web在线</span><span v-if="forms.sessionPlatform==2">App在线</span></div></el-col>
                     </el-row>
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="4"><div class="grid-content bg-purple">登陆版本号/IP:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{forms.osVersion}}</div></el-col>
+                        <el-col :span="4"><div class="grid-content bg-purple">在线平台:</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light"><span v-if="forms.sessionType==1">业务平台</span><span v-if="forms.sessionType==2">管理平台</span></div></el-col>
+                    </el-row>
+                </li>
+                <li>
+                     <el-row>
+                        <el-col :span="4"><div class="grid-content bg-purple">IP:</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light"></div></el-col>
                     </el-row>
                 </li>
                 <li>
                     <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">登陆地址:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{forms.latitude}}-{{forms.longitude}}</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light">
+                            {{forms.latitude}}--{{forms.longitude}}
+                            <a href="javascript:void(0)" @click="toMap" >查看地图</a>
+                        </div></el-col>
                     </el-row>
                 </li>
                 <li>
@@ -237,7 +246,15 @@ export default{
                     }); 
                 }
             }).catch(e=>errorDeal(e))
-        }
+        },
+        toMap(){//查看地图
+			var w=document.documentElement.clientWidth,url='',vm=this;
+			let latitude=parseFloat(vm.forms.latitude);
+            let longitude=parseFloat(vm.forms.longitude);
+            debugger;
+			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
+			window.open(url);
+		}
 	}
 }
 </script>

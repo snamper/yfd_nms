@@ -16,10 +16,10 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="6"><div class="grid-content bg-purple">公司名称:<span>{{company}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{managerName}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{managerPhone}}</span></div></el-col>
-                        <el-col :span="6"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                        <el-col :span="9"><div class="grid-content bg-purple">公司名称:<span>{{company}}</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple-light">联系人:<span>{{managerName}}</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple">手机号码:<span>{{managerPhone}}</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
             </el-container>

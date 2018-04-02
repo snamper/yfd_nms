@@ -86,10 +86,10 @@ tbody tr{height: 36px;}
 			</thead>
 			<tbody v-if="true">
                 <tr colspan="2">
-                    <td class="fl"><p>验证号码:<span v-model="user.phone">{{user.phone}}</span></p></td>
+                    <td class="fl"><p>验证号码:<span  v-model="user.phone">{{user.phone}}</span></p></td>
                 </tr>
                 <tr colspan="2">
-					<el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%" placeholder="请输入短信验证码"></el-input><el-button style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
+					<el-input v-model="authCode" size="mini" :maxlength="6" style="width:166px;" placeholder="请输入短信验证码"></el-input><el-button class="borderInputHarf" style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
 				</tr>
                 <tr class="tdBtn" colspan="2">
                     <span @click="close()">取消</span>
@@ -139,22 +139,6 @@ export default{
             syncUrl:'',//同步时间url
             user:'',//token的值
             btnDisabled:false,
-             options: [{
-                value: '选项1',
-                label: '黄金糕'
-                }, {
-                value: '选项2',
-                label: '双皮奶'
-                }, {
-                value: '选项3',
-                label: '蚵仔煎'
-                }, {
-                value: '选项4',
-                label: '龙须面'
-                }, {
-                value: '选项5',
-                label: '北京烤鸭'
-            }],
             off:{
                 set:false,//同步时间设置
                 sync:false,//手动同步

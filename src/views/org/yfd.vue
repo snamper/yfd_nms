@@ -1,6 +1,6 @@
 <style scoped>
  .listTitleFoot{width: 96%;margin: 10px 18px;}
- .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}     
+ .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}
 </style>
 <template>
   <div>
@@ -59,69 +59,75 @@
                 &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked">店长</el-checkbox><el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
             </div>
         </div>
-    <div v-if="off.searchList">
-        <div class="listTitleFoot">
-            <el-row>
-                <el-col :span="20"><div class="grid-content bg-purple">员工列表</div></el-col>
-            </el-row>        
+    <!-- <div v-if="off.searchList"> -->
+    <div v-if="detailsList">
+        <div v-if="detailsList.length>0">    
+            <div class="listTitleFoot">
+                <el-row>
+                    <el-col :span="20"><div class="grid-content bg-purple">员工列表<span v-if="form.page>0" class="fontWeight greyFont"> ({{form.page}})</span></div></el-col>
+                </el-row>        
+            </div>
+            <div class="detailsListDiv">
+                <table class="searchTab" style="width:100%;height:100%;">
+                    <tr>
+                        <td>序号</td>
+                        <td>用户姓名</td>
+                        <td>手机号码</td>
+                        <td>创建时间</td>
+                        <td>职务</td>
+                        <td>当前状态</td>
+                        <td>最后登录时间</td>
+                    </tr>
+                    <tr v-for="(v,i) of detailsList" :key="i" :class="{'greyFont':v.departState==3}">
+                        <td>
+                            {{((pa-1)*10+(i+1))}}
+                        </td>
+                        <td >
+                        <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
+                        </td>
+                        <td >
+                        {{v.phone}}
+                        </td>
+                        <td >
+                        {{new Date(v.createTime).toLocaleString()}}
+                        </td>
+                        <td >
+                            <span v-for="(v,i) in v.userRole" :key="i">
+                                <span v-if="v==1">管理员</span>
+                                <span v-if="v==2">销售</span>
+                                <span v-if="v==3">店长</span>
+                                <span v-if="v==4">采购员</span>
+                                <span v-if="v==5">业务员</span>
+                            </span>
+                        </td>
+                        <td >
+                        <span v-if="v.userState==1">正常</span>
+                        <span v-if="v.userState==2">黑名单</span>
+                        <span v-if="v.userState==3">注销</span>
+                        </td>
+                        <td >
+                        {{new Date(v.lastLoginTime).toLocaleString()}}
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="listTitleFoot">
+                <el-row>
+                <el-col :span="12"><div class="grid-content bg-purple">
+                    <el-pagination
+                        layout="prev, pager, next"
+                        :page-size="10"
+                        @current-change="search"
+                        :total="form.page">
+                    </el-pagination>    
+                </div></el-col>
+                </el-row>
+            </div>
         </div>
-        <div class="detailsListDiv">
-            <table class="searchTab" style="width:100%;height:100%;">
-                <tr>
-                    <td>序号</td>
-                    <td>用户姓名</td>
-                    <td>手机号码</td>
-                    <td>创建时间</td>
-                    <td>职务</td>
-                    <td>当前状态</td>
-                    <td>最后登录时间</td>
-                </tr>
-                <tr v-for="(v,i) of detailsList" :key="i" :class="{'greyFont':v.departState==3}">
-                    <td>
-                        {{((pa-1)*10+(i+1))}}
-                    </td>
-                    <td >
-                       <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
-                    </td>
-                    <td >
-                       {{v.phone}}
-                    </td>
-                    <td >
-                       {{new Date(v.createTime).toLocaleString()}}
-                    </td>
-                    <td >
-                        <span v-for="(v,i) in v.userRole" :key="i">
-                            <span v-if="v==1">管理员</span>
-                            <span v-if="v==2">销售</span>
-                            <span v-if="v==3">店长</span>
-                            <span v-if="v==4">采购员</span>
-                            <span v-if="v==5">业务员</span>
-                        </span>
-                    </td>
-                    <td >
-                       <span v-if="v.userState==1">正常</span>
-                       <span v-if="v.userState==2">黑名单</span>
-                       <span v-if="v.userState==3">注销</span>
-                    </td>
-                    <td >
-                       {{new Date(v.lastLoginTime).toLocaleString()}}
-                    </td>
-                </tr>
-            </table>
+        <div v-if="detailsList.length==0" class="searchResultInfoNone">
+          查询结果为空!
         </div>
-        <div class="listTitleFoot">
-            <el-row>
-            <el-col :span="12"><div class="grid-content bg-purple">
-                <el-pagination
-                    layout="prev, pager, next"
-                    :page-size="10"
-                    @current-change="search"
-                    :total="form.page">
-                </el-pagination>    
-            </div></el-col>
-            </el-row>
-        </div>
-        </div>
+      </div>
       </div>
       <yfdStaff v-if="off.staffDetails" :forms="searchRes">
 

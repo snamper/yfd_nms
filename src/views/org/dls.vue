@@ -17,7 +17,7 @@
                     v-model="startTime"
                     type="datetime"
                     size="small"
-                    editable=false
+                    :editable="false"
                     placeholder="选择开始时间">
                     </el-date-picker>
                     <span>——</span>
@@ -25,7 +25,7 @@
                     v-model="endTime"
                     type="datetime"
                     size="small"
-                    editable=false                    
+                    :editable="false"                    
                     placeholder="选择结束时间">
                     </el-date-picker>
                 </el-col>
@@ -83,89 +83,100 @@
     
     <!-- 查询结果模块 -->
     <div v-if="searchList">
-        <div class="listTitleFoot">
-            <p>代理商列表  ：<span class="greyFont fontWeight">{{total}}</span></p>
-        </div>
-        <div class="detailsListDiv">
-            <table class="searchTab" style="width:100%;height:100%;">
-                <tr>
-                    <td colspan="8">
-                    <el-row>
-                    <!-- <el-col :span="7"><div class="grid-content bg-purple">
-                        最后同步成功时间:<span>{{}}</span>
+        <div v-if="searchList.length>0" >
+            <div class="listTitleFoot">
+                <p>代理商列表<span v-if="total" class="greyFont fontWeight"> ({{total}})</span></p>
+            </div>
+            <div class="detailsListDiv">
+                <table class="searchTab" style="width:100%;height:100%;">
+                    <tr>
+                        <td colspan="8">
+                        <el-row>
+                        <!-- <el-col :span="7"><div class="grid-content bg-purple">
+                            最后同步成功时间:<span>{{}}</span>
+                        </div></el-col>
+                        <el-col :span="7"><div class="grid-content bg-purple-light">
+                            下次同步成功时间:<span>{{}}</span>
+                        </div></el-col> -->
+                        <!-- <el-col :span="6"><div class="grid-content bg-purple">
+                            同步间隔时间:<span></span>
+                            <el-button type="primary" size="mini" @click="openSet()">设置</el-button>
+                        </div></el-col> -->
+                        <el-col :span="24"><div class="grid-content bg-purple-light">
+                            <el-button class="fr" type="success" size="mini" @click="sync()">手动同步</el-button>
+                        </div></el-col>
+                        </el-row>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>序号</td>
+                        <td>修改时间</td>
+                        <td>公司名称</td>
+                        <td>联系人</td>
+                        <td>手机号码</td>
+                        <td>当前状态</td>
+                        <td>创建时间</td>
+                        <td>员工详情</td>
+                    </tr>
+                    <tr v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
+                        <td >
+                        {{((pa-1)*10+(i+1))}}
+                        </td>
+                        <td >
+                        {{new Date(v.modifyTime).toLocaleString()}}
+                        </td>
+                        <td >
+                        {{v.departName}}
+                        </td>
+                        <td >
+                        {{v.managerName}}
+                        </td>
+                        <td >
+                        {{v.phone}}
+                        </td>
+                        <td >
+                        <span v-if="v.departState==1">
+                                正常
+                        </span>
+                        <span v-if="v.departState==3">
+                                黑名单
+                        </span>
+                        </td>
+                        <td >
+                        {{new Date(v.createTime).toLocaleString()}}
+                        </td>
+                        <td >
+                        <a href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
+                        </td>
+                    </tr>
+                    <tr v-if="searchList.length==0">
+                    <td colspan="8" style="text-align: center;font-size: 16px;font-weight: bold">
+                            查询结果为空
+                    </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="listTitleFoot">
+                <el-row>
+                    <el-col :span="12"><div class="grid-content bg-purple">
+                        <el-pagination
+                        layout="prev, pager, next"
+                        :page-size="5"
+                        @current-change="search"
+                        :total="form.page">
+                        </el-pagination>
                     </div></el-col>
-                    <el-col :span="7"><div class="grid-content bg-purple-light">
-                        下次同步成功时间:<span>{{}}</span>
-                    </div></el-col> -->
-                    <!-- <el-col :span="6"><div class="grid-content bg-purple">
-                        同步间隔时间:<span></span>
-                        <el-button type="primary" size="mini" @click="openSet()">设置</el-button>
-                    </div></el-col> -->
-                    <el-col :span="24"><div class="grid-content bg-purple-light">
-                        <el-button class="fr" type="success" size="mini" @click="sync()">手动同步</el-button>
-                    </div></el-col>
-                    </el-row>
-                    </td>
-                </tr>
-                <tr>
-                    <td>序号</td>
-                    <td>修改时间</td>
-                    <td>公司名称</td>
-                    <td>联系人</td>
-                    <td>手机号码</td>
-                    <td>当前状态</td>
-                    <td>创建时间</td>
-                    <td>员工详情</td>
-                </tr>
-                <tr v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
-                    <td >
-                       {{((pa-1)*10+(i+1))}}
-                    </td>
-                    <td >
-                       {{new Date(v.modifyTime).toLocaleString()}}
-                    </td>
-                    <td >
-                       {{v.departName}}
-                    </td>
-                    <td >
-                       {{v.managerName}}
-                    </td>
-                    <td >
-                       {{v.phone}}
-                    </td>
-                    <td >
-                       <span v-if="v.departState==1">
-                            正常
-                       </span>
-                       <span v-if="v.departState==3">
-                            黑名单
-                       </span>
-                    </td>
-                    <td >
-                       {{new Date(v.createTime).toLocaleString()}}
-                    </td>
-                    <td >
-                       <a href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="listTitleFoot">
-            <el-row>
-                <el-col :span="12"><div class="grid-content bg-purple">
-                    <el-pagination
-                    layout="prev, pager, next"
-                    :page-size="5"
-                    @current-change="search"
-                    :total="form.page">
-                    </el-pagination>
-                </div></el-col>
-                <el-col :span="12">
-                    <!-- <div class="grid-content bg-purple-light fr">操作:<el-button size="mini" @click="doFunction('offLine')">强制离线</el-button><el-button size="mini" @click="doFunction('addBlack')">加入黑名单</el-button><el-button size="mini" @click="doFunction('cancelBlack')">解除黑名单</el-button><el-button size="mini" @click="doFunction('delete')">删除</el-button></div> -->
-                </el-col>
-            </el-row>
-        </div>  
+                    <el-col :span="12">
+                        <!-- <div class="grid-content bg-purple-light fr">操作:<el-button size="mini" @click="doFunction('offLine')">强制离线</el-button><el-button size="mini" @click="doFunction('addBlack')">加入黑名单</el-button><el-button size="mini" @click="doFunction('cancelBlack')">解除黑名单</el-button><el-button size="mini" @click="doFunction('delete')">删除</el-button></div> -->
+                    </el-col>
+                </el-row>
+            </div>
+        </div> 
+        <div v-if="searchList.length==0" class="searchResultInfoNone">
+          查询结果为空!
+        </div> 
     </div>
+    
     </div>
     <!-- 弹框组件 -->
     <common-layer v-if="off.layer"></common-layer>
