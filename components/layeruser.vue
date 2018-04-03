@@ -239,6 +239,7 @@ export default{
                 })
                 return false;
             }
+            data.authCode=vm.authCode;
             requestMethod(data,url)
             .then((data)=>{
                 vm.$parent.off.layer=false;

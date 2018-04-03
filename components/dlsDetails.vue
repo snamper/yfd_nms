@@ -249,7 +249,7 @@ export default{
             this.off.addList=!this.off.addList;
         },
         AddStaff(){//添加员工按钮
-            let data={"newUsers":[],authCode:'123456'},vm=this;
+            let vm=this, data={"newUsers":[]};
             for(let i=0;i<this.list.length;i++){
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true){
                     if(this.list[i].checked==true&&this.list[i].checked2==false){
