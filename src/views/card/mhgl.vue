@@ -368,7 +368,6 @@ export default{
                            vm.searchLiang.push(data.data.numbers.slice(i,i+6));
                         }
                         vm.searchLiang.len=data.data.numbers.length;
-                        console.log(vm.searchLiang);
                     }
                 }).catch(e=>errorDeal(e),function(){load.close()});
             }).then(()=>{
@@ -382,7 +381,6 @@ export default{
                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
                         }
                         vm.searchPu.len=data.data.numbers.length;                        
-                        console.log(vm.searchPu);
                         this.off.notCardDetails=false;
                         this.off.cardDetails=true;
                 }
@@ -587,6 +585,9 @@ export default{
             .then((data)=>{
                 vm.reason="";
                 vm.authCode="";
+                for(let v=0;v<vm.searchList.length;v++){
+                    this.$set(vm.searchList[v],'ischecked',false);
+                }
                 vm.off.modify=false;
                 if(data.code==200){
                     layer.open({
