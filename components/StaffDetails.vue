@@ -210,7 +210,7 @@ export default{
             vm.off.noModify=true;
             vm.off.modify=false;
             url="/yfd-ums/w/user/updateUserDetail";
-            data.newName=vm.forms.username;
+            data.newUsername=vm.forms.username;
             data.newPhone=vm.forms.phone;
             data.searchUserId=vm.$parent.searchUserId;
             requestMethod(data,url)
