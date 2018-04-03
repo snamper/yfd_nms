@@ -363,9 +363,11 @@ export default{
                 .then((data)=>{
                     if(data.code==200){
                         // vm.pageNumPu=data.data.numbers;
+                        vm.searchLiang=[]
                         for(var i=0,len=data.data.numbers.length;i<len;i+=6){
                            vm.searchLiang.push(data.data.numbers.slice(i,i+6));
                         }
+                        vm.searchLiang.len=data.data.numbers.length;
                         console.log(vm.searchLiang);
                     }
                 }).catch(e=>errorDeal(e),function(){load.close()});
@@ -374,10 +376,12 @@ export default{
                 requestMethod(data,url)
                 .then((data)=>{
                     if(data.code==200){
+                        vm.searchPu=[]
                         //vm.pageNumLiang=data.data.numbers;
                         for(var i=0,len=data.data.numbers.length;i<len;i+=6){
                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
                         }
+                        vm.searchPu.len=data.data.numbers.length;                        
                         console.log(vm.searchPu);
                         this.off.notCardDetails=false;
                         this.off.cardDetails=true;
@@ -478,7 +482,7 @@ export default{
                 }
             }else if(s=="off"){
                 for(let v=0;v<this.searchList.length;v++){
-                    if(this.ix[v].s=='off'){
+                    if(this.searchList[v].productState=='3'){
                        this.$set(this.searchList[v],'ischecked',true);
                     }else{
                        this.$set(this.searchList[v],'ischecked',false);
@@ -486,7 +490,7 @@ export default{
                 }
             }else if(s=="on"){
                 for(let v=0;v<this.searchList.length;v++){
-                    if(this.ix[v].s=='on'){
+                    if(this.searchList[v].productState=='2'){
                         this.$set(this.searchList[v],'ischecked',true);
                     }else{
                          this.$set(this.searchList[v],'ischecked',false);
@@ -494,15 +498,7 @@ export default{
                 }
             }else if(s=="noton"){
                 for(let v=0;v<this.searchList.length;v++){
-                    if(this.ix[v].s=='black'){
-                        this.$set(this.searchList[v],'ischecked',true);
-                    }else{
-                         this.$set(this.searchList[v],'ischecked',false);
-                    }
-                }
-            }else if(s=="off"){
-                for(let v=0;v<this.searchList.length;v++){
-                    if(this.ix[v].s=='black'){
+                    if(this.searchList[v].productState=='1'){
                         this.$set(this.searchList[v],'ischecked',true);
                     }else{
                          this.$set(this.searchList[v],'ischecked',false);
@@ -510,7 +506,7 @@ export default{
                 }
             }else if(s=="seal"){
                 for(let v=0;v<this.searchList.length;v++){
-                    if(this.ix[v].s=='black'){
+                    if(this.searchList[v].productState=='4'){
                         this.$set(this.searchList[v],'ischecked',true);
                     }else{
                          this.$set(this.searchList[v],'ischecked',false);
@@ -519,7 +515,7 @@ export default{
             }
         },
          doFounction(val){
-             let vm=this;
+            let vm=this;
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
                     vm.off.modify=true;
@@ -529,9 +525,10 @@ export default{
                 vm.dourl="/yfd-nms/w/number/pullOffProducts";
                 this.a="下架";
             }else if(val=='1'){
-                vm.dourl="/yfd-ums/w/number/putOnProducts";
+                vm.dourl="/yfd-nms/w/number/putOnProducts";
                 this.a="上架";
             }
+
         }
         ,getAuthCode(){
             let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
@@ -559,7 +556,7 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,success(v){
-            let data={'operateProductIds':[]},vm=this,url="/yfd-ums/w/number/pullOffProducts"
+            let data={'operateProductIds':[]},vm=this;
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
                     data.operateProductIds.push(vm.searchList[v].productId)
@@ -586,8 +583,10 @@ export default{
             let load=Loading.service(options);
             data.reason=vm.reason;//操作原因
             data.authCode=vm.authCode;
-            requestMethod(data,url)
+            requestMethod(data,vm.dourl)
             .then((data)=>{
+                vm.reason="";
+                vm.authCode="";
                 vm.off.modify=false;
                 if(data.code==200){
                     layer.open({

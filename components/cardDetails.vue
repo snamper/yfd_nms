@@ -31,14 +31,15 @@
                                   <span v-if="dataList.productType==3">普号包</span>
                     </td>
                     <td>当前状态 ： 
-                       <span v-if="dataList.productState==1">未上架 <button class="buttonSmallBlueUp" @click="UpNum()">上架</button> </span>                        
-                       <span v-if="dataList.productState==2">已上架 <button class="buttonSmallBlueDown" @click="DownNum()">下架</button></span>
+                       <span v-if="dataList.productState==1">未上架 </span>  
+                           <!-- <button class="buttonSmallBlueUp" @click="UpNum()">上架</button>                        -->
+                       <span v-if="dataList.productState==2">已上架</span>
                        <span v-if="dataList.productState==3">已下架</span>
                        <span v-if="dataList.productState==4">已出售</span>
                     </td>
                 </tr>
                 <tr>
-                    <td>码号数量 ：{{dataList.cuteTotal}}</td>
+                    <td>码号数量 ：{{dataList.normalTotal}}</td>
                     <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td>
                 </tr>
                   <tr>
@@ -61,7 +62,7 @@
       </div>
       <div class="liang">
         <div class="listTitleFoot">
-            <span class="fl">靓号详情</span><span class="fontWeight greyFont"> ({{dataListLiang.length*6}})</span>
+            <span class="fl">靓号详情</span><span class="fontWeight greyFont"> ({{dataListLiang.len}})</span>
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
@@ -73,7 +74,7 @@
       </div>
        <div class="pu">
         <div class="listTitleFoot">
-            <span class="fl">普号详情</span><span class="fontWeight greyFont">({{dataListPu.length*6}})</span>
+            <span class="fl">普号详情</span><span class="fontWeight greyFont">({{dataListPu.len}})</span>
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
