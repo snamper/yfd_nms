@@ -204,6 +204,7 @@ export default{
             addUsersData:'',//添加员工信息
             searchType:0,//
             searchDepartId:'',//部门Id
+            doAble:'0',
             form:{
                 page:0,
             },
@@ -312,9 +313,10 @@ export default{
             // }).catch(e=>errorDeal(e))
         }
         ,doFunction(val){
-            let vm=this,data={"operateUserIds":[]},url='',che='';
+            let vm=this,data={"operateUserIds":[]},url='',che='';vm.off.modify=false;
             for(let v in vm.lists){
                 if(vm.lists[v].ischecked==true){
+                    debugger;
                     data.operateUserIds.push(vm.lists[v].username);
                     che+=vm.lists[v].username+',';
                     vm.off.modify=true;
@@ -327,7 +329,6 @@ export default{
                     time: 2,
                     msgSkin:'error',
                 });
-                vm.off.modify=false;
                 return false;
             }
             if(val=='offLine'){
@@ -450,6 +451,8 @@ export default{
             requestMethod(data,vm.doUrl)
             .then((data)=>{
                 vm.off.modify=false;
+                vm.reason="";
+                vm.authCode="";
                 if(data.code==200){
                     layer.open({
                         content:data.msg,
