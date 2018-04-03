@@ -216,7 +216,7 @@ export default{
             let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/userSearch',vm=this;
              vm.pa=p||1;
                 data={
-                "departName":"亚非达总部",
+                "departId":"1803160000",
                 "username":vm.name
                 ,"phone":vm.phone
                 ,"userState":vm.radio

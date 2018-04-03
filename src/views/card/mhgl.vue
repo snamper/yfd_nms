@@ -2,6 +2,7 @@
     .listTitleFoot{width: 96%;margin: 10px 18px;}
     .listTitleFoot label{display:block;width: 50%;}
     label.el-checkbox{display: inline}
+    
 </style>
 <template>
 <section>
@@ -35,10 +36,10 @@
              <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">号包类型：</div></el-col>
                 <el-col :span="18">
-                    <el-radio v-model="cardType"  label="1">全部</el-radio>
-                    <el-radio v-model="cardType"  label="2">整号段</el-radio>
-                    <el-radio v-model="cardType"  label="3">靓号包</el-radio>
-                    <el-radio v-model="cardType"  label="4">普号包</el-radio>
+                    <el-radio v-model="cardType"  label="1,2,3">全部</el-radio>
+                    <el-radio v-model="cardType"  label="1">整号段</el-radio>
+                    <el-radio v-model="cardType"  label="2">靓号包</el-radio>
+                    <el-radio v-model="cardType"  label="3">普号包</el-radio>
                 </el-col>
                 <el-col :span="2">
                    
@@ -58,11 +59,11 @@
              <el-col :span="12"><div class="grid-content bg-purple-light">
                 <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                 <el-col :span="18">
-                    <el-radio v-model="nowStatus"  label="1">全部</el-radio>
-                    <el-radio v-model="nowStatus"  label="2">未上架</el-radio>
-                    <el-radio v-model="nowStatus"  label="3">已上架</el-radio>
+                    <el-radio v-model="nowStatus"  label="1,2,3,4">全部</el-radio>
+                    <el-radio v-model="nowStatus"  label="1">未上架</el-radio>
+                    <el-radio v-model="nowStatus"  label="2">已上架</el-radio>
+                    <el-radio v-model="nowStatus"  label="3">已下架</el-radio>
                     <el-radio v-model="nowStatus"  label="4">已售</el-radio>
-                    <el-radio v-model="nowStatus"  label="5">已下架</el-radio>
                 </el-col>
                 <el-col :span="2">
                    
@@ -84,15 +85,19 @@
         <el-row class="marginTop">
             <el-col :span="24"><div class="grid-content bg-purple-light">
                 <el-col :span="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
+                <el-col :span="22">
                 <el-col :span="20">
-                    <el-col :span="20">
-                         <el-checkbox-group v-model="checkedCities">
-                            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
-                        </el-checkbox-group>
-                    </el-col>
-                   <el-col :span="1">
+                    <el-checkbox-group v-model="checkedCities">
+                        <!-- <el-checkbox class="hidden-xs-and-down" v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>                        -->
+                        <el-checkbox  v-for="city in cities1" :label="city" :key="city">{{city}}</el-checkbox>                       
+                        <el-checkbox  v-for="city in cities2" :label="city" :key="city">{{city}}</el-checkbox>                       
+                        <el-checkbox  v-for="city in cities3" :label="city" :key="city">{{city}}</el-checkbox>                       
+                        <el-checkbox  v-for="city in cities4" :label="city" :key="city">{{city}}</el-checkbox>                       
+                    </el-checkbox-group>
+                </el-col>
+                <el-col :span="4">
                     <el-checkbox  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                   </el-col>
+                </el-col>
                 </el-col>
             </div></el-col>
         </el-row>
@@ -249,6 +254,7 @@
 </section>
 </template>
 <script>
+import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal } from "../../config/utils.js";
 import {requestMethod,requestMethod2} from "../../config/service.js"; 
@@ -257,6 +263,10 @@ import layerSync from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
 import cardDetails from "../../../components/cardDetails";
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'];
+const cityOptions1=['远特', '蜗牛', '迪信通'];
+const cityOptions2=[ '极信','小米','海航'];
+const cityOptions3=['乐语','苏宁互联','国美'];
+const cityOptions4=['联想','蓝猫移动','长城'];
 const options={text:"正在加载",}
 export default{
 	data (){
@@ -284,6 +294,10 @@ export default{
             authCode:"",//验证码
             checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
             cities: cityOptions,//选中的虚商
+            cities1:cityOptions1,
+            cities2:cityOptions2,
+            cities3:cityOptions3,
+            cities4:cityOptions4,
             startTime: "",
             endTime: "",
             cname: "",
