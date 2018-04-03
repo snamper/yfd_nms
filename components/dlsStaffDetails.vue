@@ -207,7 +207,7 @@ export default{
             let vm=this,url="/yfd-ums/w/user/updateUserDetail",data={};
             vm.off.noModify=true;
             vm.off.modify=false;
-            data.newName=vm.forms.username;
+            data.newUsername=vm.forms.username;
             data.newPhone=vm.forms.phone;
             data.searchUserId=v;
             requestMethod(data,url)
