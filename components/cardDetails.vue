@@ -62,7 +62,7 @@
       </div>
       <div class="liang">
         <div class="listTitleFoot">
-            <span class="fl">靓号详情</span><span class="fontWeight greyFont"> ({{dataListLiang.len}})</span>
+            <span class="fl">靓号详情</span><span class="fontWeight greyFont"> ({{dataListLiang.len||'0'}})</span>
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
@@ -74,7 +74,7 @@
       </div>
        <div class="pu">
         <div class="listTitleFoot">
-            <span class="fl">普号详情</span><span class="fontWeight greyFont">({{dataListPu.len}})</span>
+            <span class="fl">普号详情</span><span class="fontWeight greyFont">({{dataListPu.len||'0'}})</span>
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">

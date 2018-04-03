@@ -344,7 +344,9 @@ export default{
             this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
         },
 		getDetails(v){
+            console.log(v);
             let vm=this;
+            let load=Loading.service(options);
             let data={},url="/yfd-nms/w/number/getProductDetail";
             data.searchProductId=v.productId;
             data.sessionType="2";
@@ -355,36 +357,47 @@ export default{
                     vm.searchResData=data.data
                 }
             }).then(()=>{
-                url="/yfd-nms/w/number/getProductNumbers";
-                /*data.searchProductId=v.productId;
-                data.sessionType="2";*/
-                data.phoneLevel=1;
-                requestMethod(data,url)
-                .then((data)=>{
-                    if(data.code==200){
-                        // vm.pageNumPu=data.data.numbers;
-                        vm.searchLiang=[]
-                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                           vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                if(v.productType==1||v.productType==2){
+                    url="/yfd-nms/w/number/getProductNumbers";
+                    data.phoneLevel=1;
+                    requestMethod(data,url)
+                    .then((data)=>{
+                        if(data.code==200){
+                            // vm.pageNumPu=data.data.numbers;
+                            vm.searchLiang=[]
+                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                            vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                            }
+                            vm.searchLiang.len=data.data.numbers.length;
+                            this.off.notCardDetails=false;
+                            this.off.cardDetails=true;
+                            load.close();
                         }
-                        vm.searchLiang.len=data.data.numbers.length;
-                    }
-                }).catch(e=>errorDeal(e),function(){load.close()});
-            }).then(()=>{
-                data.phoneLevel=2;
-                requestMethod(data,url)
-                .then((data)=>{
-                    if(data.code==200){
-                        vm.searchPu=[]
-                        //vm.pageNumLiang=data.data.numbers;
-                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                           vm.searchPu.push(data.data.numbers.slice(i,i+6));
-                        }
-                        vm.searchPu.len=data.data.numbers.length;                        
-                        this.off.notCardDetails=false;
-                        this.off.cardDetails=true;
+                    }).catch(e=>errorDeal(e),function(){load.close()});
+                }else{
+                    vm.searchLiang=[]
                 }
-                }).catch(e=>errorDeal(e),function(){load.close()});
+            }).then(()=>{
+                if(v.productType==1||v.productType==3){
+                    url="/yfd-nms/w/number/getProductNumbers";
+                    data.phoneLevel=2;
+                    requestMethod(data,url)
+                    .then((data)=>{
+                        if(data.code==200){
+                            vm.searchPu=[]
+                            //vm.pageNumLiang=data.data.numbers;
+                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                            }
+                            vm.searchPu.len=data.data.numbers.length;                        
+                            this.off.notCardDetails=false;
+                            this.off.cardDetails=true;
+                            load.close();
+                        }
+                    }).catch(e=>errorDeal(e),function(){load.close()});
+                }else{
+                    vm.searchPu=[]
+                }
             }).catch(e=>errorDeal(e))
             
              

@@ -316,7 +316,6 @@ export default{
             let vm=this,data={"operateUserIds":[]},url='',che='';vm.off.modify=false;
             for(let v in vm.lists){
                 if(vm.lists[v].ischecked==true){
-                    debugger;
                     data.operateUserIds.push(vm.lists[v].username);
                     che+=vm.lists[v].username+',';
                     vm.off.modify=true;

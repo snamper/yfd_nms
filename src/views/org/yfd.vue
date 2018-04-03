@@ -213,10 +213,11 @@ export default{
             this.addUsersData=data;
         },
         search(p){//查询
-            let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/userSearch',vm=this;
+            let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/getDepartDetail',vm=this;
+            //data={'searchDepartId':"1803160000",userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};
              vm.pa=p||1;
                 data={
-                "departId":"1803160000",
+                "searchDepartId":"1803160000",
                 "username":vm.name
                 ,"phone":vm.phone
                 ,"userState":vm.radio
