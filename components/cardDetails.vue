@@ -39,7 +39,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>码号数量 ：{{dataList.normalTotal}}</td>
+                    <td>码号数量 ：<span v-if="dataList.productType==1">{{dataList.normalTotal+dataList.cuteTotal}}</span>
+                                  <span v-if="dataList.productType==2">{{dataList.cuteTotal}}</span>
+                                  <span v-if="dataList.productType==3">{{dataList.normalTotal}}</span>
+                    </td>
                     <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td>
                 </tr>
                   <tr>

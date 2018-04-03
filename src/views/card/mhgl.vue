@@ -201,7 +201,8 @@
                         </tr>
                         <tr>
                             <td colspan="10" style="text-align:left">
-                                选择:<a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a>
+                                选择:<a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
+                                <!-- <a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a> -->
                             </td>
                         </tr>
                     </table>
@@ -359,7 +360,7 @@ export default{
             }).then(()=>{
                 if(v.productType==1||v.productType==2){
                     url="/yfd-nms/w/number/getProductNumbers";
-                    data.phoneLevel=1;
+                    data.phoneLevel=2;
                     requestMethod(data,url)
                     .then((data)=>{
                         if(data.code==200){
@@ -380,7 +381,7 @@ export default{
             }).then(()=>{
                 if(v.productType==1||v.productType==3){
                     url="/yfd-nms/w/number/getProductNumbers";
-                    data.phoneLevel=2;
+                    data.phoneLevel=1;
                     requestMethod(data,url)
                     .then((data)=>{
                         if(data.code==200){
@@ -490,6 +491,10 @@ export default{
             if(s=="all"){
                 for(let v=0;v<this.searchList.length;v++){
                     this.$set(this.searchList[v],'ischecked',true);
+                }
+            }else if(s=="none"){
+                for(let v=0;v<this.searchList.length;v++){
+                    this.$set(this.searchList[v],'ischecked',false);
                 }
             }else if(s=="off"){
                 for(let v=0;v<this.searchList.length;v++){
