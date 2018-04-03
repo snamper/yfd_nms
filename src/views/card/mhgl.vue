@@ -175,7 +175,7 @@
                             <span v-if="v.brand==12">长城</span>
                             </td>
                             <td >
-                            <span v-if="v.isp==1,2,3">移动联通电信</span>                        
+                            <!-- <span v-if="v.isp==1,2,3">移动联通电信</span>                         -->
                             <span v-if="v.isp==1">移动</span>
                             <span v-if="v.isp==2">联通</span>
                             <span v-if="v.isp==3">电信</span>
@@ -281,8 +281,8 @@ export default{
             dataListLiang:{},//号包详情页面
             dataListPu:{},//号包详情页面
             packagename:"",//号包名称
-            cardType:"1",//号包类型
-            nowStatus:"1",//号包状态
+            cardType:"1,2,3",//号包类型
+            nowStatus:"1,2,3,4",//号包状态
             phone: "",//查询的手机号码
             radio: "1,2,3",//运营商
             name: "",//联系人姓名
