@@ -255,7 +255,7 @@ export default{
                     if(this.list[i].checked==true&&this.list[i].checked2==false){
                         this.list[i].userRole='4'
                     }else if(this.list[i].checked==false&&this.list[i].checked2==true){
-                        this.list[i].userRole='4'
+                        this.list[i].userRole='5'
                     }else if(this.list[i].checked==true&&this.list[i].checked2==true){
                         this.list[i].userRole='4,5'
                     }
