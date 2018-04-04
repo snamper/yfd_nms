@@ -56,7 +56,7 @@
             <div v-for="(v,i) in list" :key="i" class="mt8">
                 用户姓名 : <el-input style="width:25%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input>
                 &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input>
-                &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked">店长</el-checkbox><el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
+                &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
             </div>
         </div>
     <!-- <div v-if="off.searchList"> -->
@@ -118,6 +118,7 @@
                         layout="prev, pager, next"
                         :page-size="10"
                         @current-change="search"
+                        :current-page.sync="currentPage"
                         :total="form.page">
                     </el-pagination>    
                 </div></el-col>
@@ -145,6 +146,7 @@ import yfdStaffDetails from "../../../components/yfdStaffDetails";
 export default{
 	data (){
 		return {
+            currentPage:0,//当前页面
             detailsList:'',
             name:'',
             phone:'',
@@ -153,7 +155,7 @@ export default{
             searchDetailsYfdData:'',//查询人
             searchRes:"",
             addAble:0,//是否可以添加
-            list: [{username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"},],//添加员工            
+            list: [{username: '', phone: '',checked2:false,checked3:false,departName:"好亚飞达总部"},],//添加员工            
 			off:{
                 showSearch:"",
                 searchList:false,
@@ -176,7 +178,7 @@ export default{
     },
 	methods:{
          AddList(){//添加员工状态操作
-            this.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"})
+            this.list.push({username: '', phone: '',checked2:false,checked3:false,departName:"好亚飞达总部"})
         },
         AddStaffDiv(){//添加员工模块开关
             this.off.addList=!this.off.addList;
@@ -186,24 +188,17 @@ export default{
             for(let i=0;i<this.list.length;i++){
                 this.list[i].userRole="";
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
-                    if(this.list[i].checked==true){this.list[i].userRole='3'}
+                    if(this.list[i].checked2==true){this.list[i].userRole='1'}
                     
                     if(this.list[i].checked2==true){
-                        if(this.list[i].checked==true){
-                            this.list[i].userRole+=',1'
-                        }else if(this.list[i].checked==false){
-                            this.list[i].userRole='1'
+                        if(this.list[i].checked3==true){
+                            this.list[i].userRole+=',2'
+                        }else if(this.list[i].checked3==false){
+                            this.list[i].userRole='2'
                         }
                     }
 
-                    if(this.list[i].checked3==true){
-                        if(this.list[i].checked==false&&this.list[i].checked2==false){
-                            this.list[i].userRole='2'
-                        }else if(this.list[i].checked==true||this.list[i].checked2==true){
-                            this.list[i].userRole+=',2'
-                        }
-                    }
-                    delete this.list[i].checked;
+
                     delete this.list[i].checked2;
                     delete this.list[i].checked3;
                     data.newUsers.push(this.list[i])
@@ -228,6 +223,7 @@ export default{
             let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/getDepartDetail',vm=this;
             //data={'searchDepartId':"1803160000",userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};
              vm.pa=p||1;
+             vm.currentPage=p||1;
                 data={
                 "searchDepartId":"1803160000",
                 "username":vm.name

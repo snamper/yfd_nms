@@ -163,6 +163,7 @@
                         layout="prev, pager, next"
                         :page-size="5"
                         @current-change="search"
+                        :current-page.sync="currentPage"                        
                         :total="form.page">
                         </el-pagination>
                     </div></el-col>
@@ -196,6 +197,7 @@ export default{
     name:'dls',
     data (){
         return {
+            currentPage:0,//当前页
             hesdUserName:"",
             headPhone:"",
             total:"",
@@ -258,6 +260,7 @@ export default{
             }
             let load=Loading.service(options),data={},url='/yfd-ums/w/user/departSearch',vm=this;
             vm.pa=p||1;
+            vm.currentPage=p||1;
             data={
                 "startTime":new Date(vm.startTime).getTime()||''
                 ,"endTime":new Date(vm.endTime).getTime()||''

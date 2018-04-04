@@ -102,6 +102,7 @@
                         layout="prev, pager, next"
                         :page-size="10"
                         @current-change="search"
+                        :current-page.sync="currentPage"                        
                         :total="form.page">
                     </el-pagination>    
                 </div></el-col>
@@ -127,6 +128,7 @@ import dlsStaffDetails from "../../../components/StaffDetails";
 export default{
 	data (){
 		return {
+            currentPage:0,//当前页面
             detailsList:'',
             name:'',
             phone:'',
@@ -157,10 +159,11 @@ export default{
         search(p){//查询
             let load=Loading.service(options),data={},url='/yfd-ums/w/user/userSearch',vm=this;
              vm.pa=p||1;
+             vm.currentPage=p||1;
                 data={
                 "username":vm.name
                 ,"phone":vm.phone
-                ,"userstate":vm.radio
+                ,"userState":vm.radio
                 ,"pageSize":10
                 ,"pageNum":p||1}
             requestMethod(data,url)

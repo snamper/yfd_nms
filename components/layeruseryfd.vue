@@ -87,7 +87,7 @@ export default{
 	},
 	methods:{
         getAuthCode(v){//获取验证码
-            const TIME_COUNT = 60;
+            const TIME_COUNT = 120;
             if (!this.timer) {
                 this.count = TIME_COUNT;
                 this.show = false;
@@ -159,6 +159,10 @@ export default{
                     });
                     this.$parent.list=[],
                     this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"}) 
+                    if(vm.$parent.off.searchList==true){
+                        this.$parent.search();
+                    }
+                        
                 }else{
                     this.$parent.list=[],
                     this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"})

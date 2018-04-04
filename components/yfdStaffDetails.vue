@@ -197,6 +197,7 @@ export default{
             let vm=this;
             this.$parent.off.staffDetails=false;
             this.$parent.off.searchStaff=true;
+            this.$parent.search(vm.$parent.pa);
         }
         ,checkBtn(){
             let vm=this;

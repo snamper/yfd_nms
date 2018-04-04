@@ -139,6 +139,7 @@
                     layout="prev, pager, next"
                     :page-size="10"
                     @current-change="search"
+                    :current-page.sync="currentPage"  
                     :total="form.page">
                 </el-pagination>    
             </div></el-col>
@@ -186,6 +187,7 @@ export default{
     props:{lists:Array},
     data (){
         return {
+            currentPage:0,//当前页
             a:'',//操作内容
             forms:"",
             searchRes:"",
@@ -205,6 +207,7 @@ export default{
             searchType:0,//
             searchDepartId:'',//部门Id
             doAble:'0',
+            searchStaffInfo:'',//员工信息
             form:{
                 page:0,
             },
@@ -242,6 +245,7 @@ export default{
             let vm=this;
             vm.$parent.off.dlsDetails=false;
             vm.$parent.off.notDlsDetails=true;
+            this.$parent.search(vm.$parent.pa);
         },   
          AddList(){//添加员工状态操作
             this.list.push({username: '', phone: '',checked:false,checked2:false})
@@ -407,6 +411,7 @@ export default{
         }
         ,getStaffDetails(p){
             let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+            vm.searchStaffInfo=p;
             data={"searchUserId":p.userId,"sessionType":"2"}
             requestMethod(data,url)
             .then((data)=>{

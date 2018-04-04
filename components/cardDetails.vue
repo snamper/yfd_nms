@@ -126,6 +126,9 @@ export default{
         goBack(){
             this.$parent.off.cardDetails=false;
             this.$parent.off.notCardDetails=true;
+            if(this.$parent.off.searchList==true){
+                this.$parent.search();
+            }
         },
 		getDetails(){
             this.off.notDlsDetails=false;

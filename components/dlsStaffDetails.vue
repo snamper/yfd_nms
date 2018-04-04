@@ -136,6 +136,7 @@
 <script>
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
+import { errorDeal } from "../src/config/utils";
 import {requestMethod} from "../src/config/service"; 
 export default{
     props:{forms:Object},
@@ -188,6 +189,7 @@ export default{
             let vm=this;
             this.$parent.off.staffD=false;
             this.$parent.off.noStaffd=true;
+            this.$parent.search(vm.$parent.pa);
         }
         ,checkBtn(){
             let vm=this;
@@ -219,6 +221,7 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
+                    this.$parent.getStaffDetails(vm.$parent.searchStaffInfo);
                 }else{
                     vm.forms.username=vm.oldName;
                     vm.forms.phone=vm.oldPhone;
