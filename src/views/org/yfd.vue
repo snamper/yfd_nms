@@ -54,8 +54,8 @@
                 <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
             </div>
             <div v-for="(v,i) in list" :key="i" class="mt8">
-                用户姓名 : <el-input style="width:25%" size="small" maxlength=10 v-model="list[i].username" placeholder="请输入内容"></el-input>
-                &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="small" maxlength=11 v-model="list[i].phone" placeholder="请输入内容"></el-input>
+                用户姓名 : <el-input style="width:25%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input>
+                &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input>
                 &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked">店长</el-checkbox><el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
             </div>
         </div>
@@ -184,13 +184,25 @@ export default{
         AddStaff(){//添加员工按钮
             let data={"newUsers":[],authCode:''},vm=this;
             for(let i=0;i<this.list.length;i++){
+                this.list[i].userRole="";
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
-                    if(this.list[i].checked==true){
-                        this.list[i].userRole='4'}
+                    if(this.list[i].checked==true){this.list[i].userRole='4'}
+                    
                     if(this.list[i].checked2==true){
-                        this.list[i].userRole+=',5'}
+                        if(this.list[i].checked==true){
+                            this.list[i].userRole+=',5'
+                        }else if(this.list[i].checked==false){
+                            this.list[i].userRole='5'
+                        }
+                    }
+
                     if(this.list[i].checked3==true){
-                        this.list[i].userRole+=',6'}
+                        if(this.list[i].checked==false&&this.list[i].checked2==false){
+                            this.list[i].userRole='6'
+                        }else if(this.list[i].checked==true||this.list[i].checked2==true){
+                            this.list[i].userRole+=',6'
+                        }
+                    }
                     delete this.list[i].checked;
                     delete this.list[i].checked2;
                     delete this.list[i].checked3;
