@@ -190,10 +190,10 @@ export default{
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
                     if(this.list[i].checked2==true){this.list[i].userRole='1'}
                     
-                    if(this.list[i].checked2==true){
-                        if(this.list[i].checked3==true){
+                    if(this.list[i].checked3==true){
+                        if(this.list[i].checked2==true){
                             this.list[i].userRole+=',2'
-                        }else if(this.list[i].checked3==false){
+                        }else if(this.list[i].checked2==false){
                             this.list[i].userRole='2'
                         }
                     }
