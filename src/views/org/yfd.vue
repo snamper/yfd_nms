@@ -186,21 +186,21 @@ export default{
             for(let i=0;i<this.list.length;i++){
                 this.list[i].userRole="";
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
-                    if(this.list[i].checked==true){this.list[i].userRole='4'}
+                    if(this.list[i].checked==true){this.list[i].userRole='3'}
                     
                     if(this.list[i].checked2==true){
                         if(this.list[i].checked==true){
-                            this.list[i].userRole+=',5'
+                            this.list[i].userRole+=',1'
                         }else if(this.list[i].checked==false){
-                            this.list[i].userRole='5'
+                            this.list[i].userRole='1'
                         }
                     }
 
                     if(this.list[i].checked3==true){
                         if(this.list[i].checked==false&&this.list[i].checked2==false){
-                            this.list[i].userRole='6'
+                            this.list[i].userRole='2'
                         }else if(this.list[i].checked==true||this.list[i].checked2==true){
-                            this.list[i].userRole+=',6'
+                            this.list[i].userRole+=',2'
                         }
                     }
                     delete this.list[i].checked;
