@@ -11,18 +11,18 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/yfd-ums/nus/':{
+        '/yfd-nus/':{
             target:'http://192.168.10.103:10022/',
             changeOrigin:true,
             pathRewrite:{
-                '/yfd-ums/nus':'/nus'
+                '/yfd-nus':'/nus'
             }
         },
-        '/yfd-ums/uus/':{
+        '/yfd-uus/':{
             target:'http://192.168.10.103:10023/',
             changeOrigin:true,
             pathRewrite:{
-                '/yfd-ums/uus':'/uus'
+                '/yfd-uus':'/uus'
             }
         },
         '/yfd-ums/':{

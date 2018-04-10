@@ -182,9 +182,9 @@ export default{
             // data={"userId":vm.user.username,"phone":15684765209};
             data={"userId":vm.user.userId,"phone":vm.user.phone||""};
             if(window.location.hash.indexOf("agent")>-1){
-                vm.authCodeUrl="/yfd-ums/uus/w/user/getAuthCode";
+                vm.authCodeUrl="/yfd-uus/w/user/getAuthCode";
             }else if(window.location.hash.indexOf("card">-1)){
-                vm.authCodeUrl="/yfd-ums/nus/w/number/getAuthCode";
+                vm.authCodeUrl="/yfd-nus/w/number/getAuthCode";
             }
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
@@ -226,9 +226,9 @@ export default{
             }
             let load=Loading.service(options),data={"userId":vm.user.userId,"phone":vm.user.phone||"","authCode":vm.authCode};
             if(window.location.hash.indexOf("agent")>-1){
-                vm.syncUrl="/yfd-ums/uus/w/user/sync";
+                vm.syncUrl="/yfd-uus/w/user/sync";
             }else if(window.location.hash.indexOf("card">-1)){
-                vm.syncUrl="/yfd-ums/nus/w/number/sync"
+                vm.syncUrl="/yfd-nus/w/number/sync"
             }
             requestMethod(data,vm.syncUrl)
             .then((data)=>{
