@@ -5,7 +5,7 @@
     
 </style>
 <template>
-<section>
+<section ref="sec">
   <div v-if="off.notCardDetails">
     <!-- 查询模块 -->
     <div class="dls">
@@ -212,7 +212,7 @@
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
                         layout="prev, pager, next"
-                        :page-size="10"
+                        :page-size="8"
                         @current-change="search"
                         :total="form.page">
                         </el-pagination>
@@ -237,7 +237,7 @@
             <div class="listTitleFoot">
                 <p style="text-align:right">验证号码:{{user.phone}}
                     <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
-                    <el-button size="mini" type="primary" @click="getAuthCode()">获取验证码</el-button>
+                    <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
                 </p> 
             </div> 
             <div class="listTitleFoot">
@@ -272,6 +272,9 @@ const options={text:"正在加载",}
 export default{
 	data (){
 		return {
+            btnDisabled:false,
+            count:"点击获取验证码",
+            timer:null,
             checkAll: false,
             isIndeterminate: true,
             total:"",//号包总数
@@ -400,10 +403,6 @@ export default{
                     vm.searchPu=[]
                 }
             }).catch(e=>errorDeal(e))
-            
-             
-           
-            
          /*   requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
@@ -470,7 +469,7 @@ export default{
                 "productType":vm.cardType,
                 "productState":vm.nowStatus,
                 "sessionType":2,
-                "pageSize":10
+                "pageSize":8
                 ,"pageNum":p||1}
             vm.searchData=data;
             requestMethod2(data,url,function(){load.close()})
@@ -537,16 +536,41 @@ export default{
                     vm.off.modify=true;
                 }
             }
+            if(vm.off.modify==false){
+                layer.open({
+                    content:"请选择要操作的号包",
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
             if(val=='2'){
                 vm.dourl="/yfd-nms/w/number/pullOffProducts";
                 this.a="下架";
             }else if(val=='1'){
                 vm.dourl="/yfd-nms/w/number/putOnProducts";
                 this.a="上架";
-            }
-
+            }            
         }
         ,getAuthCode(){
+            const TIME_COUNT = 120;
+            if (!this.timer) {
+                this.count = TIME_COUNT;
+                this.show = false;
+                this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                    this.btnDisabled=true;
+                    this.count--;
+                    } else {
+                    this.btnDisabled=false;                        
+                    this.show = true;
+                    this.count="点击获取验证码"                    
+                    clearInterval(this.timer);
+                    this.timer = null;
+                    }
+                }, 1000)
+            }
             let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
             data={"phone":vm.user.phone}
             // data={"phone":15684765209}
@@ -601,6 +625,9 @@ export default{
             data.authCode=vm.authCode;
             requestMethod(data,vm.dourl)
             .then((data)=>{
+                for(let v in vm.searchList){
+                    vm.searchList[v].ischecked=false;
+                }
                 vm.reason="";
                 vm.authCode="";
                 for(let v=0;v<vm.searchList.length;v++){
