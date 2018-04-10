@@ -124,7 +124,7 @@
             </ul>
             <div class="mt8">
                 <el-row v-if="off.noModify" >
-                <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="success" @click="checkBtn">修改</el-button></div></el-col>
+                <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="success" @click="checkBtn" v-if="user.userRole!=2&&user.userRole!=3">修改</el-button></div></el-col>
                 </el-row>
                 <el-row v-if="off.modify" >
                     <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="danger" @click="checkNo">取消</el-button><el-button type="success" @click="checkYes(forms.userId)">确定</el-button></div></el-col>

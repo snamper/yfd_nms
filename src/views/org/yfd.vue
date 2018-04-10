@@ -46,7 +46,7 @@
         </el-row>
     </div>
     <el-row>
-            <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini">添加员工</el-button></div></el-col>
+            <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3">添加员工</el-button></div></el-col>
         </el-row>
         <div class="listTitleFoot addList" v-if="off.addList">
             <div style="float:right">
@@ -146,6 +146,7 @@ import yfdStaffDetails from "../../../components/yfdStaffDetails";
 export default{
 	data (){
 		return {
+            user:'',//用户信息
             currentPage:0,//当前页面
             detailsList:'',
             name:'',
@@ -174,7 +175,9 @@ export default{
         "common-layer":layerAddStaff,        
 	},
 	created:function(){
-       
+       let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
+       let Info=JSON.parse(userInfo);
+       vm.user=Info;
     },
 	methods:{
          AddList(){//添加员工状态操作

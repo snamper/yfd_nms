@@ -60,7 +60,7 @@
         </el-container>
         </div>
         <el-row>
-            <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini">添加员工</el-button></div></el-col>
+            <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3">添加员工</el-button></div></el-col>
         </el-row>
         <div class="listTitleFoot addList" v-if="off.addList">
             <div style="float:right">
