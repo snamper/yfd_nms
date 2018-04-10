@@ -138,6 +138,7 @@ export default{
             searchDetailsYfdData:'',
             searchUserId:'',
             searchRes:'',
+            StaffdepartName:'',
 			off:{
                 showSearch:"",
                 searchList:false,
@@ -192,6 +193,7 @@ export default{
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchUserId=p.userId;
             vm.searchDetailsYfdData=data;
+            vm.StaffdepartName=p.departName;
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.searchStaff=false;

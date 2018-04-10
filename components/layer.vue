@@ -76,7 +76,7 @@ tbody tr{height: 36px;}
 	</div>
     <!-- 手动同步 -->
     <div v-if="off.sync">
-        <table >
+        <table style="padding:20px;">
 			<thead>
 				<tr>
 					<th colspan="2">
@@ -101,7 +101,7 @@ tbody tr{height: 36px;}
     </div>
     <!-- 手动同步操作结果 -->
     <div v-if="off.rsync">
-        <table >
+        <table>
 			<tbody v-if="true">
                 <tr colspan="2">
                     <img src="../src/assets/images/icon_wenhao.png" alt="">
@@ -161,7 +161,7 @@ export default{
 	},
 	methods:{
         getAuthCode(v){//获取验证码
-            const TIME_COUNT = 60;
+            const TIME_COUNT = 120;
             if (!this.timer) {
                 this.count = TIME_COUNT;
                 this.show = false;
@@ -172,6 +172,7 @@ export default{
                     } else {
                     this.btnDisabled=false;                        
                     this.show = true;
+                    this.count="点击获取验证码"                    
                     clearInterval(this.timer);
                     this.timer = null;
                     }

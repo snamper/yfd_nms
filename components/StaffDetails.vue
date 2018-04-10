@@ -16,9 +16,9 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="9"><div class="grid-content bg-purple">公司名称:<span>--</span></div></el-col>
-                        <el-col :span="5"><div class="grid-content bg-purple-light">联系人:<span>{{forms.username}}</span></div></el-col>
-                        <el-col :span="5"><div class="grid-content bg-purple">手机号码:<span>{{forms.phone}}</span></div></el-col>
+                        <el-col :span="9"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<span class="c-blue">&nbsp;{{company}}</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple-light">联系人&nbsp;:&nbsp;<span>&nbsp;{{forms.username}}</span></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple">手机号码&nbsp;:&nbsp;<span>{{forms.phone}}</span></div></el-col>
                         <el-col :span="5"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
@@ -184,6 +184,7 @@ export default{
 	created:function(){
         let vm=this;
         vm.searchData=vm.$parent.searchData;
+        vm.company=vm.$parent.StaffdepartName;
     },
 	methods:{
 		goBack(){

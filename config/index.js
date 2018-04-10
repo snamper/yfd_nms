@@ -12,14 +12,14 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/yfd-ums/nus/':{
-            target:'http://192.168.10.24:10022/',
+            target:'http://192.168.10.103:10022/',
             changeOrigin:true,
             pathRewrite:{
                 '/yfd-ums/nus':'/nus'
             }
         },
         '/yfd-ums/uus/':{
-            target:'http://192.168.10.24:10022/',
+            target:'http://192.168.10.103:10023/',
             changeOrigin:true,
             pathRewrite:{
                 '/yfd-ums/uus':'/uus'
