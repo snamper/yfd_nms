@@ -69,7 +69,7 @@
 					</router-link>
 				</li>
 			</ul>
-            <!-- <ul class="g-side-ul">
+            <ul class="g-side-ul">
 				<li :class="{active:crumb[0].name=='操作日志'}">
 					<b></b>
 					<router-link to="/home/operationLog">
@@ -85,7 +85,7 @@
 					</ul>
 				</li>
 			</ul>
-            <ul class="g-side-ul">
+            <!-- <ul class="g-side-ul">
 				<li :class="{active:crumb[0].name=='浏览记录'}">
 					<b></b>
 					<router-link to="/home/browsingHistory">
@@ -101,6 +101,17 @@
 					</ul>
 				</li>
 			</ul> -->
+            <ul class="g-side-ul">
+				<li :class="{active:crumb[0].name=='公告管理'}">
+					<b></b>
+					<router-link to="/home/notice">
+						<div>
+							<i class="u-icon-gonggao"></i>
+							<span>公告管理</span>
+						</div>
+					</router-link>
+				</li>
+			</ul>
 		</nav>
 	</aside>
   	<section class="g-main" id="main">
@@ -128,8 +139,7 @@ export default{
 		}
     },
     created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
+        let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
 	},
 	watch:{
@@ -152,10 +162,8 @@ export default{
 		async init(){//页面初始化
 			const vm=this;
 			vm.routeChange();//头部面包屑导航
-
             window.onresize=()=>vm.debounce(300,vm.windowChange());
-         
-			let userInfo=getStore("KA_ECS_USER");
+			let userInfo=getStore("YFD_NMS_INFO");
 			vm.userInfo=userInfo;
 			vm.SET_USERINFO(userInfo);
 			document.attachEvent ? doucument.body.attachEvent("onclick",function(event){
@@ -200,6 +208,9 @@ export default{
             if(path.indexOf("/home/browsingHistory")>-1){
 				crumb[0]={"name":"浏览记录","href":"/home/browsingHistory"}
             }
+            if(path.indexOf("/home/notice")>-1){
+				crumb[0]={"name":"公告管理","href":"/home/notice"}
+            }
 			this.crumb=crumb;
 			mainDom.style.overflowY='hidden';
 			var timer=setTimeout(()=>mainDom.style.overflowY='',500);
@@ -216,7 +227,6 @@ export default{
 			if(href.indexOf('dashboard')>-1||w<=960){
 				vm.off.headMenu=false;
 			}
-
 			vm.off.window=w;
         },
 		debounce:function(time,action){//节流函数

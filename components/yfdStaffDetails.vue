@@ -16,7 +16,7 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="12"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<span class="c-blue">好亚非达总部</span></div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<a class="c-blue" href="javascript:void(0)"  @click="goBack()">好亚非达总部</a></div></el-col>
                         <!-- <el-col :span="6"><div class="grid-content bg-purple-light">联系人:<span>{{managerName}}</span></div></el-col> -->
                         <!-- <el-col :span="6"><div class="grid-content bg-purple">手机号码:<span>{{managerPhone}}</span></div></el-col> -->
                         <el-col :span="12"><div class="grid-content bg-purple-light fr" style="padding-right:40px"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
@@ -119,7 +119,7 @@
                     <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">登陆地址:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
-                            {{forms.latitude}}--{{forms.longitude}}
+                            {{forms.latitude}},{{forms.longitude}}
                             <a href="javascript:void(0)" @click="toMap" >查看地图</a>
                         </div></el-col>
                     </el-row>
@@ -146,6 +146,7 @@
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service"; 
+import {getStore} from "../src/config/utils";
 export default{
     props:{forms:Object},
 	data (){
@@ -185,8 +186,7 @@ export default{
        
 	},
 	created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
+        let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
         vm.company=vm.$parent.company;        
         vm.managerName=vm.$parent.managerName;
@@ -254,15 +254,7 @@ export default{
             }).then(()=>{
 
             }).catch(e=>errorDeal(e))
-        },
-        toMap(){//查看地图
-			var w=document.documentElement.clientWidth,url='',vm=this;
-			let latitude=parseFloat(vm.forms.latitude);
-            let longitude=parseFloat(vm.forms.longitude);
-            debugger;
-			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
-			window.open(url);
-		}
+        }
 	}
 }
 </script>

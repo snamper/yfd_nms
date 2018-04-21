@@ -6,7 +6,6 @@ const path = require('path');
 
 module.exports = {
   dev: {
-
     // Paths
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
@@ -39,6 +38,21 @@ module.exports = {
                 '^/yfd-nms' : '/'
             }
         },
+        '/yfd-mns/':{
+            target:'http://192.168.10.105:10034',
+            changeOrigin:true,
+            pathRewrite:{
+                '^/yfd-mns' : ''
+            }
+        },
+        '/yfd-ors/':{
+            target:'http://192.168.10.105:10032',
+            changeOrigin:true,
+            pathRewrite:{
+                '^/yfd-ors' : ''
+            }
+        },
+       
     },
     // Various Dev Server settings
     host:"192.168.10.24",

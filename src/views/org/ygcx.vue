@@ -9,35 +9,27 @@
         <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
         </el-row>
         <el-row>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
-                <el-col :span="2">
-                </el-col> 
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="20" :sm="18" :md="12" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2">全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
                     <el-radio v-model="radio"  label="2" >黑名单</el-radio>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">

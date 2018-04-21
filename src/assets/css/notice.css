@@ -1,0 +1,124 @@
+div.messageBox{
+    padding: .2rem;
+    box-sizing: border-box;
+}
+div.messageBox>p{
+    margin-bottom: .2rem;
+}
+el-row{
+    margin-top: .1rem;
+}
+p.textareaBox{
+    position: relative;
+}
+p.textareaBox span{
+    position: absolute;
+    right: 16px;
+    bottom: -86px;
+}
+img.upload-icon{
+    width: 17px;
+    height: 17px;
+    vertical-align: middle;
+    margin-right: .2rem;
+}
+div.noticeHistory{
+    padding: .2rem;
+}
+div.noNoticeHistory{
+    text-align: center;
+    font-size: 16px;
+}
+div.noticeHistory table{
+    margin-top: .3rem;
+    width: 100%;
+    height:100%;
+    border-collapse: collapse;
+}
+div.noticeHistory tr td{
+    border: 1px solid #DCDCDC;
+    white-space: nowrap;
+    border-collapse: collapse;
+}
+ div.noticeHistory tr td:first-child{
+    padding: .1rem;  
+    width: .5rem;    
+    text-align: center; 
+    background: #F8F8F8;          
+ }
+div.msgTime{
+    border-bottom: 1px solid #DCDCDC;
+    height: .4rem;
+    line-height: .4rem;
+    padding-left:.2rem; 
+    background: #F8F8F8;
+}
+div.msgInfo{
+    background: #fff;
+}
+div.msgInfo p{
+    height: .4rem;
+    line-height: .4rem;
+    padding-left: .2rem;
+}
+div.msgInfo p img.icon{
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+}
+div.el-pagination{
+    margin-top: 6px;
+}
+div.borderBottomBox{
+    margin: 0 auto;
+    width: 99%;
+    border-bottom: 2px solid #DCDCDC;
+}
+.fr{
+    margin-right: .2rem;
+}
+img.upS{
+    width: 20px;
+    height:20px;
+    vertical-align: middle;
+}
+img.upF{
+    width: 20px;
+    height:20px;
+    vertical-align: middle;
+}
+.listTitleFoot{width: 96%;margin: 10px 18px;}
+span.timeBig{
+    font-size: 18px;
+    color: black;
+}
+#file{
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    opacity: 0;
+    height: 40px;
+    width: 200px;
+}
+.upLoada{
+    padding: 4px 10px;
+    height: 20px;
+    line-height: 20px;
+    text-decoration: none;
+    color: #666;
+    background: url(/static/icon/file_img.svg) no-repeat;
+    background-size: contain;
+    padding-left:40px; 
+}
+.upImgBox{
+    position: relative;
+}
+img.imgS{
+    width: 0;
+    height: 0;
+}
+div.imgBigDiv{
+    width: 100%;
+    height: 100%;
+}

@@ -322,6 +322,11 @@ b.countIcon{
     width: 0.17rem;
     height: 0.17rem;
   }
+  .u-icon-gonggao{
+      background-image: url(../assets/images/icon_gonggao.png);
+      width: .17rem;
+      height: .17rem;
+  }
 .u-icon-menu {
   background-image: url(../assets/images/icon_location.png);
   width: 0.2rem;

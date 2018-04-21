@@ -122,7 +122,7 @@ tbody tr{height: 36px;}
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service.js"; 
-import { errorDeal } from '../src/config/utils';
+import { getStore } from '../utils/utils';
 export default{
 	data (){
 		return {
@@ -148,8 +148,7 @@ export default{
 		
     },
 	created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
+        let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
 		if(vm.$parent.off.setSync==true){
             vm.off.set=true;

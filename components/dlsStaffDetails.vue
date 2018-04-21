@@ -16,10 +16,10 @@
             <el-container>
                 <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
                     <el-row>
-                        <el-col :span="9"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<span class="c-blue">{{company}}</span></div></el-col>
+                        <el-col :span="9"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<a href="javascript:void(0)" @click="goBack()">{{company}}</a></div></el-col>
                         <el-col :span="5"><div class="grid-content bg-purple-light">联系人&nbsp;:&nbsp;<span>{{managerName}}</span></div></el-col>
                         <el-col :span="5"><div class="grid-content bg-purple">手机号码&nbsp;:&nbsp;<span>{{managerPhone}}</span></div></el-col>
-                        <el-col :span="5"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple-light fr" ><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
             </el-container>
@@ -136,7 +136,7 @@
 <script>
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
-import { errorDeal } from "../src/config/utils";
+import { errorDeal,getStore } from "../src/config/utils";
 import {requestMethod} from "../src/config/service"; 
 export default{
     props:{forms:Object},
@@ -177,8 +177,7 @@ export default{
        
 	},
 	created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
+        let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
         vm.company=vm.$parent.company;        
         vm.managerName=vm.$parent.managerName;

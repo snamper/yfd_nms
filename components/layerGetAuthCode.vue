@@ -16,71 +16,12 @@ tbody tr{height: 36px;}
 </style>
 <template>
 <section  id="detailsView" class="greyFont">
-	<!-- 同步时间设置 -->
-    <div v-if="off.set">
-		<table >
-			<thead>
-				<tr>
-					<th colspan="2">
-						同步设置
-					</th>
-				</tr>
-			</thead>
-			<tbody v-if="true">
-				<tr>
-					<td>
-						<span class="demonstration">同步开始日期&nbsp;&nbsp;:&nbsp;&nbsp;</span>
-                        <el-date-picker
-                        v-model="date"
-                        size="small"
-                        type="date"
-                        placeholder="选择日期">
-                        </el-date-picker>				
-					</td>
-				</tr>
-                <tr>
-                    <td>
-						<span class="demonstration">同步开始时间&nbsp;&nbsp;:&nbsp;&nbsp;</span>                        
-                        <el-time-select
-                        v-model="time"
-                        size="small"
-                        :picker-options="{
-                            start: '08:30',
-                            step: '00:15',
-                            end: '18:30'
-                        }"
-                        placeholder="选择时间">
-                        </el-time-select>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-						<span class="demonstration">同步间隔时间&nbsp;&nbsp;:&nbsp;&nbsp;</span>                                                
-                        <el-select v-model="value" size="small" placeholder="请选择">
-                            <el-option
-                            v-for="item in options"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </td>
-                </tr>
-                <tr class="tdBtn" colspan="2">
-                    <span @click="close()">取消</span>
-                    <span @click="btnYes(1)">确认</span>
-                </tr>
-			</tbody>
-		</table>
-		<div class="lay-mask"></div>
-	</div>
-    <!-- 手动同步 -->
-    <div v-if="off.sync">
+    <div>
         <table >
 			<thead>
 				<tr>
-					<th colspan="2">
-						添加员工
+					<th v-if="layerType=='notice'" colspan="2">
+						删除公告
 					</th>
 				</tr>
 			</thead>
@@ -99,23 +40,6 @@ tbody tr{height: 36px;}
 		</table>
 		<div class="lay-mask"></div>
     </div>
-    <!-- 手动同步操作结果 -->
-    <div v-if="off.rsync">
-        <table >
-			<tbody v-if="true">
-                <tr colspan="2">
-                    <img src="../src/assets/images/icon_wenhao.png" alt="">
-                </tr>
-                <tr colspan="2">
-					码号手动同步已受理，请耐心等待结果
-				</tr>
-                <tr class="tdBtn2" colspan="2">
-                    <span @click="close()">确认</span>
-                </tr>
-			</tbody>
-		</table>
-		<div class="lay-mask"></div>
-    </div>
 </section>
 </template>
 <script>
@@ -124,6 +48,7 @@ import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service.js"; 
 import { errorDeal,getStore } from '../src/config/utils';
 export default{
+    props:{layerType:String},
 	data (){
 		return {
             count: '点击获取验证码',
@@ -151,14 +76,6 @@ export default{
 	created:function(){
         let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
-        vm.searchType=vm.$parent.searchType;
-		if(vm.$parent.off.setSync==true){
-            vm.off.set=true;
-            vm.off.sync=false;
-        }else if(vm.$parent.off.sync==true){
-            vm.off.sync=true;
-            vm.off.set=false;
-        }
 	},
 	methods:{
         getAuthCode(v){//获取验证码
@@ -209,10 +126,13 @@ export default{
                 ) 
             }).catch(e=>errorDeal(e));
         }
-        ,btnYes(v){//确认添加员工
-            let vm=this,url='/yfd-ums/w/user/addUsers',data='',load=Loading.service(options);
+        ,btnYes(v){
+            let vm=this;
+            if(vm.layerType=="notice"){
+                let url='/yfd-mns/w/msg/delete',data={},load=Loading.service(options);
+            }
             data=vm.$parent.addUsersData;
-            // data={'searchDepartId':vm.$parent.$parent.searchDepartId,userState:vm.$parent.radio,username:vm.$parent.name,phone:vm.$parent.phone,pageNum:v||1,pageSize:"10"};            
+            data.authCode=vm.authCode;
             if(vm.authCode==''){
                 layer.open({
                     content:'请输入验证码',
@@ -222,7 +142,6 @@ export default{
                 })
                 return false;
             }
-            data.authCode=vm.authCode;
             requestMethod(data,url)
             .then((data)=>{
                 vm.$parent.off.layer=false;
@@ -234,45 +153,13 @@ export default{
                         msgSkin:'success',
                     });
                     this.$parent.list=[],
-                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
-                    if(this.searchType!=1){
-                        this.search();
-                    }else if(this.searchType==1){
-                        let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
-                        vm.searchDetailsType=1;
-                        vm.searchDepartId=vm.$parent.searchDepartId;
-                        // data={'searchDepartId':vm.searchDepartId};
-                        data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.$parent.radio,username:vm.$parent.name,phone:vm.$parent.phone,pageNum:1,pageSize:"10"};            
-                        vm.companyName=v.departName;
-                        vm.managerName=v.managerName;
-                        vm.managerPhone=v.phone;
-                        requestMethod(data,url)
-                        .then((data)=>{
-                            load.close();
-                            if(data.code==200){
-                                if(data.data.users.length>0){
-                                    vm.$parent.off.notDlsDetails=false;
-                                    vm.$parent.off.dlsDetails=true;
-                                    vm.$parent.$parent.detailsList=data.data.users;
-                                }else{
-                                    vm.$parent.off.notDlsDetails=false;
-                                    vm.$parent.off.dlsDetails=true;
-                                    vm.$parent.$parent.detailsList=data.data.users;                                    
-                                }
-                            }else{
-                                errorDeal(data);
-                            }
-                        }).catch(e=>errorDeal(e));
-                    } 
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"}) 
+                    if(vm.$parent.off.searchList==true){
+                        this.$parent.search();
+                    }
                 }else{
-                    //    this.list[i].username="",
-                    //    this.list[i].phone="",
-                    //    this.list[i].checked=false,
-                    //    this.list[i].checked2=false
-
-
-                       this.$parent.list=[],
-                       this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
+                    this.$parent.list=[],
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"})
                     layer.open({
                         content:data.msg,
                         skin: 'msg',

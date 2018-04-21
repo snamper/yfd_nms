@@ -92,7 +92,7 @@
 <script>
 import { getDateTime,getUnixTime,errorDeal } from "../src/config/utils";
 export default{
-    props:{dataList:Array,dataListLiang:Array,dataListPu:Array},        
+    props:{dataList:Object,dataListLiang:Array,dataListPu:Array},        
     data (){
 		return {
             pageNumDetails:"",//号包详情

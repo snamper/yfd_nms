@@ -7,21 +7,20 @@
     .detailsUlDiv ul{border-left: 1px solid #ccc;border-right: 1px solid #ccc;border-top: 1px solid #ccc}
     .detailsUlDiv ul li {padding: 6px 18px;border-bottom: 1px solid #ccc}
     .detailsUlDiv ul li:nth-child(even){background: #ccc;}
-    div.el-row{line-height:30px}
     input.modifyInput{height: 28px;border-radius: 6px;outline: none;border: 1px solid #ccc;padding-left: 10px;}    
 </style>
 <template>
     <div>
         <div class="yfd">
             <el-container>
-                <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
+                <header class="borderBottom">
                     <el-row>
                         <el-col :span="9"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<span class="c-blue">&nbsp;{{company}}</span></div></el-col>
                         <el-col :span="5"><div class="grid-content bg-purple-light">联系人&nbsp;:&nbsp;<span>&nbsp;{{forms.username}}</span></div></el-col>
                         <el-col :span="5"><div class="grid-content bg-purple">手机号码&nbsp;:&nbsp;<span>{{forms.phone}}</span></div></el-col>
-                        <el-col :span="5"><div class="grid-content bg-purple-light"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                        <el-col :span="5"><div class="grid-content bg-purple-light fr"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
-                </el-header>         
+                </header>         
             </el-container>
         </div>
         <div class="listTitleFoot">
@@ -146,7 +145,7 @@
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service"; 
-import {errorDeal} from "../src/config/utils"
+import {errorDeal,getStore} from "../src/config/utils"
 export default{
     props:{forms:Object},
 	data (){
@@ -183,8 +182,7 @@ export default{
        
 	},
 	created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
+        let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
         vm.searchData=vm.$parent.searchData;
         vm.company=vm.$parent.StaffdepartName;

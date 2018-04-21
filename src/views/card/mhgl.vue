@@ -8,83 +8,65 @@
 <section ref="sec">
   <div v-if="off.notCardDetails">
     <!-- 查询模块 -->
-    <div class="dls">
+    <div class="dls greyFont">
         <el-row>
-            <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle">搜索条件</div></el-col>
+            <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
         </el-row>
         <el-row>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
+                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
                      <el-input v-model="packagename" size="mini"  placeholder="请输入号包名称" :maxlength="15"></el-input>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
                      <el-input v-model="name" size="mini"  placeholder="请输入查询的联系人姓名" :maxlength="10"></el-input>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
         </el-row>
          <el-row class="marginTop">
-             <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">号包类型：</div></el-col>
-                <el-col :span="18">
+             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包类型：</div></el-col>
+                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
                     <el-radio v-model="cardType"  label="1,2,3">全部</el-radio>
                     <el-radio v-model="cardType"  label="1">整号段</el-radio>
                     <el-radio v-model="cardType"  label="2">靓号包</el-radio>
                     <el-radio v-model="cardType"  label="3">普号包</el-radio>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
                      <el-input v-model="phone" size="mini"  placeholder="请输入查询的手机号码" :maxlength="11"></el-input>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
         </el-row>
        <el-row class="marginTop">
-             <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :span="18">
+             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="3" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="20" :sm="21" :md="20" :lg="18" :xl="18">
                     <el-radio v-model="nowStatus"  label="1,2,3,4">全部</el-radio>
                     <el-radio v-model="nowStatus"  label="1">未上架</el-radio>
                     <el-radio v-model="nowStatus"  label="2">已上架</el-radio>
                     <el-radio v-model="nowStatus"  label="3">已下架</el-radio>
                     <el-radio v-model="nowStatus"  label="4">已售</el-radio>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
-           <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
-                <el-col :span="18">
+           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="3" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
+                <el-col :xs="20" :sm="21" :md="20" :lg="18" :xl="18">
                     <el-radio v-model="radio"  label="1,2,3">全部</el-radio>
                     <el-radio v-model="radio"  label="1">移动</el-radio>
                     <el-radio v-model="radio"  label="2">联通</el-radio>
                     <el-radio v-model="radio"  label="3">电信</el-radio>
                 </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
             <el-col :span="24"><div class="grid-content bg-purple-light">
-                <el-col :span="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
+                <el-col :xs="4" :sm="3" :md="2" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
                 <el-col :span="22">
                 <el-col :span="20">
                     <el-checkbox-group v-model="checkedCities">
@@ -212,7 +194,7 @@
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
                         layout="prev, pager, next"
-                        :page-size="8"
+                        :page-size="10"
                         @current-change="search"
                         :total="form.page">
                         </el-pagination>
@@ -257,7 +239,7 @@
 <script>
 import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
-import { getDateTime,getUnixTime,errorDeal } from "../../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,getStore } from "../../config/utils.js";
 import {requestMethod,requestMethod2} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layerSync from "../../../components/layer";
@@ -281,7 +263,7 @@ export default{
             searchResData:{},//号包详情查询结果
             searchLiang:[],//靓号详情查询结果
             searchPu:[],//谱号详情查询结果
-            dataList:{},//号包详情页面
+            dataList:'',//号包详情页面
             dataListLiang:{},//号包详情页面
             dataListPu:{},//号包详情页面
             packagename:"",//号包名称
@@ -333,8 +315,7 @@ export default{
         "card-Details":cardDetails
 	},
 	created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
+        let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
 	},
 	methods:{
@@ -359,6 +340,7 @@ export default{
                 if(data.code==200){
                     // vm.pageNumDetails=data.data;
                     vm.searchResData=data.data
+                    debugger;
                 }
             }).then(()=>{
                 if(v.productType==1||v.productType==2){
@@ -469,7 +451,7 @@ export default{
                 "productType":vm.cardType,
                 "productState":vm.nowStatus,
                 "sessionType":2,
-                "pageSize":8
+                "pageSize":10
                 ,"pageNum":p||1}
             vm.searchData=data;
             requestMethod2(data,url,function(){load.close()})

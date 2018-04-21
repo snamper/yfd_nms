@@ -10,41 +10,36 @@
       <div v-if="off.noStaffd">
         <div class="yfd">
                 <el-container>
-                    <el-header style="margin-right:1%;margin-left:1%;border-bottom: 1px solid #ccc;padding-top:6px;height:50px;">
+                    <header class="borderBottom">
                         <el-row>
-                            <el-col :span="10"><div class="grid-content bg-purple">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span  style="color:blue">{{company}}</span></div></el-col>
-                            <el-col :span="6"><div class="grid-content bg-purple-light">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span >{{managerName}}</span></div></el-col>
-                            <el-col :span="4"><div class="grid-content bg-purple">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{managerPhone}}</span></div></el-col>
-                            <el-col :span="4"><div class="grid-content bg-purple-light fr"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                            <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10"><div class="grid-content bg-purple">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span  style="color:blue">{{company}}</span></div></el-col>
+                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple-light">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span >{{managerName}}</span></div></el-col>
+                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{managerPhone}}</span></div></el-col>
+                            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div class="grid-content bg-purple-light fr"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                         </el-row>
-                    </el-header>
+                    </header>
+                </el-container>                    
                 <el-row>
                     <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle">搜索条件</div></el-col>
                 </el-row>
                 <el-row>
-                <el-col :span="12"><div class="grid-content bg-purple-light greyFont">
-                    <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                    <el-col :span="18">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light greyFont">
+                    <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                    <el-col :xs="19" :sm="21" :md="20" :lg="20" :xl="20" :span="20">
                         <el-input v-model="name" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                     </el-col>
-                    <el-col :span="2">
-                        
-                    </el-col> 
                 </div></el-col>
-                <el-col :span="12"><div class="grid-content bg-purple-light greyFont">
-                    <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                    <el-col :span="18">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light greyFont">
+                    <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                    <el-col :xs="19" :sm="21" :md="20" :lg="20" :xl="20" :span="20">
                         <el-input v-model="phone" size="small" placeholder="请输入查询的手机号码"></el-input>
                     </el-col>
-                    <el-col :span="2">
-                    
-                    </el-col> 
                 </div></el-col>
             </el-row>
             <el-row class="marginTop">
-                <el-col :span="12"><div class="grid-content bg-purple-light greyFont">
-                    <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                    <el-col :span="18">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light greyFont">
+                    <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                    <el-col :xs="19" :sm="21" :md="20" :lg="20" :xl="20" :span="20">
                         <el-radio v-model="radio"  label="1,2" >全部</el-radio>
                         <el-radio v-model="radio"  label="1" >正常</el-radio>
                         <!-- <el-radio v-model="radio"  label="3" >离线</el-radio> -->
@@ -57,7 +52,6 @@
             <el-row style="text-align:center" class="marginTop">
                 <button class="searchBtn" type="danger" @click="search()">搜索</button>
             </el-row>
-        </el-container>
         </div>
         <el-row>
             <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3">添加员工</el-button></div></el-col>
@@ -154,11 +148,11 @@
                 <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容{{a}}</p>
             </div>
             <div class="listTitleFoot">
-                <el-input v-model="reason" size="small" :maxlength="20" placeholder="请输入原因，字数限制20个字符，必填"></el-input>
+                <el-input v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
             </div> 
             <div class="listTitleFoot">
                 <p style="text-align:right">验证号码:{{user.phone}}
-                    <el-input v-model="authCode" size="mini" style="width:26%" placeholder="请输入验证码"></el-input>
+                    <el-input v-model="authCode" size="mini" style="width:26%" maxlength=6 placeholder="请输入验证码"></el-input>
                     <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button>
                 </p> 
             </div> 
@@ -178,7 +172,7 @@
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service"; 
-import { getDateTime,getUnixTime,errorDeal } from "../src/config/utils";
+import { getDateTime,getUnixTime,errorDeal,getStore } from "../src/config/utils";
 import search from "./search";
 import dlsStaffDetails from "./dlsStaffDetails";
 import layers from "./layeruser";
@@ -229,8 +223,7 @@ export default{
         "common-layer":layers,
     },
     created:function(){
-        let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-        let Info=JSON.parse(userInfo);
+        let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;        
         vm.searchType=vm.$parent.searchDetailsType;
         vm.searchDepartId=vm.$parent.searchDepartId;
@@ -430,6 +423,7 @@ export default{
                 if(vm.lists[v].ischecked==true){
                     data.operateUserIds.push(vm.lists[v].userId)
                 }
+                vm.lists[v].ischecked=false;
             }
             if(vm.reason==""){
                 layer.open({
@@ -479,6 +473,9 @@ export default{
                         .then((data)=>{
                             load.close();
                             if(data.code==200){
+                                for(let v in vm.lists){
+                                    vm.lists[v].ischecked=false;
+                                }
                                 if(data.data.users.length>0){
                                     vm.$parent.off.notDlsDetails=false;
                                     vm.$parent.off.dlsDetails=true;

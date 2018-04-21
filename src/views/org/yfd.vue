@@ -10,33 +10,33 @@
         <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
         </el-row>
         <el-row>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="4" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="14" :sm="16" :md="16" :lg="16" :xl="16">
                      <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
-                <el-col :span="2">
+                <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                    
                 </el-col> 
             </div></el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="14" :sm="14" :md="16" :lg="16" :xl="16">
                      <el-input v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
-                <el-col :span="2">
+                <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                 </el-col> 
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="2" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="17" :sm="16" :md="16" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2" >全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
                     <el-radio v-model="radio"  label="2" >黑名单</el-radio>
                 </el-col>
-                <el-col :span="2">
+                <el-col :xs="1" :sm="1" :md="4" :lg="4" :xl="4">
                    
                 </el-col> 
             </div></el-col>
@@ -46,19 +46,19 @@
         </el-row>
     </div>
     <el-row>
-            <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3">添加员工</el-button></div></el-col>
-        </el-row>
-        <div class="listTitleFoot addList" v-if="off.addList">
-            <div style="float:right">
-                <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
-                <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
-            </div>
-            <div v-for="(v,i) in list" :key="i" class="mt8">
-                用户姓名 : <el-input style="width:25%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input>
-                &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input>
-                &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
-            </div>
+        <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3">添加员工</el-button></div></el-col>
+    </el-row>
+    <div class="listTitleFoot addList" v-if="off.addList">
+        <div style="float:right">
+            <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
+            <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
         </div>
+        <div v-for="(v,i) in list" :key="i" class="mt8">
+            用户姓名 : <el-input style="width:25%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input>
+            &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input>
+            &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
+        </div>
+    </div>
     <!-- <div v-if="off.searchList"> -->
     <div v-if="detailsList">
         <div v-if="detailsList.length>0">    
@@ -80,7 +80,7 @@
                     </tr>
                     <tr v-for="(v,i) of detailsList" :key="i" :class="{'greyFont':v.departState==3}">
                         <td>
-                            {{((pa-1)*10+(i+1))}}
+                            {{((pa-1)*15+(i+1))}}
                         </td>
                         <td >
                         <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
@@ -116,7 +116,7 @@
                 <el-col :span="12"><div class="grid-content bg-purple">
                     <el-pagination
                         layout="prev, pager, next"
-                        :page-size="10"
+                        :page-size="15"
                         @current-change="search"
                         :current-page.sync="currentPage"
                         :total="form.page">
@@ -140,7 +140,7 @@
 const options={text:"正在加载"}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
-import { getDateTime,getUnixTime,errorDeal } from "../../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,getStore } from "../../config/utils.js";
 import layerAddStaff from "../../../components/layeruseryfd";
 import yfdStaffDetails from "../../../components/yfdStaffDetails";
 export default{
@@ -175,8 +175,7 @@ export default{
         "common-layer":layerAddStaff,        
 	},
 	created:function(){
-       let vm=this,userInfo=localStorage.getItem("KA_ECS_USER");
-       let Info=JSON.parse(userInfo);
+       let vm=this,Info=getStore("YFD_NMS_INFO");
        vm.user=Info;
     },
 	methods:{
@@ -232,7 +231,7 @@ export default{
                 "username":vm.name
                 ,"phone":vm.phone
                 ,"userState":vm.radio
-                ,"pageSize":10
+                ,"pageSize":15
                 ,"pageNum":p||1}
             requestMethod(data,url)
             .then((data)=>{
@@ -240,6 +239,7 @@ export default{
                     vm.off.searchList=true;
                     vm.form.page=data.data.total;
                     vm.detailsList=data.data.users;
+                    vm.off.addList=false;
                 }else{
                     layer.open({
                         content:data.msg,

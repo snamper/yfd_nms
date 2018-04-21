@@ -9,13 +9,14 @@ export default {
 	//设置用户信息
 	[SET_USERINFO](state,res){
 		state.userInfo=res;
-		setStore("KA_ECS_USER",res);
-	},
+		setStore("YFD_NMS_INFO",res);
+    },
+    
 	//登出
 	[SIGN_OUT](state){
 		state.userInfo={};
-		removeStore("KA_ECS_USER");
-		removeStore("KA_ECS_ONLINE_TIME");
-		window.location.href='/nbs/login';
+		removeStore("YFD_NMS_INFO");
+		// removeStore("KA_ECS_ONLINE_TIME");
+		window.location.href='/ums/login';
 	}
 };

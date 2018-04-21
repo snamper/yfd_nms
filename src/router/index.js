@@ -5,11 +5,18 @@
 * */
 import Vue from "vue";
 import Router from "vue-router";
-require("../assets/js/base64.min.js");
+// require("../assets/js/base64.min.js");
 Vue.use(Router);
 const load=(isShow)=>{
   //路由加载动画
 };
+const Login = resolve => {
+    load(true);
+    require.ensure(["@/views/login"], () => {
+      resolve(require("@/views/login"));
+      load();
+    });
+  };
 const Home = resolve => {
   load(true);
   require.ensure(["@/views/home"], () => {
@@ -111,9 +118,21 @@ const Card_Mhgl = resolve => {
       load();
     });
   };
+  //公告管理
+  const Notice_noticePage = resolve => {
+    load(true);
+    require.ensure(["@/views/notice/notice.vue"], () => {
+      resolve(require("@/views/notice/notice.vue"));
+      load();
+    });
+  }; 
 const router=new Router({
   routes: [
-    {
+      {
+        path:"/login",
+        component:Login,
+      },
+      {
         path:"/home",
         redirect:"home/organization",
         component:Home,
@@ -169,27 +188,39 @@ const router=new Router({
             path:"browsingHistory",
             name:"browsingHistory",
             component:Brhistory,
-        }]
+        }
+        ,{
+            path:"notice",
+            name:"notice",
+            component:Notice_noticePage,
+       }]
 
     }
   ]
 });
 
-
 router.beforeEach((to, from, next) => {
-    if(to.query&&to.query.auth){
-        let t=to.query.auth;
-            t=BASE64.decode(t);
-            delete t.departName;
-        localStorage.setItem("KA_ECS_USER",t);
-    }else{
-        // let token = localStorage.getItem("KA_ECS_USER");
-        // if (!token){
-        //     window.location.href="/nbs/login"
-        // }
+    var token = localStorage.getItem("YFD_NMS_INFO");
+    if (!token&&to.path!=="/login"||to.path=="/"){
+        next({path:"/login"});
+        return false;
     }
-    next();
+     next();
 });
+// router.beforeEach((to, from, next) => {
+//     if(to.query&&to.query.auth){
+//         let t=to.query.auth;
+//             t=BASE64.decode(t);
+//             delete t.departName;
+//         localStorage.setItem("KA_ECS_USER",t);
+//     }else{
+//         let token = localStorage.getItem("KA_ECS_USER");
+//         if (!token){
+//             window.location.href="/nbs/login"
+//         }
+//     }
+//     next();
+// });
 export default router;
 
 

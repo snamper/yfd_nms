@@ -2,11 +2,11 @@
 /* .el-row.marginTop{margin-top: 18px;} */
 .el-row .textR{text-align: right;height: 100%}
 .el-row .textL{text-align: left;}
-.inputTitle{font-size: .16rem;}
+.inputTitle{font-size: .14rem;}
 table.searchTab{border-collapse:collapse;text-align: center}
 table.searchTab a{color:#43AAD4}
 table.searchTab a:active{color:rgb(82, 24, 241)}
-table.searchTab tr td{ border-bottom:1px solid rgb(235, 235, 235);white-space: nowrap; padding: 0px 10px;}
+table.searchTab tr td{ border-bottom:1px solid rgb(235, 235, 235);}
 table.searchTab tr td:last-child{ border-bottom:none;}
 table.searchTab tr{height:35px;}
 table.searchTab tr:nth-child(even){background: #FAFBFD;}

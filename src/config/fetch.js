@@ -10,13 +10,13 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
     };
 	
     //--------------------------------------------------------------------
-    let userInfo=getStore("KA_ECS_USER");
+    let userInfo=getStore("YFD_NMS_INFO");
     if(userInfo){
         Object.assign(userInfo,data);
-        var data=userInfo;
+        data=userInfo;
     }else{
-        //  errorDeal({'code':648},closeLoadLayout);
-        //  return false;
+        errorDeal({'code':648},closeLoadLayout);
+        return false;
     }
 //--------------------------------------------------------------------
 	if (type == 'GET') {
@@ -46,7 +46,8 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 				value: JSON.stringify(data)
 			});
         }
-        return await fetch(url,requestConfig).then((response)=>{
+        return await fetch(url,requestConfig)
+        .then((response)=>{
 			closeLoadLayout();
 			if(response.status=="200"){
                 return response.json();
@@ -59,7 +60,7 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
             }else if(data.hasOwnProperty('code')&&data.code!=200){
                 return data;
             }else{
-                return data;
+                return data={code:data}
             }
         }).catch(error=>errorDeal(error));
 	} else {//XHR对象

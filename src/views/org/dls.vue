@@ -11,68 +11,68 @@
         </el-row>
         <el-row>
             <el-col :span="24"><div class="grid-content bg-purple">
-                <el-col :span="2"><div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div></el-col>
-                <el-col :span="8">
+                <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div></el-col>
+                <el-col :xs="20" :sm="14" :md="14" :lg="9" :xl="10">
                     <el-date-picker
                     v-model="startTime"
-                    type="datetime"
                     size="small"
-                    :editable="false"
+                    type="datetime"
+                    :picker-options="pickerOptionsS"
                     placeholder="选择开始时间">
                     </el-date-picker>
                     <span>——</span>
                     <el-date-picker
                     v-model="endTime"
-                    type="datetime"
                     size="small"
-                    :editable="false"                    
+                    type="datetime"
+                    :picker-options="pickerOptionsE"
                     placeholder="选择结束时间">
                     </el-date-picker>
                 </el-col>
-                <el-col :span="12" style="font-size:18px">
+                <el-col :xs="20" :sm="7" :md="7" :lg="10" :xl="12" style="font-size:18px">
                     ( <el-radio v-model="timeType"  label="2">修改时间</el-radio>
                     <el-radio v-model="timeType"  label="1">创建时间</el-radio> )
                 </el-col> 
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
-            <el-col :span="12"><div class="grid-content bg-purple">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
-                <el-col :span="18">
-                     <el-input v-model="cname" :maxlength="25" size="small" placeholder="请输入查询的公司名称"></el-input>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
+                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                     <el-input v-model="cname" :maxlength="30" size="small" placeholder="请输入查询的公司名称"></el-input>
                 </el-col>
-                <el-col :span="2">
+                <el-col :xs="24" :sm="6" :md="6" :lg="4" :xl="4">
                 </el-col> 
             </div></el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="name"  :maxlength="20" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
-                <el-col :span="2">
+                <el-col :xs="24" :sm="7" :md="7" :lg="4" :xl="4">
                    
                 </el-col> 
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="20" :sm="16" :md="12" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,3">全部</el-radio>
                     <el-radio v-model="radio"  label="1">正常</el-radio>
                     <el-radio v-model="radio"  label="3">注销</el-radio>
                     <!-- <el-radio v-model="radio"  label="2">注销</el-radio> -->
                 </el-col>
-                <el-col :span="2">
+                <el-col :xs="24" :sm="2" :md="7" :lg="4" :xl="4">
                    
                 </el-col> 
             </div></el-col>
-            <el-col :span="12"><div class="grid-content bg-purple-light">
-                <el-col :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
-                <el-col :span="18">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
+                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="phone" :maxlength="11" size="small"  placeholder="请输入联系人号码"></el-input>
                 </el-col>
-                <el-col :span="2">
+                <el-col :xs="24" :sm="7" :md="7" :lg="4" :xl="4">
                 </el-col> 
             </div></el-col>
         </el-row>
@@ -120,7 +120,7 @@
                     </tr>
                     <tr v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
                         <td >
-                        {{((pa-1)*10+(i+1))}}
+                        {{((pa-1)*15+(i+1))}}
                         </td>
                         <td >
                         {{new Date(v.modifyTime).toLocaleString()}}
@@ -161,7 +161,7 @@
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
                         layout="prev, pager, next"
-                        :page-size="5"
+                        :page-size="15"
                         @current-change="search"
                         :current-page.sync="currentPage"                        
                         :total="form.page">
@@ -224,8 +224,35 @@ export default{
                 page:0
             }
             ,searchList:''
-            ,details:{}
-            ,ix:[{color:'red11',age:18,sex:'girl',s:'off'},{color:'red22',age:18,sex:'girl',s:'on'},{color:'red33',age:18,sex:'girl',s:'black'},{color:'red44',age:18,sex:'girl',s:'on'}],      
+            ,details:{},
+            pickerOptionsS: {
+            disabledDate(time) {
+                let curDate = new Date().getTime();
+                let curYear=new Date(curDate).getFullYear();
+                let curMonth=new Date(curDate).getMonth()+1;
+                let curDay=new Date(curDate).getDate()+1; 
+                let nextMonth=curMonth+1;               
+                let cur=curYear+"/"+curMonth+"/1";
+                let next=curYear+"/"+nextMonth+"/1";
+                let nextYesterday=new Date(next)-1000*3600*24;
+                    cur=new Date(cur).getTime();
+                return time.getTime() > nextYesterday || time.getTime() < cur;
+            }
+            },
+            pickerOptionsE: {
+            disabledDate(time) {
+                let curDate = new Date().getTime();
+                let curYear=new Date(curDate).getFullYear();
+                let curMonth=new Date(curDate).getMonth()+1;
+                let curDay=new Date(curDate).getDate()+1; 
+                let nextMonth=curMonth+1;               
+                let cur=curYear+"/"+curMonth+"/1";
+                let next=curYear+"/"+nextMonth+"/1";
+                let nextYesterday=new Date(next)-1000*3600*24;
+                    cur=new Date(cur).getTime();
+                return time.getTime() > nextYesterday || time.getTime() < cur;
+            }
+            }, 
         }
     },
     components:{
@@ -234,7 +261,15 @@ export default{
         "dls-Details":dlsDetails
     },
     created:function(){
-
+        let vm=this;
+        let curDate = (new Date()).getTime();
+        let curMonth=new Date(curDate).getMonth()+1;
+        let curYear=new Date(curDate).getFullYear();
+        let curDay=new Date(curDate).getDate()+1;
+        let cur=curYear+"/"+curMonth+"/1";
+        let Next=curYear+"/"+curMonth+"/"+curDay;
+        vm.startTime=new Date(cur).getTime();
+        vm.endTime=new Date(Next).getTime()-1000;
     },
     methods:{
         openSet(){//设置
@@ -269,7 +304,7 @@ export default{
                 ,"managerName":vm.name
                 ,"departState":vm.radio
                 ,"phone":vm.phone
-                ,"pageSize":10
+                ,"pageSize":15
                 ,"pageNum":p||1}
             requestMethod(data,url)
             .then((data)=>{
@@ -277,7 +312,7 @@ export default{
                 if(data.code==200){
                     vm.total=data.data.total;//查询总数
                     vm.searchList=data.data.departs;//查询内容
-                    vm.form.page=data.data.total/10
+                    vm.form.page=data.data.total
                 }else{
                     errorDeal(data);
                 }
