@@ -107,7 +107,7 @@ span.timeBig{
     line-height: 20px;
     text-decoration: none;
     color: #666;
-    background: url(/static/icon/file_img.svg) no-repeat;
+    background: url(../../assets/images/icon/file_img.svg) no-repeat;
     background-size: contain;
     padding-left:40px; 
 }

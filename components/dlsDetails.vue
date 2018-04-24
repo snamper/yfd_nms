@@ -94,7 +94,7 @@
                     </td>
                     <td >
                         <span v-for="(v,i) in v.userRole" :key="i">
-                            <img v-if="v==3" src="../static/icon/admin.svg" class="adminIcon">
+                            <img v-if="v==3" src="../src/assets/images/icon/admin.svg" class="adminIcon">
                         </span>
                         {{v.username}}
                     </td>
