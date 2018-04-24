@@ -471,8 +471,16 @@ export default {
         this.showImg = false;
     },
     imgBigFunction(e){
-        this.$refs.imgBigFunction[0].click();
+        let vm=this;
+        for(var i in vm.searchList){
+            if(vm.searchList[i].annex.length==0){
+                if(this.$refs.imgBigFunction[i]!='无'){
+                    this.$refs.imgBigFunction.splice(i,0,'无')
+                }
+            }
+        }
+        this.$refs.imgBigFunction[e].click();
     }
-     }
+    }
 }
 </script>

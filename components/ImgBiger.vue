@@ -13,6 +13,9 @@
 <script>
 export default {
     props: ['imgSrc'],
+    created () {
+    console.log(this.imgSrc)  
+    },
     methods: {
         bigImg() {
             // 发送事件
