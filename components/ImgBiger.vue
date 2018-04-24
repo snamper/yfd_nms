@@ -14,7 +14,6 @@
 export default {
     props: ['imgSrc'],
     created () {
-    console.log(this.imgSrc)  
     },
     methods: {
         bigImg() {

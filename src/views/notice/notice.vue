@@ -103,7 +103,7 @@
                                 <p><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
                                 <p >
                                     <img class="icon" src="../../assets/images/icon/link.svg" alt="" />
-                                    附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(i)" href="javascript:void(0)" class="c-yellow textDec">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
+                                    附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(v)" href="javascript:void(0)" class="c-yellow textDec">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
                                     <span class="fr">
                                         发送对象:<a v-if="v.receiverType==1" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
                                         <a v-if="v.receiverType==2" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>
@@ -244,243 +244,237 @@ export default {
 
   },
   methods: {
-      reSet(){
-            let vm=this;
-            vm.radio="1";
-            vm.textarea3="";
-            vm.inputLink="";
-            vm.formInline.region="";
-            vm.value1="";
-            vm.imgFileName="";
-            vm.off.imgIcon=false;
-            vm.$refs.file.value="";
-            // console.log(vm.$refs.file.files[0].value);
-      },
-      upload(){
-          let vm=this, sendData= {
-            "appicationId": "",
-            "body": {
-                "annex": [],
-                "category": "",
-                "channel": "",
-                "content": vm.textarea3,
-                "redirectUrl": vm.inputLink,
-                "title": "",
-                "type":vm.formInline.region,
-            },
-            "expTime": new Date(vm.value1).getTime()||"",
-            "msgType":"",
-            "recipientType":vm.radio,
-            "recipients": "",
-            "sender": "",
-        }
-        if(vm.radio==3&&vm.input==""){
-            layer.open({
-                content:"请输入要发送对象的手机号码",
-                skin:"msg",
-                time:2,
-                msgSkin:"error"
-            })
-            return false
-        }else{
-            let arr=vm.input.split(",");
-            sendData.recipients=arr;
-        }
-        if(vm.textarea3==""){
-            layer.open({
-                content:"请输入消息内容,不超过140字",
-                skin:"msg",
-                time:2,
-                msgSkin:"error"
-            })
-            return false
-        }
-        if(vm.inputLink==""){
-            layer.open({
-                content:"请输入链接地址",
-                skin:"msg",
-                time:2,
-                msgSkin:"error"
-            })
-            return false
-        }
-        if(vm.formInline.region==""){
-             layer.open({
-                content:"请选择消息类型",
-                skin:"msg",
-                time:2,
-                msgSkin:"error"
-            })
-            return false
-        }
-        if(vm.value1==""){
-            layer.open({
-                content:"请选择日期",
-                skin:"msg",
-                time:2,
-                msgSkin:"error"
-            })
-            return false
-        }
-        if(vm.imgFile!=""){
-            sendData.body.annex.push(vm.imgFile);
-        }
-        requestMethod(sendData,"/yfd-mns/w/msg/add")
-        .then((data)=>{
-            if(data.code==200){
-                this.search(vm.pa);
-                // this.$refs.file.value="";
-                // vm.off.imgIcon=false;
-                // vm.textarea3=="";
-                // vm.inputLink=="";
-                // vm.formInline.region=="";
-                // vm.value1=="";
+        reSet(){
+                let vm=this;
+                vm.radio="1";
+                vm.textarea3="";
+                vm.inputLink="";
+                vm.formInline.region="";
+                vm.value1="";
+                vm.imgFileName="";
+                vm.off.imgIcon=false;
+                vm.$refs.file.value="";
+                // console.log(vm.$refs.file.files[0].value);
+        },
+        upload(){
+            let vm=this, sendData= {
+                "appicationId": "",
+                "body": {
+                    "annex": [],
+                    "category": "",
+                    "channel": "",
+                    "content": vm.textarea3,
+                    "redirectUrl": vm.inputLink,
+                    "title": "",
+                    "type":vm.formInline.region,
+                },
+                "expTime": new Date(vm.value1).getTime()||"",
+                "msgType":"",
+                "recipientType":vm.radio,
+                "recipients": "",
+                "sender": "",
+            }
+            if(vm.radio==3&&vm.input==""){
                 layer.open({
-                    content:"发送成功",
+                    content:"请输入要发送对象的手机号码",
                     skin:"msg",
                     time:2,
-                    msgSkin:"success"
+                    msgSkin:"error"
                 })
-                this.reSet();
+                return false
             }else{
-               errorDeal(data)
+                let arr=vm.input.split(",");
+                sendData.recipients=arr;
             }
-        }).catch(e=>errorDeal(e));
-      },
-      handleBeforeUpload(e){//上传图片
-      debugger;
-          let file=this.$refs.file.files[0];
-          let vm=this;
-          ImgToBase64(file,1000,function(base64){
-              let data={"image":base64},url="/yfd-mns/w/msg/imgUpload";
-              requestMethod(data,url)
-              .then((resdata)=>{
-                    vm.valuesrc=successIcon;
-                    vm.off.imgIcon=true;
-                    vm.upLoad=false;
-                    vm.imgFile=resdata.data;
-                    vm.imgFileName=file.name;
-                  if(resdata.code==200){
+            if(vm.textarea3==""){
+                layer.open({
+                    content:"请输入消息内容,不超过140字",
+                    skin:"msg",
+                    time:2,
+                    msgSkin:"error"
+                })
+                return false
+            }
+            if(vm.inputLink==""){
+                layer.open({
+                    content:"请输入链接地址",
+                    skin:"msg",
+                    time:2,
+                    msgSkin:"error"
+                })
+                return false
+            }
+            if(vm.formInline.region==""){
+                layer.open({
+                    content:"请选择消息类型",
+                    skin:"msg",
+                    time:2,
+                    msgSkin:"error"
+                })
+                return false
+            }
+            if(vm.value1==""){
+                layer.open({
+                    content:"请选择日期",
+                    skin:"msg",
+                    time:2,
+                    msgSkin:"error"
+                })
+                return false
+            }
+            if(vm.imgFile!=""){
+                sendData.body.annex.push(vm.imgFile);
+            }
+            requestMethod(sendData,"/yfd-mns/w/msg/add")
+            .then((data)=>{
+                if(data.code==200){
+                    this.search(vm.pa);
+                    // this.$refs.file.value="";
+                    // vm.off.imgIcon=false;
+                    // vm.textarea3=="";
+                    // vm.inputLink=="";
+                    // vm.formInline.region=="";
+                    // vm.value1=="";
                     layer.open({
-                        content:'图片上传成功',
-                        skin: 'msg',
-                        time: 3,
-                        msgSkin:'success',
+                        content:"发送成功",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"success"
                     })
-                  }else{
-                    vm.valuesrc=errorIcon;
-                    vm.off.imgIcon=true;                      
-                    vm.upLoad=false;
-                    layer.open({
-                        content:'图片上传失败,请联系管理员',
-                        skin: 'msg',
-                        time: 3,
-                        msgSkin:'error',
-                    })
-                  }
-              }).catch(e=>errorDeal(e));
-          })
-      },
-      doFilter(type){//全选/取消
-          let vm=this;
-          if(type=="all"){
-              for(let i=0;i<vm.searchList.length;i++){
-                  this.$set(vm.searchList[i],'ischecked',true)
-              }
-          }else if(type=="none"){
-              for(let i=0;i<vm.searchList.length;i++){
-                  this.$set(vm.searchList[i],'ischecked',false)
-              }
-          }
-      },cancelMsg(){
-          let vm=this,
-          data={msgIds:[]};
-          vm.off.layer=false;
-          vm.off.isConfirm=false;
-          vm.isCancel=false;
-          for(let i=0;i<vm.searchList.length;i++){
-              if(vm.searchList[i].ischecked==true){
-                  data.msgIds.push(vm.searchList[i].msgId);
-                  vm.isCancel=true;
-              }
-          }
-          vm.cancelInfo=data;
-          if(vm.isCancel==false){
-              layer.open({
-                  content:'请选择要删除的公告消息',
-                  skin: 'msg',
-                  time: 3,
-                  msgSkin:'error',
-              })
-              return false;
-          }else if(vm.isCancel==true){
-            vm.off.layer=true;
-          }
-      },search(index){
-          let vm=this;
-          vm.pa=index||1;
-          requestMethod({pageSize:15,pageNum:index},"/yfd-mns/w/msg/searchBulletin")
-          .then((data)=>{
-              if(data.code==200){
-                vm.form.page=data.data.total;
-                vm.searchList=data.data.bulletins;
-                this.doFilter("none");
-              }else{
-                  errorDeal(data.code);
-              }
-              
-          }).catch(e=>errorDeal(e));
-      },checkSendUser(p,v){//查看公告发送对象信息
-        debugger;
-        let vm=this;
-        vm.pa=p||1;
-        if(v!=undefined){
-        let data={"msgId":v.msgId,"recipientType":v.receiverType,pageSize:20};
-        vm.checkSendUserData=data;
-        }
-        vm.checkSendUserData.pageNum=p||1
-        requestMethod(vm.checkSendUserData,"/yfd-mns/w/msg/searchReceivers")
-        .then((data)=>{
-        if(data.code==200){
-            vm.addMsg=false;
-            vm.form.page2=data.data.total;
-            vm.userTotal=data.data.total;
-            vm.usersInfoArray=data.data.users;
-        }else{
-            layer.open({
-                content:data.msg,
-                skin: 'msg',
-                time: 3,
-                msgSkin:'error',
+                    this.reSet();
+                }else{
+                errorDeal(data)
+                }
+            }).catch(e=>errorDeal(e));
+        },
+        handleBeforeUpload(e){//上传图片
+            let file=this.$refs.file.files[0];
+            let vm=this;
+            ImgToBase64(file,1000,function(base64){
+                let data={"image":base64},url="/yfd-mns/w/msg/imgUpload";
+                requestMethod(data,url)
+                .then((resdata)=>{
+                        vm.valuesrc=successIcon;
+                        vm.off.imgIcon=true;
+                        vm.upLoad=false;
+                        vm.imgFile=resdata.data;
+                        vm.imgFileName=file.name;
+                    if(resdata.code==200){
+                        layer.open({
+                            content:'图片上传成功',
+                            skin: 'msg',
+                            time: 3,
+                            msgSkin:'success',
+                        })
+                    }else{
+                        vm.valuesrc=errorIcon;
+                        vm.off.imgIcon=true;                      
+                        vm.upLoad=false;
+                        layer.open({
+                            content:'图片上传失败,请联系管理员',
+                            skin: 'msg',
+                            time: 3,
+                            msgSkin:'error',
+                        })
+                    }
+                }).catch(e=>errorDeal(e));
             })
-        }
-        }).catch(e=>errorDeal(e));
-      },getDateTime(v){
-          return getDateTime(v);
-      },
-      goBack(){
-          this.addMsg=true;
-      },
-    clickImg(e) {
-        this.showImg = true;
-        // 获取当前图片地址
-        this.imgSrc = e.currentTarget.src;
-        console.log(this.imgSrc);
-    },
-    viewImg(){
-        this.showImg = false;
-    },
-    imgBigFunction(e){
-        let vm=this;
-        for(var i in vm.searchList){
-            if(vm.searchList[i].annex.length==0){
-                if(this.$refs.imgBigFunction[i]!='无'){
-                    this.$refs.imgBigFunction.splice(i,0,'无')
+        },
+        doFilter(type){//全选/取消
+            let vm=this;
+            if(type=="all"){
+                for(let i=0;i<vm.searchList.length;i++){
+                    this.$set(vm.searchList[i],'ischecked',true)
+                }
+            }else if(type=="none"){
+                for(let i=0;i<vm.searchList.length;i++){
+                    this.$set(vm.searchList[i],'ischecked',false)
+                }
+            }
+        },cancelMsg(){
+            let vm=this,
+            data={msgIds:[]};
+            vm.off.layer=false;
+            vm.off.isConfirm=false;
+            vm.isCancel=false;
+            for(let i=0;i<vm.searchList.length;i++){
+                if(vm.searchList[i].ischecked==true){
+                    data.msgIds.push(vm.searchList[i].msgId);
+                    vm.isCancel=true;
+                }
+            }
+            vm.cancelInfo=data;
+            if(vm.isCancel==false){
+                layer.open({
+                    content:'请选择要删除的公告消息',
+                    skin: 'msg',
+                    time: 3,
+                    msgSkin:'error',
+                })
+                return false;
+            }else if(vm.isCancel==true){
+                vm.off.layer=true;
+            }
+        },search(index){
+            let vm=this;
+            vm.pa=index||1;
+            requestMethod({pageSize:15,pageNum:index},"/yfd-mns/w/msg/searchBulletin")
+            .then((data)=>{
+                if(data.code==200){
+                    vm.form.page=data.data.total;
+                    vm.searchList=data.data.bulletins;
+                    this.doFilter("none");
+                }else{
+                    errorDeal(data.code);
+                }
+                
+            }).catch(e=>errorDeal(e));
+        },checkSendUser(p,v){//查看公告发送对象信息
+            debugger;
+            let vm=this;
+            vm.pa=p||1;
+            if(v!=undefined){
+            let data={"msgId":v.msgId,"recipientType":v.receiverType,pageSize:20};
+            vm.checkSendUserData=data;
+            }
+            vm.checkSendUserData.pageNum=p||1
+            requestMethod(vm.checkSendUserData,"/yfd-mns/w/msg/searchReceivers")
+            .then((data)=>{
+            if(data.code==200){
+                vm.addMsg=false;
+                vm.form.page2=data.data.total;
+                vm.userTotal=data.data.total;
+                vm.usersInfoArray=data.data.users;
+            }else{
+                layer.open({
+                    content:data.msg,
+                    skin: 'msg',
+                    time: 3,
+                    msgSkin:'error',
+                })
+            }
+            }).catch(e=>errorDeal(e));
+        },getDateTime(v){
+            return getDateTime(v);
+        },
+        goBack(){
+            this.addMsg=true;
+        },
+        clickImg(e) {
+            this.showImg = true;// 获取当前图片地址
+            this.imgSrc = e.currentTarget.src;
+        },
+        viewImg(){
+            this.showImg = false;
+        },
+        imgBigFunction(e){
+            let vm=this,imgSrc=e.annex[0].base64String;
+            for(let i in vm.$refs.imgBigFunction){
+                if(vm.$refs.imgBigFunction[i].src==imgSrc){
+                    this.$refs.imgBigFunction[i].click();
                 }
             }
         }
-        this.$refs.imgBigFunction[e].click();
-    }
     }
 }
 </script>
