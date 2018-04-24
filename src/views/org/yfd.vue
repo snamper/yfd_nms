@@ -82,11 +82,14 @@
                         <td>
                             {{((pa-1)*15+(i+1))}}
                         </td>
-                        <td >
-                        <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
+                        <td>
+                            <span v-for="(v,i) in v.userRole" :key="i">
+                                <img v-if="v==3" src="../../../static/icon/admin.svg" class="adminIcon">
+                            </span>
+                            {{v.username}}
                         </td>
                         <td >
-                        {{v.phone}}
+                            <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>
                         </td>
                         <td >
                         {{new Date(v.createTime).toLocaleString()}}

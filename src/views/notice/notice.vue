@@ -10,8 +10,8 @@
             <div class="messageBox">
                 <p>新建</p>
                 <el-row :gutter="10">
-                    <el-col :xs="8" :sm="4" :md="3" :lg="2" :xl="2"><span>发送对象 :</span></el-col>
-                    <el-col :xs="16" :sm="20" :md="8" :lg="7" :xl="5">
+                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2"><span>发送对象 :</span></el-col>
+                    <el-col :xs="18" :sm="20" :md="8" :lg="7" :xl="5">
                         <span>
                             <el-radio v-model="radio" label="1">全部</el-radio>
                             <el-radio v-model="radio" label="2">店长</el-radio>
@@ -23,9 +23,9 @@
                     </el-col>   
                 </el-row>
                 <el-row :gutter="10">
-                    <el-col :xs="8" :sm="4" :md="3" :lg="2" :xl="2"><span>消息内容 :</span></el-col>
+                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2"><span>消息内容 :</span></el-col>
                     <p class="textareaBox">
-                        <el-col :xs="16" :sm="20" :md="21" :lg="22" :xl="22" >
+                        <el-col :xs="18" :sm="20" :md="21" :lg="22" :xl="22" >
                         <el-input
                             type="textarea"
                             rows=3
@@ -39,22 +39,23 @@
                     </p>
                 </el-row>
                 <el-row :gutter="10">
-                    <el-col :xs="8" :sm="4" :md="3" :lg="2" :xl="2"><span>链接地址 :</span></el-col>
-                    <el-col :xs="16" :sm="20" :md="21" :lg="22" :xl="22">
+                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2"><span>链接地址 :</span></el-col>
+                    <el-col :xs="18" :sm="20" :md="21" :lg="22" :xl="22">
                         <el-input v-model="inputLink" size="small" placeholder="输入链接地址"></el-input>
                     </el-col>   
                 </el-row>
                 <el-row :gutter="10">
-                    <el-col :xs="0" :sm="0" :md="0" :lg="2" :xl="2">&nbsp;</el-col>
-                    <el-col :xs="16" :sm="20" :md="22" :lg="22" :xl="22">
-                        <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12" class="upImgBox">
+                    <el-col :lg="2" :xl="2">&nbsp;</el-col>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="22">
+                        <!-- <el-col :xs="0" :sm="0" :md="0" :lg="2" :xl="2"></el-col> -->
+                        <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="10" class="upImgBox">
                             <a href="javascript:void(0)" class="upLoada">
                                 <input type="file" ref="file" name="file" id="file" accept="image/*" @change="handleBeforeUpload()">
                                 <span>{{imgFileName||'(注:上传图片大小100k内)'}}</span>
                             </a>
                             <img v-bind:src="valuesrc" :class="upLoad==true?'upS':'upF'" v-if="off.imgIcon">
                         </el-col>
-                        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6"  style="text-align:right">
+                        <el-col :xs="24" :sm="12" :md="12" :lg="7" :xl="6"  >
                             <el-form :inline="true" :model="formInline" class="demo-form-inline" size="small">
                                 消息类型 : 
                                 <el-form-item>
@@ -67,7 +68,7 @@
                                 </el-form-item>
                             </el-form>
                         </el-col>
-                        <el-col :xs="24" :sm="12" :md="12" :lg="6" :xl="6" style="text-align:right">
+                        <el-col :xs="24" :sm="12" :md="12" :lg="7" :xl="6" >
                             <el-form :inline="true" :model="formInline" class="demo-form-inline" size="small">
                                 <div class="block">
                                     <span class="demonstration">有效期 : </span>
@@ -99,10 +100,10 @@
                             <div class="msgTime"><span class="timeBig">{{getDateTime(v.creatTime)[2]}}日</span> {{getDateTime(v.creatTime)[1]}}月 {{getDateTime(v.creatTime)[0]}}年&nbsp;&nbsp;{{getDateTime(v.creatTime)[5]}}<span class="fr">有效期 ：{{getDateTime(v.expTime)[0]}}年{{getDateTime(v.expTime)[1]}}月{{getDateTime(v.expTime)[2]}}日</span></div>
                             <div class="msgInfo">
                                 <p><img class="icon" src="/static/icon/book.svg" alt="11" /><span class="c-green"><span v-if="v.type=='600'">(系统消息)</span><span v-if="v.type=='200'">(政策消息)</span><span v-if="v.type=='500'">(优惠消息)</span><span v-if="v.type=='400'">(新货上架)</span></span><span v-if="v.content!=''">{{v.content}}</span></p>
-                                <p><img class="icon" src="/static/icon/link1.svg" alt="22" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue">{{v.redirectUrl}}</a></p>
+                                <p><img class="icon" src="/static/icon/link1.svg" alt="22" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
                                 <p >
                                     <img class="icon" src="/static/icon/link.svg" alt="33" />
-                                    附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(i)" href="javascript:void(0)" class="c-yellow">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
+                                    附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(i)" href="javascript:void(0)" class="c-yellow textDec">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
                                     <span class="fr">
                                         发送对象:<a v-if="v.receiverType==1" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
                                         <a v-if="v.receiverType==2" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>
@@ -183,7 +184,7 @@
     </section>
 </template>
 <script>
-import {ImgToBase64} from "../../../utils/ImgToBase64"
+import {ImgToBase64} from "../../config/utils/ImgToBase64"
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { errorDeal,getDateTime } from '../../config/utils';

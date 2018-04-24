@@ -122,7 +122,7 @@ tbody tr{height: 36px;}
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service.js"; 
-import { getStore } from '../utils/utils';
+import { getStore } from '../src/config/utils/uutils';
 export default{
 	data (){
 		return {

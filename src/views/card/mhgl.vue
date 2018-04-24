@@ -16,13 +16,13 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
                 <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
-                     <el-input v-model="packagename" size="mini"  placeholder="请输入号包名称" :maxlength="15"></el-input>
+                     <el-input v-model="packagename" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
                 </el-col>
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                 <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
-                     <el-input v-model="name" size="mini"  placeholder="请输入查询的联系人姓名" :maxlength="10"></el-input>
+                     <el-input v-model="name" size="small"  placeholder="请输入查询的联系人姓名" :maxlength="10"></el-input>
                 </el-col>
             </div></el-col>
         </el-row>
@@ -39,7 +39,7 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
-                     <el-input v-model="phone" size="mini"  placeholder="请输入查询的手机号码" :maxlength="11"></el-input>
+                     <el-input v-model="phone" size="small"  placeholder="请输入查询的手机号码" :maxlength="11"></el-input>
                 </el-col>
             </div></el-col>
         </el-row>
@@ -99,19 +99,19 @@
                         <tr>
                             <td colspan="10">
                                 <el-row>
-                                <!-- <el-col :span="7"><div class="grid-content bg-purple">
-                                    最后同步成功时间:<span></span>
-                                </div></el-col>
-                                <el-col :span="7"><div class="grid-content bg-purple-light">
-                                    下次同步成功时间:<span></span>
-                                </div></el-col>
-                                <el-col :span="6"><div class="grid-content bg-purple">
-                                    同步间隔时间:<span></span>
-                                    <el-button type="primary" size="mini" @click="openSet()">设置</el-button>
-                                </div></el-col> -->
-                                <el-col :span="24"><div class="fr grid-content bg-purple-light">
-                                    <el-button type="success" size="mini" @click="sync()">手动同步</el-button>
-                                </div></el-col>
+                                    <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
+                                        <span class="greyFont">最后同步成功时间:</span><span>{{"--"}}</span>
+                                    </div></el-col>
+                                    <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
+                                        <span class="greyFont">下次同步成功时间:</span><span>{{"--"}}</span>
+                                    </div></el-col>
+                                    <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
+                                        <span class="greyFont">同步间隔时间:</span><span></span>
+                                        <el-button class="small-btn" type="primary" @click="openSet()">设置</el-button>
+                                    </div></el-col>
+                                    <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
+                                        <el-button class="small-btn" type="success" @click="sync()">手动同步</el-button>
+                                    </div></el-col>
                                 </el-row>
                             </td>
                         </tr>
@@ -135,7 +135,11 @@
                                 {{((pa-1)*10+(i+1))}}
                             </td>
                             <td >
-                            <a href="javascript:void(0)" @click="getDetails(v)">{{v.productName}}</a>
+                                <a class="textDec" @click="getDetails(v)">{{v.productName}}
+                                    <span v-if="v.productType==1">({{v.normalTotal+v.cuteTotal}})</span>
+                                    <span v-if="v.productType==2">({{v.cuteTotal}})</span>
+                                    <span v-if="v.productType==3">({{v.normalTotal}})</span>
+                                </a>
                             </td>
                             <td >
                             <span v-if="v.productType==1">整号包</span>
@@ -175,7 +179,7 @@
                             <span v-if="v.productState==1">未上架</span>                        
                             <span v-if="v.productState==2">已上架</span>
                             <span v-if="v.productState==3">已下架</span>
-                            <span v-if="v.productState==4">已出售</span>
+                            <span v-if="v.productState==4" class="fcred">已出售</span>
                             </td>
                             <td v-show="false">
                                 {{v.productId}}
@@ -340,7 +344,6 @@ export default{
                 if(data.code==200){
                     // vm.pageNumDetails=data.data;
                     vm.searchResData=data.data
-                    debugger;
                 }
             }).then(()=>{
                 if(v.productType==1||v.productType==2){

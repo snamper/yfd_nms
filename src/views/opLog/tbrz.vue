@@ -17,7 +17,8 @@ div.detailsListDiv tr td{text-align: center;}
                     v-model="startTime"
                     size="small"
                     type="datetime"
-                    :picker-options="pickerOptionsS"                    
+                    :picker-options="pickerOptionsS"
+                    @change="changeTimeS"
                     placeholder="选择开始时间">
                     </el-date-picker>
                     <span>——</span>
@@ -25,7 +26,8 @@ div.detailsListDiv tr td{text-align: center;}
                     v-model="endTime"
                     size="small"
                     type="datetime"
-                    :picker-options="pickerOptionsE"                    
+                    :picker-options="pickerOptionsE"  
+                    @change="changeTimeE"                                      
                     placeholder="选择结束时间">
                     </el-date-picker>
                 </el-col>
@@ -34,7 +36,7 @@ div.detailsListDiv tr td{text-align: center;}
              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人姓名：</div></el-col>
                 <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                     <el-input v-model="name" size="small" placeholder="请输入查询的联系人姓名"></el-input>
+                     <el-input v-model="operatorName" size="small" :maxlength="6" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -45,9 +47,9 @@ div.detailsListDiv tr td{text-align: center;}
              <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div></el-col>
                 <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                    <el-radio v-model="optype"  label="1">全部</el-radio>
-                    <el-radio v-model="optype"  label="2">手动同步</el-radio>
-                    <el-radio v-model="optype"  label="3">自动同步</el-radio>
+                    <el-radio v-model="syncType"  label="0">全部</el-radio>
+                    <el-radio v-model="syncType"  label="1">手动同步</el-radio>
+                    <el-radio v-model="syncType"  label="2">自动同步</el-radio>
                 </el-col>
                 <el-col :span="2">
                    
@@ -56,7 +58,7 @@ div.detailsListDiv tr td{text-align: center;}
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                     <el-input v-model="name" size="small" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input v-model="operatorPhone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -67,9 +69,9 @@ div.detailsListDiv tr td{text-align: center;}
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">同步内容：</div></el-col>
                 <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                    <el-radio v-model="opcontent"  label="qb">全部</el-radio>
-                    <el-radio v-model="opcontent"  label="mh">码号</el-radio>
-                    <el-radio v-model="opcontent"  label="kj">框架</el-radio>
+                    <el-radio v-model="recordType"  label="0">全部</el-radio>
+                    <el-radio v-model="recordType"  label="3">码号</el-radio>
+                    <el-radio v-model="recordType"  label="4">框架</el-radio>
                 </el-col>
                 <el-col :span="2">
                    
@@ -78,9 +80,9 @@ div.detailsListDiv tr td{text-align: center;}
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作结果：</div></el-col>
                 <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                    <el-radio v-model="radio"  label="a">全部</el-radio>
-                    <el-radio v-model="radio"  label="s">成功</el-radio>
-                    <el-radio v-model="radio"  label="f">失败</el-radio>
+                    <el-radio v-model="recordResult"  label="0">全部</el-radio>
+                    <el-radio v-model="recordResult"  label="1">成功</el-radio>
+                    <el-radio v-model="recordResult"  label="2">失败</el-radio>
                 </el-col>
                 <el-col :span="2">
                    
@@ -136,20 +138,17 @@ div.detailsListDiv tr td{text-align: center;}
   	</section>
 </template>
 <script>
-import { getDateTime } from "../../config/utils";
+import { getDateTime,disableTimeRange6} from "../../config/utils";
 import logDet from "../../../components/logDetails";
 export default {
   data() {
     return {
         startTime: "",
         endTime: "",
-        cname: "",
-        phone: "",
-        name: "",
-        radio: "a",
-        optype:"2",
-        opcontent:"qb",
-        timeType:"a",
+        operatorPhone:"",
+        syncType:"0",
+        recordType:"0",
+        recordResult:"0",
         ix:[{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'}],                  
         off: {
             showSearch: "",
@@ -159,10 +158,16 @@ export default {
             disabledDate(time) {
                 let curDate = new Date().getTime();
                 let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1;
+                let curMonth=new Date(curDate).getMonth()+1,
+                    minMonth=curMonth-5,
+                    minYear=curYear;
+                    if(minMonth<0){
+                        minMonth+=12;
+                        minYear=curYear-1;
+                    }
                 let curDay=new Date(curDate).getDate()+1; 
                 let nextMonth=curMonth+1;               
-                let cur=curYear+"/"+curMonth+"/1";
+                let cur=minYear+"/"+minMonth+"/1";
                 let next=curYear+"/"+nextMonth+"/1";
                 let nextYesterday=new Date(next)-1000*3600*24;
                     cur=new Date(cur).getTime();
@@ -173,10 +178,16 @@ export default {
             disabledDate(time) {
                 let curDate = new Date().getTime();
                 let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1;
+                let curMonth=new Date(curDate).getMonth()+1,
+                    minMonth=curMonth-5,
+                    minYear=curYear;
+                    if(minMonth<0){
+                        minMonth+=12;
+                        minYear=curYear-1;
+                    }
                 let curDay=new Date(curDate).getDate()+1; 
                 let nextMonth=curMonth+1;               
-                let cur=curYear+"/"+curMonth+"/1";
+                let cur=minYear+"/"+minMonth+"/1";
                 let next=curYear+"/"+nextMonth+"/1";
                 let nextYesterday=new Date(next)-1000*3600*24;
                     cur=new Date(cur).getTime();
@@ -206,29 +217,61 @@ export default {
       "log-details":logDet
   },
   methods: {
-    search(t) {
-      let vm = this;
-      if (t == "dls") {
-        let json = {
-            cname: vm.cname,
-            name: vm.name,
-            st: vm.startTime,
-            et: vm.endTime,
-            phone: vm.phone,
-            radio: vm.radio
-          },
-          url = "";
-        console.log(json, url);
-      } else if (t == "yfd") {
-        let json = { name: vm.name, phone: vm.phone, radio: vm.radio },
-          url = "";
-        console.log(json, url);
-      }
+    search() {
+        let vm=this, 
+        sy=new Date(vm.startTime).getFullYear(),
+        sm=new Date(vm.startTime).getMonth(),
+        ey=new Date(vm.endTime).getFullYear(),
+        em=new Date(vm.endTime).getMonth();
+        if(sy!=ey||sm!=em){
+            layer.open({
+                content:'开始和结束日期不能跨月',
+                skin: 'msg',
+                time: 2,
+                msgSkin:'error',
+            });
+            return false;
+        }
+        let json={"startOperateTime": new Date(vm.startTime).getTime(),
+            "endOperateTime": new Date(vm.endTime).getTime(),
+            "operatorName": vm.operatorName,
+            "operatorPhone":vm.operatorPhone,
+            "pageNum": vm.pageNum,
+            "pageSize": vm.pageSize,
+            "syncType": vm.syncType,
+            "recordType": vm.recordType,
+            "recordResult": vm.recordResult,}
+
     },
     openDetails(){
         let vm=this;
         vm.off.logDet=true;
     },
+    changeTimeS(e){
+        let vm=this,
+        timeRange=disableTimeRange6(),
+        timeRangeS=timeRange.next,
+        timeRangeE=timeRange.nextYesterday,
+        timeCheck=new Date(e).getTime();
+        if(timeCheck<timeRangeS){
+            vm.startTime=timeRangeS;
+        }
+        if(timeCheck>timeRangeE){
+            vm.startTime=timeRangeE;
+        }           
+    },changeTimeE(e){
+        let vm=this,
+        timeRange=disableTimeRange6(),
+        timeRangeS=timeRange.next,
+        timeRangeE=timeRange.nextYesterday,
+        timeCheck=new Date(e).getTime();
+        if(timeCheck<timeRangeS){
+            vm.endTime=timeRangeS;
+        }
+        if(timeCheck>timeRangeE){
+            vm.endTime=timeRangeE;
+        }           
+    }
   }
 };
 </script>

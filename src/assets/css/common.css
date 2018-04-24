@@ -1,7 +1,8 @@
 .mt8{margin-top: 8px}
+.pl20{padding-left: 10px}
 .buttonAddStaff{outline: none;width:70px;line-height: 12px;padding: 5px;box-sizing: border-box;border-radius: 4px;margin-top: 10px;border: 1px solid #ccc; }
 .buttonAddStaff:active{box-shadow: 0 0 5px grey}
-.greyFont{color:grey}
+.greyFont{color:rgb(172, 172, 172)}
 .redFont{color:red}
 .blueFont{color:blue}
 .blackFont{color:black}
@@ -27,4 +28,8 @@
    border-bottom: 1px solid #ccc;
    padding-top:6px;
    width: 100%;
+}
+.small-btn{
+    padding:3px 8px !important;
+    margin-right:20px; 
 }

@@ -9,14 +9,14 @@
 				<tr>
 					<td>
 						<a class="m-navside-show" @click="headMenu"><i class="u-icon-menu"></i></a>
-						<span v-if="crumb[1].name" class="f-inline-block m-crumb" style="color:blue">
-							<a>{{crumb[0].name}}</a>
+						<span v-if="crumb[1].name" class="f-inline-block m-crumb">
+							<a class="fcb">{{crumb[0].name}}</a>
 							<i class="el-icon-arrow-right"></i>
-							<a v-show="!crumb[1].href">{{crumb[1].name}}</a>
-							<router-link v-show="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
+							<a  v-show="!crumb[1].href">{{crumb[1].name}}</a>
+							<router-link class="fcaqua" v-show="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
 							<span v-show="crumb[2].name">
 							    <i class="el-icon-arrow-right"></i>								
-								<a>{{crumb[2].name}}</a>
+								<a class="fcaqua">{{crumb[2].name}}</a>
 							</span>
 						</span>
 					</td>

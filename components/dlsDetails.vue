@@ -1,9 +1,9 @@
 
 <style scoped>
-    .listTitleFoot{width: 96%;margin: 10px 18px;}
+    .listTitleFoot{width: 96%;margin: 10px 18px;height: 35px}
     .listTitleFoot label{display:block;width: 50%;}
     label.el-checkbox{display: inline}
-    .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}    
+    .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}   
 </style>
 <template>
   <div>
@@ -12,10 +12,10 @@
                 <el-container>
                     <header class="borderBottom">
                         <el-row>
-                            <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10"><div class="grid-content bg-purple">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span  style="color:blue">{{company}}</span></div></el-col>
-                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple-light">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span >{{managerName}}</span></div></el-col>
-                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span>{{managerPhone}}</span></div></el-col>
-                            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div class="grid-content bg-purple-light fr"><a href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                            <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10"><div class="grid-content bg-purple greyFont">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcdb">{{company}}</span></div></el-col>
+                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple-light greyFont">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerName}}</span></div></el-col>
+                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple greyFont">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerPhone}}</span></div></el-col>
+                            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div class="grid-content bg-purple-light fr"><a class="fcaqua" href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                         </el-row>
                     </header>
                 </el-container>                    
@@ -93,10 +93,13 @@
                         {{((pa-1)*10+(i+1))}}
                     </td>
                     <td >
-                       <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
+                        <span v-for="(v,i) in v.userRole" :key="i">
+                            <img v-if="v==3" src="../static/icon/admin.svg" class="adminIcon">
+                        </span>
+                        {{v.username}}
                     </td>
                     <td >
-                       {{v.phone}}
+                       <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>
                     </td>
                     <td >
                        {{new Date(v.createTime).toLocaleString()}}
@@ -111,8 +114,8 @@
                         </span>
                     </td>
                     <td >
-                       <span v-if="v.userState==1">正常</span>
-                       <span v-if="v.userState==2">黑名单</span>
+                       <span v-if="v.userState==1" class="fcgreen">正常</span>
+                       <span v-if="v.userState==2" class="greyFont">黑名单</span>
                        <span v-if="v.userState==3">注销</span>
                     </td>
                     <td >
@@ -120,7 +123,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="8">
+                    <td colspan="8" class="pl20">
                        <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 取消全选 </a></span>
                     </td>
                 </tr>
@@ -144,17 +147,16 @@
         </div>
         <!-- 代理商员工操作模块 -->
         <div v-if="off.modify">
-            <div class="listTitleFoot">
+            <div class="listTitleFoot" style="height:20px;">
                 <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容{{a}}</p>
             </div>
             <div class="listTitleFoot">
-                <el-input v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
+                <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
             </div> 
-            <div class="listTitleFoot">
-                <p style="text-align:right">验证号码:{{user.phone}}
-                    <el-input v-model="authCode" size="mini" style="width:26%" maxlength=6 placeholder="请输入验证码"></el-input>
-                    <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button>
-                </p> 
+            <div class="listTitleFoot tar">
+                验证号码:{{user.phone}}
+                <el-input v-model="authCode" size="mini" style="width:26%" maxlength=6 placeholder="请输入验证码"></el-input>
+                <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button>
             </div> 
             <div class="listTitleFoot">
                 <p style="float:right">

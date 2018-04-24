@@ -18,6 +18,7 @@
                     size="small"
                     type="datetime"
                     :picker-options="pickerOptionsS"
+                    @change="changeTimeS"
                     placeholder="选择开始时间">
                     </el-date-picker>
                     <span>——</span>
@@ -26,6 +27,7 @@
                     size="small"
                     type="datetime"
                     :picker-options="pickerOptionsE"
+                    @change="changeTimeE"
                     placeholder="选择结束时间">
                     </el-date-picker>
                 </el-col>
@@ -85,27 +87,27 @@
     <div v-if="searchList">
         <div v-if="searchList.length>0" >
             <div class="listTitleFoot">
-                <p>代理商列表<span v-if="total" class="greyFont fontWeight"> ({{total}})</span></p>
+                <p class="fs16">代理商列表<span v-if="total"> ({{total}})</span></p>
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr>
                         <td colspan="8">
-                        <el-row>
-                        <!-- <el-col :span="7"><div class="grid-content bg-purple">
-                            最后同步成功时间:<span>{{}}</span>
-                        </div></el-col>
-                        <el-col :span="7"><div class="grid-content bg-purple-light">
-                            下次同步成功时间:<span>{{}}</span>
-                        </div></el-col> -->
-                        <!-- <el-col :span="6"><div class="grid-content bg-purple">
-                            同步间隔时间:<span></span>
-                            <el-button type="primary" size="mini" @click="openSet()">设置</el-button>
-                        </div></el-col> -->
-                        <el-col :span="24"><div class="grid-content bg-purple-light">
-                            <el-button class="fr" type="success" size="mini" @click="sync()">手动同步</el-button>
-                        </div></el-col>
-                        </el-row>
+                            <el-row>
+                                <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
+                                    <span class="greyFont">最后同步成功时间:</span><span>{{"--"}}</span>
+                                </div></el-col>
+                                <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
+                                    <span class="greyFont">下次同步成功时间:</span><span>{{"--"}}</span>
+                                </div></el-col>
+                                <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
+                                    <span class="greyFont">同步间隔时间:</span><span></span>
+                                    <el-button class="small-btn" type="primary" @click="openSet()">设置</el-button>
+                                </div></el-col>
+                                <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
+                                    <el-button class="small-btn" type="success" @click="sync()">手动同步</el-button>
+                                </div></el-col>
+                            </el-row>
                         </td>
                     </tr>
                     <tr>
@@ -146,7 +148,7 @@
                         {{new Date(v.createTime).toLocaleString()}}
                         </td>
                         <td >
-                        <a href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
+                        <a class="textDec" href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
                         </td>
                     </tr>
                     <tr v-if="searchList.length==0">
@@ -188,7 +190,7 @@
 <script>
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
-import { getDateTime,getUnixTime,errorDeal } from "../../config/utils";
+import { getDateTime,getUnixTime,errorDeal,disableTimeRange } from "../../config/utils";
 import {requestMethod,requestMethod2} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layers from "../../../components/layer";
@@ -350,7 +352,33 @@ export default{
                 }
             }).catch(e=>errorDeal(e));
         },
+        changeTimeS(e){
+            let vm=this,
+            timeRange=disableTimeRange(),
+            timeRangeS=timeRange.next,
+            timeRangeE=timeRange.nextYesterday,
+            timeCheck=new Date(e).getTime();
+            if(timeCheck<timeRangeS){
+                vm.startTime=timeRangeS;
+            }
+            if(timeCheck>timeRangeE){
+                vm.startTime=timeRangeE;
+            }           
+        },changeTimeE(e){
+            let vm=this,
+            timeRange=disableTimeRange(),
+            timeRangeS=timeRange.next,
+            timeRangeE=timeRange.nextYesterday,
+            timeCheck=new Date(e).getTime();
+            if(timeCheck<timeRangeS){
+                vm.endTime=timeRangeS;
+            }
+            if(timeCheck>timeRangeE){
+                vm.endTime=timeRangeE;
+            }           
+        }
     }
+
 }
 </script>
 

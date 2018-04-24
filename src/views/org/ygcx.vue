@@ -59,10 +59,13 @@
                             {{((pa-1)*10+(i+1))}}
                         </td>
                         <td >
-                        <a style="" href="javascript:void(0)" @click="getStaffDetails(v)">{{v.username}}</a>
+                            <span v-for="(v,i) in v.userRole" :key="i">
+                                <img v-if="v==3" src="../../../static/icon/admin.svg" class="adminIcon">
+                            </span>
+                            {{v.username}}
                         </td>
                         <td >
-                        {{v.phone}}
+                            <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>                            
                         </td>
                         <td >
                         {{new Date(v.createTime).toLocaleString()}}
@@ -77,9 +80,9 @@
                             </span>
                         </td>
                         <td >
-                        <span v-if="v.userState==1">正常</span>
-                        <span v-if="v.userState==2">黑名单</span>
-                        <span v-if="v.userState==3">注销</span>
+                            <span v-if="v.userState==1" class="fcgreen">正常</span>
+                            <span v-if="v.userState==2" class="greyFont">黑名单</span>
+                            <span v-if="v.userState==3">注销</span>
                         </td>
                         <td >
                         {{new Date(v.lastLoginTime).toLocaleString()}}

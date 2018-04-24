@@ -24,6 +24,7 @@ div.detailsListDiv tr td {
                     size="small"
                     type="datetime"
                     :picker-options="pickerOptionsS"
+                    @change="changeTimeS"
                     placeholder="选择开始时间">
                     </el-date-picker>
                     <span>——</span>
@@ -32,6 +33,7 @@ div.detailsListDiv tr td {
                     size="small"
                     type="datetime"
                     :picker-options="pickerOptionsE"
+                    @change="changeTimeE"                    
                     placeholder="选择结束时间">
                     </el-date-picker>
                 </el-col>
@@ -145,7 +147,7 @@ div.detailsListDiv tr td {
                         <span>--</span>
                     </td>
                     <td>
-                        <a href="javascript:void(0)" @click="openDetails(v)">查看详情</a>
+                        <a class="textDec" href="javascript:void(0)" @click="openDetails(v)">查看详情</a>
                     </td>
                 </tr>
             </table>
@@ -167,7 +169,7 @@ div.detailsListDiv tr td {
   	</section>
 </template>
 <script>
-import { getDateTime } from "../../config/utils";
+import { getDateTime,disableTimeRange } from "../../config/utils";
 import logDet from "../../../components/logDetails";
 import { requestMethod } from "../../config/service";
 import {errorDeal} from "../../config/utils";
@@ -280,7 +282,32 @@ export default {
           }
         })
         .catch(e => errorDeal(e));
-    }
+    },
+     changeTimeS(e){
+            let vm=this,
+            timeRange=disableTimeRange(),
+            timeRangeS=timeRange.next,
+            timeRangeE=timeRange.nextYesterday,
+            timeCheck=new Date(e).getTime();
+            if(timeCheck<timeRangeS){
+                vm.startTime=timeRangeS;
+            }
+            if(timeCheck>timeRangeE){
+                vm.startTime=timeRangeE;
+            }           
+        },changeTimeE(e){
+            let vm=this,
+            timeRange=disableTimeRange(),
+            timeRangeS=timeRange.next,
+            timeRangeE=timeRange.nextYesterday,
+            timeCheck=new Date(e).getTime();
+            if(timeCheck<timeRangeS){
+                vm.endTime=timeRangeS;
+            }
+            if(timeCheck>timeRangeE){
+                vm.endTime=timeRangeE;
+            }           
+        }
   }
 };
 </script>

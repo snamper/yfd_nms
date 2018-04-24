@@ -178,6 +178,35 @@ export const deepCopy=(p, c)=> {
     　　　　　　}
     　　　　}
     　　　　return c;
-    　　}
+}
+
+export const disableTimeRange=()=>{
+    let curDate = new Date().getTime();
+    let curYear=new Date(curDate).getFullYear();
+    let curMonth=new Date(curDate).getMonth()+1;
+    let nextMonth=curMonth+1;               
+    let cur=curYear+"/"+curMonth+"/1",
+        getCurTime=new Date(cur).getTime();
+    let next=curYear+"/"+nextMonth+"/1";
+    let nextYesterday=new Date(next)-1000*3600*24;
+    return {"next":getCurTime,"nextYesterday":nextYesterday}
+}
+export const disableTimeRange6=()=>{
+    let curDate = new Date().getTime();
+    let curYear=new Date(curDate).getFullYear();
+    let curMonth=new Date(curDate).getMonth()+1,
+        minMonth=curMonth-5,
+        minYear=curYear;
+        if(minMonth<0){
+            minMonth+=12;
+            minYear=curYear-1;
+        }
+    let nextMonth=curMonth+1;               
+    let cur=minYear+"/"+minMonth+"/1",
+        getCurTime=new Date(cur).getTime();
+    let next=curYear+"/"+nextMonth+"/1";
+    let nextYesterday=new Date(next)-1000*3600*24;
+    return {"next":getCurTime,"nextYesterday":nextYesterday}
+}
 
 

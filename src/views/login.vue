@@ -24,12 +24,12 @@
 
 <script>
 // import base64 from '../../utils/base64';
-import { errorDeal,windowJump,setStore } from '../../utils/utils';
-import api from '../../api/login';
+import { errorDeal,windowJump,setStore } from '../config/utils/uutils';
+import api from '../config/api/login.js';
 
 import {mapMutations} from 'vuex';
 import mutations from '../store/mutations';
-// import { SET_USERINFO } from '../store/mutation-types';
+import { SET_USERINFO } from '../store/mutation-types';
 export default {
   props: ['login'],
   data(){
@@ -52,7 +52,6 @@ export default {
     }
   },
   mounted:function(){
-      console.log(this.SET_USERINFO);
   },
   beforeDestroy:function(){
     this.initForm();
@@ -112,7 +111,6 @@ export default {
         })
         .catch(error=>{
             errorDeal(error);
-            debugger;
         });
     },
     toLogin:function(e){
@@ -267,9 +265,6 @@ div.top{
       }
       >.vercode{
         position: relative;
-        >input{
-        
-        }
         >.btn, .count{
           cursor: pointer;
           position: absolute;

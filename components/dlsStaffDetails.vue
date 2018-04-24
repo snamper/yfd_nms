@@ -85,8 +85,8 @@
                     <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">当前状态:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
-                            <span v-if="forms.userState==1">正常</span>
-                            <span v-if="forms.userState==2">黑名单</span>
+                            <span v-if="forms.userState==1" class="fcgreen">正常</span>
+                            <span v-if="forms.userState==2" class="greyFont">黑名单</span>
                             <span v-if="forms.userState==3">注销</span>
                         </div></el-col>
                     </el-row>
