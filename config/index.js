@@ -11,42 +11,43 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/yfd-nus/':{
-            target:'http://192.168.10.103:10022/',
+            target:'http://192.168.10.103:10022/nus/',
             changeOrigin:true,
             pathRewrite:{
                 '/yfd-nus':'/nus'
             }
         },
         '/yfd-uus/':{
-            target:'http://192.168.10.103:10023/',
+            target:'http://192.168.10.103:10023/uus/',
             changeOrigin:true,
             pathRewrite:{
                 '/yfd-uus':'/uus'
             }
         },
         '/yfd-ums/':{
-            target:'http://192.168.10.105:10022/',
+            target:'http://192.168.10.105:10022/ums/',
             changeOrigin:true,
             pathRewrite:{
                 '^/yfd-ums' : '/' 
             }
         },
         '/yfd-nms/':{
-            target:'http://192.168.10.105:10023/',
+            target:'http://192.168.10.105:10023/nms/',
             changeOrigin:true,
             pathRewrite:{
                 '^/yfd-nms' : '/'
             }
         },
         '/yfd-mns/':{
-            target:'http://192.168.10.105:10034',
+            target:'http://192.168.10.105:10034/mns',
+            // target:'http://192.168.10.35:10034/mns',
             changeOrigin:true,
             pathRewrite:{
                 '^/yfd-mns' : ''
             }
         },
         '/yfd-ors/':{
-            target:'http://192.168.10.105:10032',
+            target:'http://192.168.10.105:10032/ors',
             changeOrigin:true,
             pathRewrite:{
                 '^/yfd-ors' : ''

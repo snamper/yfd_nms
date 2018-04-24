@@ -26,7 +26,6 @@
 // import base64 from '../../utils/base64';
 import { errorDeal,windowJump,setStore } from '../config/utils/uutils';
 import api from '../config/api/login.js';
-
 import {mapMutations} from 'vuex';
 import mutations from '../store/mutations';
 import { SET_USERINFO } from '../store/mutation-types';
