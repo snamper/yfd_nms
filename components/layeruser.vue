@@ -182,7 +182,7 @@ export default{
             let vm=this, 
             // data={"userId":vm.user.username,"phone":15684765209};
             data={"userId":vm.user.userId,"phone":vm.user.phone||""};
-                vm.authCodeUrl="/yfd-ums/w/user/getAuthCode";
+                vm.authCodeUrl="/ums/w/user/getAuthCode";
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
                 if(data.hasOwnProperty('code')&&data.code==200){
@@ -210,7 +210,7 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,btnYes(v){//确认添加员工
-            let vm=this,url='/yfd-ums/w/user/addUsers',data='',load=Loading.service(options);
+            let vm=this,url='/ums/w/user/addUsers',data='',load=Loading.service(options);
             data=vm.$parent.addUsersData;
             // data={'searchDepartId':vm.$parent.$parent.searchDepartId,userState:vm.$parent.radio,username:vm.$parent.name,phone:vm.$parent.phone,pageNum:v||1,pageSize:"10"};            
             if(vm.authCode==''){
@@ -238,7 +238,7 @@ export default{
                     if(this.searchType!=1){
                         this.search();
                     }else if(this.searchType==1){
-                        let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
+                        let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
                         vm.searchDetailsType=1;
                         vm.searchDepartId=vm.$parent.searchDepartId;
                         // data={'searchDepartId':vm.searchDepartId};

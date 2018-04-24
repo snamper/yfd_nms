@@ -107,7 +107,7 @@ export default{
             let vm=this, 
             // data={"userId":vm.user.username,"phone":15684765209};
             data={"userId":vm.user.userId,"phone":vm.user.phone||""};
-                vm.authCodeUrl="/yfd-ums/w/user/getAuthCode";
+                vm.authCodeUrl="/ums/w/user/getAuthCode";
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
                 if(data.hasOwnProperty('code')&&data.code==200){
@@ -135,7 +135,7 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,btnYes(v){//确认添加员工
-            let vm=this,url='/yfd-ums/w/user/addUsers',data={},load=Loading.service(options);
+            let vm=this,url='/ums/w/user/addUsers',data={},load=Loading.service(options);
             data=vm.$parent.addUsersData;
             data.authCode=vm.authCode;
             if(vm.authCode==''){

@@ -212,7 +212,7 @@ export default{
             let vm=this,url="",data={};
             vm.off.noModify=true;
             vm.off.modify=false;
-            url="/yfd-ums/w/user/updateUserDetail";
+            url="/ums/w/user/updateUserDetail";
             data.newUsername=vm.forms.username;
             data.newPhone=vm.forms.phone;
             data.searchUserId=vm.$parent.searchUserId;
@@ -226,7 +226,7 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                    let data="",url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+                    let data="",url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
                     data=vm.$parent.searchDetailsYfdData;
                     requestMethod(data,url)
                     .then((data)=>{

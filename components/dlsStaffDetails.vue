@@ -205,7 +205,7 @@ export default{
             vm.forms.phone=vm.oldPhone;
         }
         ,checkYes(v){
-            let vm=this,url="/yfd-ums/w/user/updateUserDetail",data={};
+            let vm=this,url="/ums/w/user/updateUserDetail",data={};
             vm.off.noModify=true;
             vm.off.modify=false;
             data.newUsername=vm.forms.username;

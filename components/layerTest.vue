@@ -99,7 +99,7 @@ export default{
             let vm=this, 
             // data={"userId":vm.user.username,"phone":15684765209};
             data={"userId":vm.user.userId,"phone":vm.user.phone||""};
-                vm.authCodeUrl="/yfd-ums/w/user/getAuthCode";
+                vm.authCodeUrl="/ums/w/user/getAuthCode";
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
                 if(data.hasOwnProperty('code')&&data.code==200){
@@ -130,7 +130,7 @@ export default{
             this.$emit("upload","123");
             let vm=this;
             if(vm.layerType=="notice"){
-                let url='/yfd-mns/w/msg/delete',data={},load=Loading.service(options);
+                let url='/mns/w/msg/delete',data={},load=Loading.service(options);
             }
             data=vm.$parent.addUsersData;
             data.authCode=vm.authCode;

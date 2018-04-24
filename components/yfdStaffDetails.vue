@@ -214,7 +214,7 @@ export default{
             vm.forms.phone=vm.oldPhone;
         }
         ,checkYes(v){
-            let vm=this,url="/yfd-ums/w/user/updateUserDetail",data={};
+            let vm=this,url="/ums/w/user/updateUserDetail",data={};
             vm.off.noModify=true;
             vm.off.modify=false;
             data.newUsername=vm.forms.username;
@@ -229,7 +229,7 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                    let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+                    let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
                     data=vm.$parent.searchDetailsYfdData;
                     requestMethod(data,url)
                     .then((data)=>{
@@ -254,7 +254,14 @@ export default{
             }).then(()=>{
 
             }).catch(e=>errorDeal(e))
-        }
+        },toMap(){//查看地图
+			var w=document.documentElement.clientWidth,url='',vm=this;
+			let latitude=parseFloat(vm.forms.latitude);
+            let longitude=parseFloat(vm.forms.longitude);
+            debugger;
+			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
+			window.open(url);
+		}
 	}
 }
 </script>

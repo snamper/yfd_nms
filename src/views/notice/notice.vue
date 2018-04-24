@@ -325,7 +325,7 @@ export default {
             if(vm.imgFile!=""){
                 sendData.body.annex.push(vm.imgFile);
             }
-            requestMethod(sendData,"/nms/w/msg/add")
+            requestMethod(sendData,"/mns/w/msg/add")
             .then((data)=>{
                 if(data.code==200){
                     this.search(vm.pa);
@@ -351,7 +351,7 @@ export default {
             let file=this.$refs.file.files[0];
             let vm=this;
             ImgToBase64(file,1000,function(base64){
-                let data={"image":base64},url="/nms/w/msg/imgUpload";
+                let data={"image":base64},url="/mns/w/msg/imgUpload";
                 requestMethod(data,url)
                 .then((resdata)=>{
                         vm.valuesrc=successIcon;
@@ -418,7 +418,7 @@ export default {
         },search(index){
             let vm=this;
             vm.pa=index||1;
-            requestMethod({pageSize:15,pageNum:index},"/nms/w/msg/searchBulletin")
+            requestMethod({pageSize:15,pageNum:index},"/mns/w/msg/searchBulletin")
             .then((data)=>{
                 if(data.code==200){
                     vm.form.page=data.data.total;
@@ -438,7 +438,7 @@ export default {
             vm.checkSendUserData=data;
             }
             vm.checkSendUserData.pageNum=p||1
-            requestMethod(vm.checkSendUserData,"/nms/w/msg/searchReceivers")
+            requestMethod(vm.checkSendUserData,"/mns/w/msg/searchReceivers")
             .then((data)=>{
             if(data.code==200){
                 vm.addMsg=false;

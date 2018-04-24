@@ -58,7 +58,7 @@ export default{
 	methods:{
         btnYes(){
            let vm=this;
-           requestMethod(vm.$parent.cancelInfo,"/yfd-mns/w/msg/delete")
+           requestMethod(vm.$parent.cancelInfo,"/mns/w/msg/delete")
             .then((data)=>{
                 if(data.code==200){
                     layer.open({
