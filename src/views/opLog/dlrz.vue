@@ -258,7 +258,7 @@ export default {
           pageNum: t || 1,
           pageSize: 10
         };
-        requestMethod(json,"/yfd-ors/w/record/loginRecordSearch")
+        requestMethod(json,"/ors/w/record/loginRecordSearch")
         .then(data => {
           if (data.code == 200) {
             vm.form.page=data.data.total;
@@ -273,7 +273,7 @@ export default {
       let vm = this;
       vm.off.logDet = true;
       let data = { searchRecordId: v.recordId, searchRecordTime: v.recordTime };
-      requestMethod(data,"/yfd-ors/w/record/getLoginRecordDetail")
+      requestMethod(data,"/ors/w/record/getLoginRecordDetail")
         .then(data => {
           if (data.code == 200) {
             vm.detailsList = data.data;

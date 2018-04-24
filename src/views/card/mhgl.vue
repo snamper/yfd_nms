@@ -336,7 +336,7 @@ export default{
             console.log(v);
             let vm=this;
             let load=Loading.service(options);
-            let data={},url="/yfd-nms/w/number/getProductDetail";
+            let data={},url="/nms/w/number/getProductDetail";
             data.searchProductId=v.productId;
             data.sessionType="2";
             requestMethod(data,url)
@@ -347,7 +347,7 @@ export default{
                 }
             }).then(()=>{
                 if(v.productType==1||v.productType==2){
-                    url="/yfd-nms/w/number/getProductNumbers";
+                    url="/nms/w/number/getProductNumbers";
                     data.phoneLevel=2;
                     requestMethod(data,url)
                     .then((data)=>{
@@ -368,7 +368,7 @@ export default{
                 }
             }).then(()=>{
                 if(v.productType==1||v.productType==3){
-                    url="/yfd-nms/w/number/getProductNumbers";
+                    url="/nms/w/number/getProductNumbers";
                     data.phoneLevel=1;
                     requestMethod(data,url)
                     .then((data)=>{
@@ -395,7 +395,7 @@ export default{
                     vm.searchResData=data.data
                 }
             }).catch(e=>errorDeal(e),function(){load.close()});
-            url="/yfd-nms/w/number/getProductNumbers";
+            url="/nms/w/number/getProductNumbers";
             data.searchProductId=v.productId;
             data.sessionType="2";
             data.phoneLevel=1;
@@ -438,7 +438,7 @@ export default{
             }
         }
         ,search(p){//查询
-            let load=Loading.service(options),checked=[],data={},url='/yfd-nms/w/number/productSearch',vm=this;
+            let load=Loading.service(options),checked=[],data={},url='/nms/w/number/productSearch',vm=this;
             vm.pa=p||1;
             for(let i in vm.checkedCities){
                 checked.push(cityOptions.indexOf(vm.checkedCities[i])+1);
@@ -531,10 +531,10 @@ export default{
                 return false;
             }
             if(val=='2'){
-                vm.dourl="/yfd-nms/w/number/pullOffProducts";
+                vm.dourl="/nms/w/number/pullOffProducts";
                 this.a="下架";
             }else if(val=='1'){
-                vm.dourl="/yfd-nms/w/number/putOnProducts";
+                vm.dourl="/nms/w/number/putOnProducts";
                 this.a="上架";
             }            
         }
@@ -556,7 +556,7 @@ export default{
                     }
                 }, 1000)
             }
-            let load=Loading.service(options),data={},url='/yfd-ums/w/user/getAuthCode',vm=this;
+            let load=Loading.service(options),data={},url='/ums/w/user/getAuthCode',vm=this;
             data={"phone":vm.user.phone}
             // data={"phone":15684765209}
             requestMethod(data,url)

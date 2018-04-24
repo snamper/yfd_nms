@@ -153,7 +153,7 @@ export default{
     },
 	methods:{
         search(p){//查询
-            let load=Loading.service(options),data={},url='/yfd-ums/w/user/userSearch',vm=this;
+            let load=Loading.service(options),data={},url='/ums/w/user/userSearch',vm=this;
              vm.pa=p||1;
              vm.currentPage=p||1;
                 data={
@@ -184,7 +184,7 @@ export default{
             
         }
         ,getStaffDetails(p){
-            let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+            let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchUserId=p.userId;
             vm.searchDetailsYfdData=data;

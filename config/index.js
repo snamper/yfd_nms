@@ -10,47 +10,47 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/yfd-nus/':{
+        '/nus/':{
             target:'http://192.168.10.103:10022/nus/',
             changeOrigin:true,
             pathRewrite:{
-                '/yfd-nus':'/nus'
+                '/nus':'/nus'
             }
         },
-        '/yfd-uus/':{
+        '/uus/':{
             target:'http://192.168.10.103:10023/uus/',
             changeOrigin:true,
             pathRewrite:{
-                '/yfd-uus':'/uus'
+                '/uus':'/uus'
             }
         },
-        '/yfd-ums/':{
+        '/ums/':{
             target:'http://192.168.10.105:10022/ums/',
             changeOrigin:true,
             pathRewrite:{
-                '^/yfd-ums' : '/' 
+                '^/ums' : '/' 
             }
         },
-        '/yfd-nms/':{
+        '/nms/':{
             target:'http://192.168.10.105:10023/nms/',
             changeOrigin:true,
             pathRewrite:{
-                '^/yfd-nms' : '/'
+                '^/nms' : '/'
             }
         },
-        '/yfd-mns/':{
+        '/mns/':{
             target:'http://192.168.10.105:10034/mns',
             // target:'http://192.168.10.35:10034/mns',
             changeOrigin:true,
             pathRewrite:{
-                '^/yfd-mns' : ''
+                '^/mns' : ''
             }
         },
-        '/yfd-ors/':{
+        '/ors/':{
             target:'http://192.168.10.105:10032/ors',
             changeOrigin:true,
             pathRewrite:{
-                '^/yfd-ors' : ''
+                '^/ors' : ''
             }
         },
        

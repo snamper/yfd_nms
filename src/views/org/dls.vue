@@ -295,7 +295,7 @@ export default{
                 });
                 return false;
             }
-            let load=Loading.service(options),data={},url='/yfd-ums/w/user/departSearch',vm=this;
+            let load=Loading.service(options),data={},url='/ums/w/user/departSearch',vm=this;
             vm.pa=p||1;
             vm.currentPage=p||1;
             data={
@@ -323,7 +323,7 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,getDetails(v){//查看详情
-            let vm=this,data={},url='/yfd-ums/w/user/getDepartDetail',load=Loading.service(options);
+            let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
             vm.searchDetailsType=1;
             vm.searchDepartId=v.departId;
             data={'searchDepartId':v.departId,userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};

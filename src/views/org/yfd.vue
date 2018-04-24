@@ -225,7 +225,7 @@ export default{
             this.addUsersData=data;
         },
         search(p){//查询
-            let load=Loading.service(options) ,data={},url='/yfd-ums/w/user/getDepartDetail',vm=this;
+            let load=Loading.service(options) ,data={},url='/ums/w/user/getDepartDetail',vm=this;
             //data={'searchDepartId':"1803160000",userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};
              vm.pa=p||1;
              vm.currentPage=p||1;
@@ -256,7 +256,7 @@ export default{
             }).catch(e=>errorDeal(e),load.close());            
         }
         ,getStaffDetails(p){
-            let data={},url='/yfd-ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+            let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchDetailsYfdData=data;
             requestMethod(data,url)

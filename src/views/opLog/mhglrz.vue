@@ -239,7 +239,7 @@ export default {
             pageNum:index||1,
             pageSize:10,
             },
-            url = "/yfd-ors/w/record/numOperRecordSearch";
+            url = "/ors/w/record/numOperRecordSearch";
             vm.pa = index || 1;
         requestMethod(json, url)
             .then(data => {
@@ -257,7 +257,7 @@ export default {
         let vm = this;
         vm.off.logDet = true;
         let data = { searchRecordId: v.recordId, searchRecordTime: v.recordTime };
-        requestMethod(data, "/yfd-ors/w/record/getNumOperRecordDetail")
+        requestMethod(data, "/ors/w/record/getNumOperRecordDetail")
             .then(data => {
             if (data.code == 200) {
                 vm.detailsList = data.data;
