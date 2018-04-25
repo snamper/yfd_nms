@@ -155,8 +155,10 @@
             </div> 
             <div class="listTitleFoot tar">
                 验证号码:{{user.phone}}
-                <el-input v-model="authCode" size="mini" style="width:26%" maxlength=6 placeholder="请输入验证码"></el-input>
-                <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button>
+                <!-- <el-input v-model="authCode" size="mini" style="width:26%" placeholder="请输入验证码"></el-input>
+                <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button> -->
+                <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
+                <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
             </div> 
             <div class="listTitleFoot">
                 <p style="float:right">
@@ -183,6 +185,8 @@ export default{
     props:{lists:Array},
     data (){
         return {
+            btnDisabled:false,
+            count:"点击获取验证码",            
             currentPage:0,//当前页
             a:'',//操作内容
             forms:"",
@@ -355,9 +359,25 @@ export default{
             }
         }
         ,getAuthCode(){
+            const TIME_COUNT = 120;
+            if (!this.timer) {
+                this.count = TIME_COUNT;
+                this.show = false;
+                this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                    this.btnDisabled=true;
+                    this.count--;
+                    } else {
+                    this.btnDisabled=false;                        
+                    this.show = true;
+                    this.count="点击获取验证码"                    
+                    clearInterval(this.timer);
+                    this.timer = null;
+                    }
+                }, 1000)
+            }
             let load=Loading.service(options),data={},url='/ums/w/user/getAuthCode',vm=this;
             data={"phone":vm.user.phone}
-            // data={"phone":15684765209}
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
@@ -450,9 +470,12 @@ export default{
             data.authCode=vm.authCode;
             requestMethod(data,vm.doUrl)
             .then((data)=>{
-                vm.off.modify=false;
+                for(let v=0;v<vm.lists.length;v++){
+                    this.$set(vm.lists[v],'ischecked',false);
+                }
                 vm.reason="";
                 vm.authCode="";
+                vm.off.modify=false;
                 if(data.code==200){
                     layer.open({
                         content:data.msg,
@@ -460,7 +483,6 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-
                     if(this.searchType!=1){
                         this.search();
                     }else if(this.searchType==1){
