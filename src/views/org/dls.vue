@@ -17,6 +17,7 @@
                     v-model="startTime"
                     size="small"
                     type="datetime"
+                    :editable=false                    
                     :picker-options="pickerOptionsS"
                     @change="changeTimeS"
                     placeholder="选择开始时间">
@@ -26,6 +27,7 @@
                     v-model="endTime"
                     size="small"
                     type="datetime"
+                    :editable=false                    
                     :picker-options="pickerOptionsE"
                     @change="changeTimeE"
                     placeholder="选择结束时间">
@@ -190,7 +192,7 @@
 <script>
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
-import { getDateTime,getUnixTime,errorDeal,disableTimeRange } from "../../config/utils";
+import { getDateTime,getUnixTime,errorDeal,disableTimeRange6 } from "../../config/utils";
 import {requestMethod,requestMethod2} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layers from "../../../components/layer";
@@ -231,30 +233,42 @@ export default{
             disabledDate(time) {
                 let curDate = new Date().getTime();
                 let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1;
+                let curMonth=new Date(curDate).getMonth()+1,
+                    minMonth=curMonth-5,
+                    minYear=curYear;
+                    if(minMonth<0){
+                        minMonth+=12;
+                        minYear=curYear-1;
+                    }
                 let curDay=new Date(curDate).getDate()+1; 
                 let nextMonth=curMonth+1;               
-                let cur=curYear+"/"+curMonth+"/1";
+                let cur=minYear+"/"+minMonth+"/1";
                 let next=curYear+"/"+nextMonth+"/1";
                 let nextYesterday=new Date(next)-1000*3600*24;
                     cur=new Date(cur).getTime();
                 return time.getTime() > nextYesterday || time.getTime() < cur;
             }
-            },
-            pickerOptionsE: {
+        },
+        pickerOptionsE: {
             disabledDate(time) {
                 let curDate = new Date().getTime();
                 let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1;
+                let curMonth=new Date(curDate).getMonth()+1,
+                    minMonth=curMonth-5,
+                    minYear=curYear;
+                    if(minMonth<0){
+                        minMonth+=12;
+                        minYear=curYear-1;
+                    }
                 let curDay=new Date(curDate).getDate()+1; 
                 let nextMonth=curMonth+1;               
-                let cur=curYear+"/"+curMonth+"/1";
+                let cur=minYear+"/"+minMonth+"/1";
                 let next=curYear+"/"+nextMonth+"/1";
                 let nextYesterday=new Date(next)-1000*3600*24;
                     cur=new Date(cur).getTime();
                 return time.getTime() > nextYesterday || time.getTime() < cur;
             }
-            }, 
+        }, 
         }
     },
     components:{
@@ -286,16 +300,30 @@ export default{
             vm.off.setSync=false;
             vm.off.sync=true;
         },search(p){//查询
-            if(this.startTime.length==0||this.endTime.length==0){
+            let vm=this,
+            sy=new Date(vm.startTime).getFullYear(),
+            sm=new Date(vm.startTime).getMonth(),
+            ey=new Date(vm.endTime).getFullYear(),
+            em=new Date(vm.endTime).getMonth();
+            if(sy!=ey||sm!=em){
                 layer.open({
-                    content:'请选择开始和结束时间',
+                    content:'开始和结束日期不能跨月',
                     skin: 'msg',
                     time: 2,
                     msgSkin:'error',
                 });
                 return false;
             }
-            let load=Loading.service(options),data={},url='/ums/w/user/departSearch',vm=this;
+            if(new Date(vm.startTime).getTime()>new Date(vm.endTime).getTime()){
+                layer.open({
+                    content:'开始时间必须小于结束时间',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            let load=Loading.service(options),data={},url='/ums/w/user/departSearch';
             vm.pa=p||1;
             vm.currentPage=p||1;
             data={
@@ -354,7 +382,7 @@ export default{
         },
         changeTimeS(e){
             let vm=this,
-            timeRange=disableTimeRange(),
+            timeRange=disableTimeRange6(),
             timeRangeS=timeRange.next,
             timeRangeE=timeRange.nextYesterday,
             timeCheck=new Date(e).getTime();
@@ -366,7 +394,7 @@ export default{
             }           
         },changeTimeE(e){
             let vm=this,
-            timeRange=disableTimeRange(),
+            timeRange=disableTimeRange6(),
             timeRangeS=timeRange.next,
             timeRangeE=timeRange.nextYesterday,
             timeCheck=new Date(e).getTime();

@@ -32,6 +32,7 @@ div.detailsListDiv tr td {
                     v-model="startTime"
                     size="small"
                     type="datetime"
+                    :editable=false                    
                     :picker-options="pickerOptionsS"
                     @change="changeTimeS"
                     placeholder="选择开始时间">
@@ -41,6 +42,7 @@ div.detailsListDiv tr td {
                     v-model="endTime"
                     size="small"
                     type="datetime"
+                    :editable=false                    
                     :picker-options="pickerOptionsE"
                     @change="changeTimeE"                    
                     placeholder="选择结束时间">
@@ -152,7 +154,7 @@ div.detailsListDiv tr td {
   	</section>
 </template>
 <script>
-import { getDateTime,disableTimeRange } from "../../config/utils";
+import { getDateTime,disableTimeRange6 } from "../../config/utils";
 import {errorDeal} from "../../config/utils";
 import logDet from "../../../components/logDetails";
 import { requestMethod } from "../../config/service";
@@ -179,37 +181,50 @@ export default {
                 page: 1
             }, 
             pickerOptionsS: {
-            disabledDate(time) {
-                let curDate = new Date().getTime();
-                let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1;
-                let curDay=new Date(curDate).getDate()+1; 
-                let nextMonth=curMonth+1;               
-                let cur=curYear+"/"+curMonth+"/1";
-                let next=curYear+"/"+nextMonth+"/1";
-                let nextYesterday=new Date(next)-1000*3600*24;
-                    cur=new Date(cur).getTime();
-                return time.getTime() > nextYesterday || time.getTime() < cur;
-            }
+                disabledDate(time) {
+                    let curDate = new Date().getTime();
+                    let curYear=new Date(curDate).getFullYear();
+                    let curMonth=new Date(curDate).getMonth()+1,
+                        minMonth=curMonth-5,
+                        minYear=curYear;
+                        if(minMonth<0){
+                            minMonth+=12;
+                            minYear=curYear-1;
+                        }
+                    let curDay=new Date(curDate).getDate()+1; 
+                    let nextMonth=curMonth+1;               
+                    let cur=minYear+"/"+minMonth+"/1";
+                    let next=curYear+"/"+nextMonth+"/1";
+                    let nextYesterday=new Date(next)-1000*3600*24;
+                        cur=new Date(cur).getTime();
+                    return time.getTime() > nextYesterday || time.getTime() < cur;
+                }
             },
             pickerOptionsE: {
-            disabledDate(time) {
-                let curDate = new Date().getTime();
-                let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1;
-                let curDay=new Date(curDate).getDate()+1; 
-                let nextMonth=curMonth+1;               
-                let cur=curYear+"/"+curMonth+"/1";
-                let next=curYear+"/"+nextMonth+"/1";
-                let nextYesterday=new Date(next)-1000*3600*24;
-                    cur=new Date(cur).getTime();
-                return time.getTime() > nextYesterday || time.getTime() < cur;
-            }
+                disabledDate(time) {
+                    let curDate = new Date().getTime();
+                    let curYear=new Date(curDate).getFullYear();
+                    let curMonth=new Date(curDate).getMonth()+1,
+                        minMonth=curMonth-5,
+                        minYear=curYear;
+                        if(minMonth<0){
+                            minMonth+=12;
+                            minYear=curYear-1;
+                        }
+                    let curDay=new Date(curDate).getDate()+1; 
+                    let nextMonth=curMonth+1;               
+                    let cur=minYear+"/"+minMonth+"/1";
+                    let next=curYear+"/"+nextMonth+"/1";
+                    let nextYesterday=new Date(next)-1000*3600*24;
+                        cur=new Date(cur).getTime();
+                    return time.getTime() > nextYesterday || time.getTime() < cur;
+                }
             }, 
         };
     },
     created: function() {
         let vm=this;
+        vm.off.showSearch = vm.$route.name;
         let curDate = (new Date()).getTime();
         let curMonth=new Date(curDate).getMonth()+1;
         let curYear=new Date(curDate).getFullYear();
@@ -227,8 +242,30 @@ export default {
     },
     methods: {
         search(index) {//查询
-        let vm = this,
-            json = {
+            let vm=this, 
+            sy=new Date(vm.startTime).getFullYear(),
+            sm=new Date(vm.startTime).getMonth(),
+            ey=new Date(vm.endTime).getFullYear(),
+            em=new Date(vm.endTime).getMonth();
+            if(sy!=ey||sm!=em){
+                layer.open({
+                    content:'开始和结束日期不能跨月',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            if(new Date(vm.startTime).getTime()>new Date(vm.endTime).getTime()){
+                layer.open({
+                    content:'开始时间必须小于结束时间',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            let json = {
             startOperateTime:new Date(vm.startTime).getTime(),
             endOperateTime: new Date(vm.endTime).getTime(),
             operatorName: vm.operator,
@@ -269,7 +306,7 @@ export default {
         },
         changeTimeS(e){
             let vm=this,
-            timeRange=disableTimeRange(),
+            timeRange=disableTimeRange6(),
             timeRangeS=timeRange.next,
             timeRangeE=timeRange.nextYesterday,
             timeCheck=new Date(e).getTime();
@@ -281,7 +318,7 @@ export default {
             }           
         },changeTimeE(e){
             let vm=this,
-            timeRange=disableTimeRange(),
+            timeRange=disableTimeRange6(),
             timeRangeS=timeRange.next,
             timeRangeE=timeRange.nextYesterday,
             timeCheck=new Date(e).getTime();

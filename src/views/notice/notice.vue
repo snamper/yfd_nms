@@ -97,7 +97,7 @@
                             <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
                         </td>
                         <td>
-                            <div class="msgTime"><span class="timeBig">{{getDateTime(v.creatTime)[2]}}日</span> {{getDateTime(v.creatTime)[1]}}月 {{getDateTime(v.creatTime)[0]}}年&nbsp;&nbsp;{{getDateTime(v.creatTime)[5]}}<span class="fr">有效期 ：{{getDateTime(v.expTime)[0]}}年{{getDateTime(v.expTime)[1]}}月{{getDateTime(v.expTime)[2]}}日</span></div>
+                            <div class="msgTime"><span class="timeBig">{{getDateTime(v.createTime)[2]}}日</span> {{getDateTime(v.createTime)[1]}}月 {{getDateTime(v.createTime)[0]}}年&nbsp;&nbsp;{{getDateTime(v.createTime)[5]}}<span class="fr">有效期 ：{{getDateTime(v.expTime)[0]}}年{{getDateTime(v.expTime)[1]}}月{{getDateTime(v.expTime)[2]}}日</span></div>
                             <div class="msgInfo">
                                 <p><img class="icon" src="../../assets/images/icon/book.svg" alt="" /><span class="c-green"><span v-if="v.type=='600'">(系统消息)</span><span v-if="v.type=='200'">(政策消息)</span><span v-if="v.type=='500'">(优惠消息)</span><span v-if="v.type=='400'">(新货上架)</span></span><span v-if="v.content!=''">{{v.content}}</span></p>
                                 <p><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
