@@ -162,10 +162,9 @@ div.detailsListDiv tr td{text-align: center;}
   	</section>
 </template>
 <script>
-import { getDateTime,disableTimeRange6} from "../../config/utils";
+import { getDateTime,disableTimeRange6,errorDeal} from "../../config/utils";
 import logDet from "../../../components/logDetails";
 import {requestSyncSearch,requestgetSyncTime} from "../../config/service";
-import { errorDeal } from '../../../../kameng_ecs_merge/ka_ecs/src/config/utils';
 export default {
     data() {
     return {
