@@ -32,6 +32,7 @@ div.detailsListDiv tr td {
                     v-model="startTime"
                     size="small"
                     type="datetime"
+                    :clearable=false
                     :editable=false                    
                     :picker-options="pickerOptionsS"
                     @change="changeTimeS"
@@ -42,6 +43,7 @@ div.detailsListDiv tr td {
                     v-model="endTime"
                     size="small"
                     type="datetime"
+                    :clearable=false                    
                     :editable=false                    
                     :picker-options="pickerOptionsE"
                     @change="changeTimeE"                    
@@ -91,63 +93,68 @@ div.detailsListDiv tr td {
                 <button class="searchBtn" @click="search()">搜索</button>
             </el-row>
         </div>
-        <div v-if="off.logList!=0">
-            <div class="listTitleFoot"><span>日志列表</span>({{form.page}})<el-button class="fr" type="success" size="small">导出数据</el-button></div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
-                    <tr>
-                        <td>序号</td>
-                        <td>号包名称</td>
-                        <td>操作时间</td>
-                        <td>操作人</td>
-                        <td>手机号码</td>
-                        <td>操作类型</td>
-                        <td>操作结果</td>
-                        <td>操作</td>
-                    </tr>
-                    <tr v-for="(v,i) of searchResult" :key="i">
-                        <td>
-                            {{((pa-1)*10+(i+1))}}
-                        </td>
-                        <td >
-                            {{v.productName}}
-                        </td>
-                        <td >
-                            {{new Date(v.modifyTime).toLocaleString()}}
-                        </td>
-                        <td >
-                            {{v.operatorName}}
-                        </td>
-                        <td>
-                            {{v.operatorPhone}}
-                        </td>
-                        <td >
-                            <span v-if="v.productState==1">初始化</span>
-                            <span v-if="v.productState==2">上架</span>
-                            <span v-if="v.productState==3">下架</span>
-                            <span v-if="v.productState==4">已卖</span>
-                        </td>
-                        <td >
-                            <span v-if="v.recordResult==1">成功</span>
-                            <span v-if="v.recordResult==2">失败</span>
-                        </td>
-                        <td>
-                            <a class="textDec" href="javascript:void(0)" @click="openDetails(v)">查看详情</a>
-                        </td>
-                    </tr>
-                </table>
+        <div v-if="searchResult">
+            <div v-if="off.logList!=0">
+                <div class="listTitleFoot"><span>日志列表</span>({{form.page}})<el-button class="fr" type="success" size="small">导出数据</el-button></div>
+                <div class="detailsListDiv">
+                    <table class="searchTab" style="width:100%;height:100%;">
+                        <tr>
+                            <td>序号</td>
+                            <td>号包名称</td>
+                            <td>操作时间</td>
+                            <td>操作人</td>
+                            <td>手机号码</td>
+                            <td>操作类型</td>
+                            <td>操作结果</td>
+                            <td>操作</td>
+                        </tr>
+                        <tr v-for="(v,i) of searchResult" :key="i">
+                            <td>
+                                {{((pa-1)*10+(i+1))}}
+                            </td>
+                            <td >
+                                {{v.productName}}
+                            </td>
+                            <td >
+                                {{new Date(v.modifyTime).toLocaleString()}}
+                            </td>
+                            <td >
+                                {{v.operatorName}}
+                            </td>
+                            <td>
+                                {{v.operatorPhone}}
+                            </td>
+                            <td >
+                                <span v-if="v.productState==1">初始化</span>
+                                <span v-if="v.productState==2">上架</span>
+                                <span v-if="v.productState==3">下架</span>
+                                <span v-if="v.productState==4">已卖</span>
+                            </td>
+                            <td >
+                                <span v-if="v.recordResult==1">成功</span>
+                                <span v-if="v.recordResult==2">失败</span>
+                            </td>
+                            <td>
+                                <a class="textDec" href="javascript:void(0)" @click="openDetails(v)">查看详情</a>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="listTitleFoot">
+                    <el-row>
+                        <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
+                            <el-pagination
+                                layout="prev, pager, next"
+                                :page-size="10"
+                                @current-change="search"
+                                :total="form.page">
+                            </el-pagination>    
+                        </div></el-col>
+                    </el-row>
+                </div>
             </div>
-            <div class="listTitleFoot">
-                <el-row>
-                    <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
-                        <el-pagination
-                            layout="prev, pager, next"
-                            :page-size="10"
-                            @current-change="search"
-                            :total="form.page">
-                        </el-pagination>    
-                    </div></el-col>
-                </el-row>
+            <div v-if="off.logList==0" class="searchResultInfoNone">
+                查询结果为空
             </div>
         </div>
         <log-details v-if="off.logDet" :detailsData="detailsList" :layerType="openLayer"></log-details>

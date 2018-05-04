@@ -11,35 +11,35 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/nus/':{
-            target:'http://192.168.10.103:10022/nus/',
+            target:'http://192.168.10.105:8080/nus/',
             changeOrigin:true,
             pathRewrite:{
                 '/nus':'/nus'
             }
         },
         '/uus/':{
-            target:'http://192.168.10.103:10023/uus/',
+            target:'http://192.168.10.105:8080/uus/',
             changeOrigin:true,
             pathRewrite:{
                 '/uus':'/uus'
             }
         },
         '/ums/':{
-            target:'http://192.168.10.105:10022/ums/',
+            target:'http://192.168.10.105:8080/ums/',
             changeOrigin:true,
             pathRewrite:{
                 '^/ums' : '/' 
             }
         },
         '/nms/':{
-            target:'http://192.168.10.105:10023/nms/',
+            target:'http://192.168.10.105:8080/nms/',
             changeOrigin:true,
             pathRewrite:{
                 '^/nms' : '/'
             }
         },
         '/mns/':{
-            target:'http://192.168.10.105:10034/mns',
+            target:'http://192.168.10.105:8080/mns',
             // target:'http://192.168.10.35:10034/mns',
             changeOrigin:true,
             pathRewrite:{
@@ -47,7 +47,7 @@ module.exports = {
             }
         },
         '/ors/':{
-            target:'http://192.168.10.105:10032/ors',
+            target:'http://192.168.10.105:8080/ors',
             changeOrigin:true,
             pathRewrite:{
                 '^/ors' : ''

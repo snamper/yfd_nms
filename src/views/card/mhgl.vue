@@ -100,7 +100,9 @@
                             <td colspan="10">
                                 <el-row>
                                     <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
-                                        <span class="greyFont">最后同步成功时间:</span><span>{{"--"}}</span>
+                                        <span class="greyFont">最后同步成功时间:</span>
+                                        <span v-if="syncLastTime==0">--</span>
+                                        <span v-if="syncLastTime!=0">{{getDateTime(syncLastTime)[6]}}</span>
                                     </div></el-col>
                                     <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
                                         <span class="greyFont">下次同步成功时间:</span><span>{{"--"}}</span>
@@ -244,7 +246,7 @@
 import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal,getStore } from "../../config/utils.js";
-import {requestMethod,requestMethod2} from "../../config/service.js"; 
+import {requestMethod,requestMethod2,requestgetSyncTime} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layerSync from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
@@ -258,6 +260,7 @@ const options={text:"正在加载",}
 export default{
 	data (){
 		return {
+            syncLastTime:'',//最后一次同步成功时间
             btnDisabled:false,
             count:"点击获取验证码",
             timer:null,
@@ -457,6 +460,7 @@ export default{
                 "pageSize":10
                 ,"pageNum":p||1}
             vm.searchData=data;
+            vm.getSyncTime();
             requestMethod2(data,url,function(){load.close()})
             .then((data)=>{
                 if(data.code==200){
@@ -638,6 +642,21 @@ export default{
             }).then(()=>{
                 load.close(); 
             }).catch(e=>errorDeal(e));
+        },
+        getSyncTime(){
+            let vm=this;
+            let data={recordType:3};
+            requestgetSyncTime(data)
+            .then((data)=>{
+                if(data.code==200){
+                    vm.syncLastTime=data.data.syncLastTime
+                }else{
+                    errorDeal(data)
+                }
+            }).catch(e=>errorDeal(e)); 
+        },
+        getDateTime:function(v){
+            return getDateTime(v);
         }
     }
 }

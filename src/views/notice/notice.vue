@@ -103,7 +103,9 @@
                                 <p><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
                                 <p >
                                     <img class="icon" src="../../assets/images/icon/link.svg" alt="" />
-                                    附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(v)" href="javascript:void(0)" class="c-yellow textDec">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
+                                    <!-- 附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(v)" href="javascript:void(0)" class="c-yellow textDec">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
+                                     -->
+                                    附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" :href="v.annex[0].fileUrl" target=_blank class="c-yellow textDec">{{v.annex[0].fileName}}</a>                                    
                                     <span class="fr">
                                         发送对象:<a v-if="v.receiverType==1" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
                                         <a v-if="v.receiverType==2" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>

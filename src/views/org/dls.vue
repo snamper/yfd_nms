@@ -17,6 +17,7 @@
                     v-model="startTime"
                     size="small"
                     type="datetime"
+                    :clearable=false                                        
                     :editable=false                    
                     :picker-options="pickerOptionsS"
                     @change="changeTimeS"
@@ -27,6 +28,7 @@
                     v-model="endTime"
                     size="small"
                     type="datetime"
+                    :clearable=false                                        
                     :editable=false                    
                     :picker-options="pickerOptionsE"
                     @change="changeTimeE"
@@ -97,10 +99,12 @@
                         <td colspan="8">
                             <el-row>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
-                                    <span class="greyFont">最后同步成功时间:</span><span>{{"--"}}</span>
+                                    <span class="greyFont">最后同步成功时间:</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
                                 </div></el-col>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
-                                    <span class="greyFont">下次同步成功时间:</span><span>{{"--"}}</span>
+                                    <span class="greyFont">下次同步成功时间:</span>
+                                    <span v-if="syncLastTime==0">--</span>
+                                    <span v-if="syncLastTime!=0">{{getDateTime(syncLastTime)[6]}}</span>
                                 </div></el-col>
                                 <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
                                     <span class="greyFont">同步间隔时间:</span><span></span>
@@ -153,11 +157,6 @@
                         <a class="textDec" href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
                         </td>
                     </tr>
-                    <tr v-if="searchList.length==0">
-                    <td colspan="8" style="text-align: center;font-size: 16px;font-weight: bold">
-                            查询结果为空
-                    </td>
-                    </tr>
                 </table>
             </div>
             <div class="listTitleFoot">
@@ -193,7 +192,7 @@
 const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal,disableTimeRange6 } from "../../config/utils";
-import {requestMethod,requestMethod2} from "../../config/service.js"; 
+import {requestMethod,requestMethod2,requestgetSyncTime} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layers from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
@@ -201,6 +200,7 @@ export default{
     name:'dls',
     data (){
         return {
+            syncLastTime:'',//最后一次同步成功时间
             currentPage:0,//当前页
             hesdUserName:"",
             headPhone:"",
@@ -336,6 +336,7 @@ export default{
                 ,"phone":vm.phone
                 ,"pageSize":15
                 ,"pageNum":p||1}
+                this.getSyncTime();
             requestMethod(data,url)
             .then((data)=>{
                 load.close()
@@ -404,9 +405,23 @@ export default{
             if(timeCheck>timeRangeE){
                 vm.endTime=timeRangeE;
             }           
+        },
+        getSyncTime(){
+            let vm=this;
+           let data={recordType:3};
+           requestgetSyncTime(data)
+            .then((data)=>{
+                if(data.code==200){
+                    vm.syncLastTime=data.data.syncLastTime
+                }else{
+                    errorDeal(data)
+                }
+            }).catch(e=>errorDeal(e)); 
+        },
+        getDateTime:function(v){
+            return getDateTime(v);
         }
     }
-
 }
 </script>
 

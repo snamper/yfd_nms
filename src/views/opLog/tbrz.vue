@@ -17,6 +17,7 @@ div.detailsListDiv tr td{text-align: center;}
                         v-model="startTime"
                         size="small"
                         type="datetime"
+                        :clearable=false                        
                         :editable=false                    
                         :picker-options="pickerOptionsS"
                         @change="changeTimeS"
@@ -27,6 +28,7 @@ div.detailsListDiv tr td{text-align: center;}
                         v-model="endTime"
                         size="small"
                         type="datetime"
+                        :clearable=false
                         :editable=false                    
                         :picker-options="pickerOptionsE"  
                         @change="changeTimeE"                                      
@@ -72,8 +74,8 @@ div.detailsListDiv tr td{text-align: center;}
                     <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">同步内容：</div></el-col>
                     <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
                         <el-radio v-model="recordType"  label="0">全部</el-radio>
-                        <el-radio v-model="recordType"  label="3">码号</el-radio>
-                        <el-radio v-model="recordType"  label="4">框架</el-radio>
+                        <el-radio v-model="recordType"  label="3">框架</el-radio>
+                        <el-radio v-model="recordType"  label="4">号码</el-radio>
                     </el-col>
                     <el-col :span="2">
                     
@@ -95,72 +97,98 @@ div.detailsListDiv tr td{text-align: center;}
                 <button  class="searchBtn" @click="search()">搜索</button>
             </el-row>
         </div>
-        <div class="listTitleFoot"><span>日志列表</span><el-button class="fr" type="success" size="small">导出数据</el-button></div>
-        <div class="detailsListDiv">
-            <table class="searchTab" style="width:100%;height:100%;">
-                <tr>
-                    <td>序号</td>
-                    <td>号包名称</td>
-                    <td>操作时间</td>
-                    <td>操作人</td>
-                    <td>手机号码</td>
-                    <td>操作类型</td>
-                    <td>操作结果</td>
-                    <td>操作</td>
-                </tr>
-                <tr v-for="(v,i) of ix" :key="i">
-                    <td>
-                    </td>
-                    <td>
-                    </td><td>
-                    </td><td>
-                    </td><td>
-                    </td><td>
-                    </td><td>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="openDetails()">查看详情</a>
-                    </td>
-                </tr>
-            </table>
-        </div>
-        <div class="listTitleFoot">
-            <el-row>
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
-                    <el-pagination
-                        layout="prev, pager, next"
-                        :page-size="10"
-                        @current-change="search"
-                        :total="form.page">
-                    </el-pagination>    
-                </div></el-col>
-            </el-row>
-        </div>
-        <log-details v-if="off.logDet"></log-details>
+        <div v-if="form.searchList">
+            <div v-if="form.page">
+                <div class="listTitleFoot"><span>日志列表:{{form.page||0}}</span><el-button class="fr" type="success" size="small">导出数据</el-button></div>
+                <div class="detailsListDiv">
+                    <table class="searchTab" style="width:100%;height:100%;">
+                        <tr>
+                            <td>序号</td>
+                            <td>日志ID</td>
+                            <td>日志类型</td>
+                            <td>日志时间</td>
+                            <td>同步类型</td>
+                            <td>同步协议</td>
+                            <td>操作人ID</td>
+                            <td>操作人姓名</td>
+                            <td>操作人手机号码</td>
+                            <td>操作结果</td>
+                            <td></td>
+                        </tr>
+                        <tr v-for="(v,i) of form.searchList" :key="i">
+                            <td>{{((pa-1)*10+(i+1))}}</td>
+                            <td>{{v.recordId}}</td>
+                            <td>
+                                <span v-if="v.recordType==0">全部</span>
+                                <span v-if="v.recordType==3">框架</span>
+                                <span v-if="v.recordType==4">号码</span>
+                            </td>
+                            <td>{{v.recordTime}}</td>
+                            <td>
+                                <span v-if="v.syncType==0">全部</span>
+                                <span v-if="v.syncType==1">手动同步</span>
+                                <span v-if="v.syncType==2">自动同步</span>
+                            </td>
+                            <td>{{v.syncProtocol}}</td>
+                            <td>{{v.operatorId}}</td>
+                            <td>{{v.operatorName}}</td>
+                            <td>{{v.operatorPhone}}</td>
+                            <td>
+                                <span v-if="v.syncState==1">成功</span>
+                                <span v-if="v.syncState==2">失败</span>
+                            </td>
+                            <td><a @click="details(v.introduct,v.recordType)">详情</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="listTitleFoot" >
+                    <el-row>
+                        <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
+                            <el-pagination
+                                layout="prev, pager, next"
+                                :page-size="10"
+                                @current-change="search"
+                                :total="form.page">
+                            </el-pagination>    
+                        </div></el-col>
+                    </el-row>
+                </div>
+            </div>
+            <div v-if="!form.page" class="searchResultInfoNone">
+                查询结果为空
+            </div>
+        </div>    
+        <log-details v-if="off.logDet" :layerType="openLayer" :getSyncTime="getSyncTime" :detailsData="form.detailsList" :syncLogType="detRecordType"></log-details>
   	</section>
 </template>
 <script>
 import { getDateTime,disableTimeRange6} from "../../config/utils";
 import logDet from "../../../components/logDetails";
-import {requestSyncSearch} from "../../config/service";
+import {requestSyncSearch,requestgetSyncTime} from "../../config/service";
 import { errorDeal } from '../../../../kameng_ecs_merge/ka_ecs/src/config/utils';
 export default {
     data() {
     return {
+        detRecordType:'',
         pa:1,
         startTime: "",
         endTime: "",
         operatorPhone:"",
         syncType:"0",
-        recordType:"0",
+        recordType:"3",
         recordResult:"0",
-        ix:[{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'}],                  
+        openLayer:"sync",
+        getSyncTime:'',
+        operatorName:'',
         off: {
             showSearch: "",
             logDet:false
         },
         form:{
-            page:1
+            page:0,
+            detailsList:'',
+            searchList:'',
+            syncLogType:'',
         },
         pickerOptionsS: {
             disabledDate(time) {
@@ -225,7 +253,7 @@ export default {
       "log-details":logDet
   },
   methods: {
-    search() {
+    search(p) {
         let vm=this, 
         sy=new Date(vm.startTime).getFullYear(),
         sm=new Date(vm.startTime).getMonth(),
@@ -249,27 +277,40 @@ export default {
             });
             return false;
         }
+        vm.pa=p||1;
         let json={"startOperateTime": new Date(vm.startTime).getTime(),
             "endOperateTime": new Date(vm.endTime).getTime(),
             "operatorName": vm.operatorName,
             "operatorPhone":vm.operatorPhone,
-            "pageNum": vm.pageNum,
-            "pageSize": vm.pageSize,
+            "pageNum": p||1,
+            "pageSize": 10,
             "syncType": vm.syncType,
             "recordType": vm.recordType,
             "recordResult": vm.recordResult,}
         requestSyncSearch(json)
         .then((data)=>{
             if(data.code==200){
-                vm.form.page=data.data.total
+                vm.form.page=data.data.total;
+                vm.form.searchList=data.data.records;
             }else{
                 errorDeal(data)
             }
         }).catch(e=>errorDeal(e))
     },
-    openDetails(){
-        let vm=this;
+    details(v,i){
+        let vm=this,
+        data={recordType:vm.recordType};
+        vm.form.detailsList=v;
         vm.off.logDet=true;
+        vm.detRecordType=i;
+        // requestgetSyncTime(data)
+        // .then((data)=>{
+        //     if(data.code==200){
+        //         vm.getSyncTime=data.data.syncLastTime
+        //     }else{
+        //         errorDeal(data)
+        //     }
+        // }).catch(e=>errorDeal(e));
     },
     changeTimeS(e){
         let vm=this,

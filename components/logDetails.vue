@@ -21,7 +21,7 @@ a.IconOff{font-size:16px;color:black}
 		<table>
             <thead>
                 <tr>
-                    <td colspan="3" style="text-align:center;padding:10px 10px 0 0;line-height:20px;height:46px ;">日志详情<a href="javascript:void" class="fr IconOff" @click="closeLayer()">x</a></td>
+                    <td colspan="3" style="text-align:center;padding:10px 10px 0 0;line-height:20px;height:46px ;">日志详情<a class="fr IconOff" @click="closeLayer()">x</a></td>
                 </tr>
             </thead>
 			<tbody v-if="layerType=='number'">
@@ -156,6 +156,74 @@ a.IconOff{font-size:16px;color:black}
                     <td>失败原因：<span class="c-red">{{'--'}}</span></td>
                 </tr>
             </tbody>
+            <tbody v-if="layerType=='sync'&&syncLogType=='3'">
+                <tr>
+                    <td>商户总数：</td>
+                    <td colspan="2">{{detailsData.dbDealerCount||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>新增商户数：</td>
+                    <td colspan="2">{{detailsData.addDealerCount||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>用户总数：</td>
+                    <td colspan="2">{{detailsData.dbUserCount||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>修改用户数：</td>
+                    <td colspan="2">{{detailsData.modifyUserCount||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>新增用户数：</td>
+                    <td colspan="2">{{detailsData.addUserCount||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>删除用户数：</td>
+                     <td colspan="2">
+                        {{detailsData.delUserCount}}
+                    </td>
+                </tr>
+                <tr>
+                    <td>亚非达用户数：</td>
+                    <td colspan="2">{{detailsData.addUserCount||'--'}}</td>
+                </tr>
+                <tr>
+                    <td >删除商户数：</td>
+                    <td colspan="2">{{detailsData.delDealerCount}}</td>
+                </tr>
+                <tr>
+                    <td>修改商户数：</td>
+                    <td colspan="2">{{detailsData.modifyDealerCount}}</td>
+                </tr>
+                <tr>
+                    <td>亚非达商户数：<span></span></td>
+                     <td colspan="2">
+                       {{detailsData.yfdDealerCount}}
+                    </td>
+                </tr>
+            </tbody>
+            <tbody v-if="layerType=='sync'&&syncLogType=='4'">
+                <tr>
+                    <td>部门总数：</td>
+                    <td colspan="2">{{detailsData.dbSectionTotal||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>亚非达号码总数：</td>
+                    <td colspan="2">{{detailsData.yfdPhoneTotal||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>修改部门总数：</td>
+                    <td colspan="2">{{detailsData.modifySectionTotal||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>新增部门总数：</td>
+                    <td colspan="2">{{detailsData.addSectionTotal||'--'}}</td>
+                </tr>
+                <tr>
+                    <td>删除部门数：</td>
+                    <td colspan="2">{{detailsData.delSectionTotal||'--'}}</td>
+                </tr>
+            </tbody>
 		</table>
 		<div class="lay-mask"></div>
 	</div>
@@ -163,7 +231,7 @@ a.IconOff{font-size:16px;color:black}
 </template>
 <script>
 export default{
-	props:['detailsData','layerType'],
+	props:['detailsData','layerType','syncLogType','getSyncTime'],
 	data (){
 		return {
 			title:'',
@@ -174,7 +242,8 @@ export default{
 		
 	},
 	created:function(){
-		let vm=this;
+        let vm=this;
+        console.log(this.syncLogType)
 	},
 	methods:{
 		closeLayer:function(){
@@ -187,8 +256,7 @@ export default{
             let longitude=parseFloat(vm.detailsData.longitude);
 			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
 			window.open(url);
-		}
-        
+		} 
 	}
 }
 </script>

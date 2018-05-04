@@ -23,6 +23,7 @@ div.detailsListDiv tr td {
                     v-model="startTime"
                     size="small"
                     type="datetime"
+                    :clearable=false                    
                     :editable=false
                     :picker-options="pickerOptionsS"
                     @change="changeTimeS"
@@ -33,6 +34,7 @@ div.detailsListDiv tr td {
                     v-model="endTime"
                     size="small"
                     type="datetime"
+                    :clearable=false                    
                     :editable=false
                     :picker-options="pickerOptionsE"
                     @change="changeTimeE"                    
