@@ -94,8 +94,8 @@ div.detailsListDiv tr td {
             </el-row>
         </div>
         <div v-if="searchResult">
-            <div v-if="off.logList!=0">
-                <div class="listTitleFoot"><span>日志列表</span>({{form.page}})<el-button class="fr" type="success" size="small">导出数据</el-button></div>
+            <div>
+                <div class="listTitleFoot"><h3>日志列表<span class="fontWeight greyFont">({{form.page||'0'}})</span><!--<el-button class="fr" type="success" size="small">导出数据</el-button>--></h3></div>
                 <div class="detailsListDiv">
                     <table class="searchTab" style="width:100%;height:100%;">
                         <tr>
@@ -110,13 +110,19 @@ div.detailsListDiv tr td {
                         </tr>
                         <tr v-for="(v,i) of searchResult" :key="i">
                             <td>
-                                {{((pa-1)*10+(i+1))}}
+                                {{((pa-1)*15+(i+1))}}
                             </td>
                             <td >
                                 {{v.productName}}
                             </td>
                             <td >
-                                {{new Date(v.modifyTime).toLocaleString()}}
+                                <!-- {{new Date(v.modifyTime).toLocaleString()}} -->
+                                <span v-if="v.modifyTime">
+                                    {{new Date(v.modifyTime).toLocaleString()}}
+                                </span>
+                                <span v-if="!v.modifyTime">
+                                    --
+                                </span>
                             </td>
                             <td >
                                 {{v.operatorName}}
@@ -138,14 +144,19 @@ div.detailsListDiv tr td {
                                 <a class="textDec" href="javascript:void(0)" @click="openDetails(v)">查看详情</a>
                             </td>
                         </tr>
+                         <tr v-if="searchResult.length<=0">
+                            <td colspan="8">
+                                暂无数据                                                        
+                            </td>
+                        </tr>
                     </table>
                 </div>
-                <div class="listTitleFoot">
+                <div class="listTitleFoot" v-if="searchResult.length>0">
                     <el-row>
                         <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
                             <el-pagination
                                 layout="prev, pager, next"
-                                :page-size="10"
+                                :page-size="15"
                                 @current-change="search"
                                 :total="form.page">
                             </el-pagination>    
@@ -153,15 +164,15 @@ div.detailsListDiv tr td {
                     </el-row>
                 </div>
             </div>
-            <div v-if="off.logList==0" class="searchResultInfoNone">
+            <!-- <div v-if="off.logList==0" class="searchResultInfoNone">
                 查询结果为空
-            </div>
+            </div> -->
         </div>
         <log-details v-if="off.logDet" :detailsData="detailsList" :layerType="openLayer"></log-details>
   	</section>
 </template>
 <script>
-import { getDateTime,disableTimeRange6 } from "../../config/utils";
+import { getDateTime,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import {errorDeal} from "../../config/utils";
 import logDet from "../../../components/logDetails";
 import { requestMethod } from "../../config/service";
@@ -230,16 +241,7 @@ export default {
         };
     },
     created: function() {
-        let vm=this;
-        vm.off.showSearch = vm.$route.name;
-        let curDate = (new Date()).getTime();
-        let curMonth=new Date(curDate).getMonth()+1;
-        let curYear=new Date(curDate).getFullYear();
-        let curDay=new Date(curDate).getDate()+1;
-        let cur=curYear+"/"+curMonth+"/1";
-        let Next=curYear+"/"+curMonth+"/"+curDay;
-        vm.startTime=new Date(cur).getTime();
-        vm.endTime=new Date(Next).getTime()-1000;
+        getTimeFunction(this);
     },
     beforeDestroy: function() {},
     mounted: function() {},
@@ -249,6 +251,9 @@ export default {
     },
     methods: {
         search(index) {//查询
+            if(this.phone!=''){
+                checkMobile(this.phone,function(){return false});
+            }
             let vm=this, 
             sy=new Date(vm.startTime).getFullYear(),
             sm=new Date(vm.startTime).getMonth(),
@@ -281,7 +286,7 @@ export default {
             productName:vm.packageName,
             recordResult: vm.radio,
             pageNum:index||1,
-            pageSize:10,
+            pageSize:15,
             },
             url = "/ors/w/record/numOperRecordSearch";
             vm.pa = index || 1;
@@ -322,7 +327,8 @@ export default {
             }
             if(timeCheck>timeRangeE){
                 vm.startTime=timeRangeE;
-            }           
+            }     
+            getTimeFunction(this,[e,1])      
         },changeTimeE(e){
             let vm=this,
             timeRange=disableTimeRange6(),
@@ -334,7 +340,8 @@ export default {
             }
             if(timeCheck>timeRangeE){
                 vm.endTime=timeRangeE;
-            }           
+            }  
+            getTimeFunction(this,[e,2])                           
         }
     }
 };

@@ -2,7 +2,7 @@
 #detailsView{position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
 #detailsView>div{display: table-cell;vertical-align: middle;}
 #detailsView table{margin:auto;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
-#detailsView table td{padding:5px 30px;}
+#detailsView table td{padding:0px 15px;}
 #detailsView table th{padding: 18px 0;border-radius: 4px 4px 0 0;color: #545454;font-size: 16px;}
 #detailsView table td>.fl{width:1rem;text-align: right;}
 #detailsView table td>.fright{margin-left: 1.05rem;text-align: left; }
@@ -30,7 +30,9 @@ tbody tr{height: 36px;}
                     <td class="fl"><p>验证号码:<span v-model="user.phone">{{user.phone}}</span></p></td>
                 </tr>
                 <tr colspan="2">
-					<el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%" placeholder="请输入短信验证码"></el-input><el-button style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
+                    <td>
+					    <el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%" placeholder="请输入短信验证码"></el-input><el-button style="width:112px" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
+                    </td>
 				</tr>
                 <tr class="tdBtn" colspan="2">
                     <span @click="close()">取消</span>
@@ -43,7 +45,6 @@ tbody tr{height: 36px;}
 </section>
 </template>
 <script>
-const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service.js"; 
 import { errorDeal,getStore } from '../src/config/utils';
@@ -51,7 +52,7 @@ export default{
     props:{layerType:String},
 	data (){
 		return {
-            count: '点击获取验证码',
+            count: '获取验证码',
             timer: null,
             show:true,
             date:'',//日期选择器
@@ -90,7 +91,7 @@ export default{
                     } else {
                     this.btnDisabled=false;                        
                     this.show = true;
-                    this.count="点击获取验证码"
+                    this.count="获取验证码"
                     clearInterval(this.timer);
                     this.timer = null;
                     }

@@ -52,7 +52,7 @@
 						</div>
 					</router-link>
 					<ul class="g-side-subul nav2">
-						<li><router-link to="/home/organization/yfd"><b></b>亚非达管理</router-link></li>
+						<li><router-link to="/home/organization/yfd"><b></b>亚飞达管理</router-link></li>
 						<li><router-link to="/home/organization/agent"><b></b>代理商管理</router-link></li>
 						<li><router-link to="/home/organization/staff"><b></b>员工管理</router-link></li>
 					</ul>
@@ -95,7 +95,7 @@
 						</div>
 					</router-link>
 					<ul class="g-side-subul nav2">
-						<li><router-link to="/home/browsingHistory/yfd"><b></b>亚非达管理</router-link></li>
+						<li><router-link to="/home/browsingHistory/yfd"><b></b>亚飞达管理</router-link></li>
 						<li><router-link to="/home/browsingHistory/agent"><b></b>代理商管理</router-link></li>
 						<li><router-link to="/home/browsingHistory/staff"><b></b>员工管理</router-link></li>
 					</ul>

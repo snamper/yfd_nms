@@ -1,6 +1,8 @@
 <style scoped>
  .listTitleFoot{width: 96%;margin: 10px 18px;}
  .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}
+ .addList span{display:inline-block;width:60px;}
+ table tr td{text-align: left;padding-left: 20px;} 
 </style>
 <template>
   <div>
@@ -11,8 +13,8 @@
         </el-row>
         <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="6" :sm="4" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :xs="14" :sm="16" :md="16" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="16" :sm="14" :md="14" :lg="16" :xl="16">
                      <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
@@ -20,9 +22,9 @@
                 </el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                <el-col :xs="14" :sm="14" :md="16" :lg="16" :xl="16">
-                     <el-input v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="16" :sm="14" :md="14" :lg="16" :xl="16">
+                     <el-input type="tel" v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
                 </el-col> 
@@ -30,8 +32,8 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="6" :sm="2" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :xs="17" :sm="16" :md="16" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="16" :sm="16" :md="14" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2" >全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
                     <el-radio v-model="radio"  label="2" >黑名单</el-radio>
@@ -46,25 +48,31 @@
         </el-row>
     </div>
     <el-row>
-        <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3">添加员工</el-button></div></el-col>
+        <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3"><span v-if="!off.addList">添加员工</span><span v-if="off.addList">隐藏</span></el-button></div></el-col>
     </el-row>
     <div class="listTitleFoot addList" v-if="off.addList">
-        <div style="float:right">
-            <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
-            <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
-        </div>
-        <div v-for="(v,i) in list" :key="i" class="mt8">
-            用户姓名 : <el-input style="width:25%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input>
-            &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input>
-            &nbsp;&nbsp;&nbsp;职务 :  <el-checkbox v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox>
-        </div>
+        <el-row>
+            <el-col :xs="18" :sm="18" :md="18" :lg="22" :xl="22" >
+                <div v-for="(v,i) in list" :key="i" class="mt8">
+                    <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
+                    <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox></el-col>
+                </div>
+            </el-col>
+            <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
+                <div style="float:right;">
+                    <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
+                    <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
+                </div>
+            </el-col>
+        </el-row>
     </div>
     <!-- <div v-if="off.searchList"> -->
     <div v-if="detailsList">
-        <div v-if="detailsList.length>0">    
+        <div >    
             <div class="listTitleFoot">
                 <el-row>
-                    <el-col :span="20"><div class="grid-content bg-purple">员工列表<span v-if="form.page>0" class="fontWeight greyFont"> ({{form.page}})</span></div></el-col>
+                    <el-col style="height:35px;" :span="20"><div class="grid-content bg-purple"><h3>员工列表<span class="fontWeight greyFont"> ({{form.page||'0'}})</span></h3></div></el-col>
                 </el-row>        
             </div>
             <div class="detailsListDiv">
@@ -88,13 +96,19 @@
                             </span>
                             {{v.username}}
                         </td>
-                        <td >
+                        <td>
                             <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>
                         </td>
-                        <td >
-                        {{new Date(v.createTime).toLocaleString()}}
+                        <td>
+                        <!-- {{new Date(v.createTime).toLocaleString()}} -->
+                            <span v-if="v.createTime">
+                                {{new Date(v.createTime).toLocaleString()}}
+                            </span>
+                            <span v-if="!v.createTime">
+                                --
+                            </span>
                         </td>
-                        <td >
+                        <td>
                             <span v-for="(v,i) in v.userRole" :key="i">
                                 <span v-if="v==1">管理员</span>
                                 <span v-if="v==2">销售</span>
@@ -103,18 +117,28 @@
                                 <span v-if="v==5">业务员</span>
                             </span>
                         </td>
-                        <td >
+                        <td>
                         <span v-if="v.userState==1">正常</span>
                         <span v-if="v.userState==2">黑名单</span>
                         <span v-if="v.userState==3">注销</span>
                         </td>
-                        <td >
-                        {{new Date(v.lastLoginTime).toLocaleString()}}
+                        <td>
+                            <span v-if="v.lastLoginTime">
+                                {{new Date(v.lastLoginTime).toLocaleString()}}
+                            </span>
+                            <span v-if="!v.lastLoginTime">
+                                --
+                            </span>
+                        </td>
+                    </tr>
+                    <tr v-if="detailsList.length==0">
+                        <td class="tac" colspan="8">
+                            暂无数据                            
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="listTitleFoot">
+            <div class="listTitleFoot" v-if="detailsList.length>0">
                 <el-row>
                 <el-col :span="12"><div class="grid-content bg-purple">
                     <el-pagination
@@ -128,22 +152,16 @@
                 </el-row>
             </div>
         </div>
-        <div v-if="detailsList.length==0" class="searchResultInfoNone">
-          查询结果为空!
-        </div>
       </div>
       </div>
-      <yfdStaff v-if="off.staffDetails" :forms="searchRes">
-
-      </yfdStaff>
+      <yfdStaff v-if="off.staffDetails" :forms="searchRes"></yfdStaff>
       <common-layer v-if="off.layer"></common-layer>      
   </div>	 
 </template>
 <script>
-const options={text:"正在加载"}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
-import { getDateTime,getUnixTime,errorDeal,getStore } from "../../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils.js";
 import layerAddStaff from "../../../components/layeruseryfd";
 import yfdStaffDetails from "../../../components/yfdStaffDetails";
 export default{
@@ -194,7 +212,6 @@ export default{
                 this.list[i].userRole="";
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
                     if(this.list[i].checked2==true){this.list[i].userRole='1'}
-                    
                     if(this.list[i].checked3==true){
                         if(this.list[i].checked2==true){
                             this.list[i].userRole+=',2'
@@ -202,13 +219,13 @@ export default{
                             this.list[i].userRole='2'
                         }
                     }
-
-
-                    delete this.list[i].checked2;
-                    delete this.list[i].checked3;
                     data.newUsers.push(this.list[i])
-                    this.addAble='1';
                 }
+            }
+            for(let i=0;i<data.newUsers.length;i++){
+                delete data.newUsers[i].checked2;
+                delete data.newUsers[i].checked3;
+                this.addAble='1';                
             }
             if(this.addAble=='0'){
                 layer.open({
@@ -225,18 +242,21 @@ export default{
             this.addUsersData=data;
         },
         search(p){//查询
-            let load=Loading.service(options) ,data={},url='/ums/w/user/getDepartDetail',vm=this;
-            //data={'searchDepartId':"1803160000",userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};
-             vm.pa=p||1;
-             vm.currentPage=p||1;
-                data={
-                "searchDepartId":"1803160000",
-                "username":vm.name
-                ,"phone":vm.phone
-                ,"userState":vm.radio
-                ,"pageSize":15
-                ,"pageNum":p||1}
-            requestMethod(data,url)
+            let data={},url='/ums/w/user/getDepartDetail',vm=this;
+            vm.pa=p||1;
+            vm.currentPage=p||1;
+            if(vm.phone!=''){
+                checkMobile(vm.phone,function(){return false});
+            }
+            data={
+            "searchDepartId":"1803160000",
+            "username":vm.name
+            ,"phone":vm.phone
+            ,"userState":vm.radio
+            ,"pageSize":15
+            ,"pageNum":p||1}
+            let load=Loading.service(options);
+            requestMethod(data,url,()=>{load.close()})
             .then((data)=>{
                 if(data.code==200){
                     vm.off.searchList=true;
@@ -251,23 +271,21 @@ export default{
                         msgSkin:'error',
                     });
                 }  
-            }).then(()=>{
-                load.close(); 
-            }).catch(e=>errorDeal(e),load.close());            
+            }).catch(e=>errorDeal(e));            
         }
         ,getStaffDetails(p){
             let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchDetailsYfdData=data;
-            requestMethod(data,url)
+            requestMethod(data,url,()=>{load.close()})
             .then((data)=>{
-                vm.off.searchStaff=false;
-                vm.off.staffDetails=true;
-                vm.searchRes=data.data;
                 if(data.code==200){
+                    vm.off.searchStaff=false;
+                    vm.off.staffDetails=true;
+                    vm.searchRes=data.data;
+                }else{
+                    errorDeal(data)
                 }  
-            }).then(()=>{
-                load.close(); 
             }).catch(e=>errorDeal(e));
         }
 	}

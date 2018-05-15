@@ -1,6 +1,6 @@
 <style>
 @import "../../assets/css/search.css";
-div.listTitleFoot{width: 96%;height: 28px;margin: 10px 18px;}
+div.listTitleFoot{width: 96%;margin: 10px 18px;}
 div.detailsListDiv tr td{text-align: center;}
 </style>
 <template>
@@ -98,8 +98,8 @@ div.detailsListDiv tr td{text-align: center;}
             </el-row>
         </div>
         <div v-if="form.searchList">
-            <div v-if="form.page">
-                <div class="listTitleFoot"><span>日志列表:{{form.page||0}}</span><el-button class="fr" type="success" size="small">导出数据</el-button></div>
+            <div>
+                <div class="listTitleFoot"><h3>日志列表<span class="fontWeight greyFont">({{form.page||'0'}})</span><!--<el-button class="fr" type="success" size="small">导出数据</el-button>--></h3></div>                
                 <div class="detailsListDiv">
                     <table class="searchTab" style="width:100%;height:100%;">
                         <tr>
@@ -116,37 +116,54 @@ div.detailsListDiv tr td{text-align: center;}
                             <td></td>
                         </tr>
                         <tr v-for="(v,i) of form.searchList" :key="i">
-                            <td>{{((pa-1)*10+(i+1))}}</td>
+                            <td>{{((pa-1)*15+(i+1))}}</td>
                             <td>{{v.recordId}}</td>
                             <td>
                                 <span v-if="v.recordType==0">全部</span>
                                 <span v-if="v.recordType==3">框架</span>
                                 <span v-if="v.recordType==4">号码</span>
                             </td>
-                            <td>{{v.recordTime}}</td>
+                            <td>
+                                <!-- {{v.recordTime}} -->
+                                <span v-if="v.recordTime">
+                                    {{new Date(v.recordTime).toLocaleString()}}
+                                </span>
+                                <span v-if="!v.recordTime">
+                                    --
+                                </span>
+                            </td>
                             <td>
                                 <span v-if="v.syncType==0">全部</span>
                                 <span v-if="v.syncType==1">手动同步</span>
                                 <span v-if="v.syncType==2">自动同步</span>
                             </td>
-                            <td>{{v.syncProtocol}}</td>
+                            <td>
+                                <span v-if="v.syncProtocol=='1'">接口</span>
+                                <span v-if="v.syncProtocol=='2'">文件</span>
+                            </td>
                             <td>{{v.operatorId}}</td>
-                            <td>{{v.operatorName}}</td>
+                            <td>{{v.operatorName||'--'}}</td>
                             <td>{{v.operatorPhone}}</td>
                             <td>
                                 <span v-if="v.syncState==1">成功</span>
                                 <span v-if="v.syncState==2">失败</span>
+                                <span v-if="!v.syncState">--</span>
                             </td>
                             <td><a @click="details(v.introduct,v.recordType)">详情</a></td>
                         </tr>
+                        <tr v-if="form.searchList.length<=0">
+                            <td colspan="10">
+                                暂无数据                                                        
+                            </td>
+                        </tr>
                     </table>
                 </div>
-                <div class="listTitleFoot" >
+                <div class="listTitleFoot" v-if="form.searchList.length>0">
                     <el-row>
                         <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
                             <el-pagination
                                 layout="prev, pager, next"
-                                :page-size="10"
+                                :page-size="15"
                                 @current-change="search"
                                 :total="form.page">
                             </el-pagination>    
@@ -154,15 +171,15 @@ div.detailsListDiv tr td{text-align: center;}
                     </el-row>
                 </div>
             </div>
-            <div v-if="!form.page" class="searchResultInfoNone">
+            <!-- <div v-if="!form.page" class="searchResultInfoNone">
                 查询结果为空
-            </div>
+            </div> -->
         </div>    
         <log-details v-if="off.logDet" :layerType="openLayer" :getSyncTime="getSyncTime" :detailsData="form.detailsList" :syncLogType="detRecordType"></log-details>
   	</section>
 </template>
 <script>
-import { getDateTime,disableTimeRange6,errorDeal} from "../../config/utils";
+import { getDateTime,disableTimeRange6,errorDeal,checkMobile,getTimeFunction} from "../../config/utils";
 import logDet from "../../../components/logDetails";
 import {requestSyncSearch,requestgetSyncTime} from "../../config/service";
 export default {
@@ -174,7 +191,7 @@ export default {
         endTime: "",
         operatorPhone:"",
         syncType:"0",
-        recordType:"3",
+        recordType:"0",
         recordResult:"0",
         openLayer:"sync",
         getSyncTime:'',
@@ -232,16 +249,7 @@ export default {
     };
 },
   created: function() {
-    let vm = this;
-    vm.off.showSearch = vm.$route.name;
-    let curDate = (new Date()).getTime();
-    let curMonth=new Date(curDate).getMonth()+1;
-    let curYear=new Date(curDate).getFullYear();
-    let curDay=new Date(curDate).getDate()+1;
-    let cur=curYear+"/"+curMonth+"/1";
-    let Next=curYear+"/"+curMonth+"/"+curDay;
-    vm.startTime=new Date(cur).getTime();
-    vm.endTime=new Date(Next).getTime()-1000;
+      getTimeFunction(this);
   },
   beforeDestroy: function() {},
   mounted: function() {},
@@ -253,6 +261,9 @@ export default {
   },
   methods: {
     search(p) {
+        if(this.operatorPhone!=''){
+            checkMobile(this.operatorPhone,function(){return false});
+        }
         let vm=this, 
         sy=new Date(vm.startTime).getFullYear(),
         sm=new Date(vm.startTime).getMonth(),
@@ -282,7 +293,7 @@ export default {
             "operatorName": vm.operatorName,
             "operatorPhone":vm.operatorPhone,
             "pageNum": p||1,
-            "pageSize": 10,
+            "pageSize": 15,
             "syncType": vm.syncType,
             "recordType": vm.recordType,
             "recordResult": vm.recordResult,}
@@ -322,7 +333,8 @@ export default {
         }
         if(timeCheck>timeRangeE){
             vm.startTime=timeRangeE;
-        }           
+        }    
+        getTimeFunction(this,[e,1])       
     },changeTimeE(e){
         let vm=this,
         timeRange=disableTimeRange6(),
@@ -335,6 +347,7 @@ export default {
         if(timeCheck>timeRangeE){
             vm.endTime=timeRangeE;
         }           
+        getTimeFunction(this,[e,2])               
     }
   }
 };

@@ -13,76 +13,104 @@
     <section>
       <div class="allDetails">
         <div class="listTitleFoot">
-            <span class="fl">号包详情</span><span><a href="javascript:void(0)" class="fr" @click="goBack()">返回列表</a></span>
+            <span class="fl"><h3>号包详情</h3></span><span><a href="javascript:void(0)" class="fr" @click="goBack()">返回列表</a></span>
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
                 <tr>
-                    <td>号包名称 ：{{dataList.productName||'--'}}</td>
-                    <td>运营商 ：
-                       <span v-if="dataList.isp==1">移动</span>
-                       <span v-if="dataList.isp==2">联通</span>
-                       <span v-if="dataList.isp==3">电信</span>
+                    <td>号包名称 ：<span class="deepGreyFont f-s-14">{{dataList.productName||'--'}}</span></td>
+                    <td>运&nbsp;&nbsp;营&nbsp;&nbsp;商 ：
+                        <span class="deepGreyFont f-s-14">
+                            <span v-if="dataList.isp==1">移动</span>
+                            <span v-if="dataList.isp==2">联通</span>
+                            <span v-if="dataList.isp==3">电信</span>
+                        </span> 
                     </td>
                 </tr>
                 <tr>
-                    <td>号包类型 ：<span v-if="dataList.productType==1">整号包</span>
-                                  <span v-if="dataList.productType==2">靓号包</span>
-                                  <span v-if="dataList.productType==3">普号包</span>
+                    <td>号包类型 ：
+                        <span class="deepGreyFont f-s-14">
+                            <span v-if="dataList.productType==1">整号包</span>
+                            <span v-if="dataList.productType==2">靓号包</span>
+                            <span v-if="dataList.productType==3">普号包</span>
+                        </span>    
                     </td>
                     <td>当前状态 ： 
-                       <span v-if="dataList.productState==1">未上架 </span>  
-                           <!-- <button class="buttonSmallBlueUp" @click="UpNum()">上架</button>                        -->
-                       <span v-if="dataList.productState==2">已上架</span>
-                       <span v-if="dataList.productState==3">已下架</span>
-                       <span v-if="dataList.productState==4">已出售</span>
+                        <span class="deepGreyFont f-s-14">
+                            <span v-if="dataList.productState==1">未上架 </span>  
+                            <span v-if="dataList.productState==2">已上架</span>
+                            <span v-if="dataList.productState==3">已下架</span>
+                            <span v-if="dataList.productState==4">已出售</span>
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <td>码号数量 ：<span v-if="dataList.productType==1">{{dataList.normalTotal+dataList.cuteTotal}}</span>
-                                  <span v-if="dataList.productType==2">{{dataList.cuteTotal}}</span>
-                                  <span v-if="dataList.productType==3">{{dataList.normalTotal}}</span>
+                    <td>码号数量 ：
+                        <span class="deepGreyFont f-s-14">
+                            <span v-if="dataList.productType==1">{{dataList.normalTotal+dataList.cuteTotal}}</span>
+                            <span v-if="dataList.productType==2">{{dataList.cuteTotal}}</span>
+                            <span v-if="dataList.productType==3">{{dataList.normalTotal}}</span>
+                        </span>
                     </td>
-                    <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td>
+                    <td>修改时间 ：
+                        <span class="deepGreyFont f-s-14">
+                            {{getDateTime(dataList.modifyTime)[6]}}
+                        </span>
+                    </td>
+                    <!-- <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td> -->
                 </tr>
                   <tr>
-                    <td>归属品牌 ：<span v-if="dataList.brand==1">远特</span>
-                       <span v-if="dataList.brand==2">蜗牛</span>
-                       <span v-if="dataList.brand==3">迪信通</span>
-                       <span v-if="dataList.brand==4">极信</span>
-                       <span v-if="dataList.brand==5">小米</span>
-                       <span v-if="dataList.brand==6">海航</span>
-                       <span v-if="dataList.brand==7">乐语</span>
-                       <span v-if="dataList.brand==8">苏宁互联</span>
-                       <span v-if="dataList.brand==9">国美</span>
-                       <span v-if="dataList.brand==10">联想</span>
-                       <span v-if="dataList.brand==11">蓝猫移动</span>
-                       <span v-if="dataList.brand==12">长城</span></td>
-                    <td>操作人 ：{{dataList.operatorName||'--'}}</td>
+                    <td>归属品牌 ：
+                        <span class="deepGreyFont f-s-14">
+                            <span v-if="dataList.brand==1">远特</span>
+                            <span v-if="dataList.brand==2">蜗牛</span>
+                            <span v-if="dataList.brand==3">迪信通</span>
+                            <span v-if="dataList.brand==4">极信</span>
+                            <span v-if="dataList.brand==5">小米</span>
+                            <span v-if="dataList.brand==6">海航</span>
+                            <span v-if="dataList.brand==7">乐语</span>
+                            <span v-if="dataList.brand==8">苏宁互联</span>
+                            <span v-if="dataList.brand==9">国美</span>
+                            <span v-if="dataList.brand==10">联想</span>
+                            <span v-if="dataList.brand==11">蓝猫移动</span>
+                            <span v-if="dataList.brand==12">长城</span>
+                        </span>
+                    </td>
+                    <td>操&nbsp;&nbsp;作&nbsp;&nbsp;人 ：
+                        <span class="deepGreyFont f-s-14">
+                            {{dataList.operatorName||'--'}}
+                        </span>
+                    </td>
                 </tr>
 			</table>
         </div>
       </div>
       <div class="liang">
         <div class="listTitleFoot">
-            <span class="fl">靓号详情</span><span class="fontWeight greyFont"> ({{dataListLiang.len||'0'}})</span>
+            <h3><span class="fl">靓号详情</span><span class="deepGreyFont greyFont"> ({{dataListLiang.len||'0'}})</span></h3>
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
-                  <tr v-for="(v,i) of dataListLiang" :key="i">
+                <tr v-for="(v,i) of dataListLiang" :key="i">
                     <td v-for="(v,i) of dataListLiang[i]">{{v.phone}}</td>
+                </tr>
+                <tr v-if="!dataListLiang.length">
+                    <td class="tac deepGreyFont f-s-14">此号包下无靓号详情</td>
                 </tr>
 			</table>
         </div> 
       </div>
        <div class="pu">
         <div class="listTitleFoot">
-            <span class="fl">普号详情</span><span class="fontWeight greyFont">({{dataListPu.len||'0'}})</span>
+            <h3><span class="fl">普号详情</span><span class="deepGreyFont greyFont">({{dataListPu.len||'0'}})</span></h3>
         </div>
         <div class="detailsListDiv">
 			<table class="searchTab" style="width:100%;height:100%;">
                 <tr v-for="(v,i) of dataListPu" :key="i">
                     <td v-for="(v,i) of dataListPu[i]">{{v.phone}}</td>
+                </tr>
+                <tr v-if="!dataListPu.length">
+                    <td class="tac deepGreyFont f-s-14">此号包下无普号详情</td>
                 </tr>
 			</table>
         </div> 
@@ -151,6 +179,8 @@ export default{
         },
         DownNum(){
 
+        },getDateTime(v){
+            return getDateTime(v)
         }
     }
 }

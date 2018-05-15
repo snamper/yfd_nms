@@ -1,3 +1,5 @@
+.w84{width:84px;}
+.w240{width:240px!important;}
 .mt8{margin-top: 8px}
 .pl20{padding-left: 10px}
 .buttonAddStaff{outline: none;width:70px;line-height: 12px;padding: 5px;box-sizing: border-box;border-radius: 4px;margin-top: 10px;border: 1px solid #ccc; }
@@ -6,10 +8,13 @@
 .redFont{color:red}
 .blueFont{color:blue}
 .blackFont{color:black}
+.deepGreyFont{color:grey}
 .fontWeight{font-weight: bold}
+.f-s-14{font-size:14px;}
 .searchResultInfo{text-align: center;font-size: 16px;font-weight: bold}
 .borderInputHarf{border: 6px 0 0 6px;}
 .searchResultInfoNone{font-weight:bold;font-size:16px;text-align:center;margin-top:30px;}
+.tac{text-align: center!important;}
 .c-blue{
     color: rgb(74, 74, 248);
 }

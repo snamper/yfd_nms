@@ -1,9 +1,10 @@
 
 <style scoped>
-    .listTitleFoot{width: 96%;margin: 10px 18px;height: 35px}
+    .listTitleFoot{width: 96%;margin: 10px 18px;}
     .listTitleFoot label{display:block;width: 50%;}
     label.el-checkbox{display: inline}
-    .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}   
+    .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white} 
+    table tr td{text-align: left;padding-left: 20px;}       
 </style>
 <template>
   <div>
@@ -54,23 +55,29 @@
             </el-row>
         </div>
         <el-row>
-            <el-col style="float:right" :span="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3">添加员工</el-button></div></el-col>
+            <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3"> <span v-if="!off.addList"> 添加员工</span><span v-if="off.addList">隐藏</span> </el-button></div></el-col>
         </el-row>
         <div class="listTitleFoot addList" v-if="off.addList">
-            <div style="float:right">
-                <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
-                <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
-            </div>
-            <div v-for="(v,i) in list" :key="i" class="mt8">
-                用户姓名 : <el-input style="width:25%" size="mini" maxlength=10 v-model="list[i].username" placeholder="请输入内容"></el-input>
-                &nbsp;&nbsp;&nbsp;手机号码 : <el-input style="width:25%" size="mini" maxlength=11 v-model="list[i].phone" placeholder="请输入内容"></el-input>
-                &nbsp;&nbsp;&nbsp;职务 : <el-checkbox v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox>
-            </div>
+            <el-row>
+                <el-col :xs="18" :sm="18" :md="18" :lg="22" :xl="22" >
+                    <div v-for="(v,i) in list" :key="i" class="mt8">
+                        <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
+                        <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
+                        <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox></el-col>
+                    </div>
+                </el-col>
+                <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
+                    <div style="float:right;">
+                        <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
+                        <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
+                    </div>
+                </el-col>
+            </el-row>
         </div>
         <!-- 代理商员工查询结果 -->
         <div class="listTitleFoot">
             <el-row>
-                <el-col :span="20"><div class="grid-content bg-purple">员工列表</div></el-col>
+                <p><h3>员工列表<span class="fontWeight greyFont">({{lists.length||'0'}})</span></h3></p>
             </el-row>        
         </div>
         <div class="detailsListDiv">
@@ -102,7 +109,13 @@
                        <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>
                     </td>
                     <td >
-                       {{new Date(v.createTime).toLocaleString()}}
+                       <!-- {{new Date(v.createTime).toLocaleString()}} -->
+                        <span v-if="v.createTime">
+                            {{new Date(v.createTime).toLocaleString()}}
+                        </span>
+                        <span v-if="!v.createTime">
+                            --
+                        </span>
                     </td>
                     <td >
                         <span v-for="(v,i) in v.userRole" :key="i">
@@ -119,17 +132,28 @@
                        <span v-if="v.userState==3">注销</span>
                     </td>
                     <td >
-                       {{new Date(v.lastLoginTime).toLocaleString()}}
+                       <!-- {{new Date(v.lastLoginTime).toLocaleString()}} -->
+                        <span v-if="v.lastLoginTime">
+                            {{new Date(v.lastLoginTime).toLocaleString()}}
+                        </span>
+                        <span v-if="!v.lastLoginTime">
+                            --
+                        </span>
                     </td>
                 </tr>
-                <tr>
+                <tr v-if="lists.length==0">
+                    <td class="tac" colspan="8">
+                        暂无数据                            
+                    </td>
+                </tr>
+                <tr v-if="lists.length>0">
                     <td colspan="8" class="pl20">
                        <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 取消全选 </a></span>
                     </td>
                 </tr>
             </table>
         </div>
-        <div class="listTitleFoot">
+        <div class="listTitleFoot" v-if="lists.length>0">
             <el-row>
             <el-col :span="12"><div class="grid-content bg-purple">
                 <el-pagination
@@ -173,10 +197,9 @@
     </div>  
 </template>
 <script>
-const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service"; 
-import { getDateTime,getUnixTime,errorDeal,getStore } from "../src/config/utils";
+import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../src/config/utils";
 import search from "./search";
 import dlsStaffDetails from "./dlsStaffDetails";
 import layers from "./layeruser";
@@ -320,7 +343,7 @@ export default{
             for(let v in vm.lists){
                 if(vm.lists[v].ischecked==true){
                     data.operateUserIds.push(vm.lists[v].username);
-                    che+=vm.lists[v].username+',';
+                    che+=vm.lists[v].username;
                     vm.off.modify=true;
                 }
             }
@@ -400,6 +423,9 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,search(p){//查询
+            if(this.phone!=''){
+                checkMobile(this.phone,function(){return false});
+            }
             let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
             data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.radio,username:vm.name,phone:vm.phone,pageNum:p||1,pageSize:"10"};
             requestMethod(data,url)
@@ -422,6 +448,12 @@ export default{
                 }else{
                     errorDeal(data);
                 }
+            }).then(()=>{
+                for(let v=0;v<vm.lists.length;v++){
+                    vm.$set(vm.lists[v],'ischecked',false);
+                }
+                vm.off.modify=false;
+                this.resetTimer()
             }).catch(e=>errorDeal(e));
         }
         ,getStaffDetails(p){
@@ -445,7 +477,6 @@ export default{
                 if(vm.lists[v].ischecked==true){
                     data.operateUserIds.push(vm.lists[v].userId)
                 }
-                vm.lists[v].ischecked=false;
             }
             if(vm.reason==""){
                 layer.open({
@@ -468,7 +499,7 @@ export default{
             let load=Loading.service(options);
             data.reason=vm.reason;//操作原因
             data.authCode=vm.authCode;
-            requestMethod(data,vm.doUrl)
+            requestMethod(data,vm.doUrl,()=>{load.close()})
             .then((data)=>{
                 for(let v=0;v<vm.lists.length;v++){
                     this.$set(vm.lists[v],'ischecked',false);
@@ -493,13 +524,9 @@ export default{
                         // vm.companyName=v.departName;
                         // vm.managerName=v.managerName;
                         // vm.managerPhone=v.phone;
-                        requestMethod(data,url)
+                        requestMethod(data,url,()=>{load.close()})
                         .then((data)=>{
-                            load.close();
                             if(data.code==200){
-                                for(let v in vm.lists){
-                                    vm.lists[v].ischecked=false;
-                                }
                                 if(data.data.users.length>0){
                                     vm.$parent.off.notDlsDetails=false;
                                     vm.$parent.off.dlsDetails=true;
@@ -523,8 +550,20 @@ export default{
                     });
                 }
             }).then(()=>{
-                load.close(); 
-            }).catch(e=>errorDeal(e));
+                vm.reason="";
+                vm.authCode="";
+                this.resetTimer();               
+                for(let v=0;v<vm.lists.length;v++){
+                    vm.$set(vm.lists[v],'ischecked',false);
+                }}
+            ).catch(e=>errorDeal(e));
+        },
+        resetTimer(){
+            this.btnDisabled=false;                        
+            this.show = true;
+            this.count="点击获取验证码"                    
+            clearInterval(this.timer);
+            this.timer = null;
         }
     }
 }

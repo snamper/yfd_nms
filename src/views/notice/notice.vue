@@ -1,5 +1,8 @@
 <style scoped>
    @import "../../assets/css/notice.css";
+   .w70{width: 70px!important;}
+   /* div.msgInfo{width:100%} */
+   div.msgInfo p{word-wrap:break-word;word-break:break-all;}
 </style>
 <template>
     <section>
@@ -8,22 +11,23 @@
         </div>
         <div v-if="addMsg==true">
             <div class="messageBox">
-                <p>新建</p>
                 <el-row :gutter="10">
-                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2"><span>发送对象 :</span></el-col>
-                    <el-col :xs="18" :sm="20" :md="8" :lg="7" :xl="5">
+                    <el-col class="w70"><span>发送对象 :</span></el-col>
+                    <el-col class="w240">
                         <span>
                             <el-radio v-model="radio" label="1">全部</el-radio>
                             <el-radio v-model="radio" label="2">店长</el-radio>
                             <el-radio v-model="radio" label="3">手动输入</el-radio>
                         </span>
                     </el-col>   
-                    <el-col :xs="24" :sm="24" :md="13" :lg="15" :xl="17">
-                        <el-input :disabled="radio==1||radio==2" v-model="input" size="small" placeholder="输入发送对象手机号码,可输入多个号码,以逗号隔开"></el-input>
+                    <el-col :xs="24" :sm="14" :md="16" :lg="16" :xl="18">
+                        <el-col>
+                            <el-input :disabled="radio==1||radio==2" v-model="input" size="small" placeholder="输入发送对象手机号码,可输入多个号码,以逗号隔开"></el-input>
+                        </el-col>
                     </el-col>   
                 </el-row>
                 <el-row :gutter="10">
-                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2"><span>消息内容 :</span></el-col>
+                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2" class="w70"><span>消息内容 :</span></el-col>
                     <p class="textareaBox">
                         <el-col :xs="18" :sm="20" :md="21" :lg="22" :xl="22" >
                         <el-input
@@ -39,13 +43,13 @@
                     </p>
                 </el-row>
                 <el-row :gutter="10">
-                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2"><span>链接地址 :</span></el-col>
+                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2" class="w70"><span>链接地址 :</span></el-col>
                     <el-col :xs="18" :sm="20" :md="21" :lg="22" :xl="22">
                         <el-input v-model="inputLink" size="small" placeholder="输入链接地址"></el-input>
                     </el-col>   
                 </el-row>
                 <el-row :gutter="10">
-                    <el-col :lg="2" :xl="2">&nbsp;</el-col>
+                    <el-col :xs="0" :sm="0" :md="0" :lg="2" :xl="2">&nbsp;</el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="22">
                         <!-- <el-col :xs="0" :sm="0" :md="0" :lg="2" :xl="2"></el-col> -->
                         <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="10" class="upImgBox">
@@ -90,8 +94,8 @@
                 <div class="borderBottomBox"></div>
             </div>
             <div class="noticeHistory" v-if="searchList.length>0">
-                历史公告({{form.page}})
-                <table>
+                <h3>历史公告<span class="fontWeight greyFont">({{form.page}})</span></h3>
+                <table style="width:100%;height:100%">
                     <tr v-for="(v,i) of searchList" :key="i">
                         <td>
                             <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
@@ -101,7 +105,7 @@
                             <div class="msgInfo">
                                 <p><img class="icon" src="../../assets/images/icon/book.svg" alt="" /><span class="c-green"><span v-if="v.type=='600'">(系统消息)</span><span v-if="v.type=='200'">(政策消息)</span><span v-if="v.type=='500'">(优惠消息)</span><span v-if="v.type=='400'">(新货上架)</span></span><span v-if="v.content!=''">{{v.content}}</span></p>
                                 <p><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
-                                <p >
+                                <p>
                                     <img class="icon" src="../../assets/images/icon/link.svg" alt="" />
                                     <!-- 附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(v)" href="javascript:void(0)" class="c-yellow textDec">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
                                      -->
@@ -213,7 +217,7 @@ export default {
             textarea3:"",//
             inputLink:"",//链接地址
             value1:"",//日期
-            formInline:{region:""},//消息类型
+            formInline:{region:"600"},//消息类型
             imgFile:"",
             fileList:[],
             isCancel:false,//删除公告
@@ -234,28 +238,34 @@ export default {
     　　　　 imgSrc: ''
         }
     },  
-  components:{
-      "layer-confirm":layerConfirm,
-      'big-img':imgBiger
-  },
-  created:function(){
-      let vm=this;
-      vm.search(1);
-  },
-  computed:{
+    components:{
+        "layer-confirm":layerConfirm,
+        'big-img':imgBiger
+    },
+    created:function(){
+        let vm=this;
+        vm.search(1);
+        let d=new Date().getTime();
+        d+=30*24*60*60*1000;
+        vm.value1=new Date(d).getTime()
+    },
+    computed:{
 
-  },
-  methods: {
+    },
+    methods: {
         reSet(){
-                let vm=this;
-                vm.radio="1";
-                vm.textarea3="";
-                vm.inputLink="";
-                vm.formInline.region="";
-                vm.value1="";
-                vm.imgFileName="";
-                vm.off.imgIcon=false;
-                vm.$refs.file.value="";
+            let vm=this;
+            vm.radio="1";
+            vm.textarea3="";
+            vm.inputLink="";
+            vm.formInline.region="600";
+            vm.value1="";
+            vm.imgFileName="";
+            vm.off.imgIcon=false;
+            vm.$refs.file.value="";
+            let d=new Date().getTime();
+            d+=30*24*60*60*1000;
+            vm.value1=new Date(d).getTime();
                 // console.log(vm.$refs.file.files[0].value);
         },
         upload(){
@@ -297,15 +307,15 @@ export default {
                 })
                 return false
             }
-            if(vm.inputLink==""){
-                layer.open({
-                    content:"请输入链接地址",
-                    skin:"msg",
-                    time:2,
-                    msgSkin:"error"
-                })
-                return false
-            }
+            // if(vm.inputLink==""){
+            //     layer.open({
+            //         content:"请输入链接地址",
+            //         skin:"msg",
+            //         time:2,
+            //         msgSkin:"error"
+            //     })
+            //     return false
+            // }
             if(vm.formInline.region==""){
                 layer.open({
                     content:"请选择消息类型",
@@ -432,7 +442,6 @@ export default {
                 
             }).catch(e=>errorDeal(e));
         },checkSendUser(p,v){//查看公告发送对象信息
-            debugger;
             let vm=this;
             vm.pa=p||1;
             if(v!=undefined){

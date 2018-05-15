@@ -1,5 +1,6 @@
 <style scoped>
  .listTitleFoot{width: 96%;margin: 10px 18px;}
+ table tr td{text-align: left;padding-left: 20px;}
 </style>
 <template>
   <div>
@@ -10,22 +11,22 @@
         </el-row>
         <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :xs="20" :sm="18" :md="12" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="19" :sm="18" :md="12" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2">全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
                     <el-radio v-model="radio"  label="2" >黑名单</el-radio>
@@ -37,17 +38,18 @@
         </el-row>
     </div>
     <div v-if="detailsList">
-        <div v-if="detailsList.length>0">
+        <div>
             <div class="listTitleFoot">
                 <el-row>
-                    <el-col :span="20"><div class="grid-content bg-purple">员工列表<span v-if="form.page" class="greyFont fontWeight"> ({{form.page}})</span></div></el-col>
+                    <p><h3>员工列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></h3></p>                    
                 </el-row>        
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr>
                         <td>序号</td>
-                        <td>用户姓名</td>
+                        <td>&nbsp;</td>
+                        <td class="nameIcon">用户姓名</td>
                         <td>手机号码</td>
                         <td>创建时间</td>
                         <td>职务</td>
@@ -56,19 +58,31 @@
                     </tr>
                     <tr v-for="(v,i) of detailsList" :key="i" :class="{'greyFont':v.departState==3}">
                         <td>
-                            {{((pa-1)*10+(i+1))}}
+                            {{((pa-1)*15+(i+1))}}
                         </td>
-                        <td >
-                            <span v-for="(v,i) in v.userRole" :key="i">
-                                <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
-                            </span>
-                            {{v.username}}
+                        <td>&nbsp;</td>
+                        
+                        <td class="nameIcon">
+                            <p>
+                                <span>
+                                    <span v-for="(v,i) in v.userRole" :key="i">
+                                        <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
+                                    </span>
+                                    {{v.username}}
+                                </span>
+                            </p>
                         </td>
                         <td >
                             <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>                            
                         </td>
                         <td >
-                        {{new Date(v.createTime).toLocaleString()}}
+                        <!-- {{new Date(v.createTime).toLocaleString()}} -->
+                            <span v-if="v.createTime">
+                                {{new Date(v.createTime).toLocaleString()}}
+                            </span>
+                            <span v-if="!v.createTime">
+                                --
+                            </span>
                         </td>
                         <td >
                             <span v-for="(v,i) in v.userRole" :key="i">
@@ -85,17 +99,28 @@
                             <span v-if="v.userState==3">注销</span>
                         </td>
                         <td >
-                        {{new Date(v.lastLoginTime).toLocaleString()}}
+                        <!-- {{new Date(v.lastLoginTime).toLocaleString()}} -->
+                            <span v-if="v.lastLoginTime">
+                                {{new Date(v.lastLoginTime).toLocaleString()}}
+                            </span>
+                            <span v-if="!v.lastLoginTime">
+                                --
+                            </span>
+                        </td>
+                    </tr>
+                    <tr v-if="detailsList.length<=0">
+                        <td class="tac" colspan="8">
+                            暂无数据                                                        
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="listTitleFoot">
+            <div class="listTitleFoot" v-if="detailsList.length>0">
                 <el-row>
                 <el-col :span="12"><div class="grid-content bg-purple">
                     <el-pagination
                         layout="prev, pager, next"
-                        :page-size="10"
+                        :page-size="15"
                         @current-change="search"
                         :current-page.sync="currentPage"                        
                         :total="form.page">
@@ -104,9 +129,9 @@
                 </el-row>
             </div>
         </div>
-        <div v-if="detailsList.length==0" class="searchResultInfoNone">
+        <!-- <div v-if="detailsList.length==0" class="searchResultInfoNone">
           查询结果为空!
-        </div>
+        </div> -->
         </div>
       </div>
       <dlsStaff v-if="off.staffDetails" :forms="searchRes">
@@ -115,10 +140,9 @@
   </div>	 
 </template>
 <script>
-const options={text:"正在加载"}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
-import { getDateTime,getUnixTime,errorDeal } from "../../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,checkMobile } from "../../config/utils.js";
 import dlsStaffDetails from "../../../components/StaffDetails";
 export default{
 	data (){
@@ -153,6 +177,9 @@ export default{
     },
 	methods:{
         search(p){//查询
+            if(this.phone!=''){
+                checkMobile(this.phone,function(){return false});
+            }
             let load=Loading.service(options),data={},url='/ums/w/user/userSearch',vm=this;
              vm.pa=p||1;
              vm.currentPage=p||1;
@@ -160,7 +187,7 @@ export default{
                 "username":vm.name
                 ,"phone":vm.phone
                 ,"userState":vm.radio
-                ,"pageSize":10
+                ,"pageSize":15
                 ,"pageNum":p||1}
             requestMethod(data,url)
             .then((data)=>{

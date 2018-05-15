@@ -2,7 +2,6 @@
 @import "../../assets/css/search.css";
 div.listTitleFoot {
   width: 96%;
-  height: 28px;
   margin: 10px 18px;
 }
 div.detailsListDiv tr td {
@@ -68,7 +67,7 @@ div.detailsListDiv tr td {
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                     <el-input v-model="phone" size="small" placeholder="请输入查询的手机号码"></el-input>
+                     <el-input :maxlength="11" v-model="phone" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
@@ -103,8 +102,8 @@ div.detailsListDiv tr td {
             <button class="searchBtn" @click="search()">搜索</button>
         </el-row>
       </div>
-    <div v-if="form.page>0">
-        <div class="listTitleFoot"><span>登录日志列表({{form.page}})</span><el-button class="fr" type="success" size="small">导出数据</el-button></div>
+    <div v-if="searchList">
+        <div class="listTitleFoot"><h3>日志列表<span class="fontWeight greyFont">({{form.page||'0'}})</span><!--<el-button class="fr" type="success" size="small">导出数据</el-button>--></h3></div>                
         <div class="detailsListDiv">
             <table class="searchTab" style="width:100%;height:100%;">
                 <tr>
@@ -121,7 +120,7 @@ div.detailsListDiv tr td {
                 </tr>
                 <tr v-for="(v,i) of searchList" :key="i">
                     <td>
-                        {{((pa-1)*10+(i+1))}}
+                        {{((pa-1)*15+(i+1))}}
                     </td>
                     <td >
                         {{new Date(v.recordTime).toLocaleString()}}
@@ -154,14 +153,19 @@ div.detailsListDiv tr td {
                         <a class="textDec" href="javascript:void(0)" @click="openDetails(v)">查看详情</a>
                     </td>
                 </tr>
+                <tr v-if="searchList.length<=0">
+                    <td colspan="10">
+                        暂无数据                                                        
+                    </td>
+                </tr>
             </table>
         </div>
-        <div class="listTitleFoot">
+        <div class="listTitleFoot" v-if="searchList.length>0">
             <el-row>
                 <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
                     <el-pagination
                         layout="prev, pager, next"
-                        :page-size="10"
+                        :page-size="15"
                         @current-change="search"
                         :total="form.page">
                     </el-pagination>    
@@ -173,7 +177,7 @@ div.detailsListDiv tr td {
   	</section>
 </template>
 <script>
-import { getDateTime,disableTimeRange6 } from "../../config/utils";
+import { getDateTime,disableTimeRange6,checkMobile,getTimeFunction} from "../../config/utils";
 import logDet from "../../../components/logDetails";
 import { requestMethod } from "../../config/service";
 import {errorDeal} from "../../config/utils";
@@ -242,16 +246,7 @@ export default {
     };
   },
   created: function() {
-    let vm = this;
-    vm.off.showSearch = vm.$route.name;
-    let curDate = (new Date()).getTime();
-    let curMonth=new Date(curDate).getMonth()+1;
-    let curYear=new Date(curDate).getFullYear();
-    let curDay=new Date(curDate).getDate()+1;
-    let cur=curYear+"/"+curMonth+"/1";
-    let Next=curYear+"/"+curMonth+"/"+curDay;
-    vm.startTime=new Date(cur).getTime();
-    vm.endTime=new Date(Next).getTime()-1000;
+    getTimeFunction(this);
   },
   beforeDestroy: function() {},
   mounted: function() {},
@@ -261,6 +256,9 @@ export default {
   },
   methods: {
     search(t) {
+        if(this.phone!=''){
+            checkMobile(this.phone,function(){return false});
+        }
         let vm = this,
         sy=new Date(vm.startTime).getFullYear(),
         sm=new Date(vm.startTime).getMonth(),
@@ -294,7 +292,7 @@ export default {
           recordType: vm.optype,
           sessionPlatform: vm.opcontent,
           pageNum: t || 1,
-          pageSize: 10
+          pageSize: 15
         };
         requestMethod(json,"/ors/w/record/loginRecordSearch")
         .then(data => {
@@ -332,7 +330,8 @@ export default {
             }
             if(timeCheck>timeRangeE){
                 vm.startTime=timeRangeE;
-            }           
+            }  
+            getTimeFunction(this,[e,1])         
         },changeTimeE(e){
             let vm=this,
             timeRange=disableTimeRange6(),
@@ -344,7 +343,8 @@ export default {
             }
             if(timeCheck>timeRangeE){
                 vm.endTime=timeRangeE;
-            }           
+            }       
+            getTimeFunction(this,[e,2])                         
         }
   }
 };

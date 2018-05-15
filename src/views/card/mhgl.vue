@@ -2,7 +2,6 @@
     .listTitleFoot{width: 96%;margin: 10px 18px;}
     .listTitleFoot label{display:block;width: 50%;}
     label.el-checkbox{display: inline}
-    
 </style>
 <template>
 <section ref="sec">
@@ -13,40 +12,40 @@
             <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
         </el-row>
         <el-row>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
-                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
+            <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="3" :md="2" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
+                <el-col :xs="18" :sm="19" :md="20" :lg="18" :xl="18">
                      <el-input v-model="packagename" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
                 </el-col>
             </div></el-col>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
+            <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="3" :md="2" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="18" :sm="19" :md="20" :lg="18" :xl="18">
                      <el-input v-model="name" size="small"  placeholder="请输入查询的联系人姓名" :maxlength="10"></el-input>
                 </el-col>
             </div></el-col>
         </el-row>
          <el-row class="marginTop">
-             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包类型：</div></el-col>
-                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
+             <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="3" :md="2" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包类型：</div></el-col>
+                <el-col :xs="18" :sm="19" :md="20" :lg="18" :xl="18">
                     <el-radio v-model="cardType"  label="1,2,3">全部</el-radio>
                     <el-radio v-model="cardType"  label="1">整号段</el-radio>
                     <el-radio v-model="cardType"  label="2">靓号包</el-radio>
                     <el-radio v-model="cardType"  label="3">普号包</el-radio>
                 </el-col>
             </div></el-col>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                <el-col :xs="20" :sm="18" :md="20" :lg="18" :xl="18">
+            <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="3" :md="2" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="18" :sm="19" :md="20" :lg="18" :xl="18">
                      <el-input v-model="phone" size="small"  placeholder="请输入查询的手机号码" :maxlength="11"></el-input>
                 </el-col>
             </div></el-col>
         </el-row>
        <el-row class="marginTop">
-             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="3" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :xs="20" :sm="21" :md="20" :lg="18" :xl="18">
+             <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="3" :md="2" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="18" :sm="19" :md="20" :lg="18" :xl="18">
                     <el-radio v-model="nowStatus"  label="1,2,3,4">全部</el-radio>
                     <el-radio v-model="nowStatus"  label="1">未上架</el-radio>
                     <el-radio v-model="nowStatus"  label="2">已上架</el-radio>
@@ -54,9 +53,9 @@
                     <el-radio v-model="nowStatus"  label="4">已售</el-radio>
                 </el-col>
             </div></el-col>
-           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="3" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
-                <el-col :xs="20" :sm="21" :md="20" :lg="18" :xl="18">
+           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="6" :sm="3" :md="2" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
+                <el-col :xs="18" :sm="19" :md="20" :lg="18" :xl="18">
                     <el-radio v-model="radio"  label="1,2,3">全部</el-radio>
                     <el-radio v-model="radio"  label="1">移动</el-radio>
                     <el-radio v-model="radio"  label="2">联通</el-radio>
@@ -66,20 +65,26 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :span="24"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="3" :md="2" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
-                <el-col :span="22">
-                <el-col :span="20">
-                    <el-checkbox-group v-model="checkedCities">
-                        <!-- <el-checkbox class="hidden-xs-and-down" v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>                        -->
-                        <el-checkbox  v-for="city in cities1" :label="city" :key="city">{{city}}</el-checkbox>                       
-                        <el-checkbox  v-for="city in cities2" :label="city" :key="city">{{city}}</el-checkbox>                       
-                        <el-checkbox  v-for="city in cities3" :label="city" :key="city">{{city}}</el-checkbox>                       
-                        <el-checkbox  v-for="city in cities4" :label="city" :key="city">{{city}}</el-checkbox>                       
-                    </el-checkbox-group>
-                </el-col>
-                <el-col :span="4">
-                    <el-checkbox  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>
-                </el-col>
+                <el-col :xs="6" :sm="2" :md="2" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
+                <el-col :xs="18" :sm="22" :md="22" :lg="20" :xl="18">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="20">
+                        <el-checkbox text-color="#48576a" style="display:inline;"  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>                       
+                        <el-checkbox-group style="display:inline" v-model="checkedCities" @change="handleCheckedCitiesChange">
+                            <!-- <el-checkbox class="hidden-xs-and-down" v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>                        -->
+                            <el-checkbox  v-for="city in cities1" :label="city" :key="city">{{city}}</el-checkbox>                       
+                            <el-checkbox  v-for="city in cities2" :label="city" :key="city">{{city}}</el-checkbox>                       
+                            <el-checkbox  v-for="city in cities3" :label="city" :key="city">{{city}}</el-checkbox>                       
+                            <el-checkbox  v-for="city in cities4" :label="city" :key="city">{{city}}</el-checkbox>      
+                            <el-checkbox  v-for="city in cities5" :label="city" :key="city">{{city}}</el-checkbox>      
+                            <el-checkbox  v-for="city in cities6" :label="city" :key="city">{{city}}</el-checkbox>      
+                            <el-checkbox  v-for="city in cities7" :label="city" :key="city">{{city}}</el-checkbox>                       
+                            <el-checkbox  v-for="city in cities8" :label="city" :key="city">{{city}}</el-checkbox>                       
+                            <el-checkbox  v-for="city in cities9" :label="city" :key="city">{{city}}</el-checkbox>                       
+                            <el-checkbox  v-for="city in cities10" :label="city" :key="city">{{city}}</el-checkbox>      
+                            <el-checkbox  v-for="city in cities11" :label="city" :key="city">{{city}}</el-checkbox>      
+                            <el-checkbox  v-for="city in cities12" :label="city" :key="city">{{city}}</el-checkbox>      
+                        </el-checkbox-group>
+                    </el-col>
                 </el-col>
             </div></el-col>
         </el-row>
@@ -88,10 +93,10 @@
         </el-row>
       </div> 
       <div v-if="searchList">
-            <div v-if="searchList.length>0">       
+            <div>       
                 <div class="listTitleFoot">
                     <el-row>
-                        <el-col :span="20"><div class="grid-content bg-purple">号包列表<span v-if="total" class="greyFont fontWeight"> ({{total}})</span></div></el-col>
+                        <p><h3>号包列表<span class="fontWeight greyFont">({{total||'0'}})</span></h3></p>                    
                     </el-row>        
                 </div>
                 <div class="detailsListDiv">
@@ -105,11 +110,13 @@
                                         <span v-if="syncLastTime!=0">{{getDateTime(syncLastTime)[6]}}</span>
                                     </div></el-col>
                                     <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
-                                        <span class="greyFont">下次同步成功时间:</span><span>{{"--"}}</span>
+                                        <!-- <span class="greyFont">下次同步成功时间:</span><span>{{"--"}}</span> -->
+                                        &nbsp;
                                     </div></el-col>
                                     <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
-                                        <span class="greyFont">同步间隔时间:</span><span></span>
-                                        <el-button class="small-btn" type="primary" @click="openSet()">设置</el-button>
+                                        <!-- <span class="greyFont">同步间隔时间:</span><span></span>
+                                        <el-button class="small-btn" type="primary" @click="openSet()">设置</el-button> -->
+                                        &nbsp;
                                     </div></el-col>
                                     <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
                                         <el-button class="small-btn" type="success" @click="sync()">手动同步</el-button>
@@ -169,7 +176,13 @@
                             <span v-if="v.isp==3">电信</span>
                             </td>
                             <td >
-                            {{new Date(v.modifyTime).toLocaleString()}}
+                                <!-- {{new Date(v.modifyTime).toLocaleString()}} -->
+                                <span v-if="v.modifyTime">
+                                    {{new Date(v.modifyTime).toLocaleString()}}
+                                </span>
+                                <span v-if="!v.modifyTime">
+                                    --
+                                </span>
                             </td>
                             <td >
                             {{v.operatorName}}
@@ -187,15 +200,20 @@
                                 {{v.productId}}
                             </td>
                         </tr>
-                        <tr>
+                        <tr v-if="searchList.length>0">
                             <td colspan="10" style="text-align:left">
                                 选择:<a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
                                 <!-- <a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a> -->
                             </td>
                         </tr>
+                        <tr v-if="searchList.length<=0">
+                            <td colspan="10">
+                                暂无数据                                                        
+                            </td>
+                        </tr>
                     </table>
                 </div>       
-                <div class="listTitleFoot">
+                <div class="listTitleFoot" v-if="searchList.length>0">
                     <el-row>
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
@@ -211,13 +229,13 @@
                     </el-row>
                 </div>
         </div>
-        <div v-if="searchList.length==0" class="searchResultInfoNone">
+        <!-- <div v-if="searchList.length==0" class="searchResultInfoNone">
              查询结果为空!
-        </div>
+        </div> -->
     </div>   
         <div v-if="off.modify">
             <div class="listTitleFoot">
-                <p style="text-align:right;color:red;font-size:14px">将已选择内容批量:{{a}}</p>
+                <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{a}}</p>
             </div>
             <div class="listTitleFoot">
                 <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
@@ -230,7 +248,7 @@
             </div> 
             <div class="listTitleFoot">
                 <p style="float:right">
-                <el-button type="success" size="small" @click="success()">确定</el-button>
+                <el-button type="success" size="small" @click="btnYes()">确定</el-button>
                 </p>
             </div>
         </div> 
@@ -245,18 +263,25 @@
 <script>
 import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
-import { getDateTime,getUnixTime,errorDeal,getStore } from "../../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils.js";
 import {requestMethod,requestMethod2,requestgetSyncTime} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layerSync from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
 import cardDetails from "../../../components/cardDetails";
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'];
-const cityOptions1=['远特', '蜗牛', '迪信通'];
-const cityOptions2=[ '极信','小米','海航'];
-const cityOptions3=['乐语','苏宁互联','国美'];
-const cityOptions4=['联想','蓝猫移动','长城'];
-const options={text:"正在加载",}
+const cityOptions1=['远特'];
+const cityOptions2=[ '蜗牛'];
+const cityOptions3=['迪信通'];
+const cityOptions4=['极信'];
+const cityOptions5=[ '小米'];
+const cityOptions6=[ '海航'];
+const cityOptions7=['乐语'];
+const cityOptions8=['苏宁互联',];
+const cityOptions9=['国美'];
+const cityOptions10=['联想'];
+const cityOptions11=['蓝猫移动'];
+const cityOptions12=['长城'];
 export default{
 	data (){
 		return {
@@ -265,7 +290,7 @@ export default{
             count:"点击获取验证码",
             timer:null,
             checkAll: false,
-            isIndeterminate: true,
+            isIndeterminate:true,
             total:"",//号包总数
             searchResData:{},//号包详情查询结果
             searchLiang:[],//靓号详情查询结果
@@ -291,6 +316,14 @@ export default{
             cities2:cityOptions2,
             cities3:cityOptions3,
             cities4:cityOptions4,
+            cities5:cityOptions5,
+            cities6:cityOptions6,
+            cities7:cityOptions7,
+            cities8:cityOptions8,
+            cities9:cityOptions9,
+            cities10:cityOptions10,
+            cities11:cityOptions11,
+            cities12:cityOptions12,
             startTime: "",
             endTime: "",
             cname: "",
@@ -299,6 +332,7 @@ export default{
             timeType:"a",
             searchData:"",
             dourl:'',
+            a:'',//上架，下架
 			off:{
                 layer:false,
                 // dlsDetails:false,
@@ -326,6 +360,9 @@ export default{
         vm.user=Info;
 	},
 	methods:{
+        checkBoxClick(v){
+
+        },
         handleCheckAllChange(val) {
             this.checkedCities = val ? cityOptions : [];
             this.isIndeterminate = false;
@@ -336,7 +373,6 @@ export default{
             this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
         },
 		getDetails(v){
-            console.log(v);
             let vm=this;
             let load=Loading.service(options);
             let data={},url="/nms/w/number/getProductDetail";
@@ -364,6 +400,13 @@ export default{
                             this.off.notCardDetails=false;
                             this.off.cardDetails=true;
                             load.close();
+                        }else{
+                            layer.open({
+                                content:"data.msg",
+                                skin: 'msg',
+                                time: 2,
+                                msgSkin:'error',
+                            });
                         }
                     }).catch(e=>errorDeal(e),function(){load.close()});
                 }else{
@@ -441,6 +484,9 @@ export default{
             }
         }
         ,search(p){//查询
+            if(this.phone!=''){
+                checkMobile(this.phone,function(){return false});
+            }
             let load=Loading.service(options),checked=[],data={},url='/nms/w/number/productSearch',vm=this;
             vm.pa=p||1;
             for(let i in vm.checkedCities){
@@ -471,6 +517,12 @@ export default{
                 }else{
                     errorDeal(data);
                 }
+            }).then(()=>{
+                for(let v=0;v<vm.searchList.length;v++){
+                    vm.$set(vm.searchList[v],'ischecked',false);
+                }
+                vm.off.modify=false;
+                this.resetTimer()
             }).then(()=>{
                 load.close(); 
             }).catch(e=>errorDeal(e),function(){load.close()});
@@ -520,6 +572,7 @@ export default{
         },
          doFounction(val){
             let vm=this;
+            vm.a="";
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
                     vm.off.modify=true;
@@ -549,14 +602,10 @@ export default{
                 this.show = false;
                 this.timer = setInterval(() => {
                 if (this.count > 0 && this.count <= TIME_COUNT) {
-                    this.btnDisabled=true;
-                    this.count--;
+                        this.btnDisabled=true;
+                        this.count--;
                     } else {
-                    this.btnDisabled=false;                        
-                    this.show = true;
-                    this.count="点击获取验证码"                    
-                    clearInterval(this.timer);
-                    this.timer = null;
+                        this.resetTimer()
                     }
                 }, 1000)
             }
@@ -584,11 +633,11 @@ export default{
                 load.close(); 
             }).catch(e=>errorDeal(e));
         }
-        ,success(v){
-            let data={'operateProductIds':[]},vm=this;
+        ,btnYes(v){
+            let dataReq={'operateProductIds':[]},vm=this;
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
-                    data.operateProductIds.push(vm.searchList[v].productId)
+                    dataReq.operateProductIds.push(vm.searchList[v].productId)
                 }
             }
             if(vm.reason==""){
@@ -610,18 +659,10 @@ export default{
                 return false;
             }
             let load=Loading.service(options);
-            data.reason=vm.reason;//操作原因
-            data.authCode=vm.authCode;
-            requestMethod(data,vm.dourl)
+            dataReq.reason=vm.reason;//操作原因
+            dataReq.authCode=vm.authCode;
+            requestMethod(dataReq,vm.dourl)
             .then((data)=>{
-                for(let v in vm.searchList){
-                    vm.searchList[v].ischecked=false;
-                }
-                vm.reason="";
-                vm.authCode="";
-                for(let v=0;v<vm.searchList.length;v++){
-                    this.$set(vm.searchList[v],'ischecked',false);
-                }
                 vm.off.modify=false;
                 if(data.code==200){
                     layer.open({
@@ -630,9 +671,9 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                     this.search();
+                    this.search();
                 }else{
-                     layer.open({
+                    layer.open({
                         content:data.msg,
                         skin: 'msg',
                         time: 2,
@@ -640,6 +681,13 @@ export default{
                     });
                 }
             }).then(()=>{
+                vm.reason="";
+                vm.authCode="";
+                this.resetTimer();               
+                for(let v=0;v<vm.searchList.length;v++){
+                    vm.$set(vm.searchList[v],'ischecked',false);
+                }}
+            ).then(()=>{
                 load.close(); 
             }).catch(e=>errorDeal(e));
         },
@@ -657,7 +705,15 @@ export default{
         },
         getDateTime:function(v){
             return getDateTime(v);
+        },
+        resetTimer(){
+            this.btnDisabled=false;                        
+            this.show = true;
+            this.count="点击获取验证码"                    
+            clearInterval(this.timer);
+            this.timer = null;
         }
+
     }
 }
 </script>

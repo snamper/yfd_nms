@@ -37,7 +37,6 @@ tbody tr{height: 36px;}
 </section>
 </template>
 <script>
-const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service.js"; 
 import { errorDeal,getStore } from '../src/config/utils';

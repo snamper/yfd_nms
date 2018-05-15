@@ -1,5 +1,6 @@
 <style scoped>
     .listTitleFoot{width: 96%;margin: 10px 18px;}
+    table tr td{text-align: left;padding-left: 20px;}    
 </style>
 <template>
 <section>
@@ -11,8 +12,8 @@
         </el-row>
         <el-row>
             <el-col :span="24"><div class="grid-content bg-purple">
-                <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div></el-col>
-                <el-col :xs="20" :sm="14" :md="14" :lg="9" :xl="10">
+                <el-col :xs="5" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div></el-col>
+                <el-col :xs="19" :sm="14" :md="14" :lg="10" :xl="10">
                     <el-date-picker
                     v-model="startTime"
                     size="small"
@@ -43,16 +44,16 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
+                <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="cname" :maxlength="30" size="small" placeholder="请输入查询的公司名称"></el-input>
                 </el-col>
                 <el-col :xs="24" :sm="6" :md="6" :lg="4" :xl="4">
                 </el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="name"  :maxlength="20" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="4" :xl="4">
@@ -62,8 +63,8 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :xs="20" :sm="16" :md="12" :lg="16" :xl="16">
+                <el-col :xs="5" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="19" :sm="16" :md="12" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,3">全部</el-radio>
                     <el-radio v-model="radio"  label="1">正常</el-radio>
                     <el-radio v-model="radio"  label="3">注销</el-radio>
@@ -74,8 +75,8 @@
                 </el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="6" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
+                <el-col :xs="18" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="phone" :maxlength="11" size="small"  placeholder="请输入联系人号码"></el-input>
                 </el-col>
                 <el-col :xs="24" :sm="7" :md="7" :lg="4" :xl="4">
@@ -89,9 +90,9 @@
     
     <!-- 查询结果模块 -->
     <div v-if="searchList">
-        <div v-if="searchList.length>0" >
+        <div><!--v-if="searchList.length>0"-->
             <div class="listTitleFoot">
-                <p class="fs16">代理商列表<span v-if="total"> ({{total}})</span></p>
+                <p><h3>代理商列表<span class="fontWeight greyFont">({{total||'0'}})</span></h3></p>
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
@@ -102,13 +103,15 @@
                                     <span class="greyFont">最后同步成功时间:</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
                                 </div></el-col>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
-                                    <span class="greyFont">下次同步成功时间:</span>
+                                    <!-- <span class="greyFont">下次同步成功时间:</span>
                                     <span v-if="syncLastTime==0">--</span>
-                                    <span v-if="syncLastTime!=0">{{getDateTime(syncLastTime)[6]}}</span>
+                                    <span v-if="syncLastTime!=0">{{getDateTime(syncLastTime)[6]}}</span> -->
+                                    &nbsp;
                                 </div></el-col>
                                 <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
-                                    <span class="greyFont">同步间隔时间:</span><span></span>
-                                    <el-button class="small-btn" type="primary" @click="openSet()">设置</el-button>
+                                    <!-- <span class="greyFont">同步间隔时间:</span><span></span>
+                                    <el-button class="small-btn" type="primary" @click="openSet()">设置</el-button> -->
+                                    &nbsp;
                                 </div></el-col>
                                 <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
                                     <el-button class="small-btn" type="success" @click="sync()">手动同步</el-button>
@@ -116,7 +119,7 @@
                             </el-row>
                         </td>
                     </tr>
-                    <tr>
+                    <tr >
                         <td>序号</td>
                         <td>修改时间</td>
                         <td>公司名称</td>
@@ -126,12 +129,18 @@
                         <td>创建时间</td>
                         <td>员工详情</td>
                     </tr>
-                    <tr v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
+                    <tr v-if="searchList.length>0" v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
                         <td >
                         {{((pa-1)*15+(i+1))}}
                         </td>
                         <td >
-                        {{new Date(v.modifyTime).toLocaleString()}}
+                        <!-- {{new Date(v.modifyTime).toLocaleString()}} -->
+                            <span v-if="v.modifyTime">
+                                {{new Date(v.modifyTime).toLocaleString()}}
+                            </span>
+                            <span v-if="!v.modifyTime">
+                                --
+                            </span>
                         </td>
                         <td >
                         {{v.departName}}
@@ -151,15 +160,26 @@
                         </span>
                         </td>
                         <td >
-                        {{new Date(v.createTime).toLocaleString()}}
+                        <!-- {{new Date(v.createTime).toLocaleString()}} -->
+                            <span v-if="v.createTime">
+                                {{new Date(v.createTime).toLocaleString()}}
+                            </span>
+                            <span v-if="!v.createTime">
+                                --
+                            </span>
                         </td>
                         <td >
                         <a class="textDec" href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
                         </td>
                     </tr>
+                    <tr v-if="searchList.length==0">
+                        <td class="tac" colspan="8">
+                            暂无数据                            
+                        </td>
+                    </tr>
                 </table>
             </div>
-            <div class="listTitleFoot">
+            <div class="listTitleFoot" v-if="searchList.length!=0">
                 <el-row>
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
@@ -176,9 +196,6 @@
                 </el-row>
             </div>
         </div> 
-        <div v-if="searchList.length==0" class="searchResultInfoNone">
-          查询结果为空!
-        </div> 
     </div>
     
     </div>
@@ -189,10 +206,9 @@
 </section>
 </template>
 <script>
-const options={text:'正在加载'}
 import { Loading } from 'element-ui';
-import { getDateTime,getUnixTime,errorDeal,disableTimeRange6 } from "../../config/utils";
-import {requestMethod,requestMethod2,requestgetSyncTime} from "../../config/service.js"; 
+import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
+import {requestMethod,requestgetSyncTime} from "../../config/service.js"; 
 import search from "../../../components/search";
 import layers from "../../../components/layer";
 import dlsDetails from "../../../components/dlsDetails";
@@ -231,7 +247,7 @@ export default{
             ,details:{},
             pickerOptionsS: {
             disabledDate(time) {
-                let curDate = new Date().getTime();
+                let curDate= new Date().getTime();
                 let curYear=new Date(curDate).getFullYear();
                 let curMonth=new Date(curDate).getMonth()+1,
                     minMonth=curMonth-5,
@@ -277,15 +293,7 @@ export default{
         "dls-Details":dlsDetails
     },
     created:function(){
-        let vm=this;
-        let curDate = (new Date()).getTime();
-        let curMonth=new Date(curDate).getMonth()+1;
-        let curYear=new Date(curDate).getFullYear();
-        let curDay=new Date(curDate).getDate()+1;
-        let cur=curYear+"/"+curMonth+"/1";
-        let Next=curYear+"/"+curMonth+"/"+curDay;
-        vm.startTime=new Date(cur).getTime();
-        vm.endTime=new Date(Next).getTime()-1000;
+       getTimeFunction(this)
     },
     methods:{
         openSet(){//设置
@@ -323,6 +331,9 @@ export default{
                 });
                 return false;
             }
+            if(vm.phone!=''){
+                checkMobile(vm.phone,function(){return false});
+            }
             let load=Loading.service(options),data={},url='/ums/w/user/departSearch';
             vm.pa=p||1;
             vm.currentPage=p||1;
@@ -337,9 +348,8 @@ export default{
                 ,"pageSize":15
                 ,"pageNum":p||1}
                 this.getSyncTime();
-            requestMethod(data,url)
+            requestMethod(data,url,()=>{load.close()})
             .then((data)=>{
-                load.close()
                 if(data.code==200){
                     vm.total=data.data.total;//查询总数
                     vm.searchList=data.data.departs;//查询内容
@@ -347,8 +357,6 @@ export default{
                 }else{
                     errorDeal(data);
                 }
-            }).then(()=>{
-
             }).catch(e=>errorDeal(e));
         }
         ,getDetails(v){//查看详情
@@ -359,9 +367,8 @@ export default{
             vm.companyName=v.departName;
             vm.managerName=v.managerName;
             vm.managerPhone=v.phone;
-            requestMethod(data,url)
+            requestMethod(data,url,()=>{load.close()})
             .then((data)=>{
-                load.close();
                 if(data.code==200){
                     if(data.data.users.length>0){
                         vm.off.notDlsDetails=false;
@@ -392,7 +399,9 @@ export default{
             }
             if(timeCheck>timeRangeE){
                 vm.startTime=timeRangeE;
-            }           
+            }   
+            let dt=new Date(e);
+            getTimeFunction(this,[dt,1])        
         },changeTimeE(e){
             let vm=this,
             timeRange=disableTimeRange6(),
@@ -404,12 +413,15 @@ export default{
             }
             if(timeCheck>timeRangeE){
                 vm.endTime=timeRangeE;
-            }           
+            }     
+            let dt=new Date(e);   
+            console.log(dt);         
+            getTimeFunction(this,[dt,2])                     
         },
         getSyncTime(){
             let vm=this;
-           let data={recordType:3};
-           requestgetSyncTime(data)
+            let data={recordType:3};
+            requestgetSyncTime(data)
             .then((data)=>{
                 if(data.code==200){
                     vm.syncLastTime=data.data.syncLastTime
@@ -420,6 +432,13 @@ export default{
         },
         getDateTime:function(v){
             return getDateTime(v);
+        },
+        resetTimer(){
+            this.btnDisabled=false;                        
+            this.show = true;
+            this.count="获取验证码"
+            clearInterval(this.timer);
+            this.timer = null;
         }
     }
 }

@@ -37,7 +37,6 @@ div.noticeHistory table{
 }
 div.noticeHistory tr td{
     border: 1px solid #DCDCDC;
-    white-space: nowrap;
     border-collapse: collapse;
 }
  div.noticeHistory tr td:first-child{
@@ -57,7 +56,6 @@ div.msgInfo{
     background: #fff;
 }
 div.msgInfo p{
-    height: .4rem;
     line-height: .4rem;
     padding-left: .2rem;
 }

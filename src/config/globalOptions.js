@@ -1,0 +1,1 @@
+global.options = {background:"rgba(255,255,255,.6)",target:"#main"}

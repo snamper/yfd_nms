@@ -13,7 +13,7 @@
 .tdBtn span{ display: inline-block;width: 100%;height: 50px;padding: 20px;margin-top: 20px;box-sizing: border-box;cursor: pointer}
 .tdBtn span:nth-child(1){border-top: 1px solid #ccc;color: red}
 tbody tr{height: 36px;}
-a.IconOff{font-size:16px;color:black}
+a.IconOff{font-size:16px;color:black;cursor: pointer}
 </style>
 <template>
 <section  id="detailsView">
@@ -21,7 +21,7 @@ a.IconOff{font-size:16px;color:black}
 		<table>
             <thead>
                 <tr>
-                    <td colspan="3" style="text-align:center;padding:10px 10px 0 0;line-height:20px;height:46px ;">日志详情<a class="fr IconOff" @click="closeLayer()">x</a></td>
+                    <td colspan="3" style="text-align:center;padding:10px 10px 0 0;line-height:20px;height:46px;"><h3>日志详情<a class="fr IconOff" @click="closeLayer()">x</a></h3></td>
                 </tr>
             </thead>
 			<tbody v-if="layerType=='number'">
@@ -71,7 +71,15 @@ a.IconOff{font-size:16px;color:black}
                 </tr>
                 <tr>
                     <td>操作时间：</td>
-                    <td colspan="2">{{new Date(detailsData.modifyTime).toLocaleString()}}</td>
+                    <td colspan="2">
+                        <!-- {{new Date(detailsData.modifyTime).toLocaleString()}} -->
+                        <span v-if="detailsData.modifyTime">
+                            {{new Date(detailsData.modifyTime).toLocaleString()}}
+                        </span>
+                        <span v-if="!detailsData.modifyTime">
+                            --
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>操作人：</td>
@@ -115,7 +123,15 @@ a.IconOff{font-size:16px;color:black}
                 </tr>
                 <tr>
                     <td>操作时间：</td>
-                    <td colspan="2">{{new Date(detailsData.operatorTime).toLocaleString()||'--'}}</td>
+                    <td colspan="2">
+                        <!-- {{new Date(detailsData.operatorTime).toLocaleString()||'--'}} -->
+                        <span v-if="detailsData.operatorTime">
+                            {{new Date(detailsData.operatorTime).toLocaleString()}}
+                        </span>
+                        <span v-if="!detailsData.operatorTime">
+                            --
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>操作类型：</td>
@@ -140,7 +156,16 @@ a.IconOff{font-size:16px;color:black}
                 </tr>
                 <tr>
                     <td>登录地址：</td>
-                    <td colspan="2"><a href="javascript:void(0)"  @click="toMap">【查看地图】</a></td>
+                    <td colspan="2">
+                        <!-- <a href="javascript:void(0)"  @click="toMap">【查看地图】</a> -->
+                        <span v-if="detailsData.latitude"> 
+                            {{detailsData.latitude}},{{detailsData.longitude}}
+                            <a href="javascript:void(0)" @click="toMap" >【查看地图】</a>
+                        </span>
+                        <span v-if="!detailsData.latitude"> 
+                            --
+                        </span>
+                    </td>
                 </tr>
                 <tr>
                     <td>操作结果：<span></span></td>
@@ -153,7 +178,10 @@ a.IconOff{font-size:16px;color:black}
                     <td>当前状态：<span>{{"--"}}</span></td>
                 </tr>
                 <tr v-if="detailsData.recordResult==2">
-                    <td>失败原因：<span class="c-red">{{'--'}}</span></td>
+                    <td>失败原因：
+                        <span class="c-red"></span>
+                        <span>{{'--'}}</span>
+                    </td>
                 </tr>
             </tbody>
             <tbody v-if="layerType=='sync'&&syncLogType=='3'">
@@ -184,7 +212,7 @@ a.IconOff{font-size:16px;color:black}
                     </td>
                 </tr>
                 <tr>
-                    <td>亚非达用户数：</td>
+                    <td>亚飞达用户数：</td>
                     <td colspan="2">{{detailsData.addUserCount||'--'}}</td>
                 </tr>
                 <tr>
@@ -196,7 +224,7 @@ a.IconOff{font-size:16px;color:black}
                     <td colspan="2">{{detailsData.modifyDealerCount}}</td>
                 </tr>
                 <tr>
-                    <td>亚非达商户数：<span></span></td>
+                    <td>亚飞达商户数：<span></span></td>
                      <td colspan="2">
                        {{detailsData.yfdDealerCount}}
                     </td>
@@ -208,7 +236,7 @@ a.IconOff{font-size:16px;color:black}
                     <td colspan="2">{{detailsData.dbSectionTotal||'--'}}</td>
                 </tr>
                 <tr>
-                    <td>亚非达号码总数：</td>
+                    <td>亚飞达号码总数：</td>
                     <td colspan="2">{{detailsData.yfdPhoneTotal||'--'}}</td>
                 </tr>
                 <tr>
@@ -243,7 +271,6 @@ export default{
 	},
 	created:function(){
         let vm=this;
-        console.log(this.syncLogType)
 	},
 	methods:{
 		closeLayer:function(){

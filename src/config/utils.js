@@ -13,11 +13,16 @@ export const errorDeal=(res,cb)=>{
             store.commit("SIGN_OUT");
             layer.closeAll();
         }
-    }),store.commit("CLEAR_TIMER")) : layer.open({
-        content:res.msg||res.statusText||res,
-        skin: 'msg',
-        time: 4,
-        msgSkin:'error',
+    })) : res.code=="404" ? (layer.open({
+            content:"找不到服务器",
+            skin: 'msg',
+            time: 4,
+            msgSkin:'error',
+    })) : layer.open({
+            content:res.msg||res.statusText||res,
+            skin: 'msg',
+            time: 4,
+            msgSkin:'error',
     });
 };
 /**
@@ -140,6 +145,22 @@ export const secondsFormat=(v)=>{
 	    minute!='00' ? "00:"+minute+":"+second : "00:00:"+second;
 }
 /**
+ * 验证手机号
+ */
+export const checkMobile=(v,f)=>{ 
+    if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(v))){ 
+        layer.open({
+            content:'请输入正确的手机号码',
+            skin: 'msg',
+            time: 2,
+            msgSkin:'error',
+        });
+        if(typeof(f)=="function"){
+            f()(); 
+        }
+    } 
+}
+/**
  * 开卡订单-数据翻译
  */
 export const translateData=(type,v)=> {
@@ -207,6 +228,39 @@ export const disableTimeRange6=()=>{
     let next=curYear+"/"+nextMonth+"/1";
     let nextYesterday=new Date(next)-1000*3600*24;
     return {"next":getCurTime,"nextYesterday":nextYesterday}
+}
+
+export const getTimeFunction=(t,d)=>{
+    let vm=t,curMonth,curYear,timeStamp='';
+    let curDate = (new Date()).getTime();
+    if(typeof(d)=="undefined"){
+        curMonth=new Date(curDate).getMonth()+1;
+        curYear=new Date(curDate).getFullYear();
+        let curDay=new Date(curDate).getDate()+1;
+        let cur=curYear+"/"+curMonth+"/1";
+        let Next=curYear+"/"+curMonth+"/"+curDay;
+        vm.startTime=new Date(cur).getTime();
+        vm.endTime=new Date(Next).getTime()-1000;
+    }else if(d[1]=='1'){
+        curMonth = new Date(d[0]).getMonth()+1;
+        curYear=new Date(d[0]).getFullYear();  
+        timeStamp= getDateTime(vm.endTime)[6];
+        timeStamp=timeStamp.split('-');
+        timeStamp.splice(0,2,curYear,curMonth);
+        let ce=timeStamp.join('-');
+        vm.endTime=new Date(ce).getTime();
+        vm.startTime=new Date(d[0]).getTime();
+    }else if(d[1]=='2'){
+        curMonth = new Date(d[0]).getMonth()+1;
+        curYear=new Date(d[0]).getFullYear();
+        timeStamp= getDateTime(vm.startTime)[6];
+        timeStamp=timeStamp.split('-');
+        timeStamp.splice(0,2,curYear,curMonth);
+        let cs=timeStamp.join('-');
+        vm.startTime=new Date(cs).getTime();
+        vm.endTime=new Date(d[0]).getTime();
+    }
+    
 }
 
 

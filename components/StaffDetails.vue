@@ -25,7 +25,7 @@
         </div>
         <div class="listTitleFoot">
             <el-row>
-                <el-col :span="20"><div class="grid-content bg-purple">员工列表</div></el-col>
+                <p><h3>员工详情</h3></p>                
             </el-row>        
         </div>
         <div class="detailsUlDiv">
@@ -51,13 +51,33 @@
                 <li>
                      <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">创建时间:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{new Date(forms.createTime).toLocaleString()}}</div></el-col>
+                        <el-col :span="20">
+                            <div class="grid-content bg-purple-light">
+                            <!-- {{new Date(forms.createTime).toLocaleString()}} -->
+                                <span v-if="forms.createTime">
+                                    {{new Date(forms.createTime).toLocaleString()}}
+                                </span>
+                                <span v-if="!forms.createTime">
+                                    --
+                                </span>
+                            </div>
+                        </el-col>
                     </el-row>
                 </li>
                 <li>
                      <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">修改时间:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{new Date(forms.modifyTime).toLocaleString()}}</div></el-col>
+                        <el-col :span="20">
+                            <div class="grid-content bg-purple-light">
+                                <!-- {{new Date(forms.modifyTime).toLocaleString()}} -->
+                                <span v-if="forms.modifyTime">
+                                    {{new Date(forms.modifyTime).toLocaleString()}}
+                                </span>
+                                <span v-if="!forms.modifyTime">
+                                    --
+                                </span>
+                            </div>
+                        </el-col>
                     </el-row>
                 </li>
                 <li>
@@ -92,41 +112,72 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="4"><div class="grid-content bg-purple">最后登陆时间:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{new Date(forms.lastLoginTime).toLocaleString()}}</div></el-col>
+                        <el-col :span="4"><div class="grid-content bg-purple">最后登录时间:</div></el-col>
+                        <el-col :span="20">
+                            <div class="grid-content bg-purple-light">
+                                <!-- {{new Date(forms.lastLoginTime).toLocaleString()}} -->
+                                <span v-if="forms.lastLoginTime">
+                                    {{new Date(forms.lastLoginTime).toLocaleString()}}
+                                </span>
+                                <span v-if="!forms.lastLoginTime">
+                                    --
+                                </span>
+                            </div>
+                        </el-col>
                     </el-row>
                 </li>
-                 <li>
+                <li>
                      <el-row>
-                        <el-col :span="4"><div class="grid-content bg-purple">登陆方式:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light"><span v-if="forms.sessionPlatform==1">Web在线</span><span v-if="forms.sessionPlatform==2">App在线</span></div></el-col>
+                        <el-col :span="4"><div class="grid-content bg-purple">登录方式:</div></el-col>
+                        <el-col :span="20">
+                            <div class="grid-content bg-purple-light">
+                                <span v-if="forms.sessionPlatform==1">Web在线</span>
+                                <span v-if="forms.sessionPlatform==2">App在线</span>
+                                <span v-if="!forms.sessionPlatform">--</span>
+                            </div>
+                        </el-col>
                     </el-row>
                 </li>
                 <li>
                      <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">在线平台:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light"><span v-if="forms.sessionType==1">业务平台</span><span v-if="forms.sessionType==2">管理平台</span></div></el-col>
+                        <el-col :span="20">
+                            <div class="grid-content bg-purple-light">
+                                <span v-if="forms.sessionType==1">业务平台</span>
+                                <span v-if="forms.sessionType==2">管理平台</span>
+                                <span v-if="!forms.sessionPlatform">--</span>                                
+                            </div>
+                        </el-col>
                     </el-row>
                 </li>
                 <li>
                      <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">IP:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light"></div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light" v-if="forms.host">{{forms.host}}</div></el-col>
+                        <el-col :span="20"><div class="grid-content bg-purple-light" v-if="!forms.host">--</div></el-col>
                     </el-row>
                 </li>
                 <li>
                     <el-row>
-                        <el-col :span="4"><div class="grid-content bg-purple">登陆地址:</div></el-col>
+                        <el-col :span="4"><div class="grid-content bg-purple">登录地址:</div></el-col>
                         <el-col :span="20"><div class="grid-content bg-purple-light">
-                            {{forms.latitude}}--{{forms.longitude}}
-                            <a href="javascript:void(0)" @click="toMap" >【查看地图】</a>
+                            <span v-if="forms.latitude"> 
+                                {{forms.latitude}},{{forms.longitude}}
+                                <a href="javascript:void(0)" @click="toMap" >【查看地图】</a>
+                            </span>
+                            <span v-if="!forms.latitude"> 
+                               --
+                            </span>
                         </div></el-col>
                     </el-row>
                 </li>
                 <li>
                      <el-row>
                         <el-col :span="4"><div class="grid-content bg-purple">操作机型:</div></el-col>
-                        <el-col :span="20"><div class="grid-content bg-purple-light">{{forms.phoneType}}</div></el-col>
+                        <el-col :span="20">
+                            <div class="grid-content bg-purple-light" v-if="forms.phoneType">{{forms.phoneType}}</div>
+                            <div class="grid-content bg-purple-light" v-if="!forms.phoneType">--</div>
+                        </el-col>
                     </el-row>
                 </li>
             </ul>
@@ -142,7 +193,6 @@
 	</div>	 
 </template>
 <script>
-const options={text:'正在加载'}
 import { Loading } from 'element-ui';
 import {requestMethod} from "../src/config/service"; 
 import {errorDeal,getStore} from "../src/config/utils"
@@ -195,6 +245,17 @@ export default{
             this.$parent.search(vm.$parent.pa);
         }
         ,checkBtn(){
+            for(let v in this.forms.userRole){
+                if(this.forms.userRole=='3'){
+                    layer.open({
+                        content:"不允许修改店长信息",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                    return false;
+                }
+            };
             let vm=this;
             vm.off.noModify=false;
             vm.off.modify=true;
@@ -219,7 +280,6 @@ export default{
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
-                    debugger;
                     layer.open({
                         content:'请求成功',
                         skin: 'msg',
@@ -254,7 +314,6 @@ export default{
 			var w=document.documentElement.clientWidth,url='',vm=this;
 			let latitude=parseFloat(vm.forms.latitude);
             let longitude=parseFloat(vm.forms.longitude);
-            debugger;
 			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
 			window.open(url);
 		}
