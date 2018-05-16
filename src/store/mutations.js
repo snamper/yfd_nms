@@ -16,7 +16,6 @@ export default {
 	[SIGN_OUT](state){
 		state.userInfo={};
 		removeStore("YFD_NMS_INFO");
-		// removeStore("KA_ECS_ONLINE_TIME");
-		window.location.href='/ums/login';
+		window.location.href='#/login';
 	}
 };

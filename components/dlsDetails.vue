@@ -63,7 +63,7 @@
                     <div v-for="(v,i) in list" :key="i" class="mt8">
                         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
                         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
-                        <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox></el-col>
+                        <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox></el-col>
                     </div>
                 </el-col>
                 <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
@@ -287,11 +287,13 @@ export default{
                         this.list[i].userRole='4,5'
                     }
                     this.list[i].departName=vm.company;
-                    delete this.list[i].checked;
-                    delete this.list[i].checked2;
                     data.newUsers.push(this.list[i])
-                    this.addAble='1';
                 }
+            }
+            for(let i=0;i<data.newUsers.length;i++){
+                delete data.newUsers[i].checked;
+                delete data.newUsers[i].checked2;
+                this.addAble='1';                
             }
             if(this.addAble=='0'){
                 layer.open({

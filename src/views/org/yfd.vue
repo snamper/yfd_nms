@@ -262,7 +262,6 @@ export default{
                     vm.off.searchList=true;
                     vm.form.page=data.data.total;
                     vm.detailsList=data.data.users;
-                    vm.off.addList=false;
                 }else{
                     layer.open({
                         content:data.msg,

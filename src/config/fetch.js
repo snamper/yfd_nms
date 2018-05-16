@@ -1,6 +1,7 @@
 import {getStore,errorDeal} from '../config/utils.js';
 
 export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') => {
+    let headerId;
     if(!load){
         var layerIndex=layer.open({type: 2,shadeClose:false});
 	}
@@ -13,9 +14,11 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
     let userInfo=getStore("YFD_NMS_INFO");
     if(userInfo){
         Object.assign(userInfo,data);
+        headerId=userInfo.userId;
         data=userInfo;
     }else{
         errorDeal({'code':648},closeLoadLayout);
+        headerId='';
         return false;
     }
 //--------------------------------------------------------------------
@@ -35,7 +38,8 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 			credentials: 'include',
 			method: type,
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+                'mhscAuth':'3,0,'+headerId,
 			},
 			mode: "cors",
 			cache: "force-cache"
@@ -56,8 +60,10 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
                     return response.status;
                 }
             }).then(data=>{
-                if(data.hasOwnProperty('code')){
+                if(data.hasOwnProperty('code')&&data.code==200){
                     resolve(data);
+                }else if(data.hasOwnProperty('code')&&data.code!=200){
+                    reject(data);
                 }else{
                     reject({code:data});
                 }
@@ -95,7 +101,8 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 			}
 
 			requestObj.open(type, url, true);
-			requestObj.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+			requestObj.setRequestHeader("Content-type","application/x-www-form-urlencoded");
+			requestObj.setRequestHeader("mhscAuth","3,0,"+headerId);
 			requestObj.send(sendData);
 
 			requestObj.onreadystatechange = () => {

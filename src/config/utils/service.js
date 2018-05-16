@@ -2,8 +2,16 @@ import Vue from 'vue';
 import axios from 'axios';
 import { errorDeal,getStore,windowJump } from './uutils';
 
+
+let userInfo=getStore("YFD_NMS_INFO"),headerId;
+    if(userInfo){
+        headerId=userInfo.userId;
+    }else{
+        headerId='';
+    }
 axios.defaults.timeout=10000;
 axios.defaults.headers.post['Content-Type']='application/json';
+axios.defaults.headers.post['mhscAuth']='3,0'+headerId;
 // axios.defaults.baseURL='http://127.0.0.1:3000/';
 
 axios.interceptors.request.use(

@@ -208,7 +208,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                 <tr>
                     <td>删除用户数：</td>
                      <td colspan="2">
-                        {{detailsData.delUserCount}}
+                        {{detailsData.delUserCount||'--'}}
                     </td>
                 </tr>
                 <tr>
@@ -217,16 +217,16 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                 </tr>
                 <tr>
                     <td >删除商户数：</td>
-                    <td colspan="2">{{detailsData.delDealerCount}}</td>
+                    <td colspan="2">{{detailsData.delDealerCount||'--'}}</td>
                 </tr>
                 <tr>
                     <td>修改商户数：</td>
-                    <td colspan="2">{{detailsData.modifyDealerCount}}</td>
+                    <td colspan="2">{{detailsData.modifyDealerCount||'--'}}</td>
                 </tr>
                 <tr>
                     <td>亚飞达商户数：<span></span></td>
                      <td colspan="2">
-                       {{detailsData.yfdDealerCount}}
+                       {{detailsData.yfdDealerCount||'--'}}
                     </td>
                 </tr>
             </tbody>

@@ -211,6 +211,7 @@ export default{
             data.authCode=vm.authCode;
             requestMethod(data,url)
             .then((data)=>{
+                debugger;
                 vm.$parent.off.layer=false;                                                                    
                 if(data.code==200){
                     layer.open({

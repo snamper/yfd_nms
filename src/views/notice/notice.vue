@@ -160,7 +160,7 @@
                                 {{v.username}}
                             </td>
                             <td >
-                                <a style="" href="javascript:void(0)">{{v.phone}}</a>
+                                <span href="javascript:void(0)">{{v.phone}}</span>
                             </td>
                             <td >
                                 {{v.departName}}
@@ -186,7 +186,6 @@
             </div>
         </div>
         <layer-confirm v-if="off.layer" :layerType="layerT"></layer-confirm>
-       
     </section>
 </template>
 <script>

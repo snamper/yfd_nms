@@ -308,6 +308,7 @@ export default {
         }).catch(e=>errorDeal(e))
     },
     details(v,i){
+        console.log(v,i);
         let vm=this,
         data={recordType:vm.recordType};
         vm.form.detailsList=v;

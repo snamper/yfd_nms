@@ -2,7 +2,6 @@
 @import "../../assets/css/search.css";
 div.listTitleFoot {
   width: 96%;
-  height: 28px;
   margin: 10px 18px;
 }
 div.detailsListDiv tr td {
