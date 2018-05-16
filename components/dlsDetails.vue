@@ -451,11 +451,13 @@ export default{
                     errorDeal(data);
                 }
             }).then(()=>{
+                vm.off.modify=false;
+                vm.reason="";
+                vm.authCode="";
+                this.resetTimer()
                 for(let v=0;v<vm.lists.length;v++){
                     vm.$set(vm.lists[v],'ischecked',false);
                 }
-                vm.off.modify=false;
-                this.resetTimer()
             }).catch(e=>errorDeal(e));
         }
         ,getStaffDetails(p){
@@ -500,12 +502,9 @@ export default{
             }
             let load=Loading.service(options);
             data.reason=vm.reason;//操作原因
-            data.authCode=vm.authCode;
+            data.authCode=vm.authCode;//验证码
             requestMethod(data,vm.doUrl,()=>{load.close()})
             .then((data)=>{
-                for(let v=0;v<vm.lists.length;v++){
-                    this.$set(vm.lists[v],'ischecked',false);
-                }
                 vm.reason="";
                 vm.authCode="";
                 vm.off.modify=false;
@@ -516,33 +515,7 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                    if(this.searchType!=1){
-                        this.search();
-                    }else if(this.searchType==1){
-                        let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
-                        vm.searchDetailsType=1;
-                        vm.searchDepartId=vm.$parent.searchDepartId;
-                        data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.radio,username:vm.name,phone:vm.phone,pageNum:1,pageSize:"10"};
-                        // vm.companyName=v.departName;
-                        // vm.managerName=v.managerName;
-                        // vm.managerPhone=v.phone;
-                        requestMethod(data,url,()=>{load.close()})
-                        .then((data)=>{
-                            if(data.code==200){
-                                if(data.data.users.length>0){
-                                    vm.$parent.off.notDlsDetails=false;
-                                    vm.$parent.off.dlsDetails=true;
-                                    vm.$parent.detailsList=data.data.users;                                    
-                                }else{
-                                    vm.$parent.off.notDlsDetails=false;
-                                    vm.$parent.off.dlsDetails=true;
-                                    vm.$parent.detailsList=data.data.users;
-                                }
-                            }else{
-                                errorDeal(data);
-                            }
-                        }).catch(e=>errorDeal(e));
-                    } 
+                    this.search(); 
                 }else{
                      layer.open({
                         content:data.msg,
@@ -551,14 +524,7 @@ export default{
                         msgSkin:'error',
                     });
                 }
-            }).then(()=>{
-                vm.reason="";
-                vm.authCode="";
-                this.resetTimer();               
-                for(let v=0;v<vm.lists.length;v++){
-                    vm.$set(vm.lists[v],'ischecked',false);
-                }}
-            ).catch(e=>errorDeal(e));
+            }).catch(e=>errorDeal(e));
         },
         resetTimer(){
             this.btnDisabled=false;                        

@@ -211,7 +211,6 @@ export default{
             data.authCode=vm.authCode;
             requestMethod(data,url)
             .then((data)=>{
-                debugger;
                 vm.$parent.off.layer=false;                                                                    
                 if(data.code==200){
                     layer.open({
@@ -267,6 +266,13 @@ export default{
             var vm=this;
 			vm.$parent.off.layer=false;
 		},
+        resetTimer(){
+            this.btnDisabled=false;                        
+            this.show = true;
+            this.count="获取验证码"
+            clearInterval(this.timer);
+            this.timer = null;
+        }
 	}
 }
 </script>
