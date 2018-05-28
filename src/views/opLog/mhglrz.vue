@@ -1,12 +1,12 @@
 <style>
 @import "../../assets/css/search.css";
-div.listTitleFoot {
+/* div.listTitleFoot {
   width: 96%;
   margin: 10px 18px;
 }
 div.detailsListDiv tr td {
   text-align: center;
-}
+} */
 </style>
 <template>
   <section >
@@ -97,7 +97,7 @@ div.detailsListDiv tr td {
                 <div class="listTitleFoot"><h3>日志列表<span class="fontWeight greyFont">({{form.page||'0'}})</span><!--<el-button class="fr" type="success" size="small">导出数据</el-button>--></h3></div>
                 <div class="detailsListDiv">
                     <table class="searchTab" style="width:100%;height:100%;">
-                        <tr>
+                        <tr class="f-s-14">
                             <td>序号</td>
                             <td>号包名称</td>
                             <td>操作时间</td>
@@ -117,7 +117,7 @@ div.detailsListDiv tr td {
                             <td >
                                 <!-- {{new Date(v.modifyTime).toLocaleString()}} -->
                                 <span v-if="v.modifyTime">
-                                    {{new Date(v.modifyTime).toLocaleString()}}
+                                    {{getDateTime(v.modifyTime)[6]}}
                                 </span>
                                 <span v-if="!v.modifyTime">
                                     --
@@ -341,6 +341,8 @@ export default {
                 vm.endTime=timeRangeE;
             }  
             getTimeFunction(this,[e,2])                           
+        },getDateTime(v){
+            return getDateTime(v);
         }
     }
 };

@@ -21,7 +21,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
 		<table>
             <thead>
                 <tr>
-                    <td colspan="3" style="text-align:center;padding:10px 10px 0 0;line-height:20px;height:46px;"><h3>日志详情<a class="fr IconOff" @click="closeLayer()">x</a></h3></td>
+                    <td colspan="3" style="text-align:center;padding:10px 10px 0 0;line-height:20px;height:46px;"><h3 class="f-s-16">日志详情<a class="fr IconOff" @click="closeLayer()">x</a></h3></td>
                 </tr>
             </thead>
 			<tbody v-if="layerType=='number'">
@@ -74,7 +74,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                     <td colspan="2">
                         <!-- {{new Date(detailsData.modifyTime).toLocaleString()}} -->
                         <span v-if="detailsData.modifyTime">
-                            {{new Date(detailsData.modifyTime).toLocaleString()}}
+                            {{getDateTime(detailsData.modifyTime)[6]}}
                         </span>
                         <span v-if="!detailsData.modifyTime">
                             --
@@ -126,7 +126,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                     <td colspan="2">
                         <!-- {{new Date(detailsData.operatorTime).toLocaleString()||'--'}} -->
                         <span v-if="detailsData.operatorTime">
-                            {{new Date(detailsData.operatorTime).toLocaleString()}}
+                            {{getDateTime(detailsData.operatorTime)[6]}}
                         </span>
                         <span v-if="!detailsData.operatorTime">
                             --
@@ -258,6 +258,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
 </section>
 </template>
 <script>
+import {getDateTime} from "../src/config/utils.js";
 export default{
 	props:['detailsData','layerType','syncLogType','getSyncTime'],
 	data (){
@@ -283,7 +284,9 @@ export default{
             let longitude=parseFloat(vm.detailsData.longitude);
 			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
 			window.open(url);
-		} 
+		},getDateTime(v){
+            return getDateTime(v);
+        } 
 	}
 }
 </script>

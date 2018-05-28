@@ -1,7 +1,7 @@
 <style>
 @import "../../assets/css/search.css";
-div.listTitleFoot{width: 96%;margin: 10px 18px;}
-div.detailsListDiv tr td{text-align: center;}
+/* div.listTitleFoot{width: 96%;margin: 10px 18px;}
+div.detailsListDiv tr td{text-align: center;} */
 </style>
 <template>
   <section >
@@ -102,7 +102,7 @@ div.detailsListDiv tr td{text-align: center;}
                 <div class="listTitleFoot"><h3>日志列表<span class="fontWeight greyFont">({{form.page||'0'}})</span><!--<el-button class="fr" type="success" size="small">导出数据</el-button>--></h3></div>                
                 <div class="detailsListDiv">
                     <table class="searchTab" style="width:100%;height:100%;">
-                        <tr>
+                        <tr class="f-s-14">
                             <td>序号</td>
                             <td>日志ID</td>
                             <td>日志类型</td>
@@ -126,7 +126,7 @@ div.detailsListDiv tr td{text-align: center;}
                             <td>
                                 <!-- {{v.recordTime}} -->
                                 <span v-if="v.recordTime">
-                                    {{new Date(v.recordTime).toLocaleString()}}
+                                    {{getDateTime(v.recordTime)[6]}}
                                 </span>
                                 <span v-if="!v.recordTime">
                                     --
@@ -308,7 +308,6 @@ export default {
         }).catch(e=>errorDeal(e))
     },
     details(v,i){
-        console.log(v,i);
         let vm=this,
         data={recordType:vm.recordType};
         vm.form.detailsList=v;
@@ -349,6 +348,8 @@ export default {
             vm.endTime=timeRangeE;
         }           
         getTimeFunction(this,[e,2])               
+    },getDateTime(v){
+        return getDateTime(v);
     }
   }
 };

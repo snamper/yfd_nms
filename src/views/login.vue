@@ -84,7 +84,6 @@ export default {
         vm.countDown(120);
       })
       .catch(error=>{
-        console.log(error);
       });
     },
     actionLogin(){
@@ -300,3 +299,5 @@ div.top{
   }
 }
 </style>
+
+

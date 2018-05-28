@@ -53,10 +53,17 @@ module.exports = {
                 '^/ors' : ''
             }
         },
+        // '/nms/':{
+        //     target:'http://192.168.10.162:10023/nms/',
+        //     changeOrigin:true,
+        //     pathRewrite:{
+        //         '/nms' : '/'
+        //     }
+        // },
        
     },
     // Various Dev Server settings
-    host:"192.168.10.24",
+    host:"192.168.10.66",
     port: 8081, // can be overwritten by process.env.HOST, if port is in use, a free one will be determined
     autoOpenBrowser: true,
     errorOverlay: true,

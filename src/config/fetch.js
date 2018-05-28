@@ -5,7 +5,8 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
     if(!load){
         var layerIndex=layer.open({type: 2,shadeClose:false});
 	}
-	type = type.toUpperCase();
+    type = type.toUpperCase();
+    
 	const closeLoadLayout=()=>{
         typeof load==='function' ? load() : layer.close(layerIndex);
     };
@@ -67,7 +68,7 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
                 }else{
                     reject({code:data});
                 }
-            }).catch(error=>errorDeal(error));
+            }).catch(error=>errorDeal(error),'aaaaaa');
         })
         // return await fetch(url,requestConfig)
         // .then((response)=>{

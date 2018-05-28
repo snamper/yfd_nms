@@ -76,8 +76,8 @@ const Org = resolve => {
   };
   const Org_Dls_Staff = resolve => {
     load(true);
-    require.ensure(["../../components/dlsStaffDetails.vue"], () => {
-      resolve(require("../../components/dlsStaffDetails.vue"));
+    require.ensure(["@/views/org/dlsStaffDetails.vue"], () => {
+      resolve(require("@/views/org/dlsStaffDetails.vue"));
       load();
     });
   };
@@ -119,13 +119,21 @@ const Card_Mhgl = resolve => {
     });
   };
   //公告管理
-  const Notice_noticePage = resolve => {
-    load(true);
-    require.ensure(["@/views/notice/notice.vue"], () => {
-      resolve(require("@/views/notice/notice.vue"));
-      load();
-    });
-  }; 
+    const Notice_noticePage = resolve => {
+        load(true);
+        require.ensure(["@/views/notice/notice.vue"], () => {
+        resolve(require("@/views/notice/notice.vue"));
+        load();
+        });
+    }; 
+    //提卡订单管理
+    const pickCardOrder = resolve => {
+        load(true);
+        require.ensure(["@/views/pickCard/pickCardOrder.vue"], () => {
+        resolve(require("@/views/pickCard/pickCardOrder.vue"));
+        load();
+        });
+    };
 const router=new Router({
   routes: [
       {
@@ -193,8 +201,11 @@ const router=new Router({
             path:"notice",
             name:"notice",
             component:Notice_noticePage,
-       }]
-
+       },{
+        path:"pickCard",
+        name:"pickCard",
+        component:pickCardOrder,
+        }]
     }
   ]
 });

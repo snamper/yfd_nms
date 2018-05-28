@@ -1,8 +1,7 @@
 <style scoped>
- .listTitleFoot{width: 96%;margin: 10px 18px;}
- .addList{border: 1px solid #ccc;min-height: 100px;padding: 10px;background: white}
- .addList span{display:inline-block;width:60px;}
- table tr td{text-align: left;padding-left: 20px;} 
+ .addList{border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px}
+ /* .addList span{display:inline-block;width:60px;} */
+ /* table tr td{text-align: left;padding-left: 20px;}  */
 </style>
 <template>
   <div>
@@ -77,7 +76,7 @@
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
-                    <tr>
+                    <tr style="font-size:14px">
                         <td>序号</td>
                         <td>用户姓名</td>
                         <td>手机号码</td>
@@ -91,10 +90,12 @@
                             {{((pa-1)*15+(i+1))}}
                         </td>
                         <td>
-                            <span v-for="(v,i) in v.userRole" :key="i">
-                                <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
-                            </span>
-                            {{v.username}}
+                            <p style="float:left;margin-left:36%">
+                                <span v-for="(v,i) in v.userRole" :key="i">
+                                    <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
+                                </span>
+                                {{v.username}}
+                            </p>
                         </td>
                         <td>
                             <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>
@@ -102,19 +103,15 @@
                         <td>
                         <!-- {{new Date(v.createTime).toLocaleString()}} -->
                             <span v-if="v.createTime">
-                                {{new Date(v.createTime).toLocaleString()}}
+                                {{getDateTime(v.createTime)[6]}}
                             </span>
                             <span v-if="!v.createTime">
                                 --
                             </span>
                         </td>
                         <td>
-                            <span v-for="(v,i) in v.userRole" :key="i">
-                                <span v-if="v==1">管理员</span>
-                                <span v-if="v==2">销售</span>
-                                <span v-if="v==3">店长</span>
-                                <span v-if="v==4">采购员</span>
-                                <span v-if="v==5">业务员</span>
+                            <span v-for="(x,i) in v.userRole" :key="i">
+                                <span v-if="x==1">管理员<b v-if="v.userRole.indexOf(2)>-1||v.userRole.indexOf(3)>-1||v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==2"><b v-if="v.userRole.indexOf(3)>-1||v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b>销售</span><span v-if="x==3">店长<b v-if="v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==4">采购员<b v-if="v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==5">业务员</span>                                
                             </span>
                         </td>
                         <td>
@@ -124,7 +121,7 @@
                         </td>
                         <td>
                             <span v-if="v.lastLoginTime">
-                                {{new Date(v.lastLoginTime).toLocaleString()}}
+                                {{getDateTime(v.lastLoginTime)[6]}}
                             </span>
                             <span v-if="!v.lastLoginTime">
                                 --
@@ -162,8 +159,8 @@
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils.js";
-import layerAddStaff from "../../../components/layeruseryfd";
-import yfdStaffDetails from "../../../components/yfdStaffDetails";
+import layerAddStaff from "./layeruseryfd";
+import staffDetails from "../../../components/staffDetails";
 export default{
 	data (){
 		return {
@@ -192,7 +189,7 @@ export default{
 		}
 	},
 	components:{
-        "yfdStaff":yfdStaffDetails,
+        "yfdStaff":staffDetails,
         "common-layer":layerAddStaff,        
 	},
 	created:function(){
@@ -286,6 +283,8 @@ export default{
                     errorDeal(data)
                 }  
             }).catch(e=>errorDeal(e));
+        },getDateTime(v){
+            return getDateTime(v);
         }
 	}
 }

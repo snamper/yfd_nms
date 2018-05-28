@@ -1,8 +1,5 @@
 <style scoped>
    @import "../../assets/css/notice.css";
-   .w70{width: 70px!important;}
-   /* div.msgInfo{width:100%} */
-   div.msgInfo p{word-wrap:break-word;word-break:break-all;}
 </style>
 <template>
     <section>
@@ -265,7 +262,6 @@ export default {
             let d=new Date().getTime();
             d+=30*24*60*60*1000;
             vm.value1=new Date(d).getTime();
-                // console.log(vm.$refs.file.files[0].value);
         },
         upload(){
             let vm=this, sendData= {

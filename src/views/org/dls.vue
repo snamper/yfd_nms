@@ -1,6 +1,4 @@
 <style scoped>
-    .listTitleFoot{width: 96%;margin: 10px 18px;}
-    table tr td{text-align: left;padding-left: 20px;}    
 </style>
 <template>
 <section>
@@ -24,7 +22,7 @@
                     @change="changeTimeS"
                     placeholder="选择开始时间">
                     </el-date-picker>
-                    <span>——</span>
+                    <span>—</span>
                     <el-date-picker
                     v-model="endTime"
                     size="small"
@@ -119,10 +117,10 @@
                             </el-row>
                         </td>
                     </tr>
-                    <tr >
+                    <tr class="f-s-14">
                         <td>序号</td>
-                        <td>修改时间</td>
                         <td>公司名称</td>
+                        <td>修改时间</td>
                         <td>联系人</td>
                         <td>手机号码</td>
                         <td>部门状态</td>
@@ -134,16 +132,15 @@
                         {{((pa-1)*15+(i+1))}}
                         </td>
                         <td >
-                        <!-- {{new Date(v.modifyTime).toLocaleString()}} -->
+                        {{v.departName}}
+                        </td>
+                        <td >
                             <span v-if="v.modifyTime">
-                                {{new Date(v.modifyTime).toLocaleString()}}
+                                {{getDateTime(v.modifyTime)[6]}}
                             </span>
                             <span v-if="!v.modifyTime">
                                 --
                             </span>
-                        </td>
-                        <td >
-                        {{v.departName}}
                         </td>
                         <td >
                         {{v.managerName}}
@@ -162,7 +159,7 @@
                         <td >
                         <!-- {{new Date(v.createTime).toLocaleString()}} -->
                             <span v-if="v.createTime">
-                                {{new Date(v.createTime).toLocaleString()}}
+                                {{getDateTime(v.createTime)[6]}}
                             </span>
                             <span v-if="!v.createTime">
                                 --
@@ -209,9 +206,8 @@
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import {requestMethod,requestgetSyncTime} from "../../config/service.js"; 
-import search from "../../../components/search";
 import layers from "../../../components/layer";
-import dlsDetails from "../../../components/dlsDetails";
+import dlsDetails from "./dlsDetails";
 export default{
     name:'dls',
     data (){
@@ -288,7 +284,6 @@ export default{
         }
     },
     components:{
-        "common-search":search,
         "common-layer":layers,
         "dls-Details":dlsDetails
     },
@@ -386,6 +381,10 @@ export default{
                 }else{
                     errorDeal(data);
                 }
+            }).then(()=>{
+                for(let v=0;v<vm.detailsList.length;v++){
+                    vm.$set(vm.detailsList[v],'ischecked',false);
+                }
             }).catch(e=>errorDeal(e));
         },
         changeTimeS(e){
@@ -415,7 +414,6 @@ export default{
                 vm.endTime=timeRangeE;
             }     
             let dt=new Date(e);   
-            console.log(dt);         
             getTimeFunction(this,[dt,2])                     
         },
         getSyncTime(){

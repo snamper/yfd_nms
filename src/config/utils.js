@@ -189,16 +189,16 @@ export const translateData=(type,v)=> {
 }
 
 export const deepCopy=(p, c)=> {
-    　　　　var c = c || {};
-    　　　　for (var i in p) {
-    　　　　　　if (typeof p[i] === 'object') {
-    　　　　　　　　c[i] = (p[i].constructor === Array) ? [] : {};
-    　　　　　　　　deepCopy(p[i], c[i]);
-    　　　　　　} else {
-    　　　　　　　　　c[i] = p[i];
-    　　　　　　}
-    　　　　}
-    　　　　return c;
+　　var c = c || {};
+　　for (var i in p) {
+　　　　if (typeof p[i] === 'object') {
+　　　　　　c[i] = (p[i].constructor === Array) ? [] : {};
+　　　　　　deepCopy(p[i], c[i]);
+　　　　} else {
+　　　　　　　c[i] = p[i];
+　　　　}
+　　}
+　　return c;
 }
 
 export const disableTimeRange=()=>{
@@ -260,7 +260,17 @@ export const getTimeFunction=(t,d)=>{
         vm.startTime=new Date(cs).getTime();
         vm.endTime=new Date(d[0]).getTime();
     }
-    
+}
+export const initTime=(t,d)=>{
+    let vm=t, curDate = (new Date()).getTime(),    
+    curYear=new Date(curDate).getFullYear(),
+    curMonth=new Date(curDate).getMonth()+1,
+    curDay=new Date(curDate).getDate()+1,
+    cur=curYear+"/"+curMonth+"/1",
+    Next=curYear+"/"+curMonth+"/"+curDay;
+    let startTime=new Date(cur).getTime();
+    let endTime=new Date(Next).getTime()-1000;
+    vm.optime=[startTime,endTime];
 }
 
 

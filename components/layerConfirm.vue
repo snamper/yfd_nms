@@ -1,87 +1,335 @@
 <style scoped>
 #detailsView{position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
 #detailsView>div{display: table-cell;vertical-align: middle;}
-#detailsView table{margin:auto;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
-#detailsView table td{padding:5px 30px;}
-#detailsView table th{padding: 18px 0;border-radius: 4px 4px 0 0;color: #545454;font-size: 16px;}
+#detailsView table{box-shadow: 0 0 50px grey;margin:auto;width: 268px;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
+#detailsView table td{padding:10px 30px;}
+#detailsView table th{padding: 10px 0;border-radius: 4px 4px 0 0;color: #545454;font-size: 16px;}
 #detailsView table td>.fl{width:1rem;text-align: right;}
 #detailsView table td>.fright{margin-left: 1.05rem;text-align: left; }
 .lay-mask{position:absolute;background-color: rgba(0,0,0,0.3);z-index: -1;width: 100%;height: 100%;top: 0;left: 0;}
-.tdBtn span{ display: inline-block;width: 50%;height: 50px;padding: 20px;margin-top: 20px;box-sizing: border-box;cursor: pointer}
+.tdBtn span{ display: inline-block;width: 50%;height: 50px;padding: 20px;box-sizing: border-box;cursor: pointer}
 .tdBtn span:nth-child(1){border-top: 1px solid #ccc;border-right: 1px solid #ccc;color: red}
-.tdBtn span:nth-child(2){border-top: 1px solid #ccc;color: green}
-tbody tr{height: 36px;}
+.tdBtn span:nth-child(2){border-top: 1px solid #ccc;color:#43AAD4}
 .tdBtn2 {cursor: pointer}
 .tdBtn2 span{display: inline-block;width: 100%; box-sizing: border-box;border-top:1px solid #ccc;padding-top: 10px; }
+tbody tr{height: 36px;}
+thead tr:nth-child(1) td p{padding-top:10px; }
+thead tr:nth-child(1) td p{height:40px;background: url(/src/assets/images/icon/exclamation-circle.svg) no-repeat;background-size: contain;background-position: center center;}
+thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(/src/assets/images/icon/question.svg) no-repeat;background-size: contain;background-position: center center;}
+
 </style>
 <template>
-<section  id="detailsView" class="greyFont">
-    <div>
-        <table >
-			<thead>
-				<tr>
-					<th v-if="layerType=='notice'" colspan="2">
-						确认要删除此公告消息？
-					</th>
-				</tr>
-			</thead>
-			<tbody>
-                <tr class="tdBtn" colspan="2">
-                    <span @click="close()">取消</span>
-                    <span @click="btnYes()">确认</span>
-                </tr>
-			</tbody>
-		</table>
-		<div class="lay-mask"></div>
-    </div>
-</section>
+    <section  id="detailsView" class="greyFont">
+        <div>
+            <table v-if="layerType=='notice'">
+                <thead>
+                    <tr><td><p></p></td></tr>
+                    <tr>
+                        <th >
+                            确认要删除此公告消息？
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('notice')">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='takeGoods'">
+                <thead>
+                    <tr><td><p></p></td></tr>
+                    <tr>
+                        <th >
+                            商户已收货<br>
+                            是否确认收货?
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('takeGoods',logisticsInfo)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='sendGoods'">
+                <thead>
+                    <tr>
+                        <th >
+                        填写物流单号                        
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <el-select allow-create filterable style="display:block" v-model="logisticsCompany" placeholder="请选择" size="small">
+                                <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                                >
+                                </el-option>
+                            </el-select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <el-input v-model="logisticsOrderId" placeholder="请输入内容" size="small"></el-input>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('sendGoods',logisticsInfo)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='logistics'">
+                <thead>
+                    <tr>
+                        <th >
+                        修改物流单号                        
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <el-select allow-create filterable  style="display:block" v-model="logisticsCompany2" placeholder="请选择" size="small">
+                                <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                                >
+                                </el-option>
+                            </el-select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <el-input v-model="orderId" placeholder="请输入内容" size="small"></el-input>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('logistics',logisticsInfo)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='payMent'" style="width:300px;">
+                <thead>
+                    <tr>
+                        <th >
+                        确认付款                        
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <el-input v-model="payMoney" placeholder="请输入付款金额" size="small"></el-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <el-select allow-create filterable  style="display:block" v-model="logisticsCompany2" placeholder="请选择" size="small">
+                                <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                                >
+                                </el-option>
+                            </el-select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <el-input v-model="orderId" placeholder="请输入内容" size="small"></el-input>
+                        </td>
+                    </tr>
+                    <tr class="f-s-12">
+                        <td style="padding-top:0px;color:red">
+                            注：付款金额必填，物流公司及单号为选填<br>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('payMent',logisticsInfo)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='confirmModifyPrice'">
+                <thead>
+                    <tr><td><p class="IconQuestion_mark"></p></td></tr>
+                    <tr>
+                        <th >
+                            是否确认修改<br>
+                            号包{{logisticsInfo.productName}}的价格？
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('changeCartMoney',logisticsInfo)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="lay-mask"></div>
+        </div>
+    </section>
 </template>
 <script>
 import { Loading } from 'element-ui';
-import {requestMethod} from "../src/config/service.js"; 
+import {requestConfirmDelNotice,requestConfirmTakeGoods,requestChangeLogisticsId,requestConfirmPayMent,requestModify_Price} from "../src/config/service.js"; 
 import { errorDeal,getStore } from '../src/config/utils';
 export default{
     props:{
         layerType:String,
-        isSure:Boolean
+        isSure:Boolean,
+        logisticsInfo:Object
     },
 	data (){
 		return {
-
-		}		
+            options:[{value:'圆通',label:'圆通'},{value:'韵达',label:'韵达'},{value:'申通',label:'申通'},{value:'中通',label:'中通'},{value:'顺丰',label:'顺丰'},{value:'EMS',label:'EMS'},{value:'天天',label:'天天'},{value:'汇通',label:'汇通'},{value:'全峰',label:'全峰'},{value:'邮政',label:'邮政'},{value:'速尔',label:'速尔'}],
+            logisticsCompany:'',
+            logisticsOrderId:'',
+            logisticsCompany2:'',
+            orderId:'',//订单Id
+            payMoney:'',//付款金额
+        }		
     },
 	created:function(){
-        let vm=this,Info=getStore("YFD_NMS_INFO");
-        vm.user=Info;
+        let vm=this;   
+        vm.orderId=vm.logisticsInfo.deliveryOrderId    
 	},
 	methods:{
-        btnYes(){
-           let vm=this;
-           requestMethod(vm.$parent.cancelInfo,"/mns/w/msg/delete")
+        btnYes(e,v){
+            let vm=this;
+            if(e=='notice'){
+                requestConfirmDelNotice(vm.$parent.cancelInfo)
+                .then((data)=>{
+                    if(data.code==200){
+                        layer.open({
+                            content:"删除公告消息成功",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"success"
+                        })
+                    }else{
+                        layer.open({
+                            content:data.msg,
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"error"
+                        }) 
+                    }
+                this.$parent.search(vm.$parent.pa);
+                this.$parent.off.layer=false;
+                }).catch(e=>errorDeal(e));
+            }else if(e=="takeGoods"){//确认收货
+                let data={
+                    "sysOrderId": v.sysOrderId,
+                    "deliveryOrderId":v.deliveryOrderId,
+                    "deliveryName":v.deliveryName
+                    }
+                requestConfirmTakeGoods(data)
+                .then((data)=>{
+                    this.$parent.search(vm.$parent.pa);
+                    this.$parent.off.layer=false;
+                    if(data.code==200){
+                        layer.open({
+                            content:"操作成功",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"success"
+                        })
+                    }
+                }).catch(e=>errorDeal(e));
+            }else if(e=="sendGoods"){//发货
+                let data={
+                    "sysOrderId": v.sysOrderId,
+                    "deliveryOrderId":vm.orderId,
+                    "deliveryName":vm.logisticsCompany ,
+                    }
+               requestChangeLogisticsId(data)
+               .then((data)=>{
+                    this.$parent.search(vm.$parent.pa);
+                    this.$parent.off.layer=false;
+                    if(data.code==200){
+                        layer.open({
+                            content:"操作成功",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"success"
+                        })
+                    }
+                }).catch(e=>errorDeal(e));
+            }else if(e=="logistics"){//修改单号
+                let data={"sysOrderId": v.sysOrderId,
+                    "deliveryOrderId":vm.orderId,
+                    "deliveryName":vm.logisticsCompany2 ,
+                }
+            requestChangeLogisticsId(data)
             .then((data)=>{
+                this.$parent.search(vm.$parent.pa);
+                this.$parent.off.layer=false;
+            }).catch(e=>errorDeal(e));
+            }else if(e=="payMent"){//修改单号
+                if(vm.payMoney==''){
+                    layer.open({
+                        content:"请输入要付款的金额",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                    return false;
+                }
+                let data={"sysOrderId": v.sysOrderId,
+                    "deliveryOrderId":vm.orderId,
+                    "deliveryName":vm.logisticsCompany2 ,
+                    "strikePrice":vm.payMoney
+                }
+            requestConfirmPayMent(data)
+            .then((data)=>{
+                this.$parent.search(vm.$parent.pa);
+                this.$parent.off.layer=false;
                 if(data.code==200){
                     layer.open({
-                        content:"删除公告消息成功",
+                        content:"操作成功",
                         skin:"msg",
                         time:2,
                         msgSkin:"success"
                     })
-                }else{
-                    layer.open({
-                        content:data.msg,
-                        skin:"msg",
-                        time:2,
-                        msgSkin:"error"
-                    }) 
                 }
-               this.$parent.search(vm.$parent.pa);
-               this.$parent.off.layer=false;
-            }).catch(e=>errorDeal(e));
+            }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
+            }else if(e=="changeCartMoney"){
+                requestModify_Price(vm.$parent.searchDataChangePrice)
+                .then((data)=>{
+                    for(let i in vm.$parent.off.changePrice){
+                        vm.$set(vm.$parent.off.changePrice,i,false)
+                    }
+                    if(data.code==200){
+                        layer.open({
+                            content:"修改价格成功",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"success"
+                        })
+                    }
+                    this.search();
+                }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
+            }
         },
 		close:function(){
             var vm=this;
 			vm.$parent.off.layer=false;
-		},
+        }
 	}
 }
 </script>

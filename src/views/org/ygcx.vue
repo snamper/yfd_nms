@@ -1,6 +1,4 @@
 <style scoped>
- .listTitleFoot{width: 96%;margin: 10px 18px;}
- table tr td{text-align: left;padding-left: 20px;}
 </style>
 <template>
   <div>
@@ -61,9 +59,8 @@
                             {{((pa-1)*15+(i+1))}}
                         </td>
                         <td>&nbsp;</td>
-                        
                         <td class="nameIcon">
-                            <p>
+                            <p style="float:left;margin-left:36%">
                                 <span>
                                     <span v-for="(v,i) in v.userRole" :key="i">
                                         <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
@@ -76,21 +73,16 @@
                             <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>                            
                         </td>
                         <td >
-                        <!-- {{new Date(v.createTime).toLocaleString()}} -->
                             <span v-if="v.createTime">
-                                {{new Date(v.createTime).toLocaleString()}}
+                                {{getDateTime(v.caretTime)[6]}}
                             </span>
                             <span v-if="!v.createTime">
                                 --
                             </span>
                         </td>
                         <td >
-                            <span v-for="(v,i) in v.userRole" :key="i">
-                                <span v-if="v==1">管理员</span>
-                                <span v-if="v==2">销售</span>
-                                <span v-if="v==3">店长</span>
-                                <span v-if="v==4">采购员</span>
-                                <span v-if="v==5">业务员</span>
+                            <span v-for="(x,i) in v.userRole" :key="i">
+                                <span v-if="x==1">管理员<b v-if="v.userRole.indexOf(2)>-1||v.userRole.indexOf(3)>-1||v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==2"><b v-if="v.userRole.indexOf(3)>-1||v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b>销售</span><span v-if="x==3">店长<b v-if="v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==4">采购员<b v-if="v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==5">业务员</span>
                             </span>
                         </td>
                         <td >
@@ -99,7 +91,6 @@
                             <span v-if="v.userState==3">注销</span>
                         </td>
                         <td >
-                        <!-- {{new Date(v.lastLoginTime).toLocaleString()}} -->
                             <span v-if="v.lastLoginTime">
                                 {{new Date(v.lastLoginTime).toLocaleString()}}
                             </span>
@@ -129,21 +120,16 @@
                 </el-row>
             </div>
         </div>
-        <!-- <div v-if="detailsList.length==0" class="searchResultInfoNone">
-          查询结果为空!
-        </div> -->
         </div>
       </div>
-      <dlsStaff v-if="off.staffDetails" :forms="searchRes">
-
-      </dlsStaff>
+      <staffDetails v-if="off.staffDetails" :forms="searchRes"></staffDetails>
   </div>	 
 </template>
 <script>
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { getDateTime,getUnixTime,errorDeal,checkMobile } from "../../config/utils.js";
-import dlsStaffDetails from "../../../components/StaffDetails";
+import staffDetails from "../../../components/staffDetails";
 export default{
 	data (){
 		return {
@@ -170,7 +156,7 @@ export default{
 		}
 	},
 	components:{
-        "dlsStaff":dlsStaffDetails
+        "staffDetails":staffDetails
 	},
 	created:function(){
        
@@ -226,6 +212,8 @@ export default{
             }).then(()=>{
                 load.close(); 
             }).catch(e=>errorDeal(e));
+        },getDateTime(v){
+            return getDateTime(v);
         }
 	}
 }

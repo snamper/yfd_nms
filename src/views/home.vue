@@ -1,5 +1,7 @@
 <style>
-  @import "../assets/css/home.css";
+@import "../assets/css/home.css";
+span.iconFoldOpen{display: inline-block;width: 18px;height: 18px;background: url("../assets/images/icon/more_unfold.svg") no-repeat;background-position: center center;background-size: contain}
+span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: url("../assets/images/icon/more.svg") no-repeat;background-position: center center;background-size: contain}
 </style>
 <template>
   <div class="f-scroll-lt" id="home" :class={active:off.headMenu}>
@@ -7,11 +9,11 @@
 		<table cellspacing="0">
 			<tbody>
 				<tr>
-					<td>
+					<td class="fontWeight f-s-16">
 						<a class="m-navside-show" @click="headMenu"><i class="u-icon-menu"></i></a>
-						<span v-if="crumb[1].name" class="f-inline-block m-crumb">
+						<span v-if="crumb[0].name" class="f-inline-block m-crumb">
 							<a class="fcb">{{crumb[0].name}}</a>
-							<i class="el-icon-arrow-right"></i>
+							<i v-if="crumb[1].name" class="el-icon-arrow-right"></i>
 							<a  v-show="!crumb[1].href">{{crumb[1].name}}</a>
 							<router-link class="fcaqua" v-show="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
 							<span v-show="crumb[2].name">
@@ -41,7 +43,9 @@
   	</header>
   	<aside class="g-side">
 		<nav class="g-side-nav">
-			<header class="g-side-head"><img src="../assets/images/logo.png" alt="titleLogo"></header>
+			<header class="g-side-head"><img src="../assets/images/logo.png" alt="titleLogo"><br>
+            <span>虚商联盟运营平台</span>
+            </header>
 			<ul class="g-side-ul">
 				<li :class="{active:crumb[0].name=='架构管理'}">
 					<b></b>
@@ -49,7 +53,8 @@
 						<div>
 							<i class="u-icon-jiagou"></i>
 							<span>架构管理</span>
-						</div>
+                            <span :class="crumb[0].name=='架构管理'?'iconFoldOpen':'iconFoldClose'"></span>
+                        </div>
 					</router-link>
 					<ul class="g-side-subul nav2">
 						<li><router-link to="/home/organization/yfd"><b></b>亚飞达管理</router-link></li>
@@ -65,6 +70,7 @@
 						<div>
 							<i class="u-icon-mahao"></i>
 							<span>码号管理</span>
+                            <span :class="crumb[0].name=='码号管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
 						</div>
 					</router-link>
 				</li>
@@ -76,6 +82,7 @@
 						<div>
 							<i class="u-icon-rizhi"></i>
 							<span>操作日志</span>
+                            <span :class="crumb[0].name=='操作日志'?'iconFoldOpen':'iconFoldClose'"></span>                            
 						</div>
 					</router-link>
 					<ul class="g-side-subul nav2">
@@ -108,6 +115,19 @@
 						<div>
 							<i class="u-icon-gonggao"></i>
 							<span>公告管理</span>
+                            <span :class="crumb[0].name=='公告管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
+						</div>
+					</router-link>
+				</li>
+			</ul>
+            <ul class="g-side-ul">
+				<li :class="{active:crumb[0].name=='提卡订单管理'}">
+					<b></b>
+					<router-link to="/home/pickCard">
+						<div>
+							<i class="u-icon-tika"></i>
+							<span>提卡订单管理</span>
+                            <span :class="crumb[0].name=='提卡订单管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
 						</div>
 					</router-link>
 				</li>
@@ -210,6 +230,8 @@ export default{
             }
             if(path.indexOf("/home/notice")>-1){
 				crumb[0]={"name":"公告管理","href":"/home/notice"}
+            }if(path.indexOf("/home/pickCard")>-1){
+				crumb[0]={"name":"提卡订单管理","href":"/home/pickCard"}
             }
 			this.crumb=crumb;
 			mainDom.style.overflowY='hidden';

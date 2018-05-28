@@ -1,5 +1,5 @@
 <style scoped>
-@import "../src/assets/css/layer2.css";
+@import "../../assets/css/layer2.css";
 </style>
 <template>
 <section  id="detailsView" class="greyFont">
@@ -63,17 +63,17 @@
 	</div>
     <!-- 手动同步 -->
     <div v-if="off.sync">
-        <table style="padding:20px;">
+        <table >
 			<thead>
 				<tr>
 					<th colspan="2">
-						手动同步
+						添加员工
 					</th>
 				</tr>
 			</thead>
 			<tbody v-if="true">
                 <tr colspan="2">
-                    <td class="fl"><p class="pdl12">验证号码:<span>{{user.phone}}</span></p></td>
+                    <td class="fl"><p class="pdl12">验证号码:<span  v-model="user.phone">{{user.phone}}</span></p></td>
                 </tr>
                 <tr colspan="2">
                     <td>
@@ -90,10 +90,10 @@
     </div>
     <!-- 手动同步操作结果 -->
     <div v-if="off.rsync">
-        <table>
+        <table >
 			<tbody v-if="true">
                 <tr colspan="2">
-                    <img src="../src/assets/images/icon_wenhao.png" alt="">
+                    <img src="../../assets/images/icon_wenhao.png" alt="">
                 </tr>
                 <tr colspan="2">
 					码号手动同步已受理，请耐心等待结果
@@ -108,9 +108,9 @@
 </section>
 </template>
 <script>
-import {requestMethod} from "../src/config/service.js"; 
-import { getStore } from '../src/config/utils/uutils';
-import { errorDeal } from '../src/config/utils';
+import { Loading } from 'element-ui';
+import {requestMethod} from "../../config/service.js"; 
+import { errorDeal,getStore } from '../../config/utils';
 export default{
 	data (){
 		return {
@@ -127,6 +127,7 @@ export default{
             syncUrl:'',//同步时间url
             user:'',//token的值
             btnDisabled:false,
+            searchType:'',//
             off:{
                 set:false,//同步时间设置
                 sync:false,//手动同步
@@ -138,6 +139,7 @@ export default{
 	created:function(){
         let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
+        vm.searchType=vm.$parent.searchType;
 		if(vm.$parent.off.setSync==true){
             vm.off.set=true;
             vm.off.sync=false;
@@ -159,7 +161,7 @@ export default{
                     } else {
                     this.btnDisabled=false;                        
                     this.show = true;
-                    this.count="获取验证码"                    
+                    this.count="获取验证码"
                     clearInterval(this.timer);
                     this.timer = null;
                     }
@@ -167,11 +169,7 @@ export default{
             }
             let vm=this, 
             data={"userId":vm.user.userId,"phone":vm.user.phone||""};
-            if(window.location.hash.indexOf("agent")>-1){
-                vm.authCodeUrl="/uus/w/user/getAuthCode";
-            }else if(window.location.hash.indexOf("card">-1)){
-                vm.authCodeUrl="/nus/w/number/getAuthCode";
-            }
+                vm.authCodeUrl="/ums/w/user/getAuthCode";
             requestMethod(data,vm.authCodeUrl)
             .then((data)=>{
                 if(data.hasOwnProperty('code')&&data.code==200){
@@ -196,10 +194,11 @@ export default{
                         msgSkin:'error',
                     })
                 ) 
-            }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
+            }).catch(e=>errorDeal(e));
         }
-        ,btnYes(v){//同步时间设置确认
-            let vm=this;
+        ,btnYes(v){//确认添加员工
+            let vm=this,url='/ums/w/user/addUsers',data='';
+            data=vm.$parent.addUsersData;
             if(vm.authCode==''){
                 layer.open({
                     content:'请输入验证码',
@@ -209,42 +208,59 @@ export default{
                 })
                 return false;
             }
-            this.resetTimer();
-            vm.authCode="";
-            let data={"userId":vm.user.userId,"phone":vm.user.phone||"","authCode":vm.authCode};
-            if(window.location.hash.indexOf("agent")>-1){
-                vm.syncUrl="/uus/w/user/sync";
-            }else if(window.location.hash.indexOf("card">-1)){
-                vm.syncUrl="/nus/w/number/sync"
-            }
-            requestMethod(data,vm.syncUrl)
+            data.authCode=vm.authCode;
+            requestMethod(data,url)
             .then((data)=>{
-                vm.$parent.off.layer=false;                                                    
-                if(data.hasOwnProperty('code')&&data.code==200){
-                    vm.off.sync=false;
-                    vm.off.rsync=true; 
+                vm.$parent.off.layer=false;                                                                    
+                if(data.code==200){
                     layer.open({
-                        content:data.msg,
+                        content:'操作成功',
                         skin: 'msg',
                         time: 2,
                         msgSkin:'success',
                     });
-                }else if(data.hasOwnProperty('code')&&data.code!=200){
+                    this.$parent.list=[],
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
+                    if(this.searchType!=1){
+                        this.search();
+                    }else if(this.searchType==1){
+                        let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
+                        vm.searchDetailsType=1;
+                        vm.searchDepartId=vm.$parent.searchDepartId;
+                        data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.$parent.radio,username:vm.$parent.name,phone:vm.$parent.phone,pageNum:1,pageSize:"10"};            
+                        vm.companyName=v.departName;
+                        vm.managerName=v.managerName;
+                        vm.managerPhone=v.phone;
+                        requestMethod(data,url)
+                        .then((data)=>{
+                            load.close();
+                            if(data.code==200){
+                                if(data.data.users.length>0){
+                                    vm.$parent.off.notDlsDetails=false;
+                                    vm.$parent.off.dlsDetails=true;
+                                    vm.$parent.$parent.detailsList=data.data.users;
+                                }else{
+                                    vm.$parent.off.notDlsDetails=false;
+                                    vm.$parent.off.dlsDetails=true;
+                                    vm.$parent.$parent.detailsList=data.data.users;                                    
+                                }
+                            }else{
+                                errorDeal(data);
+                            }
+                        }).catch(e=>errorDeal(e));
+                    } 
+                }else{
+                    this.authCode="",
+                    // this.$parent.list=[],
+                    // this.$parent.list.push({username: '', phone: '',checked:false,checked2:false});
                     layer.open({
                         content:data.msg,
                         skin: 'msg',
                         time: 2,
                         msgSkin:'error',
                     });
-                }else(
-                    layer.open({
-                        content:data,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    })
-                ) 
-            }).catch(e=>errorDeal(e));
+                }  
+            }).catch(e=>errorDeal(e))
         },
 		close:function(){
             var vm=this;
