@@ -186,8 +186,8 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(/src/as
 </template>
 <script>
 import { Loading } from 'element-ui';
-import {requestConfirmDelNotice,requestConfirmTakeGoods,requestChangeLogisticsId,requestConfirmPayMent,requestModify_Price} from "../src/config/service.js"; 
-import { errorDeal,getStore } from '../src/config/utils';
+import {requestConfirmDelNotice,requestConfirmTakeGoods,requestChangeLogisticsId,requestConfirmPayMent,requestModify_Price} from "../config/service.js"; 
+import { errorDeal,getStore } from '../config/utils';
 export default{
     props:{
         layerType:String,

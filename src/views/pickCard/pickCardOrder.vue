@@ -234,7 +234,7 @@ import { disabledDate }from "../../config/utilsTimeSelect";
 import {requestProductDetails,requestPickupOrder,requestChangeLogisticsId,requestConfirmTakeGoods} from "../../config/service.js";
 import { Loading } from "element-ui";
 import orderDetails from "./orderDetails";
-import layerConfirm from "../../../components/layerConfirm";
+import layerConfirm from "../../components/layerConfirm";
 export default {
     data() {
         return {

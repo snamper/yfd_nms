@@ -1,5 +1,5 @@
 <style scoped>
-@import "../src/assets/css/layer2.css";
+@import "../assets/css/layer2.css";
 </style>
 <template>
 <section  id="detailsView" class="greyFont">
@@ -93,7 +93,7 @@
         <table>
 			<tbody v-if="true">
                 <tr colspan="2">
-                    <img src="../src/assets/images/icon_wenhao.png" alt="">
+                    <img src="../assets/images/icon_wenhao.png" alt="">
                 </tr>
                 <tr colspan="2">
 					码号手动同步已受理，请耐心等待结果
@@ -108,9 +108,9 @@
 </section>
 </template>
 <script>
-import {requestMethod} from "../src/config/service.js"; 
-import { getStore } from '../src/config/utils/uutils';
-import { errorDeal } from '../src/config/utils';
+import {requestMethod} from "../config/service.js"; 
+import { getStore } from '../config/utils/uutils';
+import { errorDeal } from '../config/utils';
 export default{
 	data (){
 		return {

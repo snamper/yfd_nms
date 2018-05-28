@@ -198,7 +198,7 @@
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service"; 
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils";
-import staffDetails from "../../../components/staffDetails.vue";
+import staffDetails from "../../components/staffDetails.vue";
 import layers from "./layeruser";
 export default{
     name:'dlsDetails',

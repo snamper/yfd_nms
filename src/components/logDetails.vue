@@ -258,7 +258,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
 </section>
 </template>
 <script>
-import {getDateTime} from "../src/config/utils.js";
+import {getDateTime} from "../config/utils.js";
 export default{
 	props:['detailsData','layerType','syncLogType','getSyncTime'],
 	data (){

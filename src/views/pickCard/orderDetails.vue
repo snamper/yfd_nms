@@ -95,7 +95,7 @@
 <script>
 import { getDateTime,getUnixTime,errorDeal } from "../../config/utils";
 import { Loading } from 'element-ui';
-import cardDetails from "../../../components/cardDetails";
+import cardDetails from "../../components/cardDetails";
 import { requestMethod } from '../../config/service';
 export default{
     props:{detailsData:Object},        

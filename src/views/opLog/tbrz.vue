@@ -180,7 +180,7 @@ div.detailsListDiv tr td{text-align: center;} */
 </template>
 <script>
 import { getDateTime,disableTimeRange6,errorDeal,checkMobile,getTimeFunction} from "../../config/utils";
-import logDet from "../../../components/logDetails";
+import logDet from "../../components/logDetails";
 import {requestSyncSearch,requestgetSyncTime} from "../../config/service";
 export default {
     data() {

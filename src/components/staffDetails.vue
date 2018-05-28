@@ -198,8 +198,8 @@
 </template>
 <script>
 import { Loading } from 'element-ui';
-import {requestMethod} from "../src/config/service.js"; 
-import {getDateTime,getStore,errorDeal} from "../src/config/utils";
+import {requestMethod} from "../config/service.js"; 
+import {getDateTime,getStore,errorDeal} from "../config/utils";
 export default{
     props:{forms:Object},
 	data (){

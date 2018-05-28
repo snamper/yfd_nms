@@ -160,7 +160,7 @@ import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils.js";
 import layerAddStaff from "./layeruseryfd";
-import staffDetails from "../../../components/staffDetails.vue";
+import staffDetails from "../../components/staffDetails.vue";
 export default{
 	data (){
 		return {

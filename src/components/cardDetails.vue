@@ -109,7 +109,7 @@
     </section>
 </template>
 <script>
-import { getDateTime,getUnixTime,errorDeal } from "../src/config/utils.js";
+import { getDateTime,getUnixTime,errorDeal } from "../config/utils.js";
 export default{
     props:{dataList:Object,dataListLiang:Array,dataListPu:Array,listSwitch:Object},        
     data (){

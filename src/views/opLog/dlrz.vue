@@ -178,7 +178,7 @@ div.detailsListDiv tr td {
 </template>
 <script>
 import { getDateTime,disableTimeRange6,checkMobile,getTimeFunction} from "../../config/utils";
-import logDet from "../../../components/logDetails";
+import logDet from "../../components/logDetails";
 import { requestMethod } from "../../config/service";
 import {errorDeal} from "../../config/utils";
 export default {

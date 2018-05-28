@@ -190,8 +190,8 @@ import {ImgToBase64} from "../../config/utils/ImgToBase64"
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { errorDeal,getDateTime } from '../../config/utils';
-import layerConfirm from "../../../components/layerConfirm";
-import imgBiger from "../../../components/ImgBiger";
+import layerConfirm from "../../components/layerConfirm";
+import imgBiger from "../../components/ImgBiger";
 import successIcon from "../../assets/images/icon/success-circle.svg"
 import errorIcon from "../../assets/images/icon/ava_error.svg"
 export default {
