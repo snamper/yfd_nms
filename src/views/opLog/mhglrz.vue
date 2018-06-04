@@ -15,63 +15,65 @@ div.detailsListDiv tr td {
             <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
         </el-row>
         <el-row>
-             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+             <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
+                <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
                      <el-input v-model="packageName" size="small" maxlength=20 placeholder="请输入查询的号包名称"></el-input>
                 </el-col>
                 <el-col :span="2">
                    
                 </el-col> 
             </div></el-col>
-            <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作时间：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                    <el-date-picker
-                    v-model="startTime"
-                    size="small"
-                    type="datetime"
-                    :clearable=false
-                    :editable=false                    
-                    :picker-options="pickerOptionsS"
-                    @change="changeTimeS"
-                    placeholder="选择开始时间">
-                    </el-date-picker>
-                    <span>——</span>
-                    <el-date-picker
-                    v-model="endTime"
-                    size="small"
-                    type="datetime"
-                    :clearable=false                    
-                    :editable=false                    
-                    :picker-options="pickerOptionsE"
-                    @change="changeTimeE"                    
-                    placeholder="选择结束时间">
-                    </el-date-picker>
+            <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
+                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作时间：</div></el-col>
+                <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
+                   <div class="block">
+                        <el-date-picker
+                        v-model="startTime"
+                        size="mini"
+                        type="datetime"
+                        :clearable=false                                        
+                        :editable=false                    
+                        :picker-options="pickerOptionsS"
+                        @change="changeTimeS"
+                        style="width:170px;"
+                        placeholder="选择开始时间">
+                        </el-date-picker>—<el-date-picker
+                        v-model="endTime"
+                        size="mini"
+                        type="datetime"
+                        :clearable=false                                        
+                        :editable=false                    
+                        :picker-options="pickerOptionsE"
+                        @change="changeTimeE"
+                        style="width:170px;"                            
+                        placeholder="选择结束时间">
+                        </el-date-picker>
+                    </div>
                 </el-col>
                 <el-col :span="2"></el-col> 
             </div></el-col>
         </el-row>
          <el-row class="marginTop">
-             <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人姓名：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+             <el-col ors:xs="24" :sm="20" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人姓名：</div></el-col>
+                <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
                      <el-input v-model="operator" size="small" maxlength=10 placeholder="请输入查询的操作人姓名"></el-input>
                 </el-col>
                 <el-col :span="2">
                 </el-col> 
             </div></el-col>
-            <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+            <el-col ors:xs="24" :sm="20" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
                      <el-input v-model="phone" size="small" maxlength=11 placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
-            <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+            <el-col ors:xs="24" :sm="20" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div></el-col>
+                <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
                     <el-radio v-model="optype"  label="1,2,3,4">全部</el-radio> 
                     <el-radio v-model="optype"  label="1">初始化</el-radio>
                     <el-radio v-model="optype"  label="2">上架</el-radio>
@@ -79,9 +81,9 @@ div.detailsListDiv tr td {
                     <el-radio v-model="optype"  label="4">已卖</el-radio>
                 </el-col>
             </div></el-col>
-            <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作结果：</div></el-col>
-                <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+            <el-col ors:xs="24" :sm="20" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作结果：</div></el-col>
+                <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2">全部</el-radio>
                     <el-radio v-model="radio"  label="1">成功</el-radio>
                     <el-radio v-model="radio"  label="2">失败</el-radio>
@@ -152,7 +154,7 @@ div.detailsListDiv tr td {
                 </div>
                 <div class="listTitleFoot" v-if="searchResult.length>0">
                     <el-row>
-                        <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
+                        <el-col ors:xs="24" :sm="20" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
                             <el-pagination
                                 layout="prev, pager, next"
                                 :page-size="15"
@@ -174,7 +176,8 @@ div.detailsListDiv tr td {
 import { getDateTime,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import {errorDeal} from "../../config/utils";
 import logDet from "../../components/logDetails";
-import { requestMethod } from "../../config/service";
+import { requestCardLogSearch } from "../../config/service";
+import { Loading } from 'element-ui';
 export default {
     data() {
         return {
@@ -286,10 +289,10 @@ export default {
             recordResult: vm.radio,
             pageNum:index||1,
             pageSize:15,
-            },
-            url = "/ors/w/record/numOperRecordSearch";
+            };
             vm.pa = index || 1;
-        requestMethod(json, url)
+            let load=Loading.service(options);
+        requestCardLogSearch(json,()=>{load.close()})
             .then(data => {
             if (data.code == 200) {
                 vm.off.logList=data.data.total;

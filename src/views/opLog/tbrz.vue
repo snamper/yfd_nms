@@ -10,36 +10,38 @@ div.detailsListDiv tr td{text-align: center;} */
                 <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
             </el-row>
             <el-row style="height:40px;line-height:40px" >
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
-                    <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作时间：</div></el-col>
-                    <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                        <el-date-picker
-                        v-model="startTime"
-                        size="small"
-                        type="datetime"
-                        :clearable=false                        
-                        :editable=false                    
-                        :picker-options="pickerOptionsS"
-                        @change="changeTimeS"
-                        placeholder="选择开始时间">
-                        </el-date-picker>
-                        <span>——</span>
-                        <el-date-picker
-                        v-model="endTime"
-                        size="small"
-                        type="datetime"
-                        :clearable=false
-                        :editable=false                    
-                        :picker-options="pickerOptionsE"  
-                        @change="changeTimeE"                                      
-                        placeholder="选择结束时间">
-                        </el-date-picker>
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
+                    <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作时间：</div></el-col>
+                    <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
+                        <div class="block">
+                            <el-date-picker
+                            v-model="startTime"
+                            size="mini"
+                            type="datetime"
+                            :clearable=false                                        
+                            :editable=false                    
+                            :picker-options="pickerOptionsS"
+                            @change="changeTimeS"
+                            style="width:170px;"
+                            placeholder="选择开始时间">
+                            </el-date-picker>—<el-date-picker
+                            v-model="endTime"
+                            size="mini"
+                            type="datetime"
+                            :clearable=false                                        
+                            :editable=false                    
+                            :picker-options="pickerOptionsE"
+                            @change="changeTimeE"
+                            style="width:170px;"                            
+                            placeholder="选择结束时间">
+                            </el-date-picker>
+                        </div>
                     </el-col>
                     <el-col :span="2"></el-col> 
                 </div></el-col>
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                    <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人姓名：</div></el-col>
-                    <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                    <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人姓名：</div></el-col>
+                    <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
                         <el-input v-model="operatorName" size="small" :maxlength="6" placeholder="请输入查询的联系人姓名"></el-input>
                     </el-col>
                     <el-col :span="2">
@@ -48,9 +50,9 @@ div.detailsListDiv tr td{text-align: center;} */
                 </div></el-col>
             </el-row>
             <el-row class="marginTop">
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                    <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div></el-col>
-                    <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                    <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div></el-col>
+                    <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
                         <el-radio v-model="syncType"  label="0">全部</el-radio>
                         <el-radio v-model="syncType"  label="1">手动同步</el-radio>
                         <el-radio v-model="syncType"  label="2">自动同步</el-radio>
@@ -59,9 +61,9 @@ div.detailsListDiv tr td{text-align: center;} */
                     
                     </el-col> 
                 </div></el-col>
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                    <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                    <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                    <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                    <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
                         <el-input v-model="operatorPhone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                     </el-col>
                     <el-col :span="2">
@@ -70,9 +72,9 @@ div.detailsListDiv tr td{text-align: center;} */
                 </div></el-col>
             </el-row>
             <el-row class="marginTop">
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                    <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">同步内容：</div></el-col>
-                    <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                    <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">同步内容：</div></el-col>
+                    <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
                         <el-radio v-model="recordType"  label="0">全部</el-radio>
                         <el-radio v-model="recordType"  label="3">框架</el-radio>
                         <el-radio v-model="recordType"  label="4">号码</el-radio>
@@ -81,9 +83,9 @@ div.detailsListDiv tr td{text-align: center;} */
                     
                     </el-col> 
                 </div></el-col>
-                <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                    <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作结果：</div></el-col>
-                    <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                    <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作结果：</div></el-col>
+                    <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
                         <el-radio v-model="recordResult"  label="0">全部</el-radio>
                         <el-radio v-model="recordResult"  label="1">成功</el-radio>
                         <el-radio v-model="recordResult"  label="2">失败</el-radio>
@@ -160,7 +162,7 @@ div.detailsListDiv tr td{text-align: center;} */
                 </div>
                 <div class="listTitleFoot" v-if="form.searchList.length>0">
                     <el-row>
-                        <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
+                        <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
                             <el-pagination
                                 layout="prev, pager, next"
                                 :page-size="15"
@@ -181,7 +183,8 @@ div.detailsListDiv tr td{text-align: center;} */
 <script>
 import { getDateTime,disableTimeRange6,errorDeal,checkMobile,getTimeFunction} from "../../config/utils";
 import logDet from "../../components/logDetails";
-import {requestSyncSearch,requestgetSyncTime} from "../../config/service";
+import {requestSyncLogSearch,requestgetSyncTime} from "../../config/service";
+import { Loading } from 'element-ui';
 export default {
     data() {
     return {
@@ -297,7 +300,8 @@ export default {
             "syncType": vm.syncType,
             "recordType": vm.recordType,
             "recordResult": vm.recordResult,}
-        requestSyncSearch(json)
+        let load=Loading.service(options);            
+        requestSyncLogSearch(json,()=>{load.close()})
         .then((data)=>{
             if(data.code==200){
                 vm.form.page=data.data.total;

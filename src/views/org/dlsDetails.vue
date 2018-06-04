@@ -4,7 +4,7 @@
 </style>
 <template>
   <div>
-      <div v-if="off.noStaffd">
+      <div v-if="off.searchStaff">
         <div class="yfd f-s-16">
                 <el-container>
                     <el-header class="headTitleNav">
@@ -59,7 +59,8 @@
                     <div v-for="(v,i) in list" :key="i" class="mt8">
                         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
                         <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
-                        <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox></el-col>
+                        <el-col :xs="20" :sm="20" :md="20" :lg="6" :xl="6"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked">采购员</el-checkbox><el-checkbox v-model="list[i].checked2">业务员</el-checkbox></el-col>
+                        <el-col :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><span @click="deleteLine(i)" class="u-icon-del"></span></el-col>                        
                     </div>
                 </el-col>
                 <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
@@ -190,7 +191,7 @@
        </div>
       </div> 
       <!-- 代理商员工个人详情和编辑模块 -->
-      <dlsStaff v-if="off.staffD" :forms="searchRes"></dlsStaff>
+      <dlsStaff v-if="off.staffDetails" :forms="searchRes"></dlsStaff>
       <common-layer v-if="off.layer"></common-layer>
     </div>  
 </template>
@@ -234,8 +235,8 @@ export default{
             list: [{username: '', phone: '',checked:false,checked2:false},]
             ,off:{
                 addList:false,
-                noStaffd:true,
-                staffD:false,
+                searchStaff:true,
+                staffDetails:false,
                 modify:false,
                 layer:false,
                 sync:false,
@@ -430,8 +431,8 @@ export default{
             data={"searchUserId":p.userId,"sessionType":"2"}
             requestMethod(data,url)
             .then((data)=>{
-                vm.off.noStaffd=false;
-                vm.off.staffD=true;
+                vm.off.searchStaff=false;
+                vm.off.staffDetails=true;
                 vm.searchRes=data.data;
                 if(data.code==200){
                 }  
@@ -498,6 +499,13 @@ export default{
             this.timer = null;
         },getDateTime(v){
             return getDateTime(v);
+        },deleteLine(v){
+            console.log(123);
+            let vm=this;
+            if(vm.list.length<=1){
+                return false;
+            }
+            vm.list.splice(v,1);
         }
     }
 }

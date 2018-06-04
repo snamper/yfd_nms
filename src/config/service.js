@@ -5,7 +5,9 @@ export const requestMethod=(data,url,load)=>fetch(url,data,"POST",load);//请求
 /* 公告消息 */
 export const requestConfirmDelNotice=(data)=>fetch("/mns/w/msg/delete",data,"POST")
 /* 操作日志 */
-export const requestSyncSearch=(data)=>fetch("/ors/w/record/syncSearch",data,"POST");
+export const requestSyncLogSearch=(data,load)=>fetch("/ors/w/record/syncSearch",data,"POST",load);
+export const requestLoginLogSearch=(data,load)=>fetch("/ors/w/record/loginRecordSearch",data,"POST",load);
+export const requestCardLogSearch=(data,load)=>fetch("/ors/w/record/numOperRecordSearch",data,"POST",load);
 export const requestgetSyncTime=(data)=>fetch("/ors/w/record/getSyncTime",data,"POST");
 /* 提卡订单管理 */ 
 export const requestPickupOrder=(data,load)=>fetch("/nms/w/order/search",data,"POST",load)

@@ -173,7 +173,7 @@
                                     </div>
                                     <div class="box" v-if="off.changePrice[i+1]">
                                         <span class="span1">
-                                            <input v-focus @blur="closeInp(v,i)" type="text" class="input" v-model="searchList[i].totalPrice">
+                                            <input v-focus @blur="closeInp(v,i)" type="text" class="input" v-model="translateSealPrice">
                                         </span>
                                         <span class="span2">
                                             <input  type="button" value="确定" class="button" @mousedown="changePriceYes(v,i)">
@@ -340,6 +340,7 @@ export default{
             reason:"",//操作理由
             authCode:"",//验证码
             searchDataChangePrice:"",//修改价格
+            translateSealPrice:"",
             checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
             cities: cityOptions,//选中的虚商
             cities1:cityOptions1,
@@ -379,7 +380,10 @@ export default{
                 page:0
             },
 		}
-	},
+    },
+    computed:{
+
+    },
 	components:{
         "common-layer":layerSync,
         "card-Details":cardDetails,
@@ -392,8 +396,7 @@ export default{
 	methods:{
         checkBoxClick(v){
 
-        },
-        handleCheckAllChange(val) {
+        },handleCheckAllChange(val) {
             this.checkedCities = val ? cityOptions : [];
             this.isIndeterminate = false;
         },
@@ -758,15 +761,14 @@ export default{
                 vm.$set(vm.off.changePrice,i,false)
             }
             vm.$set(vm.off.changePrice,i+1,true)
-        }
-        ,changePriceYes(i,v){
+            vm.translateSealPrice=vm.searchList[i].totalPrice/100+".00";
+        },changePriceYes(i,v){
             let vm=this;
             vm.layerType="confirmModifyPrice";
             vm.logistics=i;
             vm.off.layer=true;
-            vm.searchDataChangePrice={"productId":i.productId,"strikePrice":parseInt(i.totalPrice)}
-        }
-        ,changePriceReq(){
+            vm.searchDataChangePrice={"productId":i.productId,"strikePrice":parseInt(i.totalPrice)*100}
+        },changePriceReq(){
             requestModify_Price(vm.searchDataChangePrice)
             .then((data)=>{
                 for(let i in vm.off.changePrice){
@@ -774,8 +776,7 @@ export default{
                 }
                 this.search();
             }).catch(e=>errorDeal(e));
-        }
-        ,closeInp(i,v){
+        },closeInp(i,v){
             let vm=this;
             for(let i in vm.off.changePrice){
                 vm.$set(vm.off.changePrice,i,false)
@@ -783,7 +784,6 @@ export default{
             vm.searchList=vm._copyData;
         },confirm(v){
             let vm=this,data={};
-            
         },
     },directives: {
         focus:{

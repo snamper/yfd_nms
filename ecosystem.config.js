@@ -15,12 +15,12 @@ module.exports = {
   deploy : {
     test : {
       user : 'root',
-    //   host : '192.168.10.11',
+    //host : '192.168.10.11',
       host : '192.168.10.103',
       ref  : 'origin/master',
       repo : 'https://github.com/thinkmix/yfd_nms.git',
       path : '/home/nginx/html/yfd_nms',
-    //   path : '/root/nginx/html/yfd_nms',
+    //path : '/root/nginx/html/yfd_nms',
       'post-deploy' : 'cnpm install && npm run build && pm2 reload ecosystem.config.js --env test'
     },
     production : {

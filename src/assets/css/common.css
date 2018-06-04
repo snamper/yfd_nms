@@ -42,3 +42,6 @@
 /* .searchTab tr{padding-left: 20px;} */
 /* .searchTab tr td{text-align: left;padding-left: 80px;} */
 label.el-checkbox{display: inline}
+
+/* 图标 */
+.u-icon-del{display: inline-block;width: 20px;height:20px;background: url('../images/icon/delete.svg') no-repeat;background-size: 100%;cursor: pointer;}

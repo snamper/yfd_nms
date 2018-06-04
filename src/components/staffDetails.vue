@@ -25,12 +25,12 @@
                 <el-col :span="20"><div class="grid-content bg-purple"><h3 style="padding-left:20px;">员工详情</h3></div></el-col>
             </el-row>        
         </div>
-        <div class="detailsUlDiv">
+        <div class="detailsUlDiv f-s-14">
             <ul>
                 <li>
                     <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">用户姓名&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        <el-col :span="19"><div class="grid-content bg-purple-light">
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">用户姓名&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.username}}</p>
                             <input class="modifyInput" v-if="off.modify" type="text" v-model="forms.username">
                         </div></el-col>
@@ -38,9 +38,9 @@
                 </li>
                 <li>
                     <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
-                        <el-col :span="19"><div class="grid-content bg-purple-light">
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <p v-if="off.noModify">{{forms.phone}}</p>
                             <input class="modifyInput" :maxlength="11" v-if="off.modify" type="text" v-model="forms.phone">    
                         </div></el-col>
@@ -48,9 +48,9 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">创建时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">创建时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
-                        <el-col :span="19">
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                             <!-- {{new Date(forms.createTime).toLocaleString()}} -->
                                 <span v-if="forms.createTime">
@@ -65,9 +65,9 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">修改时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">修改时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
-                        <el-col :span="19">
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <!-- {{new Date(forms.modifyTime).toLocaleString()}} -->
                                 <span v-if="forms.modifyTime">
@@ -82,16 +82,16 @@
                 </li>
                 <li>
                     <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">操作人&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">操作人&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
-                        <el-col :span="19"><div class="grid-content bg-purple-light">{{forms.operatorName}}</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">{{forms.operatorName}}</div></el-col>
                     </el-row>
                 </li>
                 <li>
                     <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">职务&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">职务&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
-                        <el-col :span="19"><div class="grid-content bg-purple-light">
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <span v-for="(v,i) in forms.userRole" :key="i">
                                 <span v-if="v==1">管理员</span>
                                 <span v-if="v==2">销售</span>
@@ -104,9 +104,9 @@
                 </li>
                 <li>
                     <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">当前状态&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">当前状态&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
-                        <el-col :span="19"><div class="grid-content bg-purple-light">
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <span v-if="forms.userState==1" class="fcgreen">正常</span>
                             <span v-if="forms.userState==2" class="greyFont">黑名单</span>
                             <span v-if="forms.userState==3">注销</span>
@@ -115,9 +115,9 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">最后登录时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">最后登录时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
-                        <el-col :span="19">
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <!-- {{new Date(forms.lastLoginTime).toLocaleString()}} -->
                                 <span v-if="forms.lastLoginTime">
@@ -132,8 +132,8 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">登录方式&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        <el-col :span="19">
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">登录方式&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <span v-if="forms.sessionPlatform==1">Web在线</span>
                                 <span v-if="forms.sessionPlatform==2">App在线</span>
@@ -144,8 +144,8 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">在线平台&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        <el-col :span="19">
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">在线平台&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <span v-if="forms.sessionType==1">业务平台</span>
                                 <span v-if="forms.sessionType==2">管理平台</span>
@@ -156,15 +156,15 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">IP&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        <el-col :span="19"><div class="grid-content bg-purple-light" v-if="forms.host">{{forms.host}}</div></el-col>
-                        <el-col :span="19"><div class="grid-content bg-purple-light" v-if="!forms.host">--</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">IP&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light" v-if="forms.host">{{forms.host}}</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light" v-if="!forms.host">--</div></el-col>
                     </el-row>
                 </li>
                 <li>
                     <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">登录地址&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        <el-col :span="19"><div class="grid-content bg-purple-light">
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">登录地址&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <span v-if="forms.latitude"> 
                                 {{forms.latitude}},{{forms.longitude}}
                                 <a href="javascript:void(0)" @click="toMap" >【查看地图】</a>
@@ -177,8 +177,8 @@
                 </li>
                 <li>
                      <el-row>
-                        <el-col :span="2"><div class="grid-content bg-purple fr">操作机型&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        <el-col :span="19">
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">操作机型&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light" v-if="forms.phoneType">{{forms.phoneType}}</div>
                             <div class="grid-content bg-purple-light" v-if="!forms.phoneType">--</div>
                         </el-col>

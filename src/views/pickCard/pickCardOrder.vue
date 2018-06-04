@@ -55,7 +55,7 @@
                         <el-col :xs="4" :sm="3" :md="4" :lg="4" :xl="4" class="m-form-radio f-tar">
                             <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">操作时间：</span></label>                            
                         </el-col>
-                        <el-col :xs="18" :sm="20" :md="10" :lg="12" :xl="12">
+                        <el-col :xs="18" :sm="12" :md="10" :lg="12" :xl="12">
                             <div class="block">
                                 <el-date-picker
                                 v-model="startTime"
@@ -80,7 +80,7 @@
                                 </el-date-picker>
                             </div>
                         </el-col>
-                        <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8" class="f-s-16">
+                        <el-col :xs="24" :sm="9" :md="8" :lg="8" :xl="8" class="f-s-16">
                             ( <el-radio v-model="timeType"  label="1">修改时间</el-radio>
                             <el-radio v-model="timeType"  label="2">创建时间</el-radio> )
                         </el-col>
@@ -140,6 +140,7 @@
                                 <td>付款金额(元)</td>
                                 <td>操作人</td>
                                 <td>修改时间</td>
+                                <td>付款方式</td>
                                 <td>物流状态</td>
                                 <td>物流单号</td>
                                 <td>操作</td>
@@ -158,7 +159,7 @@
                                         {{x.productName}}<br>
                                     </span>
                                 </td>
-                                <td>{{v.totalStrikePrice/100+'.00'||'--'}}</td>
+                                <td>{{v.totalStrikePrice/100||'--'}}</td>
                                 <!-- <td class="tac" style="width:140px">
                                     <div v-if="!off.changePrice[i+1]">
                                         <span>{{searchResult[i].totalStrikePrice/100+'.00'||'--'}}</span>
@@ -182,6 +183,12 @@
                                         --
                                     </span>
                                 </td>
+                                <td>
+                                    <span v-if="v.paymentType==1">支付宝</span>
+                                    <span v-if="v.paymentType==2">微信</span>
+                                    <span v-if="v.paymentType==3">账户</span>
+                                    <span v-if="v.paymentType==4">线下支付</span>
+                                </td>
                                 <td >
                                     <!-- {{v.deliveryState||'--'}} -->
                                     <span v-if="v.deliveryState==2&&v.paymentState==2">已发货</span>
@@ -201,7 +208,7 @@
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
-                                <td colspan="8">
+                                <td colspan="11">
                                     暂无数据                                                        
                                 </td>
                             </tr>

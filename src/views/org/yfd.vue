@@ -55,7 +55,8 @@
                 <div v-for="(v,i) in list" :key="i" class="mt8">
                     <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
                     <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
-                    <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="8"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox></el-col>
+                    <el-col :xs="20" :sm="20" :md="20" :lg="6" :xl="6"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox></el-col>
+                    <el-col :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><span @click="deleteLine(i)" class="u-icon-del"></span></el-col>
                 </div>
             </el-col>
             <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
@@ -285,6 +286,12 @@ export default{
             }).catch(e=>errorDeal(e));
         },getDateTime(v){
             return getDateTime(v);
+        },deleteLine(v){
+            let vm=this;
+            if(vm.list.length<=1){
+                return false;
+            }
+            vm.list.splice(v,1);
         }
 	}
 }

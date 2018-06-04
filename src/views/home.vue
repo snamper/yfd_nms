@@ -14,9 +14,9 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 						<span v-if="crumb[0].name" class="f-inline-block m-crumb">
 							<a class="fcb">{{crumb[0].name}}</a>
 							<i v-if="crumb[1].name" class="el-icon-arrow-right"></i>
-							<a  v-show="!crumb[1].href">{{crumb[1].name}}</a>
-							<router-link class="fcaqua" v-show="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
-							<span v-show="crumb[2].name">
+							<a  v-if="!crumb[1].href">{{crumb[1].name}}</a>
+							<router-link class="fcaqua" v-if="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
+							<span v-if="crumb[2].name">
 							    <i class="el-icon-arrow-right"></i>								
 								<a class="fcaqua">{{crumb[2].name}}</a>
 							</span>
@@ -265,7 +265,6 @@ export default{
 			var vm=this;
 			signOut().then(function(res){
 				vm.SIGN_OUT();
-				vm.CLEAR_TIMER();
 			});
 		},
 	}

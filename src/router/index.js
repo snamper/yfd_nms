@@ -74,13 +74,6 @@ const Org = resolve => {
       load();
     });
   };
-  const Org_Dls_Staff = resolve => {
-    load(true);
-    require.ensure(["@/views/org/dlsStaffDetails.vue"], () => {
-      resolve(require("@/views/org/dlsStaffDetails.vue"));
-      load();
-    });
-  };
   const Org_Ygcx = resolve => {
     load(true);
     require.ensure(["@/views/org/ygcx.vue"], () => {
@@ -153,10 +146,6 @@ const router=new Router({
                 path:"yfd",
                 name:"yfd",
                 component:Org_Yfd,
-                children:[{
-                    path:":type",
-                    component:Org_Dls_Staff,
-                }]
             },{
                 path:"agent",
                 name:"agent",
