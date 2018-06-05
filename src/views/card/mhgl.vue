@@ -168,7 +168,7 @@
                                 </td>
                                 <td class="tac" style="width:140px">
                                     <div v-if="!off.changePrice[i+1]">
-                                        <span>{{v.totalPrice/100+".00"}}</span>
+                                        <span>{{(v.totalPrice/100).toFixed(2)}}</span>
                                         <el-button v-if="v.productState==6" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
                                     </div>
                                     <div class="box" v-if="off.changePrice[i+1]">
@@ -761,7 +761,7 @@ export default{
                 vm.$set(vm.off.changePrice,i,false)
             }
             vm.$set(vm.off.changePrice,i+1,true)
-            vm.translateSealPrice=vm.searchList[i].totalPrice/100+".00";
+            vm.translateSealPrice=(vm.searchList[i].totalPrice/100).toFixed(2);
         },changePriceYes(i,v){
             let vm=this;
             vm.layerType="confirmModifyPrice";

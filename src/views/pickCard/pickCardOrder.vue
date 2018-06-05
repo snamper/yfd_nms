@@ -159,7 +159,7 @@
                                         {{x.productName}}<br>
                                     </span>
                                 </td>
-                                <td>{{v.totalStrikePrice/100||'--'}}</td>
+                                <td>{{(v.totalStrikePrice/100).toFixed(2)||'--'}}</td>
                                 <!-- <td class="tac" style="width:140px">
                                     <div v-if="!off.changePrice[i+1]">
                                         <span>{{searchResult[i].totalStrikePrice/100+'.00'||'--'}}</span>
