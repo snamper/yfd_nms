@@ -141,7 +141,7 @@
                                 <td>操作人</td>
                                 <td>修改时间</td>
                                 <td>付款方式</td>
-                                <td>物流状态</td>
+                                <td>订单状态</td>
                                 <td>物流单号</td>
                                 <td>操作</td>
                             </tr>
@@ -190,25 +190,26 @@
                                     <span v-if="v.paymentType==4">线下支付</span>
                                 </td>
                                 <td >
-                                    <!-- {{v.deliveryState||'--'}} -->
-                                    <span v-if="v.deliveryState==2&&v.paymentState==2">已发货</span>
-                                    <span v-if="v.deliveryState==3&&v.paymentState==2">已收货</span>
-                                    <span v-if="v.deliveryState==1&&v.paymentState==2">待发货</span>
-                                    <span v-if="v.paymentState==1" class="c-red">未付款</span>
+                                    <span v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
+                                    <span v-if="v.paymentState==2&&v.deliveryState==3&&v.orderState==2">已收货</span>
+                                    <span v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
+                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==2" class="c-red">已关闭</span>
+                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1" class="c-red">未付款</span>
+                                    <span ></span>
                                 </td>
                                 <td>
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryOrderId||'--'}}</a> 
                                 </td>
                                 <td>
-                                    <el-button v-if="v.deliveryState==1&&v.paymentState==2" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
-                                    <el-button v-if="v.deliveryState==2&&v.paymentState==2" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
-                                    <el-button v-if="v.deliveryState==2&&v.paymentState==2" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
-                                    <el-button v-if="v.deliveryState==1&&v.paymentState==1" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
+                                    <el-button v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
 
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
-                                <td colspan="11">
+                                <td colspan="12">
                                     暂无数据                                                        
                                 </td>
                             </tr>
@@ -371,7 +372,6 @@ export default {
             let vm=this;
             vm.off.details=true;
             vm.productDetails=v;  
-            console.log(vm.productDetails);
         },
         confirm(v){
             let vm=this,data={};

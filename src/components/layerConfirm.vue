@@ -14,8 +14,8 @@
 .tdBtn2 span{display: inline-block;width: 100%; box-sizing: border-box;border-top:1px solid #ccc;padding-top: 10px; }
 tbody tr{height: 36px;}
 thead tr:nth-child(1) td p{padding-top:10px; }
-thead tr:nth-child(1) td p{height:40px;background: url(/src/assets/images/icon/exclamation-circle.svg) no-repeat;background-size: contain;background-position: center center;}
-thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(/src/assets/images/icon/question.svg) no-repeat;background-size: contain;background-position: center center;}
+thead tr:nth-child(1) td p{height:40px;background: url(../assets/images/icon/exclamation-circle.svg) no-repeat;background-size: contain;background-position: center center;}
+thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../assets/images/icon/question.svg) no-repeat;background-size: contain;background-position: center center;}
 
 </style>
 <template>
@@ -175,17 +175,15 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(/src/as
                 </thead>
                 <tbody>
                     <tr class="tdBtn">
-                        <span @click="close()">取消</span>
+                        <span @click="close('1')">取消</span>
                         <span @click="btnYes('changeCartMoney',logisticsInfo)">确认</span>
                     </tr>
                 </tbody>
             </table>
-            <div class="lay-mask"></div>
         </div>
     </section>
 </template>
 <script>
-import { Loading } from 'element-ui';
 import {requestConfirmDelNotice,requestConfirmTakeGoods,requestChangeLogisticsId,requestConfirmPayMent,requestModify_Price} from "../config/service.js"; 
 import { errorDeal,getStore } from '../config/utils';
 export default{
@@ -326,9 +324,12 @@ export default{
                 }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
             }
         },
-		close:function(){
+		close:function(i){
             var vm=this;
-			vm.$parent.off.layer=false;
+            if(i==1){
+                vm.$parent.off.layerChangePrice=false;
+            }
+			    vm.$parent.off.layer=false;
         }
 	}
 }

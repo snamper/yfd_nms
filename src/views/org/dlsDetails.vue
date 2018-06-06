@@ -500,7 +500,6 @@ export default{
         },getDateTime(v){
             return getDateTime(v);
         },deleteLine(v){
-            console.log(123);
             let vm=this;
             if(vm.list.length<=1){
                 return false;

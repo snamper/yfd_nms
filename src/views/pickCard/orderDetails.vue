@@ -60,13 +60,13 @@
                                 <span v-if="v.brand==12">长城</span>
                             </td>
                             <td>靓号数</td>
-                            <td>{{v.cuteTotal||'--'}}<a href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',18051956043)">查看列表</a></td>
+                            <td>{{v.cuteTotal||'--'}}<a href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>归属地</td>
                             <td>{{v.cityName||'--'}}</td>
                             <td>普号数</td>
-                            <td>{{v.normalTotal||'--'}}<a href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',18051956043)">查看列表</a></td>
+                            <td>{{v.normalTotal||'--'}}<a href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>产品类型</td>
@@ -77,8 +77,8 @@
                             </td>
                             <td rowspan="2">价格</td>
                             <td rowspan="2">
-                                <p class="t-linethrough">￥{{v.strikePrice}}</p>
-                                <p class="f-s-18 c-yellow">￥{{v.strikePrice}}</p>
+                                <p class="t-linethrough">￥{{(v.strikePrice/100).toFixed(2)}}</p>
+                                <p class="f-s-18 c-yellow">￥{{(v.strikePrice/100).toFixed(2)}}</p>
                             </td>
                         </tr>
                         <tr>

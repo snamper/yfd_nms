@@ -220,7 +220,7 @@
                                 <span v-if="v.productState==2">手动上架</span>
                                 <span v-if="v.productState==3">手动下架</span>
                                 <span v-if="v.productState==4">系统下架</span>
-                                <span v-if="v.productState==4" class="fcred">已出售</span>
+                                <span v-if="v.productState==5" class="fcred">已出售</span>
                                 <span v-if="v.productState==6">购物车中</span>
                                 </td>
                                 <td v-show="false">
@@ -250,7 +250,7 @@
                             :total="form.page">
                             </el-pagination>
                         </div></el-col>
-                        <el-col :span="12">
+                        <el-col :span="12" v-if="nowStatusHidden!=6">
                             <div class="grid-content bg-purple-light fr">操作:<el-button size="mini" @click="doFounction(1)">上架</el-button><el-button size="mini" @click="doFounction(2)">下架</el-button></div>
                         </el-col>
                         </el-row>
@@ -282,7 +282,7 @@
         <common-layer  v-if="off.layer"></common-layer>
         <!-- 卡详情 -->
         <card-Details  v-if="off.cardDetails" :listSwitch="listSwitch" :dataList="searchResData" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-Details>	 
-        <layer-confirm v-if="off.layer" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>           
+        <layer-confirm v-if="off.layerChangePrice" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>           
     </section>
 </template>
 <script>
@@ -330,6 +330,7 @@ export default{
             packagename:"",//号包名称
             cardType:"1,2,3",//号包类型
             nowStatus:"1,2,3,4,5,6",//号包状态
+            nowStatusHidden:"",
             phone: "",//查询的手机号码
             radio: "1,2,3",//运营商
             name: "",//联系人姓名
@@ -367,6 +368,7 @@ export default{
             newPrice:[],
 			off:{
                 layer:false,
+                layerChangePrice:false,
                 notCardDetails:true,//
                 cardDetails:false,//卡详情
                 setSync:false,//同步时间设置
@@ -547,6 +549,7 @@ export default{
                     vm.total=data.data.total;
                     vm.form.page=data.data.total;
                     vm._copyData=vm.copyData(data.data.products);
+                    vm.nowStatusHidden=vm.nowStatus;
                 }else{
                     errorDeal(data);
                 }
@@ -766,8 +769,8 @@ export default{
             let vm=this;
             vm.layerType="confirmModifyPrice";
             vm.logistics=i;
-            vm.off.layer=true;
-            vm.searchDataChangePrice={"productId":i.productId,"strikePrice":parseInt(i.totalPrice)*100}
+            vm.off.layerChangePrice=true;
+            vm.searchDataChangePrice={"productId":i.productId,"strikePrice":vm.translateSealPrice}
         },changePriceReq(){
             requestModify_Price(vm.searchDataChangePrice)
             .then((data)=>{
