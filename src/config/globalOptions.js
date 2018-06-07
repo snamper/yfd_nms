@@ -1,1 +1,1 @@
-global.options = {background:"rgba(255,255,255,.6)",target:"#main"}
+global.options = {background:"rgba(255,255,255,.2)",target:"#main"}

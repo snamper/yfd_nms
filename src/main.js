@@ -7,15 +7,14 @@ import Vue from 'vue';
 import store from './store';
 import router from './router';
 import ElementUI from 'element-ui';
+import App from './App.vue';
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css';
-import App from './App.vue';
 import './config/globalOptions.js'
 Vue.use(ElementUI);
 
 require("./assets/css/style.css");
 require("./assets/css/common.css");
-require("./assets/css/search.css");
 require("./assets/css/layer.css");
 require("./assets/js/layer.js");
 require("./config/service.js");

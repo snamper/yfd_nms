@@ -188,6 +188,7 @@
                                     <span v-if="v.paymentType==2">微信</span>
                                     <span v-if="v.paymentType==3">账户</span>
                                     <span v-if="v.paymentType==4">线下支付</span>
+                                    <span v-if="v.paymentType==0">未付款</span>
                                 </td>
                                 <td >
                                     <span v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>

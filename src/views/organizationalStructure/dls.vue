@@ -203,7 +203,7 @@
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import {requestMethod,requestgetSyncTime} from "../../config/service.js"; 
-import layers from "../../components/layer";
+import layers from "../../components/layerSyncTime";
 import dlsDetails from "./dlsDetails";
 export default{
     name:'dls',

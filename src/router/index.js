@@ -24,106 +24,99 @@ const Home = resolve => {
     load();
   });
 };
-const Search = resolve => {
-  load(true);
-  require.ensure(["@/views/search/search"], () => {
-    resolve(require("@/views/search/search"));
-    load();
-  });
-};
 const Org = resolve => {
     load(true);
-    require.ensure(["@/views/org/index"], () => {
-      resolve(require("@/views/org/index"));
+    require.ensure(["@/views/organizationalStructure/index"], () => {
+      resolve(require("@/views/organizationalStructure/index"));
       load();
     });
   };
   const Card = resolve => {
     load(true);
-    require.ensure(["@/views/card/index"], () => {
-      resolve(require("@/views/card/index"));
+    require.ensure(["@/views/phoneNumberManage/index"], () => {
+      resolve(require("@/views/phoneNumberManage/index"));
       load();
     });
   };
   const OpeLog = resolve => {
     load(true);
-    require.ensure(["@/views/opLog/index"], () => {
-      resolve(require("@/views/opLog/index"));
+    require.ensure(["@/views/operationLog/index"], () => {
+      resolve(require("@/views/operationLog/index"));
       load();
     });
   };
   const Brhistory = resolve => {
     load(true);
-    require.ensure(["@/views/brHistory/index"], () => {
-      resolve(require("@/views/brHistory/index"));
+    require.ensure(["@/views/browsingHistory/index"], () => {
+      resolve(require("@/views/browsingHistory/index"));
       load();
     });
   };
   //架构管理
   const Org_Yfd = resolve => {
     load(true);
-    require.ensure(["@/views/org/yfd.vue"], () => {
-      resolve(require("@/views/org/yfd.vue"));
+    require.ensure(["@/views/organizationalStructure/yfd.vue"], () => {
+      resolve(require("@/views/organizationalStructure/yfd.vue"));
       load();
     });
   };
   const Org_Dls = resolve => {
     load(true);
-    require.ensure(["@/views/org/dls.vue"], () => {
-      resolve(require("@/views/org/dls.vue"));
+    require.ensure(["@/views/organizationalStructure/dls.vue"], () => {
+      resolve(require("@/views/organizationalStructure/dls.vue"));
       load();
     });
   };
   const Org_Ygcx = resolve => {
     load(true);
-    require.ensure(["@/views/org/ygcx.vue"], () => {
-      resolve(require("@/views/org/ygcx.vue"));
+    require.ensure(["@/views/organizationalStructure/ygcx.vue"], () => {
+      resolve(require("@/views/organizationalStructure/ygcx.vue"));
       load();
     });
   };
 // 码号管理
 const Card_Mhgl = resolve => {
     load(true);
-    require.ensure(["@/views/card/mhgl.vue"], () => {
-      resolve(require("@/views/card/mhgl.vue"));
+    require.ensure(["@/views/phoneNumberManage/mhgl.vue"], () => {
+      resolve(require("@/views/phoneNumberManage/mhgl.vue"));
       load();
     });
   };
   //操作日志
   const OpeLog_mhglrz = resolve => {
     load(true);
-    require.ensure(["@/views/opLog/mhglrz.vue"], () => {
-      resolve(require("@/views/opLog/mhglrz.vue"));
+    require.ensure(["@/views/operationLog/mhglrz.vue"], () => {
+      resolve(require("@/views/operationLog/mhglrz.vue"));
       load();
     });
   };
   const OpeLog_tbrz = resolve => {
     load(true);
-    require.ensure(["@/views/opLog/tbrz.vue"], () => {
-      resolve(require("@/views/opLog/tbrz.vue"));
+    require.ensure(["@/views/operationLog/tbrz.vue"], () => {
+      resolve(require("@/views/operationLog/tbrz.vue"));
       load();
     });
   };
   const OpeLog_dlrz = resolve => {
     load(true);
-    require.ensure(["@/views/opLog/dlrz.vue"], () => {
-      resolve(require("@/views/opLog/dlrz.vue"));
+    require.ensure(["@/views/operationLog/dlrz.vue"], () => {
+      resolve(require("@/views/operationLog/dlrz.vue"));
       load();
     });
   };
   //公告管理
     const Notice_noticePage = resolve => {
         load(true);
-        require.ensure(["@/views/notice/notice.vue"], () => {
-        resolve(require("@/views/notice/notice.vue"));
+        require.ensure(["@/views/noticeManage/notice.vue"], () => {
+        resolve(require("@/views/noticeManage/notice.vue"));
         load();
         });
     }; 
     //提卡订单管理
     const pickCardOrder = resolve => {
         load(true);
-        require.ensure(["@/views/pickCard/pickCardOrder.vue"], () => {
-        resolve(require("@/views/pickCard/pickCardOrder.vue"));
+        require.ensure(["@/views/openCardManage/pickCardOrder.vue"], () => {
+        resolve(require("@/views/openCardManage/pickCardOrder.vue"));
         load();
         });
     };

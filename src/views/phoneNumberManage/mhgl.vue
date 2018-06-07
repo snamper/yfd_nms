@@ -290,7 +290,7 @@ import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils.js";
 import {requestMethod,requestgetSyncTime,requestModify_Price} from "../../config/service.js"; 
-import layerSync from "../../components/layer";
+import layerSync from "../../components/layerSyncTime";
 import layerConfirm from "../../components/layerConfirm";
 import cardDetails from "../../components/cardDetails";
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],

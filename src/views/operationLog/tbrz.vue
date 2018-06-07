@@ -1,5 +1,4 @@
 <style>
-@import "../../assets/css/search.css";
 /* div.listTitleFoot{width: 96%;margin: 10px 18px;}
 div.detailsListDiv tr td{text-align: center;} */
 </style>
