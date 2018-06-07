@@ -10,59 +10,64 @@
         </el-row>
         <el-row>
             <el-col :span="24"><div class="grid-content bg-purple">
-                <el-col :xs="5" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div></el-col>
-                <el-col :xs="19" :sm="14" :md="14" :lg="10" :xl="10">
-                    <el-date-picker
-                    v-model="startTime"
-                    size="small"
-                    type="datetime"
-                    :clearable=false                                        
-                    :editable=false                    
-                    :picker-options="pickerOptionsS"
-                    @change="changeTimeS"
-                    placeholder="选择开始时间">
-                    </el-date-picker>
-                    <span>—</span>
-                    <el-date-picker
-                    v-model="endTime"
-                    size="small"
-                    type="datetime"
-                    :clearable=false                                        
-                    :editable=false                    
-                    :picker-options="pickerOptionsE"
-                    @change="changeTimeE"
-                    placeholder="选择结束时间">
-                    </el-date-picker>
+                <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div></el-col>
+                <el-col :xs="18" :sm="18" :md="20" :lg="18" :xl="18">
+                    <div class="displayInline">
+                        <el-date-picker
+                        v-model="startTime"
+                        size="small"
+                        type="datetime"
+                        :clearable=false                                        
+                        :editable=false                    
+                        :picker-options="pickerOptionsS"
+                        @change="changeTimeS"
+                        placeholder="选择开始时间">
+                        </el-date-picker> — <el-date-picker
+                        v-model="endTime"
+                        size="small"
+                        type="datetime"
+                        :clearable=false                                        
+                        :editable=false                    
+                        :picker-options="pickerOptionsE"
+                        @change="changeTimeE"                           
+                        placeholder="选择结束时间">
+                        </el-date-picker>
+                    </div>
+                    &nbsp;&nbsp;( <el-radio v-model="timeType"  label="1">修改时间</el-radio>
+                    <el-radio v-model="timeType"  label="2">创建时间</el-radio> )
                 </el-col>
-                <el-col :xs="20" :sm="7" :md="7" :lg="10" :xl="12" style="font-size:18px">
-                    ( <el-radio v-model="timeType"  label="2">修改时间</el-radio>
-                    <el-radio v-model="timeType"  label="1">创建时间</el-radio> )
+            </div></el-col>
+        </el-row>
+        <el-row class="marginTop">
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
+                     <el-input v-model="name"  :maxlength="20" size="small" placeholder="请输入查询的联系人姓名"></el-input>
+                </el-col>
+                <el-col :xs="0" :sm="2" :md="2" :lg="4" :xl="4">
+                </el-col> 
+            </div></el-col>
+            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
+                <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
+                     <el-input v-model="phone" :maxlength="11" size="small"  placeholder="请输入联系人号码"></el-input>
+                </el-col>
+                <el-col :xs="24" :sm="7" :md="7" :lg="4" :xl="4">
                 </el-col> 
             </div></el-col>
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
-                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
-                <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
+                <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
                      <el-input v-model="cname" :maxlength="30" size="small" placeholder="请输入查询的公司名称"></el-input>
                 </el-col>
                 <el-col :xs="24" :sm="6" :md="6" :lg="4" :xl="4">
                 </el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
-                     <el-input v-model="name"  :maxlength="20" size="small" placeholder="请输入查询的联系人姓名"></el-input>
-                </el-col>
-                <el-col :xs="24" :sm="7" :md="7" :lg="4" :xl="4">
-                   
-                </el-col> 
-            </div></el-col>
-        </el-row>
-        <el-row class="marginTop">
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                <el-col :xs="19" :sm="16" :md="12" :lg="16" :xl="16">
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,3">全部</el-radio>
                     <el-radio v-model="radio"  label="1">正常</el-radio>
                     <el-radio v-model="radio"  label="3">注销</el-radio>
@@ -70,14 +75,6 @@
                 </el-col>
                 <el-col :xs="24" :sm="2" :md="7" :lg="4" :xl="4">
                    
-                </el-col> 
-            </div></el-col>
-            <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="6" :sm="5" :md="5" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
-                <el-col :xs="18" :sm="12" :md="12" :lg="16" :xl="16">
-                     <el-input v-model="phone" :maxlength="11" size="small"  placeholder="请输入联系人号码"></el-input>
-                </el-col>
-                <el-col :xs="24" :sm="7" :md="7" :lg="4" :xl="4">
                 </el-col> 
             </div></el-col>
         </el-row>
@@ -308,6 +305,9 @@ export default{
             sm=new Date(vm.startTime).getMonth(),
             ey=new Date(vm.endTime).getFullYear(),
             em=new Date(vm.endTime).getMonth();
+            vm.total="";
+            vm.searchList="";
+            vm.form.page="";
             if(sy!=ey||sm!=em){
                 layer.open({
                     content:'开始和结束日期不能跨月',

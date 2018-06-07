@@ -324,6 +324,8 @@ export default {
     methods: {
         search(index) {//查询
             let vm=this,data={};
+            vm.form.page="";
+            vm.searchResult="";
             vm.pa=index||1;
             if(vm.form.searchKind==1){
                 if(vm.orderId==''){

@@ -131,7 +131,7 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                 <tbody>
                     <tr>
                         <td>
-                            <el-input v-model="payMoney" placeholder="请输入付款金额" size="small"></el-input>
+                            <el-input v-model="payMoney" placeholder="请输入付款金额，以元为单位，例如0.00" size="small"></el-input>
                         </td>
                     </tr>
                     <tr>
@@ -154,7 +154,7 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                     </tr>
                     <tr class="f-s-12">
                         <td style="padding-top:0px;color:red">
-                            注：付款金额必填，物流公司及单号为选填<br>
+                            *注：付款金额必填，物流公司及单号为选填<br>
                         </td>
                     </tr>
                     <tr class="tdBtn">
@@ -279,6 +279,16 @@ export default{
                 this.$parent.off.layer=false;
             }).catch(e=>errorDeal(e));
             }else if(e=="payMent"){//修改单号
+                let regular = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
+                if(!regular.test(v)){
+                    layer.open({
+                        content:"请输入正确的金额，以元为单位，例如0.00",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                    return false;
+                }
                 if(vm.payMoney==''){
                     layer.open({
                         content:"请输入要付款的金额",
@@ -291,7 +301,7 @@ export default{
                 let data={"sysOrderId": v.sysOrderId,
                     "deliveryOrderId":vm.orderId,
                     "deliveryName":vm.logisticsCompany2 ,
-                    "strikePrice":vm.payMoney
+                    "strikePrice":vm.payMoney*100
                 }
             requestConfirmPayMent(data)
             .then((data)=>{

@@ -10,7 +10,7 @@
     <section>
         <div v-if="off.notCardDetails">
             <div class="allDetails">
-                <div class="headTitle fontWeight">
+                <div class="headTitle f-s-16">
                     <span class="fl">订单详情</span><span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span>
                 </div>
                 <el-row type="flex" class="greyFont">
@@ -21,7 +21,7 @@
                         <el-col :xs="23" :sm="23" :md="23" :lg="23" :xl="23">
                             <p class="lh30"><span class="letterSpacing1">订单号码&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.sysOrderId||'--'}}</span></p>
                             <p class="lh30"><span class="letterSpacing1">生成时间&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.createTime||'--'}}</span></p>
-                            <p class="lh30"><span class="letterSpacing1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.strikePrice||'--'}}</span></p>
+                            <p class="lh30"><span class="letterSpacing1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.discountPrice/100).toFixed(2)||'--'}} 元</span></p>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -77,8 +77,8 @@
                             </td>
                             <td rowspan="2">价格</td>
                             <td rowspan="2">
-                                <p class="t-linethrough">￥{{(v.strikePrice/100).toFixed(2)}}</p>
-                                <p class="f-s-18 c-yellow">￥{{(v.strikePrice/100).toFixed(2)}}</p>
+                                <p class="t-linethrough">￥{{(detailsData.totalPrice/100).toFixed(2)}}</p>
+                                <p class="f-s-18 c-yellow">￥{{(detailsData.totalStrikePrice/100).toFixed(2)}}</p>
                             </td>
                         </tr>
                         <tr>

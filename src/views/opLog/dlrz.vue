@@ -21,23 +21,21 @@ div.detailsListDiv tr td {
                     <div class="block">
                         <el-date-picker
                         v-model="startTime"
-                        size="mini"
+                        size="small"
                         type="datetime"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsS"
                         @change="changeTimeS"
-                        style="width:170px;"
                         placeholder="选择开始时间">
                         </el-date-picker>—<el-date-picker
                         v-model="endTime"
-                        size="mini"
+                        size="small"
                         type="datetime"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsE"
                         @change="changeTimeE"
-                        style="width:170px;"                            
                         placeholder="选择结束时间">
                         </el-date-picker>
                     </div>
@@ -55,17 +53,6 @@ div.detailsListDiv tr td {
             </div></el-col>
         </el-row>
          <el-row class="marginTop">
-             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div></el-col>
-                <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
-                    <el-radio v-model="optype"  label="1,2">全部</el-radio>
-                    <el-radio v-model="optype"  label="1">登录</el-radio>
-                    <el-radio v-model="optype"  label="2">登出</el-radio>
-                </el-col>
-                <el-col :span="2">
-                   
-                </el-col> 
-            </div></el-col>
             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                 <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
@@ -73,6 +60,17 @@ div.detailsListDiv tr td {
                 </el-col>
                 <el-col :span="2">
                    
+                </el-col> 
+            </div></el-col>
+            <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div></el-col>
+                <el-col :xs="18" :sm="18" :md="12" :lg="16" :xl="16">
+                    <el-radio v-model="optype"  label="1,2">全部</el-radio>
+                    <el-radio v-model="optype"  label="1">登录</el-radio>
+                    <el-radio v-model="optype"  label="2">登出</el-radio>
+                </el-col>
+                <el-col :span="2">
+                    
                 </el-col> 
             </div></el-col>
         </el-row>
@@ -259,14 +257,16 @@ export default {
   },
   methods: {
     search(t) {
+        let vm=this;
+        vm.form.page="";
+        vm.searchList = "";
         if(this.phone!=''){
             checkMobile(this.phone,function(){return false});
         }
-        let vm = this,
-        sy=new Date(vm.startTime).getFullYear(),
-        sm=new Date(vm.startTime).getMonth(),
-        ey=new Date(vm.endTime).getFullYear(),
-        em=new Date(vm.endTime).getMonth();
+        let sy=new Date(vm.startTime).getFullYear(),
+            sm=new Date(vm.startTime).getMonth(),
+            ey=new Date(vm.endTime).getFullYear(),
+            em=new Date(vm.endTime).getMonth();
         if(sy!=ey||sm!=em){
             layer.open({
                 content:'开始和结束日期不能跨月',

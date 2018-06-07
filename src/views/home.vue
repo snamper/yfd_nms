@@ -4,7 +4,7 @@ span.iconFoldOpen{display: inline-block;width: 18px;height: 18px;background: url
 span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: url("../assets/images/icon/more.svg") no-repeat;background-position: center center;background-size: contain}
 </style>
 <template>
-  <div class="f-scroll-lt" id="home" :class={active:off.headMenu}>
+  <div class="f-scroll-lt" id="home" :class={active:off.headMenu}  ref="psec">
   	<header class="g-head">
 		<table cellspacing="0">
 			<tbody>

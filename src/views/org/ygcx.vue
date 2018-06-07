@@ -163,10 +163,14 @@ export default{
     },
 	methods:{
         search(p){//查询
+            let vm=this
+            vm.off.searchList=false;
+            vm.form.page="";                    
+            vm.detailsList="";
             if(this.phone!=''){
                 checkMobile(this.phone,function(){return false});
             }
-            let load=Loading.service(options),data={},url='/ums/w/user/userSearch',vm=this;
+            let load=Loading.service(options),data={},url='/ums/w/user/userSearch';
              vm.pa=p||1;
              vm.currentPage=p||1;
                 data={

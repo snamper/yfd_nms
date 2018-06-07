@@ -30,23 +30,21 @@ div.detailsListDiv tr td {
                    <div class="block">
                         <el-date-picker
                         v-model="startTime"
-                        size="mini"
+                        size="small"
                         type="datetime"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsS"
                         @change="changeTimeS"
-                        style="width:170px;"
                         placeholder="选择开始时间">
                         </el-date-picker>—<el-date-picker
                         v-model="endTime"
-                        size="mini"
+                        size="small"
                         type="datetime"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsE"
-                        @change="changeTimeE"
-                        style="width:170px;"                            
+                        @change="changeTimeE"                           
                         placeholder="选择结束时间">
                         </el-date-picker>
                     </div>
@@ -253,14 +251,17 @@ export default {
     },
     methods: {
         search(index) {//查询
+            let vm=this;
+                vm.off.logList="";
+                vm.form.page = "";
+                vm.searchResult = "";
             if(this.phone!=''){
                 checkMobile(this.phone,function(){return false});
             }
-            let vm=this, 
-            sy=new Date(vm.startTime).getFullYear(),
-            sm=new Date(vm.startTime).getMonth(),
-            ey=new Date(vm.endTime).getFullYear(),
-            em=new Date(vm.endTime).getMonth();
+            let sy=new Date(vm.startTime).getFullYear(),
+                sm=new Date(vm.startTime).getMonth(),
+                ey=new Date(vm.endTime).getFullYear(),
+                em=new Date(vm.endTime).getMonth();
             if(sy!=ey||sm!=em){
                 layer.open({
                     content:'开始和结束日期不能跨月',

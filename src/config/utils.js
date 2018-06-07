@@ -13,13 +13,13 @@ export const errorDeal=(res,cb)=>{
             store.commit("SIGN_OUT");
             layer.closeAll();
         }
-    })) : res.code=="404" ? (layer.open({
-            content:"找不到服务器",
+    })) : res.hasOwnProperty("msg")?(layer.open({
+            content:res.msg||res.statusText||res,
             skin: 'msg',
             time: 4,
             msgSkin:'error',
     })) : layer.open({
-            content:res.msg||res.statusText||res,
+            content:"网络异常",
             skin: 'msg',
             time: 4,
             msgSkin:'error',

@@ -243,6 +243,9 @@ export default{
             let data={},url='/ums/w/user/getDepartDetail',vm=this;
             vm.pa=p||1;
             vm.currentPage=p||1;
+            vm.off.searchList=false;
+            vm.form.page="";
+            vm.detailsList="";
             if(vm.phone!=''){
                 checkMobile(vm.phone,function(){return false});
             }

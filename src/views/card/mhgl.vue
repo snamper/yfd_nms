@@ -11,7 +11,7 @@
     .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
 </style>
 <template>
-    <section>
+    <section ref="sec">
         <div v-if="off.notCardDetails">
             <!-- 查询模块 -->
             <div class="dls greyFont">
@@ -228,8 +228,8 @@
                                 </td>
                             </tr>
                             <tr v-if="searchList.length>0">
-                                <td colspan="11" style="text-align:left">
-                                    选择:<a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
+                                <td colspan="11" style="text-align:left" class="pl20">
+                                    选择 : <a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
                                     <!-- <a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a> -->
                                 </td>
                             </tr>
@@ -251,7 +251,7 @@
                             </el-pagination>
                         </div></el-col>
                         <el-col :span="12" v-if="nowStatusHidden!=6">
-                            <div class="grid-content bg-purple-light fr">操作:<el-button size="mini" @click="doFounction(1)">上架</el-button><el-button size="mini" @click="doFounction(2)">下架</el-button></div>
+                            <div class="grid-content bg-purple-light fr">操作 : <el-button size="mini" @click="doFounction(1)">上架</el-button><el-button size="mini" @click="doFounction(2)">下架</el-button></div>
                         </el-col>
                         </el-row>
                     </div>
@@ -518,10 +518,14 @@ export default{
             }
         }
         ,search(p){//查询
+            let vm=this;
+            vm.searchList="";
+            vm.total="";
+            vm.form.page="";
             if(this.phone!=''){
                 checkMobile(this.phone,function(){return false});
             }
-            let load=Loading.service(options),checked=[],data={},url='/nms/w/number/productSearch',vm=this;
+            let load=Loading.service(options),checked=[],data={},url='/nms/w/number/productSearch';
             vm.pa=p||1;
             for(let i in vm.checkedCities){
                 checked.push(cityOptions.indexOf(vm.checkedCities[i])+1);
@@ -637,7 +641,13 @@ export default{
             }else if(val=='1'){
                 vm.dourl="/nms/w/number/putOnProducts";
                 this.a="上架";
-            }            
+            } 
+           setTimeout(()=>{
+               this.funScrollTop()
+           },50)
+        },
+        funScrollTop(){
+            this.$parent.$refs.psec.scrollTop=this.$parent.$refs.psec.scrollHeight;
         }
         ,getAuthCode(){
             const TIME_COUNT = 120;
@@ -770,7 +780,7 @@ export default{
             vm.layerType="confirmModifyPrice";
             vm.logistics=i;
             vm.off.layerChangePrice=true;
-            vm.searchDataChangePrice={"productId":i.productId,"strikePrice":vm.translateSealPrice}
+            vm.searchDataChangePrice={"productId":i.productId,"buyerId":i.userId,"strikePrice":vm.translateSealPrice}
         },changePriceReq(){
             requestModify_Price(vm.searchDataChangePrice)
             .then((data)=>{

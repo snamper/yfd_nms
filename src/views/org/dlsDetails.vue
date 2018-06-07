@@ -9,10 +9,10 @@
                 <el-container>
                     <el-header class="headTitleNav">
                         <el-row>
-                            <el-col :xs="10" :sm="10" :md="10" :lg="10" :xl="10"><div class="grid-content bg-purple greyFont">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcdb">{{company}}</span></div></el-col>
-                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple-light greyFont">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerName}}</span></div></el-col>
-                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6"><div class="grid-content bg-purple greyFont">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerPhone}}</span></div></el-col>
-                            <el-col :xs="2" :sm="2" :md="2" :lg="2" :xl="2"><div class="grid-content bg-purple-light fr"><a class="fcaqua" href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
+                            <el-col :xs="18" :sm="18" :md="18" :lg="10" :xl="10"><div class="grid-content bg-purple greyFont">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcdb">{{company}}</span></div></el-col>
+                            <el-col :xs="6" :sm="4" :md="4" :lg="6" :xl="6" class="hidden-md-and-down"><div class="grid-content bg-purple-light greyFont">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerName}}</span></div></el-col>
+                            <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" class="hidden-md-and-down"><div class="grid-content bg-purple greyFont">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerPhone}}</span></div></el-col>
+                            <el-col :xs="6" :sm="6" :md="6" :lg="2" :xl="2"><div class="grid-content bg-purple-light fr"><a class="fcaqua" href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
                         </el-row>
                     </el-header>
                 </el-container>                    
@@ -164,7 +164,7 @@
                 </el-pagination>    
             </div></el-col>
             <el-col :span="12">
-                <div class="grid-content bg-purple-light fr">操作:<el-button size="mini" @click="doFunction('offLine')">强制离线</el-button><el-button size="mini" @click="doFunction('addBlack')">加入黑名单</el-button><el-button size="mini" @click="doFunction('cancelBlack')">解除黑名单</el-button><el-button size="mini" @click="doFunction('delete')">删除</el-button></div>
+                <div class="grid-content bg-purple-light fr">操作 : <el-button size="mini" @click="doFunction('offLine')">强制离线</el-button><el-button size="mini" @click="doFunction('addBlack')">加入黑名单</el-button><el-button size="mini" @click="doFunction('cancelBlack')">解除黑名单</el-button><el-button size="mini" @click="doFunction('delete')">删除</el-button></div>
             </el-col>
             </el-row>
         </div>
@@ -391,10 +391,12 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,search(p){//查询
+            let  vm=this;
+            vm.$parent.detailsList="";
             if(this.phone!=''){
                 checkMobile(this.phone,function(){return false});
             }
-            let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
+            let data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
             data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.radio,username:vm.name,phone:vm.phone,pageNum:p||1,pageSize:"10"};
             requestMethod(data,url,function(){load.close()})
             .then((data)=>{
