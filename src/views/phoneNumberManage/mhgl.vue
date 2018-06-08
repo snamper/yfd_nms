@@ -548,13 +548,15 @@ export default{
             requestMethod(data,url,function(){load.close()})
             .then((data)=>{
                 if(data.code==200){
-                    vm.off.searchList=true;
                     vm.searchList=data.data.products;
                     vm.total=data.data.total;
                     vm.form.page=data.data.total;
                     vm._copyData=vm.copyData(data.data.products);
                     vm.nowStatusHidden=vm.nowStatus;
                 }else{
+                    vm.searchList="";
+                    vm.total="";
+                    vm.form.page="";
                     errorDeal(data);
                 }
             }).then(()=>{
@@ -566,9 +568,7 @@ export default{
                 }
                 vm.off.modify=false;
                 this.resetTimer()
-            }).then(()=>{
-                load.close(); 
-            }).catch(e=>errorDeal(e),function(){load.close()});
+            }).catch(e=>errorDeal(e,()=>{ vm.searchList="";vm.total="";vm.form.page="";}));
         }
         ,copyData: function (dataSource) {  
             var obj={};  

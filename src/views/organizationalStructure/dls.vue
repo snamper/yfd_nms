@@ -305,9 +305,6 @@ export default{
             sm=new Date(vm.startTime).getMonth(),
             ey=new Date(vm.endTime).getFullYear(),
             em=new Date(vm.endTime).getMonth();
-            vm.total="";
-            vm.searchList="";
-            vm.form.page="";
             if(sy!=ey||sm!=em){
                 layer.open({
                     content:'开始和结束日期不能跨月',
@@ -327,7 +324,7 @@ export default{
                 return false;
             }
             if(vm.phone!=''){
-                checkMobile(vm.phone,function(){return false});
+                checkMobile(vm.phone,function(){vm.total="";vm.searchList="";vm.form.page="";return false});
             }
             let load=Loading.service(options),data={},url='/ums/w/user/departSearch';
             vm.pa=p||1;
@@ -350,9 +347,12 @@ export default{
                     vm.searchList=data.data.departs;//查询内容
                     vm.form.page=data.data.total
                 }else{
+                    vm.total="";
+                    vm.searchList="";
+                    vm.form.page="";
                     errorDeal(data);
                 }
-            }).catch(e=>errorDeal(e));
+            }).catch(e=>errorDeal(e,()=>{vm.total="";vm.searchList="";vm.form.page="";}));
         }
         ,getDetails(v){//查看详情
             let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);

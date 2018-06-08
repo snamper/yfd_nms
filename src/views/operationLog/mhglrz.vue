@@ -251,11 +251,9 @@ export default {
     methods: {
         search(index) {//查询
             let vm=this;
-                vm.off.logList="";
-                vm.form.page = "";
-                vm.searchResult = "";
+                
             if(this.phone!=''){
-                checkMobile(this.phone,function(){return false});
+                checkMobile(this.phone,function(){vm.off.logList="";vm.form.page = "";vm.searchResult = "";return false});
             }
             let sy=new Date(vm.startTime).getFullYear(),
                 sm=new Date(vm.startTime).getMonth(),
@@ -299,10 +297,11 @@ export default {
                 vm.form.page = data.data.total;
                 vm.searchResult = data.data.records;
             } else {
+                vm.off.logList="";vm.form.page = "";vm.searchResult = "";return false
                 errorDeal(data);
             }
             })
-            .catch(e => errorDeal(e));
+            .catch(e => errorDeal(e,()=>{vm.off.logList="";vm.form.page = "";vm.searchResult = "";return false}));
         },
         openDetails(v) {//详情
         let vm = this;

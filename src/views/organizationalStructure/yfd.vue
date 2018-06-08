@@ -243,11 +243,8 @@ export default{
             let data={},url='/ums/w/user/getDepartDetail',vm=this;
             vm.pa=p||1;
             vm.currentPage=p||1;
-            vm.off.searchList=false;
-            vm.form.page="";
-            vm.detailsList="";
             if(vm.phone!=''){
-                checkMobile(vm.phone,function(){return false});
+                checkMobile(vm.phone,function(){vm.off.searchList=false;vm.form.page="";vm.detailsList="";return false});
             }
             data={
             "searchDepartId":"1803160000",
@@ -264,6 +261,9 @@ export default{
                     vm.form.page=data.data.total;
                     vm.detailsList=data.data.users;
                 }else{
+                    vm.off.searchList=false;
+                    vm.form.page="";
+                    vm.detailsList="";
                     layer.open({
                         content:data.msg,
                         skin: 'msg',
@@ -271,7 +271,7 @@ export default{
                         msgSkin:'error',
                     });
                 }  
-            }).catch(e=>errorDeal(e));            
+            }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
         }
         ,getStaffDetails(p){
             let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);

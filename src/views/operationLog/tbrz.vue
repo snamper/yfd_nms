@@ -262,10 +262,8 @@ export default {
   methods: {
     search(p) {
         let vm=this; 
-        vm.form.page="";
-        vm.form.searchList="";
         if(this.operatorPhone!=''){
-            checkMobile(this.operatorPhone,function(){return false});
+            checkMobile(this.operatorPhone,function(){vm.form.page="";vm.form.searchList="";return false});
         }
         let sy=new Date(vm.startTime).getFullYear(),
             sm=new Date(vm.startTime).getMonth(),
@@ -306,9 +304,10 @@ export default {
                 vm.form.page=data.data.total;
                 vm.form.searchList=data.data.records;
             }else{
+                vm.form.page="";vm.form.searchList="";
                 errorDeal(data)
             }
-        }).catch(e=>errorDeal(e))
+        }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.form.searchList="";}))
     },
     details(v,i){
         let vm=this,

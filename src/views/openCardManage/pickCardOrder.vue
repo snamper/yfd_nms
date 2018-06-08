@@ -325,8 +325,6 @@ export default {
     methods: {
         search(index) {//查询
             let vm=this,data={};
-            vm.form.page="";
-            vm.searchResult="";
             vm.pa=index||1;
             if(vm.form.searchKind==1){
                 if(vm.orderId==''){
@@ -367,9 +365,14 @@ export default {
             }
             requestPickupOrder(data,function(){load.close()})
             .then((data)=>{
-                vm.form.page=data.data.total;
-                vm.searchResult=data.data.list;
-            }).catch(e=>errorDeal(e))
+                if(data.code==200){
+                    vm.form.page=data.data.total;
+                    vm.searchResult=data.data.list;
+                }else{
+                    vm.form.page="";vm.searchResult="";
+                    errorDeal(data);
+                }
+            }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.searchResult="";}))
         },
         details(v){
             let vm=this;

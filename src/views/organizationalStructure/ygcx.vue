@@ -163,12 +163,9 @@ export default{
     },
 	methods:{
         search(p){//查询
-            let vm=this
-            vm.off.searchList=false;
-            vm.form.page="";                    
-            vm.detailsList="";
+            let vm=this;
             if(this.phone!=''){
-                checkMobile(this.phone,function(){return false});
+                checkMobile(this.phone,function(){vm.off.searchList=false;vm.form.page="";vm.detailsList="";return false});
             }
             let load=Loading.service(options),data={},url='/ums/w/user/userSearch';
              vm.pa=p||1;
@@ -179,13 +176,16 @@ export default{
                 ,"userState":vm.radio
                 ,"pageSize":15
                 ,"pageNum":p||1}
-            requestMethod(data,url)
+            requestMethod(data,url,function(){load.close()})
             .then((data)=>{
                 if(data.code==200){
                     vm.off.searchList=true;
                     vm.form.page=data.data.total;                    
                     vm.detailsList=data.data.users;
                 }else{
+                    vm.off.searchList=false;
+                    vm.form.page="";                    
+                    vm.detailsList="";
                     layer.open({
                         content:data.msg,
                         skin: 'msg',
@@ -193,9 +193,7 @@ export default{
                         msgSkin:'error',
                     });
                 }  
-            }).then(()=>{
-                load.close(); 
-            }).catch(e=>errorDeal(e),load.close());            
+            }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
         },
         getDetails(v){
             

@@ -257,10 +257,8 @@ export default {
   methods: {
     search(t) {
         let vm=this;
-        vm.form.page="";
-        vm.searchList = "";
         if(this.phone!=''){
-            checkMobile(this.phone,function(){return false});
+            checkMobile(this.phone,function(){vm.form.page="";vm.searchList = "";return false});
         }
         let sy=new Date(vm.startTime).getFullYear(),
             sm=new Date(vm.startTime).getMonth(),
@@ -303,10 +301,10 @@ export default {
             vm.form.page=data.data.total;
             vm.searchList = data.data.records;
           } else {
+            vm.form.page="";vm.searchList = "";
             errorDeal(data);
           }
-        })
-        .catch(e => errorDeal(e));
+        }).catch(e => errorDeal(e,()=>{vm.form.page="";vm.searchList = "";}));
     },
     openDetails(v) {
       let vm = this;
