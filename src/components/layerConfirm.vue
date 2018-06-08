@@ -131,7 +131,7 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                 <tbody>
                     <tr>
                         <td>
-                            <el-input v-model="payMoney" placeholder="请输入付款金额，以元为单位，例如0.00" size="small"></el-input>
+                            <el-input v-model="payMoney" placeholder="请输入付款金额，以元为单位" size="small"></el-input>
                         </td>
                     </tr>
                     <tr>
@@ -280,9 +280,9 @@ export default{
             }).catch(e=>errorDeal(e));
             }else if(e=="payMent"){//修改单号
                 let regular = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
-                if(!regular.test(v)){
+                if(!regular.test(vm.payMoney)){
                     layer.open({
-                        content:"请输入正确的金额，以元为单位，例如0.00",
+                        content:"请输入正确的金额，以元为单位，例如1.00",
                         skin: 'msg',
                         time: 2,
                         msgSkin:'error',
