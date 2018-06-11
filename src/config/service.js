@@ -8,7 +8,7 @@ export const requestConfirmDelNotice=(data)=>fetch("/mns/w/msg/delete",data,"POS
 export const requestSyncLogSearch=(data,load)=>fetch("/ors/w/record/syncSearch",data,"POST",load);
 export const requestLoginLogSearch=(data,load)=>fetch("/ors/w/record/loginRecordSearch",data,"POST",load);
 export const requestCardLogSearch=(data,load)=>fetch("/ors/w/record/numOperRecordSearch",data,"POST",load);
-export const requestgetSyncTime=(data)=>fetch("/ors/w/record/getSyncTime",data,"POST");
+export const requestgetSyncTime=(data,load)=>fetch("/ors/w/record/getSyncTime",data,"POST",load);
 /* 提卡订单管理 */ 
 export const requestPickupOrder=(data,load)=>fetch("/nms/w/order/search",data,"POST",load)
 export const requestProductDetails=(data,load)=>fetch("/nms/w/number/getProductDetail",data,"POST",load)

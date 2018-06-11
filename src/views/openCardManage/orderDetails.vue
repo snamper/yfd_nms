@@ -89,7 +89,7 @@
                 </div>
             </div>
         </div>
-        <card-details v-if="off.cardDetails" :listSwitch="listSwitch" :dataList="searchResData" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-details>
+        <card-details :pickCardSwitch="off.pickCardDetailsSwitch" v-if="off.cardDetails" :listSwitch="listSwitch" :dataList="searchResData" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-details>
     </section>
 </template>
 <script>
@@ -109,7 +109,8 @@ export default{
             searchPu:[],
 			off:{   
                 notCardDetails:true,
-                cardDetails:false
+                cardDetails:false,
+                pickCardDetailsSwitch:true
 			}
 		}
 	},
@@ -127,10 +128,10 @@ export default{
                     this.$set(vm.listSwitch,'allDetails',true)
                     vm.searchResData=data.data
                 }
-                url="/nms/w/number/getProductNumbers";                                    
             })
             .then(()=>{
                 if(v=='l'){
+                    url="/nms/w/number/getProductCuteNumbers";
                     data.phoneLevel=2;
                     requestMethod(data,url)
                     .then((data)=>{
@@ -155,6 +156,7 @@ export default{
                         }
                     })
                 }else if(v=='p'){
+                    url="/nms/w/number/getProductNumbers";
                     data.phoneLevel=1;
                     requestMethod(data,url)
                     .then((data)=>{

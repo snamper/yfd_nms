@@ -178,7 +178,7 @@ div.detailsListDiv tr td {
 <script>
 import { getDateTime,disableTimeRange6,checkMobile,getTimeFunction} from "../../config/utils";
 import logDet from "../../components/logDetails";
-import { requestLoginLogSearch } from "../../config/service";
+import { requestLoginLogSearch,requestMethod } from "../../config/service";
 import {errorDeal} from "../../config/utils";
 import { Loading } from 'element-ui';
 export default {
@@ -308,11 +308,12 @@ export default {
     },
     openDetails(v) {
       let vm = this;
-      vm.off.logDet = true;
       let data = { searchRecordId: v.recordId, searchRecordTime: v.recordTime };
-      requestMethod(data,"/ors/w/record/getLoginRecordDetail")
+      let load=Loading.service(options);              
+      requestMethod(data,"/ors/w/record/getLoginRecordDetail",()=>{load.close()})
         .then(data => {
           if (data.code == 200) {
+            vm.off.logDet = true;              
             vm.detailsList = data.data;
           } else {
             errorDeal(data);

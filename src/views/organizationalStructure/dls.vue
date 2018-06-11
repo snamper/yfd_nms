@@ -326,7 +326,8 @@ export default{
             if(vm.phone!=''){
                 checkMobile(vm.phone,function(){vm.total="";vm.searchList="";vm.form.page="";return false});
             }
-            let load=Loading.service(options),data={},url='/ums/w/user/departSearch';
+            let data={},url='/ums/w/user/departSearch';
+            vm.load=Loading.service(options);
             vm.pa=p||1;
             vm.currentPage=p||1;
             data={
@@ -340,7 +341,7 @@ export default{
                 ,"pageSize":15
                 ,"pageNum":p||1}
                 this.getSyncTime();
-            requestMethod(data,url,()=>{load.close()})
+            requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     vm.total=data.data.total;//查询总数
@@ -419,7 +420,7 @@ export default{
         getSyncTime(){
             let vm=this;
             let data={recordType:3};
-            requestgetSyncTime(data)
+            requestgetSyncTime(data,function(){vm.load.close()})
             .then((data)=>{
                 if(data.code==200){
                     vm.syncLastTime=data.data.syncLastTime

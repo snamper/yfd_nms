@@ -206,6 +206,7 @@ export default{
         },
         AddStaff(){//添加员工按钮
             let data={"newUsers":[],authCode:''},vm=this;
+            vm.addAble=0; 
             for(let i=0;i<this.list.length;i++){
                 this.list[i].userRole="";
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){

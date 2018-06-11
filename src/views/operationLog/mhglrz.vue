@@ -170,10 +170,9 @@ div.detailsListDiv tr td {
   	</section>
 </template>
 <script>
-import { getDateTime,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
-import {errorDeal} from "../../config/utils";
+import {errorDeal, getDateTime,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import logDet from "../../components/logDetails";
-import { requestCardLogSearch } from "../../config/service";
+import { requestCardLogSearch,requestMethod } from "../../config/service";
 import { Loading } from 'element-ui';
 export default {
     data() {
@@ -305,17 +304,18 @@ export default {
         },
         openDetails(v) {//详情
         let vm = this;
-        vm.off.logDet = true;
         let data = { searchRecordId: v.recordId, searchRecordTime: v.recordTime };
-        requestMethod(data, "/ors/w/record/getNumOperRecordDetail")
-            .then(data => {
-            if (data.code == 200) {
-                vm.detailsList = data.data;
-            } else {
-                errorDeal(data);
-            }
-            })
-            .catch(e => errorDeal(e));
+        let load=Loading.service(options);        
+        requestMethod(data, "/ors/w/record/getNumOperRecordDetail",()=>{load.close()})
+        .then(data => {
+        if (data.code == 200) {
+            vm.off.logDet = true;            
+            vm.detailsList = data.data;
+        } else {
+            errorDeal(data);
+        }
+        })
+        .catch(e => errorDeal(e));
         },
         changeTimeS(e){
             let vm=this,

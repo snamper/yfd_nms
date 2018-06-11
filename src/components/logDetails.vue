@@ -27,7 +27,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
 			<tbody v-if="layerType=='number'">
                 <tr>
                     <td>号包名称：</td>
-                    <td colspan="2">{{detailsData.productName}}</td>
+                    <td colspan="2">{{detailsData.productName||'--'}}</td>
                 </tr>
                 <tr>
                     <td>号包类型：</td>
@@ -35,6 +35,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                         <span v-if="detailsData.productType==1">整号包</span>
                         <span v-if="detailsData.productType==2">靓号包</span>
                         <span v-if="detailsData.productType==3">普号包</span>
+                        <span v-if="detailsData.productType!=3">普号包</span>
                     </td>
                 </tr>
                 <tr>
@@ -83,11 +84,11 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                 </tr>
                 <tr>
                     <td>操作人：</td>
-                    <td colspan="2">{{detailsData.operatorName}}</td>
+                    <td colspan="2">{{detailsData.operatorName||'--'}}</td>
                 </tr>
                 <tr>
                     <td>手机号码：</td>
-                    <td colspan="2">{{detailsData.operatorPhone}}</td>
+                    <td colspan="2">{{detailsData.operatorPhone||'--'}}</td>
                 </tr>
                 <tr>
                     <td>操作类型：</td>
@@ -105,7 +106,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                 </tr>
                 <tr v-if="detailsData.recordResult==2">
                     <td >失败原因：</td>
-                    <td colspan="2">{{detailsData.reason}}</td>
+                    <td colspan="2">{{detailsData.reason||'--'}}</td>
                 </tr>
 			</tbody>
             <tbody v-if="layerType=='login'">
@@ -153,13 +154,14 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                 </tr>
                 <tr>
                     <td >登录版本号/IP：<span></span></td>
+                    <td>{{'--'}}</td>
                 </tr>
                 <tr>
                     <td>登录地址：</td>
                     <td colspan="2">
                         <!-- <a href="javascript:void(0)"  @click="toMap">【查看地图】</a> -->
                         <span v-if="detailsData.latitude"> 
-                            {{detailsData.latitude}},{{detailsData.longitude}}
+                            {{detailsData.latitude||'--'}},{{detailsData.longitude||'--'}}
                             <a href="javascript:void(0)" @click="toMap" >【查看地图】</a>
                         </span>
                         <span v-if="!detailsData.latitude"> 
@@ -175,7 +177,8 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                     </td>
                 </tr>
                 <tr>
-                    <td>当前状态：<span>{{"--"}}</span></td>
+                    <td>当前状态：</td>
+                    <td>{{'--'}}</td>
                 </tr>
                 <tr v-if="detailsData.recordResult==2">
                     <td>失败原因：

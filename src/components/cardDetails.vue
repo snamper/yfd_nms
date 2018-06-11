@@ -37,10 +37,14 @@
                     </tr>
                     <tr>
                         <td>码号数量 ：
-                            <span class="deepGreyFont f-s-14">
+                            <span class="deepGreyFont f-s-14" v-if="!pickCardSwitch">
                                 <span v-if="dataList.productType==1">{{dataList.normalTotal+dataList.cuteTotal}}</span>
                                 <span v-if="dataList.productType==2">{{dataList.cuteTotal}}</span>
                                 <span v-if="dataList.productType==3">{{dataList.normalTotal}}</span>
+                            </span>
+                            <span class="deepGreyFont f-s-14" v-if="pickCardSwitch">
+                                <span v-if="listSwitch.liang">{{dataList.cuteTotal}}</span>
+                                <span v-if="listSwitch.pu">{{dataList.normalTotal}}</span>
                             </span>
                         </td>
                         <td>修改时间 ：
@@ -111,7 +115,7 @@
 <script>
 import { getDateTime,getUnixTime,errorDeal } from "../config/utils.js";
 export default{
-    props:{dataList:Object,dataListLiang:Array,dataListPu:Array,listSwitch:Object},        
+    props:{dataList:Object,dataListLiang:Array,dataListPu:Array,listSwitch:Object,pickCardSwitch:Boolean},        
     data (){
 		return {
             pageNumDetails:"",//号包详情

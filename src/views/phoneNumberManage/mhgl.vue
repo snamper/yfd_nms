@@ -169,7 +169,7 @@
                                 <td class="tac" style="width:140px">
                                     <div v-if="!off.changePrice[i+1]">
                                         <span>{{(v.totalPrice/100).toFixed(2)}}</span>
-                                        <el-button v-if="v.productState==6" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
+                                        <el-button v-if="v.isInCart==1" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
                                     </div>
                                     <div class="box" v-if="off.changePrice[i+1]">
                                         <span class="span1">
@@ -421,9 +421,9 @@ export default{
                 }
             }).then(()=>{
                 if(v.productType==1||v.productType==2){
-                    url="/nms/w/number/getProductNumbers";
+                    url="/nms/w/number/getProductCuteNumbers";
                     data.phoneLevel=2;
-                    requestMethod(data,url)
+                    requestMethod(data,url,function(){load.close()})
                     .then((data)=>{
                         if(data.code==200){
                             this.$set(vm.listSwitch,'liang',true)
@@ -450,7 +450,7 @@ export default{
                 if(v.productType==1||v.productType==3){
                     url="/nms/w/number/getProductNumbers";
                     data.phoneLevel=1;
-                    requestMethod(data,url)
+                    requestMethod(data,url,function(){load.close()})
                     .then((data)=>{
                         if(data.code==200){
                             this.$set(vm.listSwitch,'pu',true)                                                      
@@ -461,7 +461,6 @@ export default{
                             vm.searchPu.len=data.data.numbers.length;                        
                             this.off.notCardDetails=false;
                             this.off.cardDetails=true;
-                            load.close();
                         }
                     }).catch(e=>errorDeal(e),function(){load.close()});
                 }else{
@@ -519,13 +518,11 @@ export default{
         }
         ,search(p){//查询
             let vm=this;
-            vm.searchList="";
-            vm.total="";
-            vm.form.page="";
             if(this.phone!=''){
-                checkMobile(this.phone,function(){return false});
+                checkMobile(this.phone,function(){vm.searchList="";vm.total="";vm.form.page="";return false});
             }
-            let load=Loading.service(options),checked=[],data={},url='/nms/w/number/productSearch';
+            let checked=[],data={},url='/nms/w/number/productSearch';
+            vm.load=Loading.service(options);
             vm.pa=p||1;
             for(let i in vm.checkedCities){
                 checked.push(cityOptions.indexOf(vm.checkedCities[i])+1);
@@ -544,8 +541,7 @@ export default{
                 "pageSize":10
                 ,"pageNum":p||1}
             vm.searchData=data;
-            vm.getSyncTime();
-            requestMethod(data,url,function(){load.close()})
+            requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     vm.searchList=data.data.products;
@@ -567,8 +563,9 @@ export default{
                     vm.$set(vm.off.changePrice,i,false)
                 }
                 vm.off.modify=false;
-                this.resetTimer()
-            }).catch(e=>errorDeal(e,()=>{ vm.searchList="";vm.total="";vm.form.page="";}));
+                this.resetTimer();
+                this.getSyncTime();
+            }).catch(e=>errorDeal(e,()=>{vm.searchList="";vm.total="";vm.form.page="";}));
         }
         ,copyData: function (dataSource) {  
             var obj={};  
@@ -748,7 +745,7 @@ export default{
         getSyncTime(){
             let vm=this;
             let data={recordType:3};
-            requestgetSyncTime(data)
+            requestgetSyncTime(data,function(){vm.load.close()})
             .then((data)=>{
                 if(data.code==200){
                     vm.syncLastTime=data.data.syncLastTime
@@ -780,7 +777,7 @@ export default{
             vm.layerType="confirmModifyPrice";
             vm.logistics=i;
             vm.off.layerChangePrice=true;
-            vm.searchDataChangePrice={"productId":i.productId,"buyerId":i.userId,"strikePrice":vm.translateSealPrice}
+            vm.searchDataChangePrice={"productId":i.productId,"buyerId":i.userId,"strikePrice":vm.translateSealPrice*100}
         },changePriceReq(){
             requestModify_Price(vm.searchDataChangePrice)
             .then((data)=>{

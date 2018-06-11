@@ -81,8 +81,8 @@
                             </div>
                         </el-col>
                         <el-col :xs="24" :sm="9" :md="8" :lg="8" :xl="8" class="f-s-16">
-                            ( <el-radio v-model="timeType"  label="1">修改时间</el-radio>
-                            <el-radio v-model="timeType"  label="2">创建时间</el-radio> )
+                            ( <el-radio v-model="timeType"  label="1">创建时间</el-radio>
+                            <el-radio v-model="timeType"  label="2">修改时间</el-radio> )
                         </el-col>
                     </el-col>
                     <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
@@ -147,7 +147,7 @@
                             </tr>
                             <tr v-for="(v,i) of searchResult" :key="i">
                                 <td>
-                                    {{((pa-1)*15+(i+1))}}
+                                    {{((pa-1)*10+(i+1))}}
                                 </td>
                                 <td >
                                     {{v.createTime}}
@@ -224,7 +224,7 @@
                                         layout="prev, pager, next"
                                         :page-size="10"
                                         @current-change="search"
-                                        :total="form.page/10">
+                                        :total="form.page">
                                     </el-pagination>    
                                 </div>
                             </el-col>
@@ -233,8 +233,8 @@
                 </div>
             </div>
         </div>
-        <order-details v-if="off.details" :detailsData="productDetails"></order-details> 
-        <layer-confirm v-if="off.layer" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>   
+        <order-details v-if="off.details" :detailsData="productDetails" ></order-details> 
+        <layer-confirm v-if="off.layer"  :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>   
   	</section>
 </template>
 <script>
@@ -270,7 +270,7 @@ export default {
             },
             form: {
                 page: 0,
-                searchKind:'1',
+                searchKind:3,
             }, 
             pickerOptionsS: {
                 disabledDate(time){

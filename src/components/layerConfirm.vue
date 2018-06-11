@@ -306,7 +306,7 @@ export default{
             requestConfirmPayMent(data)
             .then((data)=>{
                 this.$parent.search(vm.$parent.pa);
-                this.$parent.off.layer=false;
+                this.$parent.off.layerChangePrice=false;
                 if(data.code==200){
                     layer.open({
                         content:"操作成功",
@@ -322,6 +322,8 @@ export default{
                     for(let i in vm.$parent.off.changePrice){
                         vm.$set(vm.$parent.off.changePrice,i,false)
                     }
+                    this.$parent.search(vm.$parent.pa);                    
+                    this.$parent.off.layer=false;                
                     if(data.code==200){
                         layer.open({
                             content:"修改价格成功",
@@ -330,7 +332,7 @@ export default{
                             msgSkin:"success"
                         })
                     }
-                    this.search();
+                this.$parent.search(vm.$parent.pa);
                 }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
             }
         },
