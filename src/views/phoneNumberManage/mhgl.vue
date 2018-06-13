@@ -418,68 +418,48 @@ export default{
                     this.$set(vm.listSwitch,'allDetails',true)
                     vm.searchResData=data.data
                 }
-            }).then(Promise.all([new Promise((resolve,reject)=>{
-                if(v.productType==1||v.productType==2){
-                    url="/nms/w/number/getProductCuteNumbers";
-                    data.phoneLevel=2;
-                    requestMethod(data,url)
-                    .then((data)=>{
-                        resolve('yes');
-                        this.$set(vm.listSwitch,'liang',true)
+            }).then(
+                Promise.all([new Promise((resolve,reject)=>{
+                    if(v.productType==1||v.productType==2){
+                        url="/nms/w/number/getProductCuteNumbers";
+                        data.phoneLevel=2;
+                        requestMethod(data,url)
+                        .then((data)=>{
+                            resolve('yes');
+                            this.$set(vm.listSwitch,'liang',true)
+                            vm.searchLiang=[]
+                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                            }
+                            vm.searchLiang.len=data.data.numbers.length;
+                        }).catch(e=>errorDeal(e,load.close()))
+                    }else{
                         vm.searchLiang=[]
-                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                            vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                    }
+                })]).then(
+                    Promise.all([new Promise((resolve,reject)=>{
+                        if(v.productType==1||v.productType==3){
+                            url="/nms/w/number/getProductNumbers";
+                            data.phoneLevel=1;
+                            requestMethod(data,url)
+                            .then((data)=>{
+                                resolve('yes');                        
+                                this.$set(vm.listSwitch,'pu',true)                                                      
+                                vm.searchPu=[]
+                                for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                    vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                                }
+                                vm.searchPu.len=data.data.numbers.length;                        
+                            }).catch(e=>errorDeal(e,function(){load.close()}))
+                        }else{
+                            vm.searchPu=[]
                         }
-                        vm.searchLiang.len=data.data.numbers.length;
-                    }).catch(e=>errorDeal(e,load.close()))
-                }else{
-                    vm.searchLiang=[]
-                }
-            })]).then(Promise.all([new Promise((resolve,reject)=>{
-                if(v.productType==1||v.productType==3){
-                    url="/nms/w/number/getProductNumbers";
-                    data.phoneLevel=1;
-                    requestMethod(data,url)
-                    .then((data)=>{
-                        resolve('yes');                        
-                        this.$set(vm.listSwitch,'pu',true)                                                      
-                        vm.searchPu=[]
-                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
-                        }
-                        vm.searchPu.len=data.data.numbers.length;                        
-                    }).catch(e=>errorDeal(e,function(){load.close()}))
-                }else{
-                    vm.searchPu=[]
-                }
-            })]).then((result)=>{
-                console.log(result);
-                load.close();
-                this.off.notCardDetails=false;
-                this.off.cardDetails=true;
+                    })]).then((result)=>{
+                        load.close();
+                        this.off.notCardDetails=false;
+                        this.off.cardDetails=true;
             }))).catch(e=>errorDeal(e,()=>{load.close()}))       
         },
-		// getDetails(v){
-        //     let vm=this,data={},url="/nms/w/number/getProductDetail";
-        //     data.searchProductId=v.productId;
-        //     data.sessionType="2";
-        //     let load=Loading.service(options);
-        //     requestMethod(data,url)
-        //     .then((data)=>{
-        //         if(data.code==200){
-        //             this.$set(vm.listSwitch,'allDetails',true)
-        //             vm.searchResData=data.data
-        //         }
-        //     }).then(Promise.all([
-        //         new Promise(function(resolve,reject){
-        //             setTimeout(function(){resolve('1111')},5000)
-        //         }),
-        //         new Promise(function(resolve,reject){
-        //             setTimeout(function(){resolve('2222')},2000)
-        //         })]).then((result)=>{
-        //             console.log(result)
-        //         })).catch(e=>errorDeal(e,()=>{load.close()}))
-        // },
         openSet(){//同步设置
             let vm=this;
             vm.off.layer=true;
