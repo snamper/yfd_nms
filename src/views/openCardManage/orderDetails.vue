@@ -39,6 +39,7 @@
                                 <span v-if="v.isp==1">移动</span>
                                 <span v-if="v.isp==2">联通</span>
                                 <span v-if="v.isp==3">电信</span>
+                                <span v-else>未知</span>
                             </td>
                             <td>码号数</td>
                             <td>{{v.cuteTotal+v.normalTotal||'--'}}</td>
@@ -58,15 +59,16 @@
                                 <span v-if="v.brand==10">联想</span>
                                 <span v-if="v.brand==11">蓝猫移动</span>
                                 <span v-if="v.brand==12">长城</span>
+                                <span v-else>未知</span>                                
                             </td>
                             <td>靓号数</td>
-                            <td>{{v.cuteTotal||'--'}}<a v-if="v.productType==1||v.productType==2" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
+                            <td>{{v.cuteTotal}}<a v-if="v.productType==1||v.productType==2" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>归属地</td>
                             <td>{{v.cityName||'--'}}</td>
                             <td>普号数</td>
-                            <td>{{v.normalTotal||'--'}}<a v-if="v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
+                            <td>{{v.normalTotal}}<a v-if="v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>产品类型</td>
@@ -83,7 +85,10 @@
                         </tr>
                         <tr>
                             <td>销售方式</td>
-                            <td>不可拆分销售</td>
+                            <td>
+                                <span v-if="v.splitFlag==1">不可拆分</span>
+                                <span v-if="v.splitFlag==2">可拆分</span>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -153,7 +158,7 @@ export default{
                                 msgSkin:'error',
                             });
                         }
-                    })
+                    }).catch(e=>errorDeal(e))
                 }else if(v=='p'){
                     url="/nms/w/number/getProductNumbers";
                     data.phoneLevel=1;
@@ -177,7 +182,7 @@ export default{
                                 msgSkin:'error',
                             });
                         }
-                    })
+                    }).catch(e=>errorDeal(e))
                 }
             }).catch(e=>errorDeal(e));       
         },
