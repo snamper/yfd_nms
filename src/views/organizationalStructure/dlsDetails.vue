@@ -1,7 +1,5 @@
 
-<style scoped>
-    .addList{border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px} 
-</style>
+
 <template>
   <div>
       <div v-if="off.searchStaff">
@@ -51,7 +49,7 @@
             </el-row>
         </div>
         <el-row>
-            <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3"> <span v-if="!off.addList"> 添加员工</span><span v-if="off.addList">隐藏</span> </el-button></div></el-col>
+            <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light addStaffDiv" ><button  @click="AddStaffDiv()"  v-if="user.userRole!=2&&user.userRole!=3"> <span v-if="!off.addList"> 添加员工</span><span v-if="off.addList">隐藏</span> </button></div></el-col>
         </el-row>
         <div class="listTitleFoot addList" v-if="off.addList">
             <el-row>
@@ -65,7 +63,7 @@
                 </el-col>
                 <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
                     <div style="float:right;">
-                        <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
+                        <button @click="AddList()" style="display:block" class="buttonAddStaff">新增一条</button>
                         <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
                     </div>
                 </el-col>
@@ -164,14 +162,15 @@
                 </el-pagination>    
             </div></el-col>
             <el-col :span="12">
-                <div class="grid-content bg-purple-light fr">操作 : <el-button size="mini" @click="doFunction('offLine')">强制离线</el-button><el-button size="mini" @click="doFunction('addBlack')">加入黑名单</el-button><el-button size="mini" @click="doFunction('cancelBlack')">解除黑名单</el-button><el-button size="mini" @click="doFunction('delete')">删除</el-button></div>
+                <div class="grid-content bg-purple-light fr operate">操作&nbsp;&nbsp;<button  @click="doFunction('offLine')">强制离线</button><button  @click="doFunction('addBlack')">加入黑名单</button><button  @click="doFunction('cancelBlack')">解除黑名单</button><button  @click="doFunction('delete')">删除</button></div>
             </el-col>
             </el-row>
         </div>
         <!-- 代理商员工操作模块 -->
-        <div v-if="off.modify">
+        <div v-if="off.modify" class="modifyStaffStateDiv">
+            <div class="borderTopModifyStaffState"></div>
             <div class="listTitleFoot" style="height:20px;">
-                <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容{{a}}</p>
+                <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{a}}</p>
             </div>
             <div class="listTitleFoot">
                 <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
@@ -185,7 +184,7 @@
             </div> 
             <div class="listTitleFoot">
                 <p style="float:right">
-                    <el-button type="success" size="small" @click="btnYes()">确定</el-button>
+                    <button class="buttonModifyYes"   @click="btnYes()">确定</button>
                 </p>
             </div>
        </div>
@@ -196,7 +195,6 @@
     </div>  
 </template>
 <script>
-import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service"; 
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils";
 import staffDetails from "../../components/staffDetails.vue";
@@ -276,6 +274,7 @@ export default{
             let vm=this, data={"newUsers":[]};
             for(let i=0;i<this.list.length;i++){
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true){
+                    checkMobile(this.list[i].phone,()=>{return false});                    
                     if(this.list[i].checked==true&&this.list[i].checked2==false){
                         this.list[i].userRole='4'
                     }else if(this.list[i].checked==false&&this.list[i].checked2==true){
@@ -288,8 +287,6 @@ export default{
                 }
             }
             for(let i=0;i<data.newUsers.length;i++){
-                delete data.newUsers[i].checked;
-                delete data.newUsers[i].checked2;
                 this.addAble='1';                
             }
             if(this.addAble=='0'){
@@ -311,6 +308,9 @@ export default{
             for(let v in vm.lists){
                 if(vm.lists[v].ischecked==true){
                     data.operateUserIds.push(vm.lists[v].username);
+                    if(v>=1){
+                        che+=` 、`
+                    }
                     che+=vm.lists[v].username;
                     vm.off.modify=true;
                 }
@@ -326,16 +326,16 @@ export default{
             }
             if(val=='offLine'){
                 vm.doUrl="/ums/w/user/kickoutUsers";
-                vm.a=che+"强制离线";
+                vm.a=`强制离线(${che})`;
             }else if(val=='addBlack'){               
                 vm.doUrl="/ums/w/user/blacklistUsers";
-                vm.a=che+"加入黑名单";
+                vm.a=`加入黑名单(${che})`;
             }else if(val=='cancelBlack'){              
                 vm.doUrl="/ums/w/user/unblacklistUsers";
-                vm.a=che+"解除黑名单";
+                vm.a=`解除黑名单(${che})`;
             }else if(val=='delete'){
                  vm.doUrl="/ums/w/user/delUsers";
-                 vm.a=che+"删除";
+                 vm.a=`删除(${che})`;
             }
         }
         ,doFilter(s){//状态过滤操作
@@ -367,7 +367,7 @@ export default{
                     }
                 }, 1000)
             }
-            let load=Loading.service(options),data={},url='/ums/w/user/getAuthCode',vm=this;
+            let data={},url='/ums/w/user/getAuthCode',vm=this;
             data={"phone":vm.user.phone}
             requestMethod(data,url)
             .then((data)=>{
@@ -386,19 +386,16 @@ export default{
                         msgSkin:'error',
                     });
                 }  
-            }).then(()=>{
-                load.close(); 
             }).catch(e=>errorDeal(e));
         }
         ,search(p){//查询
             let  vm=this;
-            vm.$parent.detailsList="";
             if(this.phone!=''){
                 checkMobile(this.phone,function(){return false});
             }
-            let data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
+            let data={},url='/ums/w/user/getDepartDetail'
             data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.radio,username:vm.name,phone:vm.phone,pageNum:p||1,pageSize:"10"};
-            requestMethod(data,url,function(){load.close()})
+            requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     if(data.data.users.length>0){
@@ -428,7 +425,7 @@ export default{
             }).catch(e=>errorDeal(e));
         }
         ,getStaffDetails(p){
-            let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+            let data={},url='/ums/w/user/getUserDetail',vm=this
             vm.searchStaffInfo=p;
             data={"searchUserId":p.userId,"sessionType":"2"}
             requestMethod(data,url)
@@ -438,8 +435,6 @@ export default{
                 vm.searchRes=data.data;
                 if(data.code==200){
                 }  
-            }).then(()=>{
-                load.close(); 
             }).catch(e=>errorDeal(e));
         } 
         ,btnYes(){
@@ -467,10 +462,9 @@ export default{
                 });
                 return false;
             }
-            let load=Loading.service(options);
             data.reason=vm.reason;//操作原因
             data.authCode=vm.authCode;//验证码
-            requestMethod(data,vm.doUrl,()=>{load.close()})
+            requestMethod(data,vm.doUrl)
             .then((data)=>{
                 vm.reason="";
                 vm.authCode="";
@@ -511,4 +505,17 @@ export default{
     }
 }
 </script>
+<style scoped>
+    .addList{border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px} 
+    div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 8px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none;
+    background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); 
+    background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); 
+    background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));
+    background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
+    div.operate button:active{box-shadow: 0 0 5px grey}
+    div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid rgb(202, 202, 202)}
+    div.modifyStaffStateDiv .buttonModifyYes{border-radius:8px;padding:8px 30px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
+    div.modifyStaffStateDiv .buttonModifyYes:active{box-shadow: 0 0 5px green}
+    div.addStaffDiv button{border-radius:6px;padding:3px 10px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
+</style>
 

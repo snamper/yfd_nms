@@ -7,6 +7,9 @@
     .detailsUlDiv ul li {padding: 6px 18px;border-bottom: 1px solid rgb(228, 228, 228)}
     .detailsUlDiv ul li:nth-child(odd){background: #FFF;}
     input.modifyInput{height: 28px;border-radius: 6px;outline: none;border: 1px solid #ccc;padding-left: 10px;}
+    div.modifyStaffInfo .change{border-radius:6px;padding:6px 40px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
+    div.modifyStaffInfo .changeNo{border-radius:6px;padding:6px 40px;background: #C14752;border:1px solid #C14752;outline: none;color:#fff;}
+    div.modifyStaffInfo .changeYes{margin-left: 10px;border-radius:6px;padding:6px 40px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
 </style>
 <template>
     <div>
@@ -185,19 +188,18 @@
                     </el-row>
                 </li>
             </ul>
-            <div class="mt8">
+            <div class="mt8 modifyStaffInfo" >
                 <el-row v-if="off.noModify" >
-                <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="success" @click="checkBtn" v-if="user.userRole!=2&&user.userRole!=3">修改</el-button></div></el-col>
+                <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><button class="change" @click="checkBtn" v-if="user.userRole!=2&&user.userRole!=3">修改</button></div></el-col>
                 </el-row>
                 <el-row v-if="off.modify" >
-                    <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><el-button type="danger" @click="checkNo">取消</el-button><el-button type="success" @click="checkYes(forms.userId)">确定</el-button></div></el-col>
+                    <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><button class="changeNo" @click="checkNo">取消</button><button class="changeYes"  @click="checkYes(forms.userId)">确定</button></div></el-col>
                 </el-row>
             </div>
         </div>
 	</div>	 
 </template>
 <script>
-import { Loading } from 'element-ui';
 import {requestMethod} from "../config/service.js"; 
 import {getDateTime,getStore,errorDeal} from "../config/utils";
 export default{
@@ -293,9 +295,9 @@ export default{
                         time: 2,
                         msgSkin:'success',
                     });
-                    let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+                    let data={},url='/ums/w/user/getUserDetail',vm=this
                     data=vm.$parent.searchDetailsYfdData;
-                    requestMethod(data,url,()=>{load.close()})
+                    requestMethod(data,url)
                     .then((data)=>{
                         if(data.code==200){
                             vm.off.searchStaff=false;

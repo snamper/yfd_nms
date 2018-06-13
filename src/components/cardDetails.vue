@@ -27,11 +27,15 @@
                             </span>    
                         </td>
                         <td>当前状态 ： 
+                    <!-- 1：未上架，2：手动上架，3：手动下架，4：系统下架，5：已出售, 6: 购物车中", -->
+                            
                             <span class="deepGreyFont f-s-14">
                                 <span v-if="dataList.productState==1">未上架 </span>  
-                                <span v-if="dataList.productState==2">已上架</span>
-                                <span v-if="dataList.productState==3">已下架</span>
-                                <span v-if="dataList.productState==4">已出售</span>
+                                <span v-if="dataList.productState==2">手动上架</span>
+                                <span v-if="dataList.productState==3">手动下架</span>
+                                <span v-if="dataList.productState==4">系统下架</span>
+                                <span v-if="dataList.productState==5">已出售</span>
+                                <span v-if="dataList.productState==6">购物车中</span>
                             </span>
                         </td>
                     </tr>

@@ -241,7 +241,6 @@
 import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime } from "../../config/utils";
 import { disabledDate }from "../../config/utilsTimeSelect";
 import {requestProductDetails,requestPickupOrder,requestChangeLogisticsId,requestConfirmTakeGoods} from "../../config/service.js";
-import { Loading } from "element-ui";
 import orderDetails from "./orderDetails";
 import layerConfirm from "../../components/layerConfirm";
 export default {
@@ -347,7 +346,6 @@ export default {
                     return false;
                 }
             }
-            let load=Loading.service(options);
             data={
                 "searchType": vm.form.searchKind,
                 "sysOrderId": vm.orderId,
@@ -363,7 +361,7 @@ export default {
                 "pageNum": index || 1,
                 "pageSize": 10,
             }
-            requestPickupOrder(data,function(){load.close()})
+            requestPickupOrder(data)
             .then((data)=>{
                 if(data.code==200){
                     vm.form.page=data.data.total;

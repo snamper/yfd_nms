@@ -45,7 +45,6 @@ tbody tr{height: 36px;}
 </section>
 </template>
 <script>
-import { Loading } from 'element-ui';
 import {requestMethod} from "../config/service.js"; 
 import { errorDeal,getStore } from '../config/utils';
 export default{
@@ -130,7 +129,7 @@ export default{
         ,btnYes(v){
             let vm=this;
             if(vm.layerType=="notice"){
-                let url='/mns/w/msg/delete',data={},load=Loading.service(options);
+                let url='/mns/w/msg/delete',data={}
             }
             data=vm.$parent.addUsersData;
             data.authCode=vm.authCode;
@@ -168,8 +167,6 @@ export default{
                         msgSkin:'error',
                     });
                 }  
-            }).then(()=>{
-                load.close();
             }).catch(e=>errorDeal(e))
         },
 		close:function(){

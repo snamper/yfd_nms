@@ -180,7 +180,6 @@ import { getDateTime,disableTimeRange6,checkMobile,getTimeFunction} from "../../
 import logDet from "../../components/logDetails";
 import { requestLoginLogSearch,requestMethod } from "../../config/service";
 import {errorDeal} from "../../config/utils";
-import { Loading } from 'element-ui';
 export default {
   data() {
     return {
@@ -294,8 +293,7 @@ export default {
           pageNum: t || 1,
           pageSize: 15
         };
-        let load=Loading.service(options);                    
-        requestLoginLogSearch(json,()=>{load.close()})
+        requestLoginLogSearch(json)
         .then(data => {
           if (data.code == 200) {
             vm.form.page=data.data.total;
@@ -309,8 +307,7 @@ export default {
     openDetails(v) {
       let vm = this;
       let data = { searchRecordId: v.recordId, searchRecordTime: v.recordTime };
-      let load=Loading.service(options);              
-      requestMethod(data,"/ors/w/record/getLoginRecordDetail",()=>{load.close()})
+      requestMethod(data,"/ors/w/record/getLoginRecordDetail")
         .then(data => {
           if (data.code == 200) {
             vm.off.logDet = true;              

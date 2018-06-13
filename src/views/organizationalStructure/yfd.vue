@@ -210,6 +210,7 @@ export default{
             for(let i=0;i<this.list.length;i++){
                 this.list[i].userRole="";
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
+                    checkMobile(this.list[i].phone,()=>{return false});
                     if(this.list[i].checked2==true){this.list[i].userRole='1'}
                     if(this.list[i].checked3==true){
                         if(this.list[i].checked2==true){
@@ -222,18 +223,7 @@ export default{
                 }
             }
             for(let i=0;i<data.newUsers.length;i++){
-                delete data.newUsers[i].checked2;
-                delete data.newUsers[i].checked3;
                 this.addAble='1';                
-            }
-            if(this.addAble=='0'){
-                layer.open({
-                    content:'请输入添加的员工信息',
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
             }
             this.off.layer=true;
             this.off.sync=true;
@@ -254,8 +244,7 @@ export default{
             ,"userState":vm.radio
             ,"pageSize":15
             ,"pageNum":p||1}
-            let load=Loading.service(options);
-            requestMethod(data,url,()=>{load.close()})
+            requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     vm.off.searchList=true;
@@ -275,10 +264,10 @@ export default{
             }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
         }
         ,getStaffDetails(p){
-            let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+            let data={},url='/ums/w/user/getUserDetail',vm=this;
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchDetailsYfdData=data;
-            requestMethod(data,url,()=>{load.close()})
+            requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     vm.off.searchStaff=false;

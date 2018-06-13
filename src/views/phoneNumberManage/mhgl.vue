@@ -286,8 +286,8 @@
     </section>
 </template>
 <script>
-import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
+import 'element-ui/lib/theme-chalk/display.css';
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils.js";
 import {requestMethod,requestgetSyncTime,requestModify_Price} from "../../config/service.js"; 
 import layerSync from "../../components/layerSyncTime";
@@ -408,11 +408,10 @@ export default{
             this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
         },
 		getDetails(v){
-            let vm=this;
-            let load=Loading.service(options);
-            let data={},url="/nms/w/number/getProductDetail";
+            let vm=this,data={},url="/nms/w/number/getProductDetail";
             data.searchProductId=v.productId;
             data.sessionType="2";
+            let load=Loading.service(options);
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
@@ -423,26 +422,15 @@ export default{
                 if(v.productType==1||v.productType==2){
                     url="/nms/w/number/getProductCuteNumbers";
                     data.phoneLevel=2;
-                    requestMethod(data,url,function(){load.close()})
+                    requestMethod(data,url)
                     .then((data)=>{
-                        if(data.code==200){
-                            this.$set(vm.listSwitch,'liang',true)
-                            vm.searchLiang=[]
-                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                        this.$set(vm.listSwitch,'liang',true)
+                        vm.searchLiang=[]
+                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
                             vm.searchLiang.push(data.data.numbers.slice(i,i+6));
-                            }
-                            vm.searchLiang.len=data.data.numbers.length;
-                            this.off.notCardDetails=false;
-                            this.off.cardDetails=true;
-                        }else{
-                            layer.open({
-                                content:"data.msg",
-                                skin: 'msg',
-                                time: 2,
-                                msgSkin:'error',
-                            });
                         }
-                    }).catch(e=>errorDeal(e),function(){load.close()});
+                        vm.searchLiang.len=data.data.numbers.length;
+                    }).catch(e=>errorDeal(e))
                 }else{
                     vm.searchLiang=[]
                 }
@@ -450,51 +438,23 @@ export default{
                 if(v.productType==1||v.productType==3){
                     url="/nms/w/number/getProductNumbers";
                     data.phoneLevel=1;
-                    requestMethod(data,url,function(){load.close()})
+                    requestMethod(data,url)
                     .then((data)=>{
-                        if(data.code==200){
-                            this.$set(vm.listSwitch,'pu',true)                                                      
-                            vm.searchPu=[]
-                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                                vm.searchPu.push(data.data.numbers.slice(i,i+6));
-                            }
-                            vm.searchPu.len=data.data.numbers.length;                        
-                            this.off.notCardDetails=false;
-                            this.off.cardDetails=true;
+                        this.$set(vm.listSwitch,'pu',true)                                                      
+                        vm.searchPu=[]
+                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
                         }
-                    }).catch(e=>errorDeal(e),function(){load.close()});
+                        vm.searchPu.len=data.data.numbers.length;                        
+                    }).catch(e=>errorDeal(e))
                 }else{
                     vm.searchPu=[]
                 }
-            }).catch(e=>errorDeal(e))
-         /* requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    // vm.pageNumDetails=data.data;
-                    vm.searchResData=data.data
-                }
-            }).catch(e=>errorDeal(e),function(){load.close()});
-            url="/nms/w/number/getProductNumbers";
-            data.searchProductId=v.productId;
-            data.sessionType="2";
-            data.phoneLevel=1;
-            requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    // vm.pageNumPu=data.data.numbers;
-                    vm.searchLiang=data.data.numbers
-                }
-            }).catch(e=>errorDeal(e),function(){load.close()}); 
-            data.phoneLevel=2;
-            requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    //vm.pageNumLiang=data.data.numbers;
-                    vm.searchPu=data.data.numbers
-                    this.off.notCardDetails=false;
-                    this.off.cardDetails=true;
-               }
-            }).catch(e=>errorDeal(e),function(){load.close()}); */       
+            }).then(()=>{
+                load.close();
+                this.off.notCardDetails=false;
+                this.off.cardDetails=true;
+            }).catch(e=>errorDeal(e,()=>{load.close()}))       
         },
         openSet(){//同步设置
             let vm=this;
@@ -522,7 +482,6 @@ export default{
                 checkMobile(this.phone,function(){vm.searchList="";vm.total="";vm.form.page="";return false});
             }
             let checked=[],data={},url='/nms/w/number/productSearch';
-            vm.load=Loading.service(options);
             vm.pa=p||1;
             for(let i in vm.checkedCities){
                 checked.push(cityOptions.indexOf(vm.checkedCities[i])+1);
@@ -660,7 +619,7 @@ export default{
                     }
                 }, 1000)
             }
-            let load=Loading.service(options),data={},url='/ums/w/user/getAuthCode',vm=this;
+            let data={},url='/ums/w/user/getAuthCode',vm=this;
             data={"phone":vm.user.phone}
             // data={"phone":15684765209}
             requestMethod(data,url)
@@ -680,8 +639,6 @@ export default{
                         msgSkin:'error',
                     });
                 }  
-            }).then(()=>{
-                load.close(); 
             }).catch(e=>errorDeal(e));
         }
         ,btnYes(v){
@@ -709,7 +666,6 @@ export default{
                 });
                 return false;
             }
-            let load=Loading.service(options);
             dataReq.reason=vm.reason;//操作原因
             dataReq.authCode=vm.authCode;
             requestMethod(dataReq,vm.dourl)
@@ -738,14 +694,12 @@ export default{
                 for(let v=0;v<vm.searchList.length;v++){
                     vm.$set(vm.searchList[v],'ischecked',false);
                 }}
-            ).then(()=>{
-                load.close(); 
-            }).catch(e=>errorDeal(e));
+            ).catch(e=>errorDeal(e));
         },
         getSyncTime(){
             let vm=this;
             let data={recordType:3};
-            requestgetSyncTime(data,function(){vm.load.close()})
+            requestgetSyncTime(data)
             .then((data)=>{
                 if(data.code==200){
                     vm.syncLastTime=data.data.syncLastTime

@@ -181,7 +181,6 @@ div.detailsListDiv tr td{text-align: center;} */
 import { getDateTime,disableTimeRange6,errorDeal,checkMobile,getTimeFunction} from "../../config/utils";
 import logDet from "../../components/logDetails";
 import {requestSyncLogSearch,requestgetSyncTime} from "../../config/service";
-import { Loading } from 'element-ui';
 export default {
     data() {
     return {
@@ -297,8 +296,7 @@ export default {
             "syncType": vm.syncType,
             "recordType": vm.recordType,
             "recordResult": vm.recordResult,}
-        let load=Loading.service(options);            
-        requestSyncLogSearch(json,()=>{load.close()})
+        requestSyncLogSearch(json)
         .then((data)=>{
             if(data.code==200){
                 vm.form.page=data.data.total;

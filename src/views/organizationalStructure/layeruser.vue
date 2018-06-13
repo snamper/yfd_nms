@@ -224,7 +224,7 @@ export default{
                     if(this.searchType!=1){
                         this.search();
                     }else if(this.searchType==1){
-                        let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
+                        let vm=this,data={},url='/ums/w/user/getDepartDetail';
                         vm.searchDetailsType=1;
                         vm.searchDepartId=vm.$parent.searchDepartId;
                         data={'searchDepartId':vm.$parent.searchDepartId,userState:vm.$parent.radio,username:vm.$parent.name,phone:vm.$parent.phone,pageNum:1,pageSize:"10"};            
@@ -233,7 +233,6 @@ export default{
                         vm.managerPhone=v.phone;
                         requestMethod(data,url)
                         .then((data)=>{
-                            load.close();
                             if(data.code==200){
                                 if(data.data.users.length>0){
                                     vm.$parent.off.notDlsDetails=false;

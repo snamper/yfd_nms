@@ -173,7 +173,6 @@ div.detailsListDiv tr td {
 import {errorDeal, getDateTime,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import logDet from "../../components/logDetails";
 import { requestCardLogSearch,requestMethod } from "../../config/service";
-import { Loading } from 'element-ui';
 export default {
     data() {
         return {
@@ -288,8 +287,7 @@ export default {
             pageSize:15,
             };
             vm.pa = index || 1;
-            let load=Loading.service(options);
-        requestCardLogSearch(json,()=>{load.close()})
+        requestCardLogSearch(json)
             .then(data => {
             if (data.code == 200) {
                 vm.off.logList=data.data.total;
@@ -305,8 +303,7 @@ export default {
         openDetails(v) {//详情
         let vm = this;
         let data = { searchRecordId: v.recordId, searchRecordTime: v.recordTime };
-        let load=Loading.service(options);        
-        requestMethod(data, "/ors/w/record/getNumOperRecordDetail",()=>{load.close()})
+        requestMethod(data, "/ors/w/record/getNumOperRecordDetail")
         .then(data => {
         if (data.code == 200) {
             vm.off.logDet = true;            

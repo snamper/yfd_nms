@@ -167,7 +167,7 @@ export default{
             if(this.phone!=''){
                 checkMobile(this.phone,function(){vm.off.searchList=false;vm.form.page="";vm.detailsList="";return false});
             }
-            let load=Loading.service(options),data={},url='/ums/w/user/userSearch';
+            let data={},url='/ums/w/user/userSearch';
              vm.pa=p||1;
              vm.currentPage=p||1;
                 data={
@@ -176,7 +176,7 @@ export default{
                 ,"userState":vm.radio
                 ,"pageSize":15
                 ,"pageNum":p||1}
-            requestMethod(data,url,function(){load.close()})
+            requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     vm.off.searchList=true;
@@ -199,7 +199,7 @@ export default{
             
         }
         ,getStaffDetails(p){
-            let data={},url='/ums/w/user/getUserDetail',vm=this,load=Loading.service(options);
+            let data={},url='/ums/w/user/getUserDetail',vm=this;
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchUserId=p.userId;
             vm.searchDetailsYfdData=data;
@@ -211,8 +211,6 @@ export default{
                 if(data.code==200){
                     vm.searchRes=data.data;
                 }  
-            }).then(()=>{
-                load.close(); 
             }).catch(e=>errorDeal(e));
         },getDateTime(v){
             return getDateTime(v);

@@ -119,7 +119,7 @@ export default{
 	},
 	methods:{
         details(v,i){
-            let vm=this,url="/nms/w/number/getProductDetail",data={},load=Loading.service(options);
+            let vm=this,url="/nms/w/number/getProductDetail",data={}
             data.searchProductId=i;
             data.sessionType="2";
             requestMethod(data,url)
@@ -145,7 +145,6 @@ export default{
                             vm.searchLiang.len=data.data.numbers.length;
                             this.off.notCardDetails=false;
                             this.off.cardDetails=true;
-                            load.close();
                         }else{
                             layer.open({
                                 content:"data.msg",
@@ -170,7 +169,6 @@ export default{
                             vm.searchPu.len=data.data.numbers.length;
                             this.off.notCardDetails=false;
                             this.off.cardDetails=true;
-                            load.close();
                         }else{
                             layer.open({
                                 content:"data.msg",

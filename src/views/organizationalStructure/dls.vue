@@ -200,7 +200,6 @@
 </section>
 </template>
 <script>
-import { Loading } from 'element-ui';
 import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import {requestMethod,requestgetSyncTime} from "../../config/service.js"; 
 import layers from "../../components/layerSyncTime";
@@ -327,7 +326,6 @@ export default{
                 checkMobile(vm.phone,function(){vm.total="";vm.searchList="";vm.form.page="";return false});
             }
             let data={},url='/ums/w/user/departSearch';
-            vm.load=Loading.service(options);
             vm.pa=p||1;
             vm.currentPage=p||1;
             data={
@@ -340,13 +338,13 @@ export default{
                 ,"phone":vm.phone
                 ,"pageSize":15
                 ,"pageNum":p||1}
-                this.getSyncTime();
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     vm.total=data.data.total;//查询总数
                     vm.searchList=data.data.departs;//查询内容
-                    vm.form.page=data.data.total
+                    vm.form.page=data.data.total;
+                    vm.getSyncTime();                    
                 }else{
                     vm.total="";
                     vm.searchList="";
@@ -356,14 +354,14 @@ export default{
             }).catch(e=>errorDeal(e,()=>{vm.total="";vm.searchList="";vm.form.page="";}));
         }
         ,getDetails(v){//查看详情
-            let vm=this,data={},url='/ums/w/user/getDepartDetail',load=Loading.service(options);
+            let vm=this,data={},url='/ums/w/user/getDepartDetail'
             vm.searchDetailsType=1;
             vm.searchDepartId=v.departId;
             data={'searchDepartId':v.departId,userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};
             vm.companyName=v.departName;
             vm.managerName=v.managerName;
             vm.managerPhone=v.phone;
-            requestMethod(data,url,()=>{load.close()})
+            requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
                     if(data.data.users.length>0){
@@ -420,7 +418,7 @@ export default{
         getSyncTime(){
             let vm=this;
             let data={recordType:3};
-            requestgetSyncTime(data,function(){vm.load.close()})
+            requestgetSyncTime(data)
             .then((data)=>{
                 if(data.code==200){
                     vm.syncLastTime=data.data.syncLastTime

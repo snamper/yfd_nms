@@ -1,4 +1,7 @@
 import {getStore,errorDeal} from '../config/utils.js';
+import NProgress from 'nprogress'
+import 'nprogress/nprogress.css'
+NProgress.configure({ showSpinner: false });
 
 export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') => {
     let headerId;
@@ -52,8 +55,10 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 			});
         }
         return new Promise((resolve,reject)=>{
+            NProgress.start();
             fetch(url, requestConfig)
             .then(response => {
+                NProgress.done();
                 closeLoadLayout();
                 if(response.status=="200"){
                     return response.json();
