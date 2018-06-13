@@ -73,25 +73,8 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
                 }else{
                     reject({code:data});
                 }
-            }).catch(error=>errorDeal(error),'aaaaaa');
+            }).catch(error=>errorDeal(error));
         })
-        // return await fetch(url,requestConfig)
-        // .then((response)=>{
-		// 	closeLoadLayout();
-		// 	if(response.status=="200"){
-        //         return response.json();
-	    //     }else {
-        //         return response.status;
-	    //     }
-        // }).then(data=>{
-		// 	if(data.hasOwnProperty('code')&&data.code==200){
-        //         return data;
-        //     }else if(data.hasOwnProperty('code')&&data.code!=200){
-        //         return data;
-        //     }else{
-        //         return data={code:data}
-        //     }
-        // }).catch(error=>errorDeal(error));
 	} else {//XHR对象
 		return new Promise((resolve, reject) => {
 			let requestObj;
