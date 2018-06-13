@@ -66,7 +66,7 @@
                         </tr>
                         <tr>
                             <td>归属地</td>
-                            <td>{{v.cityName||'--'}}</td>
+                            <td>{{v.area||'--'}}</td>
                             <td>普号数</td>
                             <td>{{v.normalTotal}}<a v-if="v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
                         </tr>
