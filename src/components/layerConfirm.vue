@@ -306,7 +306,7 @@ export default{
             requestConfirmPayMent(data)
             .then((data)=>{
                 this.$parent.search(vm.$parent.pa);
-                this.$parent.off.layerChangePrice=false;
+                this.$parent.off.layer=false;
                 if(data.code==200){
                     layer.open({
                         content:"操作成功",
