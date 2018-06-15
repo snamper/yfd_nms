@@ -94,7 +94,7 @@
                         <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td>
                     </tr>
                     <tr v-if="!dataListLiang.length">
-                        <td class="tac deepGreyFont f-s-14">此号包下无靓号详情</td>
+                        <td class="tac deepGreyFont f-s-14">此号包下暂无靓号详情</td>
                     </tr>
                 </table>
             </div> 
@@ -109,7 +109,7 @@
                         <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
                     </tr>
                     <tr v-if="!dataListPu.length">
-                        <td class="tac deepGreyFont f-s-14">此号包下无普号详情</td>
+                        <td class="tac deepGreyFont f-s-14">此号包下暂无普号详情</td>
                     </tr>
                 </table>
             </div> 

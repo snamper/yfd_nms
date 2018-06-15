@@ -1,5 +1,6 @@
 <style scoped>
- .addList{border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px}
+    .addList{border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px}
+    div.addStaffDiv button{border-radius:6px;padding:3px 10px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;} 
  /* .addList span{display:inline-block;width:60px;} */
  /* table tr td{text-align: left;padding-left: 20px;}  */
 </style>
@@ -47,7 +48,7 @@
         </el-row>
     </div>
     <el-row>
-        <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light"><el-button type="success" @click="AddStaffDiv()" size="mini" v-if="user.userRole!=2&&user.userRole!=3"><span v-if="!off.addList">添加员工</span><span v-if="off.addList">隐藏</span></el-button></div></el-col>
+        <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light addStaffDiv" ><button  @click="AddStaffDiv()"  v-if="user.userRole!=2&&user.userRole!=3"> <span v-if="!off.addList"> 添加员工</span><span v-if="off.addList">隐藏</span> </button></div></el-col>
     </el-row>
     <div class="listTitleFoot addList" v-if="off.addList">
         <el-row>
@@ -61,7 +62,7 @@
             </el-col>
             <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
                 <div style="float:right;">
-                    <button @click="AddList()" style="display:block" class="buttonAddStaff">增加一行</button>
+                    <button @click="AddList()" style="display:block" class="buttonAddStaff">新增一条</button>
                     <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
                 </div>
             </el-col>

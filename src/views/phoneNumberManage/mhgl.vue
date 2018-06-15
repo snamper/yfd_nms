@@ -436,6 +436,7 @@ export default{
                         }).catch(e=>errorDeal(e,load.close()))
                     }else{
                         vm.searchLiang=[]
+                        resolve('yes');
                     }
                 })]).then(
                     Promise.all([new Promise((resolve,reject)=>{
@@ -454,6 +455,7 @@ export default{
                             }).catch(e=>errorDeal(e,function(){load.close()}))
                         }else{
                             vm.searchPu=[]
+                            resolve('yes');                        
                         }
                     })]).then((result)=>{
                         load.close();

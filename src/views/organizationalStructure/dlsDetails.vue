@@ -20,13 +20,13 @@
                 <el-row>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light greyFont">
                     <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
-                    <el-col :xs="19" :sm="21" :md="20" :lg="20" :xl="20" :span="20">
+                    <el-col :xs="19" :sm="20" :md="18" :lg="18" :xl="18" :span="20">
                         <el-input v-model="name" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                     </el-col>
                 </div></el-col>
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light greyFont">
                     <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
-                    <el-col :xs="19" :sm="21" :md="20" :lg="20" :xl="20" :span="20">
+                    <el-col :xs="19" :sm="20" :md="18" :lg="18" :xl="18" :span="20">
                         <el-input v-model="phone" size="small" placeholder="请输入查询的手机号码"></el-input>
                     </el-col>
                 </div></el-col>

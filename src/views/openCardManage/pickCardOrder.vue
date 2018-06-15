@@ -1,12 +1,12 @@
 <style>
-.el-input--suffix .el-input__inner{padding-right: 10px!important;}
-.tac div input{border: 0 none;}
-.box{width: 140px;height: 26px;background-color: #808000;clear: both;}
-.box span{float: left;display: inline-block;height: 26px;}
-.span1{width: 100px;position: relative;background: red}
-.span2{width: 40px;position: relative;background: green}
-.input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
-.button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
+    .el-input--suffix .el-input__inner{padding-right: 10px!important;}
+    .tac div input{border: 0 none;}
+    .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
+    .box span{float: left;display: inline-block;height: 26px;}
+    .span1{width: 100px;position: relative;background: red}
+    .span2{width: 40px;position: relative;background: green}
+    .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
+    .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
 </style>
 <template>
     <section >
@@ -191,12 +191,16 @@
                                     <span v-if="v.paymentType==0">未付款</span>
                                 </td>
                                 <td >
-                                    <span v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
+                                    <!-- <span v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
                                     <span v-if="v.paymentState==2&&v.deliveryState==3&&v.orderState==2">已收货</span>
                                     <span v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
                                     <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==2" class="c-red">已关闭</span>
-                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1" class="c-red">未付款</span>
-                                    <span ></span>
+                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1" class="c-red">未付款</span> -->
+
+                                    <span v-if="v.orderState==1">未完成</span>
+                                    <span v-if="v.orderState==2">已完成</span>
+                                    <span v-if="v.orderState==3">手动取消订单</span>
+                                    <span v-if="v.orderState==4">系统超时自动取消订单</span>
                                 </td>
                                 <td>
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryOrderId||'--'}}</a> 
@@ -206,7 +210,6 @@
                                     <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
                                     <el-button v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
-
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
