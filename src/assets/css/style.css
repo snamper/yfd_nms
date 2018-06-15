@@ -130,7 +130,7 @@ li div.el-row{line-height: 30px;}
 /*body滚动条*/
 /*滚动条整体部分*/
 .f-scroll-lt::-webkit-scrollbar {
-  width: 2px;
+  width: 6px;
   height: 2px;
 }
 /*滚动条两端的按钮*/

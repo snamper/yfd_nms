@@ -131,7 +131,12 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                 <tbody>
                     <tr>
                         <td>
-                            <el-input v-model="payMoney" placeholder="请输入付款金额，以元为单位" size="small"></el-input>
+                            <el-input maxlength=15 v-model="payMoney" placeholder="请输入付款金额，以元为单位" size="small"></el-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <el-input maxlength=30 v-model="oddNumbers" placeholder="请输入支付流水号" size="small"></el-input>
                         </td>
                     </tr>
                     <tr>
@@ -149,7 +154,7 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                     </tr>
                     <tr>
                         <td>
-                            <el-input v-model="orderId" placeholder="请输入内容" size="small"></el-input>
+                            <el-input maxlength=30 v-model="orderId" placeholder="请输入内容" size="small"></el-input>
                         </td>
                     </tr>
                     <tr class="f-s-12">
@@ -200,6 +205,7 @@ export default{
             logisticsCompany2:'',
             orderId:'',//订单Id
             payMoney:'',//付款金额
+            oddNumbers:'',//流水单号
         }		
     },
 	created:function(){
@@ -301,7 +307,8 @@ export default{
                 let data={"sysOrderId": v.sysOrderId,
                     "deliveryOrderId":vm.orderId,
                     "deliveryName":vm.logisticsCompany2 ,
-                    "strikePrice":vm.payMoney*100
+                    "strikePrice":vm.payMoney*100,
+                    "paymentSerialNumber":vm.oddNumbers,
                 }
             requestConfirmPayMent(data)
             .then((data)=>{

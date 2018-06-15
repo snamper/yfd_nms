@@ -191,16 +191,11 @@
                                     <span v-if="v.paymentType==0">未付款</span>
                                 </td>
                                 <td >
-                                    <!-- <span v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
-                                    <span v-if="v.paymentState==2&&v.deliveryState==3&&v.orderState==2">已收货</span>
-                                    <span v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
-                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==2" class="c-red">已关闭</span>
-                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1" class="c-red">未付款</span> -->
-
-                                    <span v-if="v.orderState==1">未完成</span>
-                                    <span v-if="v.orderState==2">已完成</span>
-                                    <span v-if="v.orderState==3">手动取消订单</span>
-                                    <span v-if="v.orderState==4">系统超时自动取消订单</span>
+                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1">待付款</span>                                    
+                                    <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==3">手动关闭</span>                                    
+                                    <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==4">超时关闭</span>                                    
+                                    <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
+                                    <span class="c-green" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==2">已完成</span>
                                 </td>
                                 <td>
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryOrderId||'--'}}</a> 

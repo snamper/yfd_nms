@@ -21,7 +21,7 @@
                         <el-col :xs="23" :sm="23" :md="23" :lg="23" :xl="23">
                             <p class="lh30"><span class="letterSpacing1">订单号码&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.sysOrderId||'--'}}</span></p>
                             <p class="lh30"><span class="letterSpacing1">生成时间&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.createTime||'--'}}</span></p>
-                            <p class="lh30"><span class="letterSpacing1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.discountPrice/100).toFixed(2)||'--'}} 元</span></p>
+                            <p class="lh30"><span class="letterSpacing1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.totalStrikePrice/100).toFixed(2)||'--'}} 元</span></p>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -39,7 +39,6 @@
                                 <span v-if="v.isp==1">移动</span>
                                 <span v-if="v.isp==2">联通</span>
                                 <span v-if="v.isp==3">电信</span>
-                                <span v-else>未知</span>
                             </td>
                             <td>码号数</td>
                             <td>{{v.cuteTotal+v.normalTotal||'--'}}</td>
@@ -59,16 +58,15 @@
                                 <span v-if="v.brand==10">联想</span>
                                 <span v-if="v.brand==11">蓝猫移动</span>
                                 <span v-if="v.brand==12">长城</span>
-                                <span v-else>未知</span>                                
                             </td>
                             <td>靓号数</td>
-                            <td>{{v.cuteTotal}}<a v-if="v.productType==1||v.productType==2" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
+                            <td>{{v.cuteTotal}}<a v-if="v.cuteTotal!=0&&v.productType==1||v.productType==2" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>归属地</td>
                             <td>{{v.area||'--'}}</td>
                             <td>普号数</td>
-                            <td>{{v.normalTotal}}<a v-if="v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
+                            <td>{{v.normalTotal}}<a v-if="v.normalTotal!=0&&v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>产品类型</td>

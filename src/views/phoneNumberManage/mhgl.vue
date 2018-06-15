@@ -259,7 +259,7 @@
                 </div>
             </div>  
             <!-- 操作 -->
-            <div v-if="off.modify">
+            <div v-if="off.modify==true">
                 <div class="listTitleFoot">
                     <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{a}}</p>
                 </div>
@@ -585,9 +585,20 @@ export default{
             let vm=this;
             vm.a="";
             for(let v in vm.searchList){
-                if(vm.searchList[v].ischecked==true){
+                if(vm.searchList[v].ischecked==true&&vm.searchList[v].productState==6){
+                    vm.off.modify='stop';
+                }else if(vm.searchList[v].ischecked==true&&vm.searchList[v].productState!=6){
                     vm.off.modify=true;
                 }
+            }
+            if(vm.off.modify=='stop'){
+                layer.open({
+                    content:"不允许操作购物车中的号包",
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
             }
             if(vm.off.modify==false){
                 layer.open({

@@ -19,7 +19,7 @@
 .c-yellow{color:#F78A24;}
 .c-red{color:rgb(247, 49, 49);}
 .f-s-12{font-size:12px;}
-.f-s-14{font-size:14px;}
+.f-s-14{font-size:12px;color:#666}
 .f-s-16{font-size:16px;}
 .f-s-18{font-size:18px;}
 /* 行高,字间距 */
@@ -50,13 +50,13 @@ label.el-checkbox{display: inline}
 .el-row .textR{text-align: right;height: 100%}
 .el-row .textL{text-align: left;}
 .inputTitle{font-size: .14rem;}
-table.searchTab{border-collapse:collapse;text-align: center;font-size: 14px;}
+table.searchTab{border-collapse:collapse;text-align: center;font-size: 12px;}
 table.searchTab a{color:#43AAD4;cursor: pointer;}
 table.searchTab a:active{color:rgb(82, 24, 241)}
 table.searchTab tr td{ border-bottom:1px solid rgb(235, 235, 235);}
 table.searchTab tr{height:35px;}
 table.searchTab tr:nth-child(even){background: #fff;}
-table{color: black}
+table{color: #222}
 div.detailsListDiv{margin: 0px 20px;border: 1px solid #ccc;}
 .searchBtn{width: 140px;height: 36px;background: #FE8800;border: 1px solid #FE8800;outline: none;border-radius: 8px;color: white}
 .searchBtn:active{box-shadow: 0 0 5px red}
