@@ -16,46 +16,40 @@
                     <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
                 </el-row>
                 <el-row>
-                    <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4" class="m-form-radio f-tar">
+                            <el-col :xs="6" :sm="6" :md="4" :lg="2" :xl="2" class="m-form-radio f-tar">
                                 <label><span class="radioYes"><input  type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">订单号码：</span></label>                            
                             </el-col>
-                            <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                            <el-col :xs="16" :sm="12" :md="10" :lg="10" :xl="10">
                                 <el-input v-model="orderId" size="small" maxlength=25 placeholder="请输入查询的订单号码"></el-input>
                             </el-col>
-                            <el-col :span="2"></el-col> 
                         </div>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                    <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="4" :sm="6" :md="4" :lg="4" :xl="4" class="m-form-radio f-tar">
+                            <el-col :xs="6" :sm="6" :md="4" :lg="2" :xl="2" class="m-form-radio f-tar">
                                 <label><span class="radioYes"><input  type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">产品名称：</span></label>                            
                             </el-col>
-                            <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                            <el-col :xs="16" :sm="12" :md="10" :lg="10" :xl="10">
                                 <el-input v-model="pname" size="small" maxlength=10 placeholder="请输入查询的产品名称"></el-input>
-                            </el-col>
-                            <el-col :span="2"></el-col> 
-                        </div>
-                    </el-col>
-                    <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12" class="f-s-16"> 
-                        (
-                        <el-checkbox-group v-model="cardType" class="displayInline">
+                            </el-col> 
+                            &nbsp;( <el-checkbox-group v-model="cardType" class="displayInline">
                             <el-checkbox label="1">整号段</el-checkbox>
                             <el-checkbox label="2">靓号包</el-checkbox>
                             <el-checkbox label="3">普号包</el-checkbox>
-                        </el-checkbox-group>
-                        )
+                        </el-checkbox-group> )
+                        </div>
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="3" :md="4" :lg="4" :xl="4" class="m-form-radio f-tar">
+                    <el-col>
+                        <el-col :xs="6" :sm="6" :md="4" :lg="2" :xl="2" class="m-form-radio f-tar">
                             <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">操作时间：</span></label>                            
                         </el-col>
-                        <el-col :xs="18" :sm="12" :md="10" :lg="12" :xl="12">
+                        <el-col :xs="18" :sm="18" :md="18" :lg="12" :xl="10">
                             <div class="block">
                                 <el-date-picker
                                 v-model="startTime"
@@ -78,49 +72,47 @@
                                 style="width:170px;"                            
                                 placeholder="选择结束时间">
                                 </el-date-picker>
+                                 ( <el-radio v-model="timeType"  label="1">创建时间</el-radio>
+                                <el-radio v-model="timeType"  label="2">修改时间</el-radio> )
                             </div>
                         </el-col>
-                        <el-col :xs="24" :sm="9" :md="8" :lg="8" :xl="8" class="f-s-16">
-                            ( <el-radio v-model="timeType"  label="1">创建时间</el-radio>
-                            <el-radio v-model="timeType"  label="2">修改时间</el-radio> )
-                        </el-col>
-                    </el-col>
-                    <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">商户名称：</div></el-col>
-                        <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
-                            <el-input v-model="dealerName" size="small" maxlength=20 placeholder="请输入查询的商户名称"></el-input>
-                        </el-col>
-                        <el-col :span="2"></el-col> 
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col ors:xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="4" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                        <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                    <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
                             <el-radio v-model="orderState"  label="0">全部</el-radio> 
                             <el-radio v-model="orderState"  label="1">未发货</el-radio>
                             <el-radio v-model="orderState"  label="2">已发货</el-radio>
                             <el-radio v-model="orderState"  label="3">已完成</el-radio>
                         </el-col>
                     </div></el-col>
-                    <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
-                        <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
+                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
                             <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人姓名"></el-input>
                         </el-col>
                         <el-col :span="2"></el-col> 
                     </el-col>
                 </el-row>
                 <el-row>
-                    <el-col ors:xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="4" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">支付方式：</div></el-col>
-                        <el-col :xs="20" :sm="12" :md="12" :lg="16" :xl="16">
+                    <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">支付方式：</div></el-col>
+                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
                             <el-radio v-model="payMent"  label="0">全部</el-radio>
                             <el-radio v-model="payMent"  label="2">微信支付</el-radio>
                             <el-radio v-model="payMent"  label="1">支付宝支付</el-radio>
                             <el-radio v-model="payMent"  label="4">线下支付</el-radio>
                         </el-col>
                     </div></el-col>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">商户名称：</div></el-col>
+                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
+                            <el-input v-model="dealerName" size="small" maxlength=20 placeholder="请输入查询的商户名称"></el-input>
+                        </el-col>
+                        <el-col :span="2"></el-col> 
+                    </el-col>
                 </el-row>
                 <el-row style="text-align:center" class="marginTop">
                     <button class="searchBtn" @click="search()">搜索</button>
@@ -195,6 +187,7 @@
                                     <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==3">手动关闭</span>                                    
                                     <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==4">超时关闭</span>                                    
                                     <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
+                                    <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
                                     <span class="c-green" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==2">已完成</span>
                                 </td>
                                 <td>
@@ -222,6 +215,7 @@
                                         layout="prev, pager, next"
                                         :page-size="10"
                                         @current-change="search"
+                                        :current-page.sync="currentPage"                                                        
                                         :total="form.page">
                                     </el-pagination>    
                                 </div>
@@ -244,6 +238,7 @@ import layerConfirm from "../../components/layerConfirm";
 export default {
     data() {
         return {
+            currentPage:0,
             searchResult:"",
             layerType:'',//弹窗类型
             logistics:{},//物流信息
@@ -322,6 +317,7 @@ export default {
     methods: {
         search(index) {//查询
             let vm=this,data={};
+            vm.currentPage=index||1;
             vm.pa=index||1;
             if(vm.form.searchKind==1){
                 if(vm.orderId==''){

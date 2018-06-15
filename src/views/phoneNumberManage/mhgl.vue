@@ -248,6 +248,7 @@
                             layout="prev, pager, next"
                             :page-size="10"
                             @current-change="search"
+                            :current-page.sync="currentPage"                            
                             :total="form.page">
                             </el-pagination>
                         </div></el-col>
@@ -310,6 +311,7 @@ const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航'
 export default{
 	data (){
 		return {
+            currentPage:0,
             layerType:"",//弹框类型
             logistics:"",
             _copyData:"",
@@ -485,6 +487,7 @@ export default{
         }
         ,search(p){//查询
             let vm=this;
+            vm.currentPage=p||1;
             if(this.phone!=''){
                 checkMobile(this.phone,function(){vm.searchList="";vm.total="";vm.form.page="";return false});
             }

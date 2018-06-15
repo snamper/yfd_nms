@@ -164,6 +164,7 @@ div.detailsListDiv tr td{text-align: center;} */
                                 layout="prev, pager, next"
                                 :page-size="15"
                                 @current-change="search"
+                                :current-page.sync="currentPage"                                
                                 :total="form.page">
                             </el-pagination>    
                         </div></el-col>
@@ -184,6 +185,7 @@ import {requestSyncLogSearch,requestgetSyncTime} from "../../config/service";
 export default {
     data() {
     return {
+        currentPage:0,
         detRecordType:'',
         pa:1,
         startTime: "",
@@ -261,6 +263,7 @@ export default {
   methods: {
     search(p) {
         let vm=this; 
+        vm.currentPage=p||1;
         if(this.operatorPhone!=''){
             checkMobile(this.operatorPhone,function(){vm.form.page="";vm.form.searchList="";return false});
         }

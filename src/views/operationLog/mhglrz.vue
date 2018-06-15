@@ -156,6 +156,7 @@ div.detailsListDiv tr td {
                                 layout="prev, pager, next"
                                 :page-size="15"
                                 @current-change="search"
+                                :current-page.sync="currentPage"
                                 :total="form.page">
                             </el-pagination>    
                         </div></el-col>
@@ -188,6 +189,7 @@ export default {
             radio: "1,2",
             searchResult: "",
             pa: 1,
+            currentPage:0,
             off: {
                 logDet: false,
                 logList:false,
@@ -249,7 +251,7 @@ export default {
     methods: {
         search(index) {//查询
             let vm=this;
-                
+            vm.currentPage=index||1;
             if(this.phone!=''){
                 checkMobile(this.phone,function(){vm.off.logList="";vm.form.page = "";vm.searchResult = "";return false});
             }

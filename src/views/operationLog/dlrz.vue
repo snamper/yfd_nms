@@ -166,6 +166,7 @@ div.detailsListDiv tr td {
                         layout="prev, pager, next"
                         :page-size="15"
                         @current-change="search"
+                        :current-page.sync="currentPage"                                                        
                         :total="form.page">
                     </el-pagination>    
                 </div></el-col>
@@ -183,6 +184,7 @@ import {errorDeal} from "../../config/utils";
 export default {
   data() {
     return {
+        currentPage:0,
         pa:1,
         openLayer:"login",
         startTime: "",
@@ -256,6 +258,7 @@ export default {
   methods: {
     search(t) {
         let vm=this;
+        vm.currentPage=t||1;
         if(this.phone!=''){
             checkMobile(this.phone,function(){vm.form.page="";vm.searchList = "";return false});
         }
