@@ -59,7 +59,7 @@
                             <div class="block">
                                 <el-date-picker
                                 v-model="startTime"
-                                size="mini"
+                                size="small"
                                 type="datetime"
                                 :clearable=false                                        
                                 :editable=false                    
@@ -69,7 +69,7 @@
                                 placeholder="选择开始时间">
                                 </el-date-picker>—<el-date-picker
                                 v-model="endTime"
-                                size="mini"
+                                size="small"
                                 type="datetime"
                                 :clearable=false                                        
                                 :editable=false                    

@@ -4,9 +4,9 @@
     <section>
         <div class="allDetails" v-if="listSwitch.allDetails">
             <div class="listTitleFoot">
-                <h3><span>号包详情</span><span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span></h3>
+                <h3><span v-if="!pickCardSwitch">号包详情</span><span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span></h3>
             </div>
-            <div class="detailsListDiv">
+            <div v-if="!pickCardSwitch" class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr>
                         <td>号包名称 ：<span class="deepGreyFont f-s-14">{{dataList.productName||'--'}}</span></td>
