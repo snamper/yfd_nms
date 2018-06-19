@@ -91,7 +91,24 @@
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListLiang" :key="i">
-                        <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td>
+                        <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td> -->
+                        <td v-for="(v,i) of dataListLiang[i]" :key="i">
+                            <el-popover
+                            placement="right"
+                            title="资费介绍"
+                            width="200"
+                            trigger="hover">
+                            <div class="greyFont f-s-14">
+                                <p>号卡名称：{{v.name||'--'}}</p>
+                                <p>流&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量 ：{{v.sms||'--'}}</p>
+                                <p>短&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信 ：</p>
+                                <p>国内语音 ：{{v.voice||'--'}}</p>
+                                <p>来电显示 ：{{v.showingCall||'--'}}</p>
+                                <p>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消 ：{{v.lowConsume||'--'}}</p>
+                            </div>
+                            <el-button slot="reference">{{v.phone}}</el-button>
+                            </el-popover>
+                        </td>
                     </tr>
                     <tr v-if="!dataListLiang.length">
                         <td class="tac deepGreyFont f-s-14">此号包下暂无靓号详情</td>
@@ -106,7 +123,24 @@
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListPu" :key="i">
-                        <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
+                        <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td> -->
+                        <td v-for="(v,i) of dataListPu[i]" :key="i">
+                            <el-popover
+                            placement="right"
+                            title="资费介绍"
+                            width="200"
+                            trigger="hover">
+                            <div class="f-s-14 greyFont">
+                                <p>号卡名称：{{v.name||'--'}}</p>
+                                <p>流&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量 ：{{v.sms||'--'}}</p>
+                                <p>短&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;信 ：</p>
+                                <p>国内语音 ：{{v.voice||'--'}}</p>
+                                <p>来电显示 ：{{v.showingCall||'--'}}</p>
+                                <p>低&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;消 ：{{v.lowConsume||'--'}}</p>
+                            </div>
+                            <el-button slot="reference">{{v.phone}}</el-button>
+                            </el-popover>
+                        </td>
                     </tr>
                     <tr v-if="!dataListPu.length">
                         <td class="tac deepGreyFont f-s-14">此号包下暂无普号详情</td>

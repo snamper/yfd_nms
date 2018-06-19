@@ -161,6 +161,12 @@ export const checkMobile=(v,f)=>{
     } 
 }
 /**
+ *去除空格
+ */
+export const trimFunc=(v)=>{
+    return v.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+}
+/**
  * 开卡订单-数据翻译
  */
 export const translateData=(type,v)=> {

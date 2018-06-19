@@ -252,7 +252,7 @@
                             :total="form.page">
                             </el-pagination>
                         </div></el-col>
-                        <el-col :span="12" v-if="nowStatusHidden!=6">
+                        <el-col :span="12" v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
                             <div class="grid-content bg-purple-light fr">操作 : <el-button size="mini" @click="doFounction(1)">上架</el-button><el-button size="mini" @click="doFounction(2)">下架</el-button></div>
                         </el-col>
                         </el-row>

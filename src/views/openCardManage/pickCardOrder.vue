@@ -191,13 +191,13 @@
                                     <span class="c-green" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==2">已完成</span>
                                 </td>
                                 <td>
-                                    <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryOrderId||'--'}}</a> 
+                                    <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a> 
                                 </td>
                                 <td>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
-                                    <el-button v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
+                                    <el-button v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1&&v.paymentType==4" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
@@ -230,7 +230,7 @@
   	</section>
 </template>
 <script>
-import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime } from "../../config/utils";
+import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc } from "../../config/utils";
 import { disabledDate }from "../../config/utilsTimeSelect";
 import {requestProductDetails,requestPickupOrder,requestChangeLogisticsId,requestConfirmTakeGoods} from "../../config/service.js";
 import orderDetails from "./orderDetails";
@@ -342,15 +342,15 @@ export default {
             }
             data={
                 "searchType": vm.form.searchKind,
-                "sysOrderId": vm.orderId,
-                "productName":vm.pname,
+                "sysOrderId": trimFunc(vm.orderId),
+                "productName":trimFunc(vm.pname),
                 "productType": vm.cardType.join(","),
                 "timeType": vm.timeType,
                 "startTime": new Date(vm.startTime).getTime(),
                 "endTime": new Date(vm.endTime).getTime(),
                 "orderState": vm.orderState,
-                "depName": vm.dealerName,
-                "operatorName":vm.operator,
+                "depName": trimFunc(vm.dealerName),
+                "operatorName":trimFunc(vm.operator),
                 "paymentType":vm.payMent,
                 "pageNum": index || 1,
                 "pageSize": 10,
@@ -428,6 +428,8 @@ export default {
             getTimeFunction(this,[e,2])                      
         },getDateTime(e){
             return getDateTime(e)
+        },trimFunc(v){
+            return trimFunc(v);
         }
     }
 };

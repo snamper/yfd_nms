@@ -5,7 +5,6 @@
 * */
 import Vue from "vue";
 import Router from "vue-router";
-// require("../assets/js/base64.min.js");
 Vue.use(Router);
 const load=(isShow)=>{
   //路由加载动画
@@ -138,15 +137,15 @@ const router=new Router({
             children:[{
                 path:"yfd",
                 name:"yfd",
-                component:Org_Yfd,
+                component:Org_Yfd
             },{
                 path:"agent",
                 name:"agent",
-                component:Org_Dls
+                component:Org_Dls,
             },{
                 path:"staff",
                 name:"staff",
-                component:Org_Ygcx
+                component:Org_Ygcx,
             }
         ]
         }
@@ -200,20 +199,6 @@ router.beforeEach((to, from, next) => {
     }
      next();
 });
-// router.beforeEach((to, from, next) => {
-//     if(to.query&&to.query.auth){
-//         let t=to.query.auth;
-//             t=BASE64.decode(t);
-//             delete t.departName;
-//         localStorage.setItem("KA_ECS_USER",t);
-//     }else{
-//         let token = localStorage.getItem("KA_ECS_USER");
-//         if (!token){
-//             window.location.href="/nbs/login"
-//         }
-//     }
-//     next();
-// });
 export default router;
 
 
