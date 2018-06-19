@@ -2,7 +2,7 @@
     .el-input--suffix .el-input__inner{padding-right: 10px!important;}
     .tac div input{border: 0 none;}
     .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
-    .box span{float: left;display: inline-block;height: 26px;}
+    .box span{display: inline-block;float: left;height: 26px;}
     .span1{width: 100px;position: relative;background: red}
     .span2{width: 40px;position: relative;background: green}
     .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
