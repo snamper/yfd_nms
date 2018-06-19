@@ -283,6 +283,14 @@ export default{
             .then((data)=>{
                 this.$parent.search(vm.$parent.pa);
                 this.$parent.off.layer=false;
+                if(data.code==200){
+                    layer.open({
+                        content:"操作成功",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"success"
+                    })
+                }
             }).catch(e=>errorDeal(e));
             }else if(e=="payMent"){//修改单号
                 let regular = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;

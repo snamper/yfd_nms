@@ -42,9 +42,9 @@
                     <tr>
                         <td>码号数量 ：
                             <span class="deepGreyFont f-s-14" v-if="!pickCardSwitch">
-                                <span v-if="dataList.productType==1">{{dataList.normalTotal+dataList.cuteTotal}}</span>
-                                <span v-if="dataList.productType==2">{{dataList.cuteTotal}}</span>
-                                <span v-if="dataList.productType==3">{{dataList.normalTotal}}</span>
+                                <span v-if="dataList.productType==1">普号数（{{dataList.normalTotal}}）+靓号数（{{dataList.cuteTotal}}）</span>
+                                <span v-if="dataList.productType==2">靓号数（{{dataList.cuteTotal}}）</span>
+                                <span v-if="dataList.productType==3">普号数（{{dataList.normalTotal}}）</span>
                             </span>
                             <span class="deepGreyFont f-s-14" v-if="pickCardSwitch">
                                 <span v-if="listSwitch.liang">{{dataList.cuteTotal}}</span>
