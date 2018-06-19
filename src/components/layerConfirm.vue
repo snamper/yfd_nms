@@ -275,9 +275,17 @@ export default{
                     }
                 }).catch(e=>errorDeal(e));
             }else if(e=="logistics"){//修改单号
-                let data={"sysOrderId": v.sysOrderId,
-                    "deliveryOrderId":vm.orderId,
-                    "deliveryName":vm.logisticsCompany2 ,
+                let data;
+                if(vm.orderId==""||vm.logisticsCompany2==""){
+                    layer.open({
+                        content:"请填写完整的物流信息",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"error"
+                    })
+                    return false;
+                }else{
+                    data={"sysOrderId": v.sysOrderId,"deliveryOrderId":vm.orderId,"deliveryName":vm.logisticsCompany2}
                 }
             requestChangeLogisticsId(data)
             .then((data)=>{
