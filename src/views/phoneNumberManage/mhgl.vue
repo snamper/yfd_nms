@@ -135,7 +135,7 @@
                                 </td>
                             </tr>
                             <tr class="f-s-14">
-                                <td></td>
+                                <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5"></td>
                                 <td>序号</td>
                                 <td>号包名称</td>
                                 <td>号包类型</td>
@@ -148,7 +148,7 @@
                                 <td>当前状态</td>
                             </tr>
                             <tr v-for="(v,i) of searchList" :key="i">
-                                <td>
+                                <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
                                     <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
                                 </td>
                                 <td>
@@ -228,7 +228,7 @@
                                     {{v.productId}}
                                 </td>
                             </tr>
-                            <tr v-if="searchList.length>0">
+                            <tr v-if="searchList.length>0&&nowStatusHidden!=6&&nowStatusHidden!=5">
                                 <td colspan="11" style="text-align:left" class="pl20">
                                     选择 : <a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
                                     <!-- <a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a> -->
