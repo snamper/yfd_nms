@@ -91,8 +91,8 @@
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListLiang" :key="i">
-                        <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td> -->
-                        <td v-for="(v,i) of dataListLiang[i]" :key="i">
+                        <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td>
+                        <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">
                             <el-popover
                             placement="right"
                             title="资费介绍"
@@ -108,7 +108,7 @@
                             </div>
                             <el-button slot="reference">{{v.phone}}</el-button>
                             </el-popover>
-                        </td>
+                        </td> -->
                     </tr>
                     <tr v-if="!dataListLiang.length">
                         <td class="tac deepGreyFont f-s-14">此号包下暂无靓号详情</td>
@@ -123,8 +123,8 @@
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListPu" :key="i">
-                        <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td> -->
-                        <td v-for="(v,i) of dataListPu[i]" :key="i">
+                        <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
+                        <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">
                             <el-popover
                             placement="right"
                             title="资费介绍"
@@ -140,7 +140,7 @@
                             </div>
                             <el-button slot="reference">{{v.phone}}</el-button>
                             </el-popover>
-                        </td>
+                        </td> -->
                     </tr>
                     <tr v-if="!dataListPu.length">
                         <td class="tac deepGreyFont f-s-14">此号包下暂无普号详情</td>
