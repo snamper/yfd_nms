@@ -585,18 +585,21 @@ export default{
             }
         },
          doFounction(val){
-            let vm=this;
+            let vm=this,isInArray=false;
             vm.a="";
             for(let v in vm.searchList){
-                if(vm.searchList[v].ischecked==true&&vm.searchList[v].productState==6){
-                    vm.off.modify='stop';
-                }else if(vm.searchList[v].ischecked==true&&vm.searchList[v].productState!=6){
-                    vm.off.modify=true;
+                if(vm.searchList[v].ischecked==true&&vm.searchList[v].productState===6||vm.searchList[v].productState===5){
+                    isInArray=true;
                 }
+            }
+            if(isInArray===true){
+                vm.off.modify='stop';
+            }else{
+                vm.off.modify=true;
             }
             if(vm.off.modify=='stop'){
                 layer.open({
-                    content:"不允许操作购物车中的号包",
+                    content:"不允许操作购物车中和已售出的号包",
                     skin: 'msg',
                     time: 2,
                     msgSkin:'error',
