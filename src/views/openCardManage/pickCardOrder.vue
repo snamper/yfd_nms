@@ -308,7 +308,6 @@ export default {
     },
     created: function() {
         getTimeFunction(this)
-
     },
     components: {
         "order-details":orderDetails,

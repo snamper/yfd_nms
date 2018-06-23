@@ -311,6 +311,7 @@ const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航'
 export default{
 	data (){
 		return {
+            searchProductListId:'',
             currentPage:0,
             layerType:"",//弹框类型
             logistics:"",
@@ -413,8 +414,10 @@ export default{
 		getDetails(v){
             let vm=this,data={},url="/nms/w/number/getProductDetail";
             data.searchProductId=v.productId;
+            vm.searchProductListId=v.productId;
             data.sessionType="2";
             let load=Loading.service(options);
+
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
@@ -426,6 +429,8 @@ export default{
                     if(v.productType==1||v.productType==2){
                         url="/nms/w/number/getProductCuteNumbers";
                         data.phoneLevel=2;
+                        data.pageNum=1;
+                        data.pageSize=60;
                         requestMethod(data,url)
                         .then((data)=>{
                             resolve('yes');
@@ -445,6 +450,8 @@ export default{
                         if(v.productType==1||v.productType==3){
                             url="/nms/w/number/getProductNumbers";
                             data.phoneLevel=1;
+                            data.pageNum=1;
+                            data.pageSize=60;
                             requestMethod(data,url)
                             .then((data)=>{
                                 resolve('yes');                        

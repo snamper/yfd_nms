@@ -86,7 +86,7 @@
         </div>
         <div class="liang" v-if="listSwitch.liang">
             <div class="listTitleFoot">
-                <h3><span>靓号详情</span><span class="deepGreyFont"> ({{dataListLiang.len||'0'}})</span></h3>
+                <h3><span>靓号详情</span><span class="deepGreyFont"> ({{dataList.cuteTotal||'0'}})</span></h3>
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
@@ -114,11 +114,22 @@
                         <td class="tac deepGreyFont f-s-14">此号包下暂无靓号详情</td>
                     </tr>
                 </table>
+                <!-- <el-col>
+                  <div class="grid-content bg-purple">
+                      <el-pagination
+                          layout="prev, pager, next"
+                          :page-size="60"
+                          @current-change="searchNumberListCute"
+                          :current-page.sync="currentPage"                                                        
+                          :total="dataList.cuteTotal">
+                      </el-pagination>    
+                  </div>
+                </el-col> -->
             </div> 
         </div>
         <div class="pu" v-if="listSwitch.pu">
             <div class="listTitleFoot">
-                <h3><span>普号详情</span><span class="deepGreyFont"> ({{dataListPu.len||'0'}})</span></h3>
+                <h3><span>普号详情</span><span class="deepGreyFont"> ({{dataList.normalTotal||'0'}})</span></h3>
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
@@ -147,15 +158,30 @@
                     </tr>
                 </table>
             </div> 
+            <el-row>
+              <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                  <div class="grid-content bg-purple">
+                      <el-pagination
+                          layout="prev, pager, next"
+                          :page-size="60"
+                          @current-change="searchNumberList"
+                          :current-page.sync="currentPage"                                                        
+                          :total="dataList.normalTotal">
+                      </el-pagination>    
+                  </div>
+              </el-col>
+          </el-row>
         </div>  
     </section>
 </template>
 <script>
 import { getDateTime,getUnixTime,errorDeal } from "../config/utils.js";
+import { requestMethod } from "../config/service.js"
 export default{
     props:{dataList:Object,dataListLiang:Array,dataListPu:Array,listSwitch:Object,pickCardSwitch:Boolean},        
     data (){
 		return {
+            currentPage:0,
             pageNumDetails:"",//号包详情
             pageNumLiang:"",//靓号详情
             pageNumPu:"",//普号详情
@@ -165,7 +191,7 @@ export default{
                 notDlsDetails:true,
 			},
 			form:{
-			
+        page:0
 			},
 		}
 	},
@@ -194,7 +220,39 @@ export default{
             vm.off.sync=true;
         },getDateTime(v){
             return getDateTime(v)
-        }
+        },searchNumberList(v){
+          let vm=this, url="/nms/w/number/getProductNumbers",data={};
+          data.searchProductId=vm.$parent.searchProductListId;
+          data.sessionType="2";
+          data.phoneLevel=1;
+          data.pageNum=v||1;
+          data.pageSize=60;
+          requestMethod(data,url)
+          .then((data)=>{
+              this.$set(vm.$parent.listSwitch,'pu',true)                                                      
+              vm.$parent.searchPu=[]
+              for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                  vm.$parent.searchPu.push(data.data.numbers.slice(i,i+6));
+              }
+              vm.$parent.searchPu.len=data.data.numbers.length;                        
+          }).catch(e=>errorDeal(e))
+        },searchNumberListCute(v){
+            let vm=this, url="/nms/w/number/getProductCuteNumbers",data={};
+            data.searchProductId=vm.$parent.searchProductListId;
+            data.sessionType="1";
+            data.phoneLevel=1;
+            data.pageNum=v||1;
+            data.pageSize=60;
+            requestMethod(data,url)
+            .then((data)=>{
+                this.$set(vm.$parent.listSwitch,'pu',true)                                                      
+                vm.$parent.searchLiang=[]
+                for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                    vm.$parent.searchLiang.push(data.data.numbers.slice(i,i+6));
+                }
+                vm.$parent.searchLiang.len=data.data.numbers.length;                        
+            }).catch(e=>errorDeal(e))
+          }
     }
 }
 </script>
