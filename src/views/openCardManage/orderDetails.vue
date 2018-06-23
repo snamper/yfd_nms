@@ -104,6 +104,7 @@ export default{
     props:{detailsData:Object},        
     data (){
 		return {
+            searchProductListId:'',
             pageNumDetails:"",//号包详情
             pageNumLiang:"",//靓号详情
             pageNumPu:"",//普号详情
@@ -124,6 +125,7 @@ export default{
         details(v,i){
             let vm=this,url="/nms/w/number/getProductDetail",data={}
             data.searchProductId=i;
+            vm.searchProductListId=i;
             data.sessionType="2";
             requestMethod(data,url)
             .then((data)=>{
@@ -160,6 +162,8 @@ export default{
                 }else if(v=='p'){
                     url="/nms/w/number/getProductNumbers";
                     data.phoneLevel=1;
+                    data.pageNum=1;
+                    data.pageSize=60;
                     requestMethod(data,url)
                     .then((data)=>{
                         if(data.code==200){
