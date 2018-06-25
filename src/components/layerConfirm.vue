@@ -78,7 +78,7 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                     </tr>
                     <tr>
                         <td>
-                            <el-input v-model="logisticsOrderId" placeholder="请输入内容" size="small"></el-input>
+                            <el-input :maxlength="30"  v-model="logisticsOrderId" placeholder="请输入物流单号" size="small"></el-input>
                         </td>
                     </tr>
                     <tr class="tdBtn">
@@ -111,7 +111,7 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                     </tr>
                     <tr>
                         <td>
-                            <el-input v-model="orderId" placeholder="请输入内容" size="small"></el-input>
+                            <el-input v-model="orderId" :maxlength="20"  placeholder="请输入物流单号" size="small"></el-input>
                         </td>
                     </tr>
                     <tr class="tdBtn">
@@ -154,7 +154,7 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                     </tr>
                     <tr>
                         <td>
-                            <el-input maxlength=30 v-model="orderId" placeholder="请输入内容" size="small"></el-input>
+                            <el-input maxlength=30 v-model="orderId" placeholder="请输入物流单号" size="small"></el-input>
                         </td>
                     </tr>
                     <tr class="f-s-12">
@@ -258,9 +258,10 @@ export default{
             }else if(e=="sendGoods"){//发货
                 let data={
                     "sysOrderId": v.sysOrderId,
-                    "deliveryOrderId":vm.orderId,
+                    "deliveryOrderId":vm.logisticsOrderId,
                     "deliveryName":vm.logisticsCompany ,
                     }
+                    debugger;
                requestChangeLogisticsId(data)
                .then((data)=>{
                     this.$parent.search(vm.$parent.pa);
