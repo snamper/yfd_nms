@@ -161,11 +161,7 @@
                                         <span v-if="v.productType==3">({{v.normalTotal}})</span>
                                     </a>
                                 </td>
-                                <td >
-                                    <span v-if="v.productType==1">整号包</span>
-                                    <span v-if="v.productType==2">靓号包</span>
-                                    <span v-if="v.productType==3">普号包</span>
-                                </td>
+                                <td > {{translateData(2,v.productType)}} </td>
                                 <td class="tac" style="width:140px">
                                     <div v-if="!off.changePrice[i+1]">
                                         <span v-if="!v.strikePrice">{{(v.totalPrice/100).toFixed(2)}}</span>
@@ -181,49 +177,19 @@
                                         </span>
                                     </div>
                                 </td>
+                                <td > {{translateData(4,v.brand)}} </td>
+                                <td >{{translateData(1,v.isp)}} </td>
                                 <td >
-                                <span v-if="v.brand==1">远特</span>
-                                <span v-if="v.brand==2">蜗牛</span>
-                                <span v-if="v.brand==3">迪信通</span>
-                                <span v-if="v.brand==4">极信</span>
-                                <span v-if="v.brand==5">小米</span>
-                                <span v-if="v.brand==6">海航</span>
-                                <span v-if="v.brand==7">乐语</span>
-                                <span v-if="v.brand==8">苏宁互联</span>
-                                <span v-if="v.brand==9">国美</span>
-                                <span v-if="v.brand==10">联想</span>
-                                <span v-if="v.brand==11">蓝猫移动</span>
-                                <span v-if="v.brand==12">长城</span>
+                                    <span v-if="v.modifyTime"> {{getDateTime(v.modifyTime)[6]}} </span>
+                                    <span v-if="!v.modifyTime"> -- </span>
                                 </td>
                                 <td >
-                                <!-- <span v-if="v.isp==1,2,3">移动联通电信</span>                         -->
-                                <span v-if="v.isp==1">移动</span>
-                                <span v-if="v.isp==2">联通</span>
-                                <span v-if="v.isp==3">电信</span>
+                                    {{v.operatorName}}
                                 </td>
                                 <td >
-                                    <!-- {{new Date(v.modifyTime).toLocaleString()}} -->
-                                    <span v-if="v.modifyTime">
-                                        {{getDateTime(v.modifyTime)[6]}}
-                                    </span>
-                                    <span v-if="!v.modifyTime">
-                                        --
-                                    </span>
+                                    {{v.operatorPhone||'--'}}
                                 </td>
-                                <td >
-                                {{v.operatorName}}
-                                </td>
-                                <td >
-                                {{v.operatorPhone||'--'}}
-                                </td>
-                                <td >
-                                <span v-if="v.productState==1">未上架</span>                        
-                                <span v-if="v.productState==2">手动上架</span>
-                                <span v-if="v.productState==3">手动下架</span>
-                                <span v-if="v.productState==4">系统下架</span>
-                                <span v-if="v.productState==5" class="fcred">已出售</span>
-                                <span v-if="v.productState==6">购物车中</span>
-                                </td>
+                                <td :class="{red:v.productState==5}"> {{translateData(3,v.productState)}} </td>
                                 <td v-show="false">
                                     {{v.productId}}
                                 </td>
@@ -231,7 +197,6 @@
                             <tr v-if="searchList.length>0&&nowStatusHidden!=6&&nowStatusHidden!=5">
                                 <td colspan="11" style="text-align:left" class="pl20">
                                     选择 : <a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
-                                    <!-- <a href="javascript:void(0)" @click="doFilter('all')">全选</a>-<a href="javascript:void(0)" @click="doFilter('on')">已上架</a>-<a href="javascript:void(0)" @click="doFilter('noton')">未上架</a>-<a href="javascript:void(0)" @click="doFilter('off')">已下架</a>-<a href="javascript:void(0)" @click="doFilter('seal')">已售</a> -->
                                 </td>
                             </tr>
                             <tr v-if="searchList.length<=0">
@@ -290,7 +255,7 @@
 <script>
 import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-chalk/display.css';
-import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
 import {requestMethod,requestgetSyncTime,requestModify_Price} from "../../config/service.js"; 
 import layerSync from "../../components/layerSyncTime";
 import layerConfirm from "../../components/layerConfirm";
@@ -400,6 +365,9 @@ export default{
         vm.user=Info;
 	},
 	methods:{
+        translateData(type,v){
+            return translateData(type,v)
+        },
         checkBoxClick(v){
 
         },handleCheckAllChange(val) {

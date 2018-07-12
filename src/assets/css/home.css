@@ -354,6 +354,13 @@ b.countIcon{
   width: 0.2rem;
   height: 0.2rem;
 }
+.u-icon-back {
+    cursor: pointer;
+    background-image: url(../assets/images/back-off.png);
+    width: 0.2rem;
+    height: 0.2rem;
+  }
+
 /*头部用户组件*/
 
 .m-info-user,

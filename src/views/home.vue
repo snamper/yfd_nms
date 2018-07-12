@@ -132,6 +132,18 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 					</router-link>
 				</li>
 			</ul>
+            <!-- <ul class="g-side-ul">
+				<li :class="{active:crumb[0].name=='开卡订单管理'}">
+					<b></b>
+					<router-link to="/home/openCard">
+						<div>
+							<i class="u-icon-tika"></i>
+							<span>开卡订单管理</span>
+                            <span :class="crumb[0].name=='开卡订单管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
+						</div>
+					</router-link>
+				</li>
+			</ul> -->
 		</nav>
 	</aside>
   	<section class="g-main" id="main">
@@ -232,6 +244,8 @@ export default{
 				crumb[0]={"name":"公告管理","href":"/home/notice"}
             }if(path.indexOf("/home/pickCard")>-1){
 				crumb[0]={"name":"提卡订单管理","href":"/home/pickCard"}
+            }if(path.indexOf("/home/openCard")>-1){
+				crumb[0]={"name":"开卡订单管理","href":"/home/openCard"}
             }
 			this.crumb=crumb;
 			mainDom.style.overflowY='hidden';

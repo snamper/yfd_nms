@@ -74,25 +74,23 @@
                         </td>
                         <td >
                             <span v-if="v.createTime">
-                                {{getDateTime(v.caretTime)[6]}}
+                                {{getDateTime(v.createTime)[6]}}
                             </span>
                             <span v-if="!v.createTime">
                                 --
                             </span>
                         </td>
                         <td >
-                            <span v-for="(x,i) in v.userRole" :key="i">
-                                <span v-if="x==1">管理员<b v-if="v.userRole.indexOf(2)>-1||v.userRole.indexOf(3)>-1||v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==2"><b v-if="v.userRole.indexOf(3)>-1||v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b>销售</span><span v-if="x==3">店长<b v-if="v.userRole.indexOf(4)>-1||v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==4">采购员<b v-if="v.userRole.indexOf(5)>-1">、</b></span><span v-if="x==5">业务员</span>
+                            <span v-for="(x,i) in v.userRole.split(',')">
+                                {{translateData('userRole',x)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
                             </span>
                         </td>
                         <td >
-                            <span v-if="v.userState==1" class="fcgreen">正常</span>
-                            <span v-if="v.userState==2" class="greyFont">黑名单</span>
-                            <span v-if="v.userState==3">注销</span>
+                            <span :class="v.userState==1?'fcgreen':v.userState==2?'greyFont':''">{{translateData('userState',v.userState)}}</span> 
                         </td>
                         <td >
                             <span v-if="v.lastLoginTime">
-                                {{new Date(v.lastLoginTime).toLocaleString()}}
+                                {{getDateTime(v.lastLoginTime)[6]}}
                             </span>
                             <span v-if="!v.lastLoginTime">
                                 --
@@ -128,7 +126,7 @@
 <script>
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
-import { getDateTime,getUnixTime,errorDeal,checkMobile } from "../../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,checkMobile,translateData } from "../../config/utils.js";
 import staffDetails from "../../components/staffDetails.vue";
 export default{
 	data (){
@@ -214,6 +212,8 @@ export default{
             }).catch(e=>errorDeal(e));
         },getDateTime(v){
             return getDateTime(v);
+        },translateData(v,i){
+            return translateData(v,i)
         }
 	}
 }

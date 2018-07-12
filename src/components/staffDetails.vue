@@ -55,7 +55,6 @@
                         
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
-                            <!-- {{new Date(forms.createTime).toLocaleString()}} -->
                                 <span v-if="forms.createTime">
                                     {{getDateTime(forms.createTime)[6]}}
                                 </span>
@@ -72,7 +71,6 @@
                         
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
-                                <!-- {{new Date(forms.modifyTime).toLocaleString()}} -->
                                 <span v-if="forms.modifyTime">
                                     {{getDateTime(forms.modifyTime)[6]}}
                                 </span>
@@ -95,12 +93,8 @@
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">职务&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
-                            <span v-for="(v,i) in forms.userRole" :key="i">
-                                <span v-if="v==1">管理员</span>
-                                <span v-if="v==2">销售</span>
-                                <span v-if="v==3">店长</span>
-                                <span v-if="v==4">采购员</span>
-                                <span v-if="v==5">业务员</span>
+                            <span v-for="(v,i) in forms.userRole.split(',')" :key="i">
+                                {{translateData('userRole',v)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
                             </span>
                         </div></el-col>
                     </el-row>
@@ -201,7 +195,7 @@
 </template>
 <script>
 import {requestMethod} from "../config/service.js"; 
-import {getDateTime,getStore,errorDeal} from "../config/utils";
+import {getDateTime,getStore,errorDeal,translateData} from "../config/utils";
 export default{
     props:{forms:Object},
 	data (){
@@ -220,7 +214,6 @@ export default{
             reason:'',
             item:'',
             user:"",//登录信息
-            ix:[{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'},{color:'red',age:18,sex:'girl'}],            
 			off:{
                 showSearch:"",
                 addList:"",
@@ -324,6 +317,8 @@ export default{
 			window.open(url);
 		},getDateTime(v){
             return getDateTime(v);
+        },translateData(v,i){
+            return translateData(v,i)
         }
 	}
 }

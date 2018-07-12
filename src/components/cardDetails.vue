@@ -1,4 +1,6 @@
 <style scoped>
+    table.numberInfo td:nth-child(odd){width: 200px;text-align: right}
+    table.numberInfo td:nth-child(even){text-align: left;padding-left:20px; }
 </style>
 <template>
     <section>
@@ -7,40 +9,28 @@
                 <h3><span v-if="!pickCardSwitch">号包详情</span><span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span></h3>
             </div>
             <div v-if="!pickCardSwitch" class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
+                <table class="searchTab numberInfo" style="width:100%;height:100%;">
                     <tr>
-                        <td>号包名称 ：<span class="deepGreyFont f-s-14">{{dataList.productName||'--'}}</span></td>
-                        <td>运&nbsp;&nbsp;营&nbsp;&nbsp;商 ：
-                            <span class="deepGreyFont f-s-14">
-                                <span v-if="dataList.isp==1">移动</span>
-                                <span v-if="dataList.isp==2">联通</span>
-                                <span v-if="dataList.isp==3">电信</span>
-                            </span> 
+                        <td>号包名称 ：</td>
+                        <td class="deepGreyFont f-s-14">{{dataList.productName||'--'}}</td>
+                        <td>运&nbsp;&nbsp;营&nbsp;&nbsp;商 ： </td>
+                        <td>
+                            <span class="deepGreyFont f-s-14"> {{translateData(1,dataList.isp)}} </span> 
                         </td>
                     </tr>
                     <tr>
-                        <td>号包类型 ：
-                            <span class="deepGreyFont f-s-14">
-                                <span v-if="dataList.productType==1">整号包</span>
-                                <span v-if="dataList.productType==2">靓号包</span>
-                                <span v-if="dataList.productType==3">普号包</span>
-                            </span>    
+                        <td>号包类型 ： </td>
+                        <td>
+                            <span class="deepGreyFont f-s-14"> {{translateData(2,dataList.productType)}} </span>  
                         </td>
-                        <td>当前状态 ： 
-                    <!-- 1：未上架，2：手动上架，3：手动下架，4：系统下架，5：已出售, 6: 购物车中", -->
-                            
-                            <span class="deepGreyFont f-s-14">
-                                <span v-if="dataList.productState==1">未上架 </span>  
-                                <span v-if="dataList.productState==2">手动上架</span>
-                                <span v-if="dataList.productState==3">手动下架</span>
-                                <span v-if="dataList.productState==4">系统下架</span>
-                                <span v-if="dataList.productState==5">已出售</span>
-                                <span v-if="dataList.productState==6">购物车中</span>
-                            </span>
+                        <td>当前状态 ： <!-- 1：未上架，2：手动上架，3：手动下架，4：系统下架，5：已出售, 6: 购物车中", --> </td>
+                        <td>
+                            <span class="deepGreyFont f-s-14"> {{translateData(3,dataList.productState)}} </span>
                         </td>
                     </tr>
                     <tr>
-                        <td>码号数量 ：
+                        <td>码号数量 ： </td>
+                        <td>
                             <span class="deepGreyFont f-s-14" v-if="!pickCardSwitch">
                                 <span v-if="dataList.productType==1">普号数（{{dataList.normalTotal}}）+靓号数（{{dataList.cuteTotal}}）</span>
                                 <span v-if="dataList.productType==2">靓号数（{{dataList.cuteTotal}}）</span>
@@ -51,31 +41,21 @@
                                 <span v-if="listSwitch.pu">{{dataList.normalTotal}}</span>
                             </span>
                         </td>
-                        <td>修改时间 ：
+                        <td>修改时间 ： </td>
+                        <td>
                             <span class="deepGreyFont f-s-14">
                                 {{getDateTime(dataList.modifyTime)[6]}}
                             </span>
                         </td>
                         <!-- <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td> -->
                     </tr>
-                        <tr>
-                        <td>归属品牌 ：
-                            <span class="deepGreyFont f-s-14">
-                                <span v-if="dataList.brand==1">远特</span>
-                                <span v-if="dataList.brand==2">蜗牛</span>
-                                <span v-if="dataList.brand==3">迪信通</span>
-                                <span v-if="dataList.brand==4">极信</span>
-                                <span v-if="dataList.brand==5">小米</span>
-                                <span v-if="dataList.brand==6">海航</span>
-                                <span v-if="dataList.brand==7">乐语</span>
-                                <span v-if="dataList.brand==8">苏宁互联</span>
-                                <span v-if="dataList.brand==9">国美</span>
-                                <span v-if="dataList.brand==10">联想</span>
-                                <span v-if="dataList.brand==11">蓝猫移动</span>
-                                <span v-if="dataList.brand==12">长城</span>
-                            </span>
+                    <tr>
+                        <td>归属品牌 ： </td>
+                        <td>
+                            <span class="deepGreyFont f-s-14"> {{translateData(4,dataList.brand)}} </span>
                         </td>
-                        <td>操&nbsp;&nbsp;作&nbsp;&nbsp;人 ：
+                        <td>操&nbsp;&nbsp;作&nbsp;&nbsp;人 ： </td>
+                        <td>
                             <span class="deepGreyFont f-s-14">
                                 {{dataList.operatorName||'--'}}
                             </span>
@@ -158,7 +138,7 @@
                     </tr>
                 </table>
             </div> 
-            <el-row>
+            <el-row v-if="dataListPu.length">
               <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                   <div class="grid-content bg-purple">
                       <el-pagination
@@ -175,7 +155,7 @@
     </section>
 </template>
 <script>
-import { getDateTime,getUnixTime,errorDeal } from "../config/utils.js";
+import { getDateTime,getUnixTime,errorDeal,translateData } from "../config/utils.js";
 import { requestMethod } from "../config/service.js"
 export default{
     props:{dataList:Object,dataListLiang:Array,dataListPu:Array,listSwitch:Object,pickCardSwitch:Boolean},        
@@ -191,7 +171,7 @@ export default{
                 notDlsDetails:true,
 			},
 			form:{
-        page:0
+                page:0
 			},
 		}
 	},
@@ -252,6 +232,8 @@ export default{
                 }
                 vm.$parent.searchLiang.len=data.data.numbers.length;                        
             }).catch(e=>errorDeal(e))
+          },translateData(type,v){
+              return translateData(type,v)
           }
     }
 }

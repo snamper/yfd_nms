@@ -1,12 +1,7 @@
-<style>
-/* div.listTitleFoot {
-  width: 96%;
-  margin: 10px 18px;
-}
-div.detailsListDiv tr td {
-  text-align: center;
-} */
+<style scoped>
+    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
 </style>
+
 <template>
   <section >
       <div class="dls greyFont">

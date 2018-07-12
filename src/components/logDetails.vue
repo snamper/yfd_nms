@@ -35,7 +35,6 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                         <span v-if="detailsData.productType==1">整号包</span>
                         <span v-if="detailsData.productType==2">靓号包</span>
                         <span v-if="detailsData.productType==3">普号包</span>
-                        <span v-if="detailsData.productType!=3">普号包</span>
                     </td>
                 </tr>
                 <tr>
@@ -49,17 +48,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                 <tr>
                     <td>归属品牌：</td>
                     <td>
-                        <span v-if="detailsData.brand==2">蜗牛</span>
-                        <span v-if="detailsData.brand==3">迪信通</span>
-                        <span v-if="detailsData.brand==4">极信</span>
-                        <span v-if="detailsData.brand==5">小米</span>
-                        <span v-if="detailsData.brand==6">海航</span>
-                        <span v-if="detailsData.brand==7">乐语</span>
-                        <span v-if="detailsData.brand==8">苏宁互联</span>
-                        <span v-if="detailsData.brand==9">国美</span>
-                        <span v-if="detailsData.brand==10">联想</span>
-                        <span v-if="detailsData.brand==11">蓝猫移动</span>
-                        <span v-if="detailsData.brand==12">长城</span></td>
+                        {{translateData(4,detailsData.brand)}}
                     </td>
                 </tr>
                 <tr>
@@ -261,7 +250,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
 </section>
 </template>
 <script>
-import {getDateTime} from "../config/utils.js";
+import {getDateTime,translateData} from "../config/utils.js";
 export default{
 	props:['detailsData','layerType','syncLogType','getSyncTime'],
 	data (){
@@ -289,6 +278,8 @@ export default{
 			window.open(url);
 		},getDateTime(v){
             return getDateTime(v);
+        },translateData(v,i){
+            return translateData(v,i)
         } 
 	}
 }

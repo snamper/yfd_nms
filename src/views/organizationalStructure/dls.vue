@@ -1,4 +1,8 @@
-<style>
+
+<style scoped>
+    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
+    .setBtn{margin-left: 20px;background: #2A7CE0; color: #fff; padding: 2px 8px; border: 1px solid #2A7CE0; border-radius: 4px;outline: none;}
+    .syncBtn{margin-right: 10px;background: #2BAF08;color: #fff; padding: 2px 8px; border: 1px solid #2BAF08; border-radius: 4px;outline: none;}
 </style>
 <template>
 <section>
@@ -82,7 +86,6 @@
             <button  class="searchBtn" @click="search()">搜索</button>
         </el-row>
     </div>  
-    
     <!-- 查询结果模块 -->
     <div v-if="searchList">
         <div><!--v-if="searchList.length>0"-->
@@ -95,21 +98,19 @@
                         <td colspan="8">
                             <el-row>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
-                                    <span class="greyFont">最后同步成功时间:</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
+                                    <span class="greyFont">最后同步成功时间 ：</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
                                 </div></el-col>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
-                                    <!-- <span class="greyFont">下次同步成功时间:</span>
-                                    <span v-if="syncLastTime==0">--</span>
-                                    <span v-if="syncLastTime!=0">{{getDateTime(syncLastTime)[6]}}</span> -->
-                                    &nbsp;
+                                    <span class="greyFont">下次同步成功时间 ：</span><span>{{getDateTime(syncStartTime)[6]||'--'}}</span>
                                 </div></el-col>
                                 <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
-                                    <!-- <span class="greyFont">同步间隔时间:</span><span></span>
-                                    <el-button class="small-btn" type="primary" @click="openSet()">设置</el-button> -->
-                                    &nbsp;
+                                    <span class="greyFont">同步间隔时间 ：<label v-if="timeCell">{{timeCell/3600}}小时</label>
+                                        <label v-else>--</label>    
+                                    </span>
+                                    <button class="setBtn" @click="openSet()">设置</button>
                                 </div></el-col>
                                 <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
-                                    <el-button class="small-btn" type="success" @click="sync()">手动同步</el-button>
+                                    <button class="syncBtn" type="success" @click="sync()">手动同步</button>
                                 </div></el-col>
                             </el-row>
                         </td>
@@ -201,7 +202,7 @@
 </template>
 <script>
 import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
-import {requestMethod,requestgetSyncTime} from "../../config/service.js"; 
+import {requestMethod,requestgetSyncTime,requestgetSyncInfo,requestsetSyncTime} from "../../config/service.js"; 
 import layers from "../../components/layerSyncTime";
 import dlsDetails from "./dlsDetails";
 export default{
@@ -209,7 +210,9 @@ export default{
     data (){
         return {
             syncLastTime:'',//最后一次同步成功时间
+            syncStartTime:'',//下次同步成功时间
             currentPage:0,//当前页
+            timeCell:'',//时间间隔
             hesdUserName:"",
             headPhone:"",
             total:"",
@@ -238,45 +241,45 @@ export default{
             ,searchList:''
             ,details:{},
             pickerOptionsS: {
-            disabledDate(time) {
-                let curDate= new Date().getTime();
-                let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1,
-                    minMonth=curMonth-5,
-                    minYear=curYear;
-                    if(minMonth<0){
-                        minMonth+=12;
-                        minYear=curYear-1;
-                    }
-                let curDay=new Date(curDate).getDate()+1; 
-                let nextMonth=curMonth+1;               
-                let cur=minYear+"/"+minMonth+"/1";
-                let next=curYear+"/"+nextMonth+"/1";
-                let nextYesterday=new Date(next)-1000*3600*24;
-                    cur=new Date(cur).getTime();
-                return time.getTime() > nextYesterday || time.getTime() < cur;
-            }
-        },
-        pickerOptionsE: {
-            disabledDate(time) {
-                let curDate = new Date().getTime();
-                let curYear=new Date(curDate).getFullYear();
-                let curMonth=new Date(curDate).getMonth()+1,
-                    minMonth=curMonth-5,
-                    minYear=curYear;
-                    if(minMonth<0){
-                        minMonth+=12;
-                        minYear=curYear-1;
-                    }
-                let curDay=new Date(curDate).getDate()+1; 
-                let nextMonth=curMonth+1;               
-                let cur=minYear+"/"+minMonth+"/1";
-                let next=curYear+"/"+nextMonth+"/1";
-                let nextYesterday=new Date(next)-1000*3600*24;
-                    cur=new Date(cur).getTime();
-                return time.getTime() > nextYesterday || time.getTime() < cur;
-            }
-        }, 
+                disabledDate(time) {
+                    let curDate= new Date().getTime();
+                    let curYear=new Date(curDate).getFullYear();
+                    let curMonth=new Date(curDate).getMonth()+1,
+                        minMonth=curMonth-5,
+                        minYear=curYear;
+                        if(minMonth<0){
+                            minMonth+=12;
+                            minYear=curYear-1;
+                        }
+                    let curDay=new Date(curDate).getDate()+1; 
+                    let nextMonth=curMonth+1;               
+                    let cur=minYear+"/"+minMonth+"/1";
+                    let next=curYear+"/"+nextMonth+"/1";
+                    let nextYesterday=new Date(next)-1000*3600*24;
+                        cur=new Date(cur).getTime();
+                    return time.getTime() > nextYesterday || time.getTime() < cur;
+                }
+            },
+            pickerOptionsE: {
+                disabledDate(time) {
+                    let curDate = new Date().getTime();
+                    let curYear=new Date(curDate).getFullYear();
+                    let curMonth=new Date(curDate).getMonth()+1,
+                        minMonth=curMonth-5,
+                        minYear=curYear;
+                        if(minMonth<0){
+                            minMonth+=12;
+                            minYear=curYear-1;
+                        }
+                    let curDay=new Date(curDate).getDate()+1; 
+                    let nextMonth=curMonth+1;               
+                    let cur=minYear+"/"+minMonth+"/1";
+                    let next=curYear+"/"+nextMonth+"/1";
+                    let nextYesterday=new Date(next)-1000*3600*24;
+                        cur=new Date(cur).getTime();
+                    return time.getTime() > nextYesterday || time.getTime() < cur;
+                }
+            }, 
         }
     },
     components:{
@@ -344,7 +347,8 @@ export default{
                     vm.total=data.data.total;//查询总数
                     vm.searchList=data.data.departs;//查询内容
                     vm.form.page=data.data.total;
-                    vm.getSyncTime();                    
+                    vm.getSyncTime();   
+                    vm.getSyncInfo();                 
                 }else{
                     vm.total="";
                     vm.searchList="";
@@ -416,8 +420,8 @@ export default{
             getTimeFunction(this,[dt,2])                     
         },
         getSyncTime(){
-            let vm=this;
-            let data={recordType:3};
+            let vm=this,
+                data={"recordType":"3"};
             requestgetSyncTime(data)
             .then((data)=>{
                 if(data.code==200){
@@ -427,7 +431,16 @@ export default{
                 }
             }).catch(e=>errorDeal(e)); 
         },
-        getDateTime:function(v){
+        getSyncInfo(){
+            let vm=this;
+            let data={};
+            requestgetSyncInfo(data)
+            .then((data)=>{
+                vm.syncStartTime=data.data.syncStartTime;
+                vm.timeCell=data.data.syncInterval;
+            }).catch(e=>errorDeal(e));
+        },
+        getDateTime(v){
             return getDateTime(v);
         },
         resetTimer(){

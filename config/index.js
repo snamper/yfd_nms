@@ -18,14 +18,16 @@ module.exports = {
             }
         },
         '/uus/':{
-            target:'http://192.168.10.105:8080/uus/',
+            // target:'http://192.168.10.105:8080/uus/',
+            target:'http://192.168.10.162:10022/uus/',
             changeOrigin:true,
             pathRewrite:{
-                '/uus':'/uus'
+                '/uus':'/'
             }
         },
         '/ums/':{
             target:'http://192.168.10.105:8080/ums/',
+            // target:'http://192.168.10.35:10022/ums/',
             changeOrigin:true,
             pathRewrite:{
                 '^/ums' : '/' 

@@ -1,7 +1,7 @@
-<style>
-/* div.listTitleFoot{width: 96%;margin: 10px 18px;}
-div.detailsListDiv tr td{text-align: center;} */
+<style scoped>
+    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
 </style>
+
 <template>
   <section >
         <div class="dls greyFont">
@@ -116,14 +116,13 @@ div.detailsListDiv tr td{text-align: center;} */
                         </tr>
                         <tr v-for="(v,i) of form.searchList" :key="i">
                             <td>{{((pa-1)*15+(i+1))}}</td>
-                            <td>{{v.recordId}}</td>
+                            <td>{{v.recordId||'--'}}</td>
                             <td>
                                 <span v-if="v.recordType==0">全部</span>
                                 <span v-if="v.recordType==3">框架</span>
                                 <span v-if="v.recordType==4">号码</span>
                             </td>
                             <td>
-                                <!-- {{v.recordTime}} -->
                                 <span v-if="v.recordTime">
                                     {{getDateTime(v.recordTime)[6]}}
                                 </span>
@@ -138,11 +137,12 @@ div.detailsListDiv tr td{text-align: center;} */
                             </td>
                             <td>
                                 <span v-if="v.syncProtocol=='1'">接口</span>
-                                <span v-if="v.syncProtocol=='2'">文件</span>
+                                <span v-else-if="v.syncProtocol=='2'">文件</span>
+                                <span v-else>--</span>
                             </td>
-                            <td>{{v.operatorId}}</td>
+                            <td>{{v.operatorId||'--'}}</td>
                             <td>{{v.operatorName||'--'}}</td>
-                            <td>{{v.operatorPhone}}</td>
+                            <td>{{v.operatorPhone||'--'}}</td>
                             <td>
                                 <span v-if="v.syncState==1">成功</span>
                                 <span v-if="v.syncState==2">失败</span>

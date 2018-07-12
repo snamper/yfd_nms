@@ -112,7 +112,7 @@ export const getDateTime= e =>{
         i = t.getMinutes(),
         c = t.getSeconds(),
         k = [];
-    a >= 10 ? a : a = "0" + a, r >= 10 ? r : r = "0" + r, o >= 10 ? o : o = "0" + o, i >= 10 ? i : i = "0" + i, c >= 10 ? c : c = "0" + c, k[0]=n,k[1]=a,k[2]=r,k[3]=n+'-'+a,k[4]=a+'-'+r,k[5]=o+":"+i+":"+c,k[6]=n + "-" + a + "-" + r + " " + o + ":" + i + ":" + c,k[7]=o+":"+i;
+    a >= 10 ? a : a = "0" + a, r >= 10 ? r : r = "0" + r, o >= 10 ? o : o = "0" + o, i >= 10 ? i : i = "0" + i, c >= 10 ? c : c = "0" + c, k[0]=n,k[1]=a,k[2]=r,k[3]=n+'-'+a,k[4]=a+'-'+r,k[5]=o+":"+i+":"+c,k[6]=n + "-" + a + "-" + r + " " + o + ":" + i + ":" + c,k[7]=o+":"+i,k[8]=n + "-" + a + "-" + r;
     return k;
 }
 
@@ -170,28 +170,28 @@ export const trimFunc=(v)=>{
  * 开卡订单-数据翻译
  */
 export const translateData=(type,v)=> {
-	v=parseInt(v);
-	switch(type){
-		case 1://操作类型
-				return v==1 ? '开成卡' : v==2 ? '开白卡' : v==4 ? '实名补录' : v==7 ? '过户办理' : v==5 ? '实名登记' : v==6 ? '空卡' : '--';
-			break;
-		case 2://证件类型
-				return v==1 ? '身份证' : v==2 ? '军官证' : v==3 ? '护照' :void 0;
-			break;
-		case 3:
-
-			break;
-		case 4://号卡状态
-			return v==1 ? '初始状态' : v==2 ? '成功' : v==3 ? '失败' : v==4 ? '订单关闭' : '--';
-			break;
-		case 5://靓号等级
-			var level=["普号","特级","一级","二级","三级","四级","五级","六级","七级","八级","九级","十级","十一级"];
-    		return v||v==0 ? level[parseInt(v)] : '未知';
-			break;
-		case 7://进行中，已关闭，订单状态
-			return v==1||v==1000 ? '已选号' : v==2||v==1001 ? '已选套餐' : v==3||v==1003 ? '已上传资料' : v==4||v==1004 ? '已支付' : v==5||v==1005 ? '已审核' : v==6||v==1006 ? '已开户申请' : v==7||v==1007 ? '已获取IMSI' : v==8||v==1008 ? '已开卡申请' : v==0 ? '--' :void 0;
-			break;
-	}
+    v=parseInt(v);
+    let val;
+    switch(type){
+        case 1:
+            return v==1?'移动':v==2? '联通':v==3? '电信':'--';
+        break;
+        case 2:
+            return v==1?'整号包':v==2? '靓号包':v==3? '普号包':'--';
+        break;
+        case 3:
+            return v==1?'未上架':v==2? '手动上架':v==3? '手动下架' :v==4? '系统下架' :v==5? '已出售' : v==6? '购物车中' : '--';
+        break;
+        case 4:
+            return v==1?'远特':v==2? '蜗牛':v==3? '迪信通' :v==4? '极信' :v==5? '小米' : v==6? '海航' : v==7? '乐语' :v==8? '苏宁互联': v==9?'国美':v==10? '联想':v==11?'蓝猫移动':v==12?'长城':'--';
+        break;
+        case 'userRole':
+            val=["管理员","销售员","店长","采购员","业务员","提卡客服","开卡客服"];
+            return val[v-1];
+        case 'userState':
+            val=["正常","黑名单","注销"]
+            return val[v-1];
+    }
 }
 
 export const deepCopy=(p, c)=> {
@@ -278,5 +278,6 @@ export const initTime=(t,d)=>{
     let endTime=new Date(Next).getTime()-1000;
     vm.optime=[startTime,endTime];
 }
+
 
 

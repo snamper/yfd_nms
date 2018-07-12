@@ -115,23 +115,16 @@
                         </span>
                     </td>
                     <td >
-                        <span v-for="(v,i) in v.userRole" :key="i">
-                            <span v-if="v==1">管理员</span>
-                            <span v-if="v==2">销售</span>
-                            <span v-if="v==3">店长</span>
-                            <span v-if="v==4">采购员</span>
-                            <span v-if="v==5">业务员</span>
+                        <span v-for="(v,i) in v.userRole.split(',')" :key="i">
+                            {{translateData('userRole',v)}}
                         </span>
                     </td>
                     <td >
-                       <span v-if="v.userState==1" class="fcgreen">正常</span>
-                       <span v-if="v.userState==2" class="greyFont">黑名单</span>
-                       <span v-if="v.userState==3">注销</span>
+                       {{translateData('userState',v.userState)}}
                     </td>
                     <td >
-                       <!-- {{new Date(v.lastLoginTime).toLocaleString()}} -->
                         <span v-if="v.lastLoginTime">
-                            {{new Date(v.lastLoginTime).toLocaleString()}}
+                            {{getDateTime(v.lastLoginTime)[6]}}
                         </span>
                         <span v-if="!v.lastLoginTime">
                             --
@@ -196,7 +189,7 @@
 </template>
 <script>
 import {requestMethod} from "../../config/service"; 
-import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile } from "../../config/utils";
+import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils";
 import staffDetails from "../../components/staffDetails.vue";
 import layers from "./layeruser";
 export default{
@@ -501,6 +494,8 @@ export default{
                 return false;
             }
             vm.list.splice(v,1);
+        },translateData(v,i){
+            return translateData(v,i)
         }
     }
 }

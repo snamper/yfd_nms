@@ -1,12 +1,15 @@
 <style>
-    .el-input--suffix .el-input__inner{padding-right: 10px!important;}
     .tac div input{border: 0 none;}
     .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
-    .box span{display: inline-block;float: left;height: 26px;}
+    .box span{display: inline-block;height: 26px;}
     .span1{width: 100px;position: relative;background: red}
     .span2{width: 40px;position: relative;background: green}
     .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
     .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
+    .searchTab{text-align: left}
+    .searchTab tr td:nth-child(1){text-align: center}
+    .searchTab tr:nth-child(1) td{text-align: center}
+    .iconMore{ display: inline-block; width: 0.16rem; height: 0.16rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
 </style>
 <template>
     <section >
@@ -18,10 +21,10 @@
                 <el-row>
                     <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="6" :sm="6" :md="4" :lg="2" :xl="2" class="m-form-radio f-tar">
+                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
                                 <label><span class="radioYes"><input  type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">订单号码：</span></label>                            
                             </el-col>
-                            <el-col :xs="16" :sm="12" :md="10" :lg="10" :xl="10">
+                            <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
                                 <el-input v-model="orderId" size="small" maxlength=25 placeholder="请输入查询的订单号码"></el-input>
                             </el-col>
                         </div>
@@ -30,10 +33,10 @@
                 <el-row>
                     <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="6" :sm="6" :md="4" :lg="2" :xl="2" class="m-form-radio f-tar">
+                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
                                 <label><span class="radioYes"><input  type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">产品名称：</span></label>                            
                             </el-col>
-                            <el-col :xs="16" :sm="12" :md="10" :lg="10" :xl="10">
+                            <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
                                 <el-input v-model="pname" size="small" maxlength=10 placeholder="请输入查询的产品名称"></el-input>
                             </el-col> 
                             &nbsp;( <el-checkbox-group v-model="cardType" class="displayInline">
@@ -46,31 +49,18 @@
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-col :xs="6" :sm="6" :md="4" :lg="2" :xl="2" class="m-form-radio f-tar">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
                             <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">操作时间：</span></label>                            
                         </el-col>
-                        <el-col :xs="18" :sm="18" :md="18" :lg="12" :xl="10">
+                        <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
                             <div class="block">
                                 <el-date-picker
-                                v-model="startTime"
+                                v-model="dataTime"
                                 size="small"
-                                type="datetime"
-                                :clearable=false                                        
-                                :editable=false                    
-                                :picker-options="pickerOptionsS"
-                                @change="changeTimeS"
-                                style="width:170px;"
-                                placeholder="选择开始时间">
-                                </el-date-picker>—<el-date-picker
-                                v-model="endTime"
-                                size="small"
-                                type="datetime"
-                                :clearable=false                                        
-                                :editable=false                    
-                                :picker-options="pickerOptionsE"
-                                @change="changeTimeE"
-                                style="width:170px;"                            
-                                placeholder="选择结束时间">
+                                type="datetimerange"
+                                start-placeholder="开始日期"
+                                end-placeholder="结束日期"
+                                :default-time="['12:00:00']">
                                 </el-date-picker>
                                  ( <el-radio v-model="timeType"  label="1">创建时间</el-radio>
                                 <el-radio v-model="timeType"  label="2">修改时间</el-radio> )
@@ -80,8 +70,8 @@
                 </el-row>
                 <el-row>
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
-                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                        <el-col :xs="18" :sm="16" :md="20" :lg="16" :xl="16">
                             <el-radio v-model="orderState"  label="0">全部</el-radio> 
                             <el-radio v-model="orderState"  label="1">未发货</el-radio>
                             <el-radio v-model="orderState"  label="2">已发货</el-radio>
@@ -89,8 +79,8 @@
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
-                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
+                        <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人姓名"></el-input>
                         </el-col>
                         <el-col :span="2"></el-col> 
@@ -98,8 +88,8 @@
                 </el-row>
                 <el-row>
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">支付方式：</div></el-col>
-                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">支付方式：</div></el-col>
+                        <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-radio v-model="payMent"  label="0">全部</el-radio>
                             <el-radio v-model="payMent"  label="2">微信支付</el-radio>
                             <el-radio v-model="payMent"  label="1">支付宝支付</el-radio>
@@ -107,8 +97,8 @@
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                        <el-col :xs="6" :sm="6" :md="4" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">商户名称：</div></el-col>
-                        <el-col :xs="18" :sm="18" :md="18" :lg="16" :xl="16">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">商户名称：</div></el-col>
+                        <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="dealerName" size="small" maxlength=20 placeholder="请输入查询的商户名称"></el-input>
                         </el-col>
                         <el-col :span="2"></el-col> 
@@ -125,8 +115,8 @@
                         <table class="searchTab" style="width:100%;height:100%;">
                             <tr class="f-s-14">
                                 <td>序号</td>
-                                <td>创建时间</td>
                                 <td>订单号码</td>
+                                <td>创建时间</td>
                                 <td>商户名称</td>
                                 <td>产品包</td>
                                 <td>付款金额(元)</td>
@@ -141,15 +131,15 @@
                                 <td>
                                     {{((pa-1)*10+(i+1))}}
                                 </td>
+                                <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                                 <td >
                                     {{v.createTime}}
                                 </td>
-                                <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                                 <td>{{v.depName||'--'}}</td>
                                 <td>
-                                    <span v-for="(x,y) in v.productList" :key="y">
-                                        {{x.productName}}<br>
-                                    </span>
+                                    <p class="abcd" v-for="(x,y) in v.productList" :key="y">
+                                        <span>{{x.productName}}</span><i class="iconMore"></i>
+                                    </p>
                                 </td>
                                 <td>{{(v.totalStrikePrice/100).toFixed(2)||'--'}}</td>
                                 <!-- <td class="tac" style="width:140px">
@@ -250,8 +240,7 @@ export default {
             dealerName:"",//商户名称            
             operator: "",//操作人
             optime:'',//操作时间
-            startTime:'',
-            endTime:'',
+            dataTime:'',
             timeType: "1",
             orderState: "0",//操作类型
             cardType:['1','2','3'],//产品类型
@@ -307,7 +296,10 @@ export default {
         };
     },
     created: function() {
-        getTimeFunction(this)
+        let vm=this,nowDate=new Date(),
+        nY=nowDate.getFullYear(),
+        nM=nowDate.getMonth();
+        vm.dataTime=[new Date(nY,nM,1),new Date()]
     },
     components: {
         "order-details":orderDetails,
@@ -315,7 +307,23 @@ export default {
     },
     methods: {
         search(index) {//查询
-            let vm=this,data={};
+            let vm=this,data={},
+            startTime=vm.dataTime[0],
+            endTime=vm.dataTime[1],
+            startTimeY=new Date(startTime).getFullYear(),
+            startTimeM=new Date(startTime).getMonth(),
+            endTimeY=new Date(endTime).getFullYear(),           
+            endTimeM=new Date(endTime).getMonth();  
+            vm.searchResult="";
+            if(startTimeY!=endTimeY||startTimeM!=endTimeM){
+                layer.open({
+                    content:"操作时间范围不能跨月,请重新选择",
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }        
             vm.currentPage=index||1;
             vm.pa=index||1;
             if(vm.form.searchKind==1){
@@ -345,8 +353,8 @@ export default {
                 "productName":trimFunc(vm.pname),
                 "productType": vm.cardType.join(","),
                 "timeType": vm.timeType,
-                "startTime": new Date(vm.startTime).getTime(),
-                "endTime": new Date(vm.endTime).getTime(),
+                "startTime": new Date(startTime).getTime(),
+                "endTime": new Date(endTime).getTime(),
                 "orderState": vm.orderState,
                 "depName": trimFunc(vm.dealerName),
                 "operatorName":trimFunc(vm.operator),
