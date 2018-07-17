@@ -119,6 +119,7 @@ export default{
         ,btnYes(v){//确认添加员工
             let vm=this,url='/ums/w/user/addUsers',data={};
             data=vm.$parent.addUsersData;
+            console.log(data);
             data.authCode=vm.authCode;
             if(vm.authCode==''){
                 layer.open({

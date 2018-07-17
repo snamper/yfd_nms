@@ -47,12 +47,23 @@
     </el-row>
     <div class="listTitleFoot addList" v-if="off.addList">
         <el-row>
-            <el-col :xs="18" :sm="18" :md="18" :lg="22" :xl="22" >
+            <el-col :xs="18" :sm="18" :md="20" :lg="22" :xl="22" >
                 <div v-for="(v,i) in list" :key="i" class="mt8">
-                    <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
-                    <el-col :xs="24" :sm="12" :md="12" :lg="8" :xl="8"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
-                    <el-col :xs="20" :sm="20" :md="20" :lg="6" :xl="6"><span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span><el-checkbox :xs="24"  v-model="list[i].checked2">管理员</el-checkbox><el-checkbox v-model="list[i].checked3">销售</el-checkbox></el-col>
-                    <el-col :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><span @click="deleteLine(i)" class="u-icon-del"></span></el-col>
+                    <el-col :xs="24" :sm="24" :md="12" :lg="10" :xl="10"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
+                    <el-col :xs="24" :sm="24" :md="12" :lg="10" :xl="10"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
+                    <el-col :xs="20" :sm="20" :md="22" :lg="22" :xl="20">
+                        <span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span>
+                        <el-checkbox-group class="displayInline" v-model="list[i].role">
+                            <el-checkbox label=1>管理员</el-checkbox>
+                            <el-checkbox label=2>销售</el-checkbox>
+                            <!--<el-checkbox label=3>店长</el-checkbox>
+                            <el-checkbox label=4>采购员</el-checkbox>
+                            <el-checkbox label=5>业务员</el-checkbox>-->
+                            <el-checkbox label=6>提卡客服</el-checkbox>
+                            <el-checkbox label=7>开卡客服</el-checkbox>
+                        </el-checkbox-group>
+                    </el-col>
+                    <el-col :xs="4" :sm="4" :md="2" :lg="2" :xl="2"><span @click="deleteLine(i)" class="u-icon-del"></span></el-col>
                 </div>
             </el-col>
             <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
@@ -206,8 +217,7 @@ export default{
             pa:'',
             searchDetailsYfdData:'',//查询人
             searchRes:"",
-            addAble:0,//是否可以添加
-            list: [{username: '', phone: '',checked2:false,checked3:false,departName:"好亚飞达总部"},],//添加员工            
+            list: [{username: '', phone: '',role:[],departName:"好亚飞达总部"},],//添加员工            
             reason:"",
             authCode:"",
             btnDisabled:false,
@@ -234,32 +244,28 @@ export default{
        vm.user=Info;
     },
 	methods:{
-         AddList(){//添加员工状态操作
-            this.list.push({username: '', phone: '',checked2:false,checked3:false,departName:"好亚飞达总部"})
+         AddList(){//添加员工
+            this.list.push({username: '', phone: '',role:[],departName:"好亚飞达总部"})
         },
         AddStaffDiv(){//添加员工模块开关
             this.off.addList=!this.off.addList;
         },
         AddStaff(){//添加员工按钮
-            let data={"newUsers":[],authCode:''},vm=this;
-            vm.addAble=0; 
+            let data={"newUsers":[]},vm=this; 
             for(let i=0;i<this.list.length;i++){
-                this.list[i].userRole="";
-                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].checked==true||this.list[i].checked2==true||this.list[i].checked3==true){
+                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
                     checkMobile(this.list[i].phone,()=>{return false});
-                    if(this.list[i].checked2==true){this.list[i].userRole='1'}
-                    if(this.list[i].checked3==true){
-                        if(this.list[i].checked2==true){
-                            this.list[i].userRole+=',2'
-                        }else if(this.list[i].checked2==false){
-                            this.list[i].userRole='2'
-                        }
-                    }
+                    this.list[i].userRole = this.list[i].role.join(',');
                     data.newUsers.push(this.list[i])
+                }else{
+                    layer.open({
+                        content:'请填写完整的员工信息',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                    return false;
                 }
-            }
-            for(let i=0;i<data.newUsers.length;i++){
-                this.addAble='1';                
             }
             this.off.layer=true;
             this.off.sync=true;
