@@ -6,10 +6,12 @@
     .span2{width: 40px;position: relative;background: green}
     .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
     .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-    .searchTab{text-align: left}
-    .searchTab tr td:nth-child(1){text-align: center}
-    .searchTab tr:nth-child(1) td{text-align: center}
-    .iconMore{ display: inline-block; width: 0.16rem; height: 0.16rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
+    .searchTab tr td{text-align: left}
+    .searchTab tr td:nth-child(1){width: 60px;padding-left: 15px;}
+    /* .searchTab tr:nth-child(1) td{text-align: center} */
+    .iconMore{margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
+    .listSpan{display: inline-block;margin-top: 2px;}
+    /* p.abcd{height: 20px;line-height: 20px;} */
 </style>
 <template>
     <section >
@@ -57,10 +59,10 @@
                                 <el-date-picker
                                 v-model="dataTime"
                                 size="small"
-                                type="datetimerange"
+                                type="daterange"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
-                                :default-time="['12:00:00']">
+                                >
                                 </el-date-picker>
                                  ( <el-radio v-model="timeType"  label="1">创建时间</el-radio>
                                 <el-radio v-model="timeType"  label="2">修改时间</el-radio> )
@@ -137,8 +139,11 @@
                                 </td>
                                 <td>{{v.depName||'--'}}</td>
                                 <td>
-                                    <p class="abcd" v-for="(x,y) in v.productList" :key="y">
-                                        <span>{{x.productName}}</span><i class="iconMore"></i>
+                                    <p v-if="v.isShow==true" class="abcd" v-for="(x,y) in v.productList" :key="y">
+                                        <span class="listSpan">{{x.productName}}</span>
+                                    </p>
+                                    <p v-if="!v.isShow" class="abcd">
+                                        <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                                     </p>
                                 </td>
                                 <td>{{(v.totalStrikePrice/100).toFixed(2)||'--'}}</td>
@@ -401,6 +406,11 @@ export default {
             vm.layerType="payMent";
             vm.logistics=v;
             vm.off.layer=true;
+        },
+        getMore(i){
+            let vm=this;
+            this.$set(vm.searchResult[i],'isShow',!vm.searchResult[i].isShow);
+            
         },
         searchdelivery(n,v){
             let url="https://www.kuaidi100.com/chaxun?com="+n+"&nu="+v;

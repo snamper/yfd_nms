@@ -118,8 +118,8 @@
                             {{translateData('userState',v.userState)}}
                         </td>
                         <td>
-                            <span v-if="userOrigin==1">手动加入</span>
-                            <span v-else-if="userOrigin==2">系统同步</span>
+                            <span v-if="v.userOrigin==1">手动加入</span>
+                            <span v-else-if="v.userOrigin==2">系统同步</span>
                             <span v-else>--</span>
                         </td>
                         <td>
@@ -137,7 +137,7 @@
                         </td>
                     </tr>
                     <tr v-if="detailsList.length>0">
-                        <td colspan="8" class="pl20">
+                        <td colspan="9" class="pl20">
                         <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 取消全选 </a></span>
                         </td>
                     </tr>
@@ -208,6 +208,9 @@ export default{
             searchRes:"",
             addAble:0,//是否可以添加
             list: [{username: '', phone: '',checked2:false,checked3:false,departName:"好亚飞达总部"},],//添加员工            
+            reason:"",
+            authCode:"",
+            btnDisabled:false,
 			off:{
                 showSearch:"",
                 searchList:false,
@@ -295,6 +298,11 @@ export default{
                         msgSkin:'error',
                     });
                 }  
+            }).then(()=>{
+                for(let v=0;v<vm.detailsList.length;v++){
+                    vm.$set(vm.detailsList[v],'ischecked',false);
+                }
+                this.resetTimer()
             }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
         }
         ,getStaffDetails(p){
@@ -334,8 +342,8 @@ export default{
             for(let v in vm.detailsList){
                 if(vm.detailsList[v].ischecked==true){
                     data.operateUserIds.push(vm.detailsList[v].username);
-                    if(v>=1){
-                        che+=` 、`
+                    if(data.operateUserIds.length>1){
+                        che+=`、`
                     }
                     che+=vm.detailsList[v].username;
                     vm.off.modify=true;
@@ -363,8 +371,57 @@ export default{
                  vm.doUrl="/ums/w/user/delUsers";
                  vm.a=`删除(${che})`;
             }
+        },btnYes(){
+            let data={'operateUserIds':[]},vm=this;
+            for(let v in vm.lists){
+                if(vm.lists[v].ischecked==true){
+                    data.operateUserIds.push(vm.lists[v].userId)
+                }
+            }
+            if(vm.reason==""){
+                layer.open({
+                    content:'请输入操作原因',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            if(vm.authCode==""){
+                layer.open({
+                    content:'请输入验证码',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            data.reason=vm.reason;//操作原因
+            data.authCode=vm.authCode;//验证码
+            requestMethod(data,vm.doUrl)
+            .then((data)=>{
+                vm.reason="";
+                vm.authCode="";
+                vm.off.modify=false;
+                if(data.code==200){
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                    this.search(); 
+                }else{
+                     layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }
+            }).catch(e=>errorDeal(e));
         },getAuthCode(){
-            const TIME_COUNT = 120;
+            const TIME_COUNT = 900;
             if (!this.timer) {
                 this.count = TIME_COUNT;
                 this.show = false;
@@ -401,6 +458,12 @@ export default{
                     });
                 }  
             }).catch(e=>errorDeal(e));
+        },resetTimer(){
+            this.btnDisabled=false;                        
+            this.show = true;
+            this.count="点击获取验证码"                    
+            clearInterval(this.timer);
+            this.timer = null;
         },translateData(v,i){
             return translateData(v,i);
         }

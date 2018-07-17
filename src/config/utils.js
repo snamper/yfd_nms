@@ -185,6 +185,12 @@ export const translateData=(type,v)=> {
         case 4:
             return v==1?'远特':v==2? '蜗牛':v==3? '迪信通' :v==4? '极信' :v==5? '小米' : v==6? '海航' : v==7? '乐语' :v==8? '苏宁互联': v==9?'国美':v==10? '联想':v==11?'蓝猫移动':v==12?'长城':'--';
         break;
+        case 5:
+            return v==1?'ios':v==2?'Android':v==3?'WEB开卡':'--';
+        break;
+        case 6:
+            return v==1?'处理中':v==2?'成功':v==3?'失败':'--';
+        break;
         case 'userRole':
             val=["管理员","销售员","店长","采购员","业务员","提卡客服","开卡客服"];
             return val[v-1];

@@ -31,7 +31,7 @@
                                 <label><span class="radioYes"><input  type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">开卡号码：</span></label>                            
                             </el-col>
                             <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
-                                <el-input v-model="openNum" size="small" maxlength=10 placeholder="请输入查询的开卡号码"></el-input>
+                                <el-input v-model="openNum" size="small" maxlength=11 placeholder="请输入查询的开卡号码"></el-input>
                             </el-col> 
                         </div>
                     </el-col>
@@ -46,10 +46,10 @@
                                 <el-date-picker
                                 v-model="dataTime"
                                 size="small"
-                                type="datetimerange"
+                                type="daterange"
                                 start-placeholder="开始日期"
                                 end-placeholder="结束日期"
-                                :default-time="['12:00:00']">
+                                >
                                 </el-date-picker>
                             </div>
                         </el-col>
@@ -59,7 +59,7 @@
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">开卡结果：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="20" :lg="16" :xl="16">
-                            <el-radio v-model="openRes"  label="0">全部</el-radio> 
+                            <el-radio v-model="openRes"  label="1,2,3">全部</el-radio> 
                             <el-radio v-model="openRes"  label="1">审核中</el-radio>
                             <el-radio v-model="openRes"  label="2">成功</el-radio>
                             <el-radio v-model="openRes"  label="3">失败</el-radio>
@@ -77,9 +77,9 @@
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">开卡方式：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-                            <el-radio v-model="openType"  label="0">全部</el-radio>
-                            <el-radio v-model="openType"  label="1">PC</el-radio>
-                            <el-radio v-model="openType"  label="2">APP</el-radio>
+                            <el-radio v-model="openType"  label="1,2,3">全部</el-radio>
+                            <el-radio v-model="openType"  label="1,2">PC</el-radio>
+                            <el-radio v-model="openType"  label="3">APP</el-radio>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
@@ -117,7 +117,7 @@
                                 </td>
                                 <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                                 <td >
-                                    {{v.createTime}}
+                                    {{getDateTime(v.createTime)[6]}}
                                 </td>
                                 <td>{{v.dealerIdName||'--'}}</td>
                                 <td>
@@ -129,13 +129,14 @@
                                     {{v.phone||'--'}}
                                 </td>
                                 <td>
-                                    {{v.openCardResult||'--'}}
+                                    <span v-if="v.openCardResult==1">审核中</span>
+                                    <span v-if="v.openCardResult==2">成功</span>
+                                    <span v-if="v.openCardResult==3">失败</span>
                                 </td>
                                 <td >
-                                    {{v.terminalType||'--'}}
+                                    <span v-if="v.terminalType=='1,2'">PC</span>
+                                    <span v-if="v.terminalType=='3'">APP</span>
                                 </td>
-                                <td></td>
-                                <td></td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
                                 <td colspan="12">
@@ -167,7 +168,7 @@
 </template>
 <script>
 import { errorDeal,getDateTime,trimFunc } from "../../config/utils";
-import {requestOpenCardOrder} from "../../config/service.js";
+import {requestOpenCardOrder,requestOpenCardDetails} from "../../config/service.js";
 import orderDetails from "./orderDetails";
 export default {
     data() {
@@ -181,8 +182,8 @@ export default {
             orderId: "",//订单号码
             openNum: "",//开卡号码
             operator: "",//操作人
-            openRes: "0",//开卡结果
-            openType:"0",//开卡方式
+            openRes: "1,2,3",//开卡结果
+            openType:"1,2,3",//开卡方式
             off: {
                 details:false,
                 layer:false,
@@ -212,7 +213,6 @@ export default {
             endTimeY=new Date(endTime).getFullYear(),           
             endTimeM=new Date(endTime).getMonth();  
             vm.searchResult="";
-            vm.off.details=true;
             if(startTimeY!=endTimeY||startTimeM!=endTimeM){
                 layer.open({
                     content:"操作时间范围不能跨月,请重新选择",
@@ -267,15 +267,13 @@ export default {
                     errorDeal(data);
                 }
             }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.searchResult="";}))
-        },
-        details(v){
+        },details(v){
             let vm=this;
             vm.off.details=true;
-            vm.productDetails=v;  
-        },
-        searchdelivery(n,v){
-            let url="https://www.kuaidi100.com/chaxun?com="+n+"&nu="+v;
-            window.open(url)
+            requestOpenCardDetails({"sysOrderId":v.sysOrderId})
+            .then((data)=>{
+                vm.productDetails=data.data;
+            }).catch(e=>errorDeal(e))
         },getDateTime(e){
             return getDateTime(e)
         },trimFunc(v){

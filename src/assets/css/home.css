@@ -338,6 +338,11 @@ b.countIcon{
     width: .17rem;
     height: .17rem;
 }
+.u-icon-kaika{
+    background-image: url(../assets/images/icon_kaika.png);
+    width: .17rem;
+    height: .17rem;
+}
 
 .u-icon-menu {
   background-image: url(../assets/images/icon_location.png);

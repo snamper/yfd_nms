@@ -298,11 +298,22 @@ export default{
         }
         ,doFunction(val){
             let vm=this,data={"operateUserIds":[]},url='',che='';vm.off.modify=false;
+            vm.off.modify=false;
             for(let v in vm.lists){
                 if(vm.lists[v].ischecked==true){
+                    if(vm.lists[v].userRole==3&&val=="delete"){
+                        layer.open({
+                            content:"不允许删除店长",
+                            skin: 'msg',
+                            time: 2,
+                            msgSkin:'error',
+                        });
+                        vm.off.modify=false;
+                        return false;
+                    }
                     data.operateUserIds.push(vm.lists[v].username);
-                    if(v>=1){
-                        che+=` 、`
+                    if(data.operateUserIds.length>1){
+                        che+=`、`
                     }
                     che+=vm.lists[v].username;
                     vm.off.modify=true;
@@ -330,8 +341,7 @@ export default{
                  vm.doUrl="/ums/w/user/delUsers";
                  vm.a=`删除(${che})`;
             }
-        }
-        ,doFilter(s){//状态过滤操作
+        },doFilter(s){//状态过滤操作
             if(s=="all"){
                 for(let v=0;v<this.lists.length;v++){
                     this.$set(this.lists[v],'ischecked',true);
@@ -343,7 +353,7 @@ export default{
             }
         }
         ,getAuthCode(){
-            const TIME_COUNT = 120;
+            const TIME_COUNT = 900;
             if (!this.timer) {
                 this.count = TIME_COUNT;
                 this.show = false;

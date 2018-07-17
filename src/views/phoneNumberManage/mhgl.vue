@@ -262,11 +262,11 @@ import layerConfirm from "../../components/layerConfirm";
 import cardDetails from "../../components/cardDetails";
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
  cityOptions1=['远特'],
- cityOptions2=[ '蜗牛'],
+ cityOptions2=['蜗牛'],
  cityOptions3=['迪信通'],
  cityOptions4=['极信'],
- cityOptions5=[ '小米'],
- cityOptions6=[ '海航'],
+ cityOptions5=['小米'],
+ cityOptions6=['海航'],
  cityOptions7=['乐语'],
  cityOptions8=['苏宁互联',],
  cityOptions9=['国美'],
@@ -363,7 +363,13 @@ export default{
     created:function(){
         let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
-	},
+    },
+    watch:{
+        'off.modify'(){
+            console.log(11122233)
+            this.$parent.$refs.psec.scrollTop=this.$parent.$refs.psec.scrollHeight;
+        }
+    },
 	methods:{
         translateData(type,v){
             return translateData(type,v)
@@ -563,11 +569,13 @@ export default{
             let vm=this,isInArray=false;
             vm.a="";
             for(let v in vm.searchList){
-                if(vm.searchList[v].ischecked==true&&vm.searchList[v].productState===6||vm.searchList[v].productState===5){
-                    isInArray=true;
+                if(vm.searchList[v].ischecked==true){
+                    if(vm.searchList[v].productState==6||vm.searchList[v].productState==5){
+                        isInArray=true;
+                    }
                 }
             }
-            if(isInArray===true){
+            if(isInArray==true){
                 vm.off.modify='stop';
             }else{
                 vm.off.modify=true;
@@ -602,10 +610,13 @@ export default{
            },50)
         },
         funScrollTop(){
-            this.$parent.$refs.psec.scrollTop=this.$parent.$refs.psec.scrollHeight;
+            let ch=this.$parent.$refs.psec.clientHeight;
+            let sh=this.$parent.$refs.psec.scrollHeight;
+            let sch = sh-ch;
+            this.$parent.$refs.psec.scrollTop=sch;
         }
         ,getAuthCode(){
-            const TIME_COUNT = 120;
+            const TIME_COUNT = 900;
             if (!this.timer) {
                 this.count = TIME_COUNT;
                 this.show = false;

@@ -132,18 +132,18 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 					</router-link>
 				</li>
 			</ul>
-            <!-- <ul class="g-side-ul">
+            <ul class="g-side-ul">
 				<li :class="{active:crumb[0].name=='开卡订单管理'}">
 					<b></b>
 					<router-link to="/home/openCard">
 						<div>
-							<i class="u-icon-tika"></i>
+							<i class="u-icon-kaika"></i>
 							<span>开卡订单管理</span>
                             <span :class="crumb[0].name=='开卡订单管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
 						</div>
 					</router-link>
 				</li>
-			</ul> -->
+			</ul>
 		</nav>
 	</aside>
   	<section class="g-main" id="main">
