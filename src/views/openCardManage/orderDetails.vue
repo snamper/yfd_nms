@@ -107,8 +107,18 @@ import {getDateTime,translateData} from "../../config/utils";
                 imgData:[]
             }
         },
+        watch:{
+            detailsData(){
+                let vm=this;
+                vm.imgData=[];
+                vm.imgData[0]={src:vm.detailsData.frontImg,name:"身份证正面照"}
+                vm.imgData[1]={src:vm.detailsData.backImg,name:"身份证反面照"}
+                vm.imgData[2]={src:vm.detailsData.handImg,name:"身份证手持照"}
+            }
+        },
         created:function(){
             let vm=this;
+            vm.imgData=[];
             vm.imgData[0]={src:vm.detailsData.frontImg,name:"身份证正面照"}
             vm.imgData[1]={src:vm.detailsData.backImg,name:"身份证反面照"}
             vm.imgData[2]={src:vm.detailsData.handImg,name:"身份证手持照"}

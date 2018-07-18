@@ -1,16 +1,6 @@
-<style>
-    .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
-    .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-    .searchTab tr td:nth-child(1){text-align: center}
-    .searchTab tr:nth-child(1) td{text-align: center}
-    .searchTab{text-align: left}
-    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
-    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
-</style>
 <template>
     <section style="width:100%;height:100%" >
-        <div v-if="!off.details">
+        <div v-if="!off.details" class="openCardOrder">
             <div class="dls greyFont">
                 <el-row>
                     <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
@@ -83,7 +73,7 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-                            <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人姓名"></el-input>
+                            <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人号码"></el-input>
                         </el-col>
                         <el-col :span="2"></el-col> 
                     </el-col>
@@ -347,4 +337,13 @@ export default {
     }
 };
 </script>
+<style>
+    @import url('../../assets/css/resetTimePickStyle.css');
+    .openCardOrder .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
+    .openCardOrder .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
+    /*.openCardOrder .searchTab tr td:nth-child(1){text-align: center} */
+    /*.openCardOrder .searchTab tr:nth-child(1) td{text-align: center} */
+    /*.openCardOrder .searchTab{text-align: left} */
+    .openCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
+</style>
 

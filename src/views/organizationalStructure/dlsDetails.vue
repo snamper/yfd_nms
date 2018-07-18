@@ -1,5 +1,3 @@
-
-
 <template>
   <div>
       <div v-if="off.searchStaff">
@@ -279,6 +277,7 @@ export default{
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
                     checkMobile(this.list[i].phone,()=>{return false});
                     this.list[i].userRole = this.list[i].role.join(',');
+                    this.list[i].departId=vm.searchDepartId;
                     data.newUsers.push(this.list[i])
                 }else{
                     layer.open({

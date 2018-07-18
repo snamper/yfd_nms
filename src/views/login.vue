@@ -73,23 +73,19 @@ export default {
     },
     identifyBtnClick(){
       const vm=this;
-
       if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
         errorDeal('手机号码格式错误');
         return false;
       }
-
       api.getIdentifyCode({phone:vm.form.phone})
       .then(res=>{
         vm.countDown(900);
       })
-      .catch(error=>{
-      });
+      .catch(error=>{});
     },
     actionLogin(){
       const vm=this;
       let errorText='';
-
       if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
         errorText='手机号码格式错误';
       }else if(!vm.form.authCode){
@@ -106,8 +102,12 @@ export default {
             res.data.departName=''
             this.SET_USERINFO(res.data);
             windowJump("#/home");
-        })
-        .catch(error=>{
+        }).then(()=>{
+            api.actionGetDepartmentId({})
+            .then((data)=>{
+                window.localStorage.setItem("departId",data.data)
+            })
+        }).catch(error=>{
             errorDeal(error);
         });
     },

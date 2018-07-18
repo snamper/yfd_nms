@@ -1,12 +1,7 @@
-<style scoped>
-    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
-    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
-</style>
 
 <template>
   <section >
-        <div class="dls greyFont">
+        <div class="greyFont">
             <el-row>
                 <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
             </el-row>
@@ -359,4 +354,7 @@ export default {
   }
 };
 </script>
+<style>
+    @import url('../../assets/css/resetTimePickStyle.css');
+</style>
 

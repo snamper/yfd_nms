@@ -17,5 +17,11 @@ export default {
 	*/
 	actionMagLogin(params,selfLoad){
 		return service('/ums/w/user/alogin',params,selfLoad);
-	}
+    },
+    /**
+    *获取部门ID 
+    */
+   actionGetDepartmentId(params,selfLoad){
+        return service('/ums/w/depart/getTopInfo',params,selfLoad);
+    }
 };

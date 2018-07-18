@@ -144,7 +144,7 @@ export default{
                     });
                     this.$parent.list=[],
                     this.$parent.off.addList=false,
-                    this.$parent.list.push({username: '', phone: '',role:[],departName:"好亚飞达总部"}) 
+                    this.$parent.list.push({username: '', phone: '',role:[],departName:"好亚飞达"}) 
                     if(vm.$parent.off.searchList==true){
                         this.$parent.search();
                     }

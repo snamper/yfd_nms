@@ -1,24 +1,7 @@
-<style>
-    .tac div input{border: 0 none;}
-    .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
-    .box span{display: inline-block;height: 26px;}
-    .span1{width: 100px;position: relative;background: red}
-    .span2{width: 40px;position: relative;background: green}
-    .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
-    .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-    .searchTab tr td{text-align: left}
-    .searchTab tr td:nth-child(1){width: 60px;padding-left: 15px;}
-    /* .searchTab tr:nth-child(1) td{text-align: center} */
-    .iconMore{margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
-    .listSpan{display: inline-block;margin-top: 2px;}
-    /* p.abcd{height: 20px;line-height: 20px;} */
-    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
-    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
-</style>
+
 <template>
     <section >
-        <div v-if="!off.details">
+        <div v-if="!off.details" class="pickCardOrder">
             <div class="dls greyFont">
                 <el-row>
                     <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
@@ -137,7 +120,7 @@
                                 <td>商户名称</td>
                                 <td>产品包</td>
                                 <td>付款金额(元)</td>
-                                <td>操作人</td>
+                                <td>操作人号码</td>
                                 <td>修改时间</td>
                                 <td>付款方式</td>
                                 <td>订单状态</td>
@@ -253,8 +236,7 @@ export default {
             layerType:'',//弹窗类型
             logistics:{},//物流信息
             productDetails:{},//产品包详情
-            pa: 1,//页码
-            operatorName: "",//操作人            
+            pa: 1,//页码           
             orderId: "",//订单号码
             pname: "",//产品名称
             dealerName:"",//商户名称            
@@ -360,7 +342,7 @@ export default {
                 "endTime": new Date(vm.endTime).getTime(),
                 "orderState": vm.orderState,
                 "depName": trimFunc(vm.dealerName),
-                "operatorName":trimFunc(vm.operator),
+                "operatorPhone":trimFunc(vm.operator),
                 "paymentType":vm.payMent,
                 "pageNum": index || 1,
                 "pageSize": 10,
@@ -449,4 +431,19 @@ export default {
     }
 };
 </script>
+<style>
+    @import url('../../assets/css/resetTimePickStyle.css');
+    .pickCardOrder .tac div input{border: 0 none;}
+    .pickCardOrder .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
+    .pickCardOrder .box span{display: inline-block;height: 26px;}
+    .pickCardOrder .span1{width: 100px;position: relative;background: red}
+    .pickCardOrder .span2{width: 40px;position: relative;background: green}
+    .pickCardOrder .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
+    .pickCardOrder .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
+    .pickCardOrder .searchTab tr td{text-align: left}
+    .pickCardOrder .searchTab tr td:nth-child(1){width: 60px;padding-left: 15px;}
+    .pickCardOrder .iconMore{margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
+    .pickCardOrder .listSpan{display: inline-block;margin-top: 2px;}
+    .pickCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
+</style>
 

@@ -54,11 +54,11 @@
                     <el-col :xs="20" :sm="20" :md="22" :lg="22" :xl="20">
                         <span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span>
                         <el-checkbox-group class="displayInline" v-model="list[i].role">
-                            <!--<el-checkbox label=1>管理员</el-checkbox>
+                            <el-checkbox label=1>管理员</el-checkbox>
                             <el-checkbox label=2>销售</el-checkbox>
-                            <el-checkbox label=3>店长</el-checkbox>-->
+                            <!--<el-checkbox label=3>店长</el-checkbox>
                             <el-checkbox label=4>采购员</el-checkbox>
-                            <el-checkbox label=5>业务员</el-checkbox>
+                            <el-checkbox label=5>业务员</el-checkbox>-->
                             <el-checkbox label=6>提卡客服</el-checkbox>
                             <el-checkbox label=7>开卡客服</el-checkbox>
                         </el-checkbox-group>
@@ -217,7 +217,8 @@ export default{
             pa:'',
             searchDetailsYfdData:'',//查询人
             searchRes:"",
-            list: [{username: '', phone: '',role:[],departName:"好亚飞达总部"},],//添加员工            
+            list: [{username: '', phone: '',role:[]}],//添加员工  
+            topDepartmentId:"",//顶级部门Id          
             reason:"",
             authCode:"",
             btnDisabled:false,
@@ -242,10 +243,12 @@ export default{
 	created:function(){
        let vm=this,Info=getStore("YFD_NMS_INFO");
        vm.user=Info;
+       let depid=window.localStorage.getItem("departId");
+       vm.topDepartmentId=depid;
     },
 	methods:{
          AddList(){//添加员工
-            this.list.push({username: '', phone: '',role:[],departName:"好亚飞达总部"})
+            this.list.push({username: '', phone: '',role:[]})
         },
         AddStaffDiv(){//添加员工模块开关
             this.off.addList=!this.off.addList;
@@ -256,6 +259,7 @@ export default{
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
                     checkMobile(this.list[i].phone,()=>{return false});
                     this.list[i].userRole = this.list[i].role.join(',');
+                    this.list[i].departId=vm.topDepartmentId;
                     data.newUsers.push(this.list[i])
                 }else{
                     layer.open({
@@ -388,9 +392,9 @@ export default{
             this.$parent.$parent.$refs.psec.scrollTop=sch;
         },btnYes(){
             let data={'operateUserIds':[]},vm=this;
-            for(let v in vm.lists){
-                if(vm.lists[v].ischecked==true){
-                    data.operateUserIds.push(vm.lists[v].userId)
+            for(let v in vm.detailsList){
+                if(vm.detailsList[v].ischecked==true){
+                    data.operateUserIds.push(vm.detailsList[v].userId)
                 }
             }
             if(vm.reason==""){

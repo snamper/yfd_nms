@@ -1,14 +1,8 @@
 
-<style scoped>
-    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
-    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
-    .setBtn{margin-left: 20px;background: #2A7CE0; color: #fff; padding: 2px 8px; border: 1px solid #2A7CE0; border-radius: 4px;outline: none;}
-    .syncBtn{margin-right: 10px;background: #2BAF08;color: #fff; padding: 2px 8px; border: 1px solid #2BAF08; border-radius: 4px;outline: none;}
-</style>
+
 <template>
 <section>
-  <div v-if="off.notDlsDetails">
+  <div v-if="off.notDlsDetails" class="dls">
     <!-- 查询模块 -->
     <div class="dls greyFont">
         <el-row>
@@ -194,7 +188,6 @@
             </div>
         </div> 
     </div>
-    
     </div>
     <!-- 弹框组件 -->
     <common-layer v-if="off.layer"></common-layer>
@@ -289,7 +282,7 @@ export default{
         "dls-Details":dlsDetails
     },
     created:function(){
-       getTimeFunction(this)
+       getTimeFunction(this);
     },
     methods:{
         openSet(){//设置
@@ -455,4 +448,9 @@ export default{
     }
 }
 </script>
+<style>
+    @import url('../../assets/css/resetTimePickStyle.css');
+    .dls .setBtn{margin-left: 20px;background: #2A7CE0; color: #fff; padding: 2px 8px; border: 1px solid #2A7CE0; border-radius: 4px;outline: none;}
+    .dls .syncBtn{margin-right: 10px;background: #2BAF08;color: #fff; padding: 2px 8px; border: 1px solid #2BAF08; border-radius: 4px;outline: none;}
+</style>
 

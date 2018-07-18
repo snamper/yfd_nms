@@ -153,13 +153,13 @@ export default{
                         msgSkin:'success',
                     });
                     this.$parent.list=[],
-                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"}) 
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达"}) 
                     if(vm.$parent.off.searchList==true){
                         this.$parent.search();
                     }
                 }else{
                     this.$parent.list=[],
-                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达总部"})
+                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false,checked3:false,departName:"好亚飞达"})
                     layer.open({
                         content:data.msg,
                         skin: 'msg',
