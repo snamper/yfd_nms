@@ -12,6 +12,9 @@
     .iconMore{margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
     .listSpan{display: inline-block;margin-top: 2px;}
     /* p.abcd{height: 20px;line-height: 20px;} */
+    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
+    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
+    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
 </style>
 <template>
     <section >
@@ -57,12 +60,24 @@
                         <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
                             <div class="block">
                                 <el-date-picker
-                                v-model="dataTime"
+                                v-model="startTime"
                                 size="small"
-                                type="daterange"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                                >
+                                type="date"
+                                :clearable=false                                        
+                                :editable=false                    
+                                :picker-options="pickerOptionsS"
+                                @change="changeTimeS"
+                                style="border-radius:4px 0 4px 0"
+                                placeholder="选择开始时间">
+                                </el-date-picker><el-date-picker
+                                v-model="endTime"
+                                size="small"
+                                type="date"
+                                :clearable=false                                        
+                                :editable=false                    
+                                :picker-options="pickerOptionsE"
+                                @change="changeTimeE"                            
+                                placeholder="选择结束时间">
                                 </el-date-picker>
                                  ( <el-radio v-model="timeType"  label="1">创建时间</el-radio>
                                 <el-radio v-model="timeType"  label="2">修改时间</el-radio> )
@@ -245,11 +260,12 @@ export default {
             dealerName:"",//商户名称            
             operator: "",//操作人
             optime:'',//操作时间
-            dataTime:'',
             timeType: "1",
             orderState: "0",//操作类型
             cardType:['1','2','3'],//产品类型
             payMent:"0",
+            startTime:'',
+            endTime:'',
             off: {
                 details:false,
                 layer:false,
@@ -301,10 +317,7 @@ export default {
         };
     },
     created: function() {
-        let vm=this,nowDate=new Date(),
-        nY=nowDate.getFullYear(),
-        nM=nowDate.getMonth();
-        vm.dataTime=[new Date(nY,nM,1),new Date()]
+        getTimeFunction(this);
     },
     components: {
         "order-details":orderDetails,
@@ -312,23 +325,8 @@ export default {
     },
     methods: {
         search(index) {//查询
-            let vm=this,data={},
-            startTime=vm.dataTime[0],
-            endTime=vm.dataTime[1],
-            startTimeY=new Date(startTime).getFullYear(),
-            startTimeM=new Date(startTime).getMonth(),
-            endTimeY=new Date(endTime).getFullYear(),           
-            endTimeM=new Date(endTime).getMonth();  
-            vm.searchResult="";
-            if(startTimeY!=endTimeY||startTimeM!=endTimeM){
-                layer.open({
-                    content:"操作时间范围不能跨月,请重新选择",
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }        
+            let vm=this,data={}; 
+            vm.searchResult="";       
             vm.currentPage=index||1;
             vm.pa=index||1;
             if(vm.form.searchKind==1){
@@ -358,8 +356,8 @@ export default {
                 "productName":trimFunc(vm.pname),
                 "productType": vm.cardType.join(","),
                 "timeType": vm.timeType,
-                "startTime": new Date(startTime).getTime(),
-                "endTime": new Date(endTime).getTime(),
+                "startTime": new Date(vm.startTime).getTime(),
+                "endTime": new Date(vm.endTime).getTime(),
                 "orderState": vm.orderState,
                 "depName": trimFunc(vm.dealerName),
                 "operatorName":trimFunc(vm.operator),

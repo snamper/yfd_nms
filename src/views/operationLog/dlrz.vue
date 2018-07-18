@@ -1,7 +1,8 @@
-<style scoped>
+<style>
     .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
+    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
+    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
 </style>
-
 <template>
   <section >
       <div class="dls greyFont">
@@ -22,7 +23,7 @@
                         :picker-options="pickerOptionsS"
                         @change="changeTimeS"
                         placeholder="选择开始时间">
-                        </el-date-picker>—<el-date-picker
+                        </el-date-picker><el-date-picker
                         v-model="endTime"
                         size="small"
                         type="datetime"

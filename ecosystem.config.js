@@ -25,7 +25,7 @@ module.exports = {
     },
     production : {
         user : 'root',
-        host : '47.97.198.73',
+        host : '39.104.179.79',
         ref  : 'origin/master',
         repo : 'https://github.com/thinkmix/yfd_nms.git',
         path : '/usr/local/nginx/html/yfd_nms',

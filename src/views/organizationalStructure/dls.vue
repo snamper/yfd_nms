@@ -1,6 +1,8 @@
 
 <style scoped>
     .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
+    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
+    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
     .setBtn{margin-left: 20px;background: #2A7CE0; color: #fff; padding: 2px 8px; border: 1px solid #2A7CE0; border-radius: 4px;outline: none;}
     .syncBtn{margin-right: 10px;background: #2BAF08;color: #fff; padding: 2px 8px; border: 1px solid #2BAF08; border-radius: 4px;outline: none;}
 </style>
@@ -26,7 +28,7 @@
                         :picker-options="pickerOptionsS"
                         @change="changeTimeS"
                         placeholder="选择开始时间">
-                        </el-date-picker> — <el-date-picker
+                        </el-date-picker><el-date-picker
                         v-model="endTime"
                         size="small"
                         type="datetime"
@@ -104,7 +106,7 @@
                                     <span class="greyFont">下次同步成功时间 ：</span><span>{{getDateTime(syncStartTime)[6]||'--'}}</span>
                                 </div></el-col>
                                 <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
-                                    <span class="greyFont">同步间隔时间 ：<label v-if="timeCell">{{timeCell/3600}}小时</label>
+                                    <span class="greyFont">同步间隔时间 ：<label v-if="timeCell">{{timeCell}}小时</label>
                                         <label v-else>--</label>    
                                     </span>
                                     <button class="setBtn" @click="openSet()">设置</button>

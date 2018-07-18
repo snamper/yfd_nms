@@ -60,11 +60,11 @@
                         <el-col :xs="20" :sm="20" :md="22" :lg="22" :xl="20">
                             <span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span>
                             <el-checkbox-group class="displayInline" v-model="list[i].role">
-                                <el-checkbox label=1>管理员</el-checkbox>
+                                <!--<el-checkbox label=1>管理员</el-checkbox>
                                 <el-checkbox label=2>销售</el-checkbox>
-                                <!--<el-checkbox label=3>店长</el-checkbox>
+                                <el-checkbox label=3>店长</el-checkbox>-->
                                 <el-checkbox label=4>采购员</el-checkbox>
-                                <el-checkbox label=5>业务员</el-checkbox>-->
+                                <el-checkbox label=5>业务员</el-checkbox>
                                 <el-checkbox label=6>提卡客服</el-checkbox>
                                 <el-checkbox label=7>开卡客服</el-checkbox>
                             </el-checkbox-group>
@@ -166,7 +166,7 @@
                 </el-pagination>    
             </div></el-col>
             <el-col :span="12">
-                <div class="grid-content bg-purple-light fr operate">操作&nbsp;&nbsp;<button  @click="doFunction('offLine')">强制离线</button><button  @click="doFunction('addBlack')">加入黑名单</button><button  @click="doFunction('cancelBlack')">解除黑名单</button><button  @click="doFunction('delete')">删除</button></div>
+                <div class="grid-content bg-purple-light fr operate">操作&nbsp;&nbsp;<button v-if="false"  @click="doFunction('offLine')">强制离线</button><button  @click="doFunction('addBlack')">加入黑名单</button><button  @click="doFunction('cancelBlack')">解除黑名单</button><button  @click="doFunction('delete')">删除</button></div>
             </el-col>
             </el-row>
         </div>

@@ -207,7 +207,7 @@ export default {
             nM = new Date(date).getMonth(),
             nD = new Date(date).getDate(),
             startT = new Date(nY, nM, nD, time[0], time[1]);
-            requestsetSyncTime({ syncStartTime: new Date(startT).getTime(), syncInterval: vm.value })
+            requestsetSyncTime({ syncStartTime: new Date(startT).getTime(), syncInterval: vm.value },()=>{vm.$parent.off.layer=false})
             .then(data => {
                 if (data.code == 200) {
                     layer.open({

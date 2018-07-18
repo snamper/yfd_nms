@@ -4,6 +4,9 @@
     .searchTab tr td:nth-child(1){text-align: center}
     .searchTab tr:nth-child(1) td{text-align: center}
     .searchTab{text-align: left}
+    .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
+    .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
+    .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
 </style>
 <template>
     <section style="width:100%;height:100%" >
@@ -44,12 +47,24 @@
                         <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
                             <div class="block">
                                 <el-date-picker
-                                v-model="dataTime"
+                                v-model="startTime"
                                 size="small"
-                                type="daterange"
-                                start-placeholder="开始日期"
-                                end-placeholder="结束日期"
-                                >
+                                type="date"
+                                :clearable=false                                        
+                                :editable=false                    
+                                :picker-options="pickerOptionsS"
+                                @change="changeTimeS"
+                                style="border-radius:4px 0 4px 0"
+                                placeholder="选择开始时间">
+                                </el-date-picker><el-date-picker
+                                v-model="endTime"
+                                size="small"
+                                type="date"
+                                :clearable=false                                        
+                                :editable=false                    
+                                :picker-options="pickerOptionsE"
+                                @change="changeTimeE"                            
+                                placeholder="选择结束时间">
                                 </el-date-picker>
                             </div>
                         </el-col>
@@ -60,7 +75,7 @@
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">开卡结果：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="20" :lg="16" :xl="16">
                             <el-radio v-model="openRes"  label="1,2,3">全部</el-radio> 
-                            <el-radio v-model="openRes"  label="1">审核中</el-radio>
+                            <el-radio v-model="openRes"  label="1">处理中</el-radio>
                             <el-radio v-model="openRes"  label="2">成功</el-radio>
                             <el-radio v-model="openRes"  label="3">失败</el-radio>
                         </el-col>
@@ -78,8 +93,8 @@
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">开卡方式：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-radio v-model="openType"  label="1,2,3">全部</el-radio>
-                            <el-radio v-model="openType"  label="1,2">PC</el-radio>
-                            <el-radio v-model="openType"  label="3">APP</el-radio>
+                            <el-radio v-model="openType"  label="1,2">APP</el-radio>
+                            <el-radio v-model="openType"  label="3">WEB</el-radio>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
@@ -103,7 +118,6 @@
                                 <td>序号</td>
                                 <td>订单ID</td>
                                 <td>创建时间</td>
-                                <td>商户名称</td>
                                 <td>用户姓名</td>
                                 <td>操作人姓名</td>
                                 <td>操作人手机号</td>
@@ -119,7 +133,6 @@
                                 <td >
                                     {{getDateTime(v.createTime)[6]}}
                                 </td>
-                                <td>{{v.dealerIdName||'--'}}</td>
                                 <td>
                                     {{v.idcardName||'--'}}
                                 </td>
@@ -129,13 +142,13 @@
                                     {{v.phone||'--'}}
                                 </td>
                                 <td>
-                                    <span v-if="v.openCardResult==1">审核中</span>
-                                    <span v-if="v.openCardResult==2">成功</span>
-                                    <span v-if="v.openCardResult==3">失败</span>
+                                    <span v-if="v.openCardResult==1">处理中</span>
+                                    <span class="c-green" v-if="v.openCardResult==2">成功</span>
+                                    <span class="c-red" v-if="v.openCardResult==3">失败</span>
                                 </td>
                                 <td >
-                                    <span v-if="v.terminalType=='1,2'">PC</span>
-                                    <span v-if="v.terminalType=='3'">APP</span>
+                                    <span v-if="v.terminalType=='1'||v.terminalType=='2'">APP</span>
+                                    <span v-if="v.terminalType=='3'">WEB</span>
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
@@ -167,7 +180,7 @@
   	</section>
 </template>
 <script>
-import { errorDeal,getDateTime,trimFunc } from "../../config/utils";
+import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction } from "../../config/utils";
 import {requestOpenCardOrder,requestOpenCardDetails} from "../../config/service.js";
 import orderDetails from "./orderDetails";
 export default {
@@ -177,7 +190,8 @@ export default {
             searchResult:"",
             productDetails:{},//产品包详情
             pa: 1,//页码
-            dataTime:"",//时间
+            endTime:'',
+            startTime:'',//时间
             dealerName:"",//商户名称            
             orderId: "",//订单号码
             openNum: "",//开卡号码
@@ -191,37 +205,59 @@ export default {
             form: {
                 page: 0,
                 searchKind:3,
-            }
+            }, 
+            pickerOptionsS: {
+                disabledDate(time){
+                    let curDate= new Date().getTime();
+                    let curYear=new Date(curDate).getFullYear();
+                    let curMonth=new Date(curDate).getMonth()+1,
+                        minMonth=curMonth-5,
+                        minYear=curYear;
+                        if(minMonth<0){
+                            minMonth+=12;
+                            minYear=curYear-1;
+                        }
+                    let curDay=new Date(curDate).getDate()+1; 
+                    let nextMonth=curMonth+1;               
+                    let cur=minYear+"/"+minMonth+"/1";
+                    let next=curYear+"/"+nextMonth+"/1";
+                    let nextYesterday=new Date(next)-1000*3600*24;
+                        cur=new Date(cur).getTime();
+                    return time.getTime() > nextYesterday || time.getTime() < cur;
+                }
+            },
+            pickerOptionsE: {
+                disabledDate(time) {
+                    let curDate = new Date().getTime();
+                    let curYear=new Date(curDate).getFullYear();
+                    let curMonth=new Date(curDate).getMonth()+1,
+                        minMonth=curMonth-5,
+                        minYear=curYear;
+                        if(minMonth<0){
+                            minMonth+=12;
+                            minYear=curYear-1;
+                        }
+                    let curDay=new Date(curDate).getDate()+1; 
+                    let nextMonth=curMonth+1;               
+                    let cur=minYear+"/"+minMonth+"/1";
+                    let next=curYear+"/"+nextMonth+"/1";
+                    let nextYesterday=new Date(next)-1000*3600*24;
+                        cur=new Date(cur).getTime();
+                    return time.getTime() > nextYesterday || time.getTime() < cur;
+                }
+            },
         };
     },
     created: function() {
-        let vm=this,nowDate=new Date(),
-        nY=nowDate.getFullYear(),
-        nM=nowDate.getMonth();
-        vm.dataTime=[new Date(nY,nM,1),new Date()]
+        getTimeFunction(this);
     },
     components: {
         "order-details":orderDetails
     },
     methods: {
         search(index) {//查询
-            let vm=this, data={},
-            startTime=vm.dataTime[0],
-            endTime=vm.dataTime[1],
-            startTimeY=new Date(startTime).getFullYear(),
-            startTimeM=new Date(startTime).getMonth(),
-            endTimeY=new Date(endTime).getFullYear(),           
-            endTimeM=new Date(endTime).getMonth();  
-            vm.searchResult="";
-            if(startTimeY!=endTimeY||startTimeM!=endTimeM){
-                layer.open({
-                    content:"操作时间范围不能跨月,请重新选择",
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }        
+            let vm=this, data={};
+            vm.searchResult="";       
             vm.currentPage=index||1;
             vm.pa=index||1;
             if(vm.form.searchKind==1){
@@ -234,6 +270,7 @@ export default {
                     });
                     return false;
                 }
+                data.sysOrderId = trimFunc(vm.orderId);
             }else if(vm.form.searchKind==2){
                 if(vm.openNum==''){
                     layer.open({
@@ -244,19 +281,19 @@ export default {
                     });
                     return false;
                 }
-            }
-            data={
-                "sysOrderId": trimFunc(vm.orderId),
-                "openCardPhone":trimFunc(vm.openNum),
-                "startTime": new Date(startTime).getTime(),
-                "endTime": new Date(endTime).getTime(),
-                "openCardResult": vm.openRes,
-                "terminalType":vm.openType,
-                "operatorName": trimFunc(vm.operator),
-                "dealerIdName": trimFunc(vm.dealerName),
-                "pageNum": index || 1,
-                "pageSize": 10,
-            }
+                data.openCardPhone = trimFunc(vm.openNum);
+            }else if(vm.form.searchKind==3){
+                data={
+                    "startTime": new Date(vm.startTime).getTime(),
+                    "endTime": new Date(vm.endTime).getTime(),
+                    "openCardResult": vm.openRes,
+                    "terminalType":vm.openType,
+                    "operatorName": trimFunc(vm.operator),
+                    "dealerIdName": trimFunc(vm.dealerName),
+                    "pageNum": index || 1,
+                    "pageSize": 10,
+                }
+            } 
             requestOpenCardOrder(data)
             .then((data)=>{
                 if(data.code==200){
@@ -274,6 +311,34 @@ export default {
             .then((data)=>{
                 vm.productDetails=data.data;
             }).catch(e=>errorDeal(e))
+        },
+        changeTimeS(e){
+            let vm=this,
+            timeRange=disableTimeRange6(),
+            timeRangeS=timeRange.next,
+            timeRangeE=timeRange.nextYesterday,
+            timeCheck=new Date(e).getTime();
+            if(timeCheck<timeRangeS){
+                vm.startTime=timeRangeS;
+            }
+            if(timeCheck>timeRangeE){
+                vm.startTime=timeRangeE;
+            }   
+            let dt=new Date(e);
+            getTimeFunction(this,[dt,1])        
+        },changeTimeE(e){
+            let vm=this,
+            timeRange=disableTimeRange6(),
+            timeRangeS=timeRange.next,
+            timeRangeE=timeRange.nextYesterday,
+            timeCheck=new Date(e).getTime();
+            if(timeCheck<timeRangeS){
+                vm.endTime=timeRangeS;
+            }
+            if(timeCheck>timeRangeE){
+                vm.endTime=timeRangeE;
+            }  
+            getTimeFunction(this,[e,2])                      
         },getDateTime(e){
             return getDateTime(e)
         },trimFunc(v){

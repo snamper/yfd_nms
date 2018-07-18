@@ -220,7 +220,8 @@ export default{
                         msgSkin:'success',
                     });
                     this.$parent.list=[],
-                    this.$parent.list.push({username: '', phone: '',checked:false,checked2:false})
+                    this.$parent.off.addList=false,
+                    this.$parent.list.push({username: '', phone: '',role:[]})
                     if(this.searchType!=1){
                         this.search();
                     }else if(this.searchType==1){

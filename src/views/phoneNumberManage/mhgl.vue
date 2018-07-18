@@ -366,7 +366,6 @@ export default{
     },
     watch:{
         'off.modify'(){
-            console.log(11122233)
             this.$parent.$refs.psec.scrollTop=this.$parent.$refs.psec.scrollHeight;
         }
     },
