@@ -76,10 +76,13 @@
                                     </tr>
                                     <tr>
                                         <td>图片来源：</td>
-                                        <td>
+                                        <td v-if="detailsData.terminalType==1||detailsData.terminalType==2">
                                             <span>正面：{{translateData(9,detailsData.imageSubmit.split(',')[0])}}/</span>
                                             <span>背面：{{translateData(9,detailsData.imageSubmit.split(',')[1])}}/</span>
                                             <span>手持：{{translateData(9,detailsData.imageSubmit.split(',')[2])}}</span>
+                                        </td>
+                                        <td v-if="detailsData.terminalType==3">
+                                            --
                                         </td>
                                     </tr>
                                     <tr>
