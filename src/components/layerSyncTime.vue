@@ -235,7 +235,7 @@ export default {
                 phone: vm.user.phone,
                 authCode: vm.authCode
             };
-            vm.syncUrl = "/nus/w/user/sync";
+            vm.syncUrl = "/uus/w/user/sync";
             requestMethod(data,vm.syncUrl)
             .then((data)=>{
                 vm.$parent.off.layer=false;

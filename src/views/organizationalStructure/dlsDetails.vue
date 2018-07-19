@@ -63,8 +63,8 @@
                                 <el-checkbox label=3>店长</el-checkbox>-->
                                 <el-checkbox label=4>采购员</el-checkbox>
                                 <el-checkbox label=5>业务员</el-checkbox>
-                                <el-checkbox label=6>提卡客服</el-checkbox>
-                                <el-checkbox label=7>开卡客服</el-checkbox>
+                                <!--<el-checkbox label=6>提卡客服</el-checkbox>
+                                <el-checkbox label=7>开卡客服</el-checkbox>-->
                             </el-checkbox-group>
                         </el-col>
                         <el-col :xs="4" :sm="4" :md="2" :lg="2" :xl="2"><span @click="deleteLine(i)" class="u-icon-del"></span></el-col>

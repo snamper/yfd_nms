@@ -206,11 +206,13 @@ export default{
             orderId:'',//订单Id
             payMoney:'',//付款金额
             oddNumbers:'',//流水单号
+            orderdeliveryName:'',
         }		
     },
 	created:function(){
         let vm=this;   
-        vm.orderId=vm.logisticsInfo.deliveryOrderId    
+        vm.orderId=vm.logisticsInfo.deliveryOrderId;
+        vm.logisticsCompany2 = vm.logisticsInfo.deliveryName;
 	},
 	methods:{
         btnYes(e,v){

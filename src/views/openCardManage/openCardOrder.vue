@@ -106,45 +106,30 @@
                         <table class="searchTab" style="width:100%;height:100%;">
                             <tr class="f-s-14">
                                 <td>序号</td>
-                                <td>订单ID</td>
-                                <td>创建时间</td>
-                                <td>用户姓名</td>
-                                <td>操作人姓名</td>
-                                <td>操作人手机号</td>
+                                <td>订单号码</td>
                                 <td>开卡号码</td>
+                                <td>操作人手机号</td>
+                                <td>操作人姓名</td>
+                                <td>开卡时间</td>
                                 <td>开卡结果</td>
                                 <td>开卡方式</td>
+                                <td>用户姓名</td>
                             </tr>
                             <tr v-for="(v,i) of searchResult" :key="i">
-                                <td>
-                                    {{((pa-1)*10+(i+1))}}
-                                </td>
+                                <td>{{((pa-1)*10+(i+1))}}</td>
                                 <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
-                                <td >
-                                    {{getDateTime(v.createTime)[6]}}
-                                </td>
-                                <td>
-                                    {{v.idcardName||'--'}}
-                                </td>
-                                <td>{{v.operatorName||'--'}}</td>
+                                <td>{{v.phone||'--'}}</td>
                                 <td>{{v.operatorPhone||'--'}}</td>
-                                <td >
-                                    {{v.phone||'--'}}
-                                </td>
+                                <td>{{v.operatorName||'--'}}</td>
+                                <td>{{getDateTime(v.createTime)[6]}}</td>
                                 <td>
-                                    <span v-if="v.openCardResult==1">处理中</span>
-                                    <span class="c-green" v-if="v.openCardResult==2">成功</span>
-                                    <span class="c-red" v-if="v.openCardResult==3">失败</span>
+                                    <span :class="v.openCardResult==2?'c-green':v.openCardResult==3?'c-red':''">{{translateData(6,v.openCardResult)}}</span>
                                 </td>
-                                <td >
-                                    <span v-if="v.terminalType=='1'||v.terminalType=='2'">APP</span>
-                                    <span v-if="v.terminalType=='3'">WEB</span>
-                                </td>
+                                <td>{{translateData(5,v.terminalType)}}</td>
+                                <td> {{v.idcardName||'--'}} </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
-                                <td colspan="12">
-                                    暂无数据                                                        
-                                </td>
+                                <td colspan="12">暂无数据</td>
                             </tr>
                         </table>
                     </div>
@@ -170,7 +155,7 @@
   	</section>
 </template>
 <script>
-import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction } from "../../config/utils";
+import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction,translateData } from "../../config/utils";
 import {requestOpenCardOrder,requestOpenCardDetails} from "../../config/service.js";
 import orderDetails from "./orderDetails";
 export default {
@@ -287,7 +272,7 @@ export default {
                     "openCardResult": vm.openRes,
                     "terminalType":vm.openType,
                     "operatorName": trimFunc(vm.operator),
-                    "dealerIdName": trimFunc(vm.dealerName),
+                    "dealerName": trimFunc(vm.dealerName),
                     "pageNum": index || 1,
                     "pageSize": 10,
                 }
@@ -341,6 +326,8 @@ export default {
             return getDateTime(e)
         },trimFunc(v){
             return trimFunc(v);
+        },translateData(v,i){
+            return translateData(v,i)
         }
     }
 };

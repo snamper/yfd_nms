@@ -104,6 +104,7 @@
                         <el-col :span="2"></el-col> 
                     </el-col>
                 </el-row>
+                <!-- <el-row> <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light"> <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">售卖方式：</div></el-col> <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16"> <el-radio v-model="splitCheck"  label="1,2">全部</el-radio> <el-radio v-model="splitCheck"  label="2">拆包</el-radio> <el-radio v-model="splitCheck"  label="1">不可拆包</el-radio> </el-col> </div></el-col> </el-row> -->
                 <el-row style="text-align:center" class="marginTop">
                     <button class="searchBtn" @click="search()">搜索</button>
                 </el-row>
@@ -119,6 +120,7 @@
                                 <td>创建时间</td>
                                 <td>商户名称</td>
                                 <td>产品包</td>
+                                <!-- <td>售卖方式</td> <td>购买数量（个）</td> -->
                                 <td>付款金额(元)</td>
                                 <td>操作人号码</td>
                                 <td>修改时间</td>
@@ -132,18 +134,18 @@
                                     {{((pa-1)*10+(i+1))}}
                                 </td>
                                 <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
-                                <td >
-                                    {{v.createTime}}
-                                </td>
-                                <td>{{v.depName||'--'}}</td>
+                                <td > {{v.createTime.split(' ')[0]}}<br> {{v.createTime.split(' ')[1]}} </td>
+                                <td>{{v.depName||'--'}}</td>   
                                 <td>
                                     <p v-if="v.isShow==true" class="abcd" v-for="(x,y) in v.productList" :key="y">
                                         <span class="listSpan">{{x.productName}}</span>
+                                        <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
                                     </p>
                                     <p v-if="!v.isShow" class="abcd">
                                         <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                                     </p>
                                 </td>
+                                <!-- <td></td> <td></td> -->
                                 <td>{{(v.totalStrikePrice/100).toFixed(2)||'--'}}</td>
                                 <!-- <td class="tac" style="width:140px">
                                     <div v-if="!off.changePrice[i+1]">
@@ -161,12 +163,8 @@
                                 </td> -->
                                 <td>{{v.operatorPhone||'--'}}</td>
                                 <td >
-                                    <span v-if="v.modifyTime">
-                                        {{v.modifyTime}}
-                                    </span>
-                                    <span v-if="!v.modifyTime">
-                                        --
-                                    </span>
+                                    <span v-if="v.modifyTime"> {{v.modifyTime.split(' ')[0]}}<br> {{v.modifyTime.split(' ')[1]}} </span>
+                                    <span v-if="!v.modifyTime"> -- </span>
                                 </td>
                                 <td>
                                     <span v-if="v.paymentType==1">支付宝</span>
@@ -242,10 +240,11 @@ export default {
             dealerName:"",//商户名称            
             operator: "",//操作人
             optime:'',//操作时间
-            timeType: "1",
+            timeType: "1",//操作时间类型
             orderState: "0",//操作类型
             cardType:['1','2','3'],//产品类型
-            payMent:"0",
+            splitCheck:'1,2',//售卖方式
+            payMent:"0",//支付方式
             startTime:'',
             endTime:'',
             off: {
@@ -390,7 +389,6 @@ export default {
         getMore(i){
             let vm=this;
             this.$set(vm.searchResult[i],'isShow',!vm.searchResult[i].isShow);
-            
         },
         searchdelivery(n,v){
             let url="https://www.kuaidi100.com/chaxun?com="+n+"&nu="+v;
@@ -443,6 +441,7 @@ export default {
     .pickCardOrder .searchTab tr td{text-align: left}
     .pickCardOrder .searchTab tr td:nth-child(1){width: 60px;padding-left: 15px;}
     .pickCardOrder .iconMore{margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
+    .pickCardOrder .iconMore1{-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg);transform:rotate(90deg);margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
     .pickCardOrder .listSpan{display: inline-block;margin-top: 2px;}
     .pickCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
 </style>

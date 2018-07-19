@@ -195,8 +195,11 @@
                                 </td>
                             </tr>
                             <tr v-if="searchList.length>0&&nowStatusHidden!=6&&nowStatusHidden!=5">
-                                <td colspan="11" style="text-align:left" class="pl20">
+                                <td colspan="6" style="text-align:left" class="pl20">
                                     选择 : <a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
+                                </td>
+                                <td colspan="5" style="text-align:right;padding-right:20px;">
+                                   <el-checkbox v-model="isSplit"></el-checkbox> 拆包售卖<span class="greyFont">（仅普号包可拆分）</span>
                                 </td>
                             </tr>
                             <tr v-if="searchList.length<=0">
@@ -335,6 +338,7 @@ export default{
             dourl:'',
             a:'',//上架，下架
             newPrice:[],
+            isSplit:false,//是否拆分
 			off:{
                 layer:false,
                 layerChangePrice:false,
@@ -570,18 +574,32 @@ export default{
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
                     if(vm.searchList[v].productState==6||vm.searchList[v].productState==5){
-                        isInArray=true;
+                        isInArray='1';
+                    }else if(vm.isSplit==true){
+                        if(vm.searchList[v].productType!=3){
+                            isInArray='2'
+                        }
                     }
                 }
             }
-            if(isInArray==true){
-                vm.off.modify='stop';
+            if(isInArray=='1'){
+                vm.off.modify='stop1';
+            }else if(isInArray=='2'){
+                vm.off.modify='stop2';
             }else{
                 vm.off.modify=true;
             }
-            if(vm.off.modify=='stop'){
+            if(vm.off.modify=='stop1'){
                 layer.open({
                     content:"不允许操作购物车中和已售出的号包",
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }else if(vm.off.modify=='stop2'){
+                layer.open({
+                    content:"仅普号包可拆分售卖，请重新选择",
                     skin: 'msg',
                     time: 2,
                     msgSkin:'error',
@@ -676,6 +694,12 @@ export default{
             }
             dataReq.reason=vm.reason;//操作原因
             dataReq.authCode=vm.authCode;
+            if(vm.isSplit==true){
+                dataReq.splitFlag=2
+            }else if(vm.isSplit==false){
+                dataReq.splitFlag=1
+            }
+            console.log(vm.isSplit);
             requestMethod(dataReq,vm.dourl)
             .then((data)=>{
                 vm.off.modify=false;

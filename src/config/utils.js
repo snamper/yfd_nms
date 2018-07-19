@@ -186,7 +186,7 @@ export const translateData=(type,v)=> {
             return v==1?'远特':v==2? '蜗牛':v==3? '迪信通' :v==4? '极信' :v==5? '小米' : v==6? '海航' : v==7? '乐语' :v==8? '苏宁互联': v==9?'国美':v==10? '联想':v==11?'蓝猫移动':v==12?'长城':v==13?'中邮':'--';
         break;
         case 5:
-            return v==1?'ios':v==2?'Android':v==3?'WEB开卡':'--';
+            return v==1?'ios':v==2?'Android':v==3?'Web':'--';
         break;
         case 6:
             return v==1?'处理中':v==2?'成功':v==3?'失败':'--';
