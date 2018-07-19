@@ -198,6 +198,7 @@ export default {
     },
     btnYes(v) {//同步时间设置确认
       let vm = this;
+      debugger;
       if (window.location.hash.indexOf("agent") > -1) {
           if(v==1){
             var date = vm.date,
@@ -230,7 +231,6 @@ export default {
                 return false;
             }
             this.resetTimer();
-            vm.authCode = "";
             let data = {
                 phone: vm.user.phone,
                 authCode: vm.authCode
@@ -277,6 +277,7 @@ export default {
           return false;
         }
         this.resetTimer();
+        debugger;
         vm.authCode = "";
         let data = {
           userId: vm.user.userId,
