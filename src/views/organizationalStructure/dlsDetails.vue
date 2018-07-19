@@ -164,7 +164,7 @@
                 </el-pagination>    
             </div></el-col>
             <el-col :span="12">
-                <div class="grid-content bg-purple-light fr operate">操作&nbsp;&nbsp;<button v-if="false"  @click="doFunction('offLine')">强制离线</button><button  @click="doFunction('addBlack')">加入黑名单</button><button  @click="doFunction('cancelBlack')">解除黑名单</button><button  @click="doFunction('delete')">删除</button></div>
+                <div class="grid-content bg-purple-light fr operate">操作 :<button v-if="false"  @click="doFunction('offLine')">强制离线</button><button  @click="doFunction('addBlack')">加入黑名单</button><button  @click="doFunction('cancelBlack')">解除黑名单</button><button  @click="doFunction('delete')">删除</button></div>
             </el-col>
             </el-row>
         </div>

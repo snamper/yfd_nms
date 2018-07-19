@@ -20,6 +20,6 @@ export const requestConfirmPayMent=(data)=>fetch("/nms/w/order/confirmPayment",d
 export const requestModify_Price=(data)=>fetch("/nms/w/number/modifyCartPrice",data,"POST")
 /*开卡订单管理*/
 export const requestOpenCardOrder=(data)=>fetch("/nms/w/openReadyCard/getMngOpenCardOrders",data,"POST")
-export const requestOpenCardDetails=(data)=>fetch("/nms/w/openReadyCard/openCardOrderDetail",data,"POST")
+export const requestOpenCardDetails=(data)=>fetch("/nms/w/openReadyCard/getMngOpenCardOrderDetail",data,"POST")
 
 

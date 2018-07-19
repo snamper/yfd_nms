@@ -16,7 +16,7 @@
                                     </tr>
                                     <tr>
                                         <td>来源：</td>
-                                        <td>{{detailsData.doc_desc||'--'}}</td>
+                                        <td>{{translateData(7,detailsData.docTransferType)}}</td>
                                     </tr>
                                     <tr>
                                         <td>生成时间：</td>
@@ -40,45 +40,45 @@
                                     </tr>
                                     <tr>
                                         <td>证件类型：</td>
-                                        <td></td>
+                                        <td>{{translateData(8,detailsData.idcardType)}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>证件号码：</td>
                                         <td>{{detailsData.idcardNumber||'--'}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>证件地址：</td>
                                         <td>{{detailsData.idcardAddress||'--'}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>证件期限：</td>
                                         <td>{{detailsData.idcardPeriod||'--'}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>操作人：</td>
                                         <td>{{detailsData.operatorName||'--'}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>操作人IP：</td>
                                         <td>{{detailsData.ip||'--'}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>开卡方式：</td>
                                         <td>{{translateData(5,detailsData.terminalType)}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>开卡结果：</td>
                                         <td>{{translateData(6,detailsData.openCardResult)}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>位置信息：</td>
                                         <td>{{detailsData.longitude||'--'}}°E，{{detailsData.latitude||'--'}}°N</td>
                                     </tr>
-                                     <tr>
-                                        <td>渠道ID：</td>
-                                        <td>{{detailsData.dealerIdName||'--'}}</td>
+                                    <tr>
+                                        <td>图片来源：</td>
+                                        <td>{{detailsData.imageSubmit||'--'}}</td>
                                     </tr>
-                                     <tr>
+                                    <tr>
                                         <td>商户名称：</td>
                                         <td>{{detailsData.dealerIdName||'--'}}</td>
                                     </tr>

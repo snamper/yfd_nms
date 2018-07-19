@@ -166,7 +166,7 @@
                     </el-pagination>    
                 </div></el-col>
                 <el-col :span="12">
-                    <div class="grid-content bg-purple-light fr operate">操作&nbsp;&nbsp;<button v-if="false"  @click="doFunction('offLine')">强制离线</button><button  @click="doFunction('addBlack')">加入黑名单</button><button  @click="doFunction('cancelBlack')">解除黑名单</button><button  @click="doFunction('delete')">删除</button></div>
+                    <div class="grid-content bg-purple-light fr operate">操作 :<button v-if="false"  @click="doFunction('offLine')">强制离线</button><button  @click="doFunction('addBlack')">加入黑名单</button><button  @click="doFunction('cancelBlack')">解除黑名单</button><button  @click="doFunction('delete')">删除</button></div>
                 </el-col>
                 </el-row>
             </div>
@@ -254,6 +254,50 @@ export default{
             this.off.addList=!this.off.addList;
         },
         AddStaff(){//添加员工按钮
+            // let data={"newUsers":[]},vm=this; 
+            // for(let i=0;i<this.list.length;i++){
+            //     if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
+            //         checkMobile(this.list[i].phone,()=>{return false});
+            //         this.list[i].userRole = this.list[i].role.join(',');
+            //         this.list[i].departId=vm.topDepartmentId;
+            //         data.newUsers.push(this.list[i])
+            //     }else{
+            //         layer.open({
+            //             content:'请填写完整的员工信息',
+            //             skin: 'msg',
+            //             time: 2,
+            //             msgSkin:'error',
+            //         });
+            //         return false;
+            //     }
+            // }
+            // this.addUsersData=data;
+            // let url='/ums/w/user/addUsers',json={};
+            // json = vm.addUsersData;
+            // requestMethod(json,url)
+            // .then((data)=>{                                  
+            //     if(data.code==200){
+            //         layer.open({
+            //             content:'操作成功',
+            //             skin: 'msg',
+            //             time: 2,
+            //             msgSkin:'success',
+            //         });
+            //         this.list=[],
+            //         this.list.push({username: '', phone: '',role:[],departName:"好亚飞达"}) 
+            //         if(vm.off.searchList==true){
+            //             this.search();
+            //         }
+            //     }else{
+            //         layer.open({
+            //             content:data.msg,
+            //             skin: 'msg',
+            //             time: 2,
+            //             msgSkin:'error',
+            //         });
+            //     }  
+            // }).catch(e=>errorDeal(e))
+
             let data={"newUsers":[]},vm=this; 
             for(let i=0;i<this.list.length;i++){
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){

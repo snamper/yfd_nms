@@ -105,7 +105,7 @@ export default {
         }).then(()=>{
             api.actionGetDepartmentId({})
             .then((data)=>{
-                window.localStorage.setItem("departId",data.data)
+                window.localStorage.setItem("departId",data.data.departId)
             })
         }).catch(error=>{
             errorDeal(error);

@@ -191,6 +191,12 @@ export const translateData=(type,v)=> {
         case 6:
             return v==1?'处理中':v==2?'成功':v==3?'失败':'--';
         break;
+        case 7:
+            return v==1?'QQ':v==2?'微信':v==3?'其他':'--';
+        break;  
+        case 8:
+            return v==1?'身份证':'--';
+        break
         case 'userRole':
             val=["管理员","销售员","店长","采购员","业务员","提卡客服","开卡客服"];
             return val[v-1];

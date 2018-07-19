@@ -73,7 +73,7 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-                            <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人号码"></el-input>
+                            <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人姓名"></el-input>
                         </el-col>
                         <el-col :span="2"></el-col> 
                     </el-col>
@@ -260,7 +260,11 @@ export default {
                     });
                     return false;
                 }
-                data.sysOrderId = trimFunc(vm.orderId);
+                data={
+                    "sysOrderId":trimFunc(vm.orderId),
+                     "pageNum": index || 1,
+                    "pageSize": 10
+                }
             }else if(vm.form.searchKind==2){
                 if(vm.openNum==''){
                     layer.open({
@@ -271,7 +275,11 @@ export default {
                     });
                     return false;
                 }
-                data.openCardPhone = trimFunc(vm.openNum);
+                data={
+                    "openCardPhone":trimFunc(vm.openNum),
+                    "pageNum": index || 1,
+                    "pageSize": 10
+                }
             }else if(vm.form.searchKind==3){
                 data={
                     "startTime": new Date(vm.startTime).getTime(),
