@@ -76,7 +76,11 @@
                                     </tr>
                                     <tr>
                                         <td>图片来源：</td>
-                                        <td>{{detailsData.imageSubmit||'--'}}</td>
+                                        <td>
+                                            <span>正面：{{translateData(9,detailsData.imageSubmit.split(',')[0])}}/</span>
+                                            <span>背面：{{translateData(9,detailsData.imageSubmit.split(',')[1])}}/</span>
+                                            <span>手持：{{translateData(9,detailsData.imageSubmit.split(',')[2])}}</span>
+                                        </td>
                                     </tr>
                                     <tr>
                                         <td>商户名称：</td>

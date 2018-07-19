@@ -228,6 +228,7 @@ export default{
             searchDepartId:'',//部门Id
             doAble:'0',
             searchStaffInfo:'',//员工信息
+            searchDetailsYfdData:'',
             form:{
                 page:0,
             },
@@ -429,6 +430,7 @@ export default{
             let data={},url='/ums/w/user/getUserDetail',vm=this
             vm.searchStaffInfo=p;
             data={"searchUserId":p.userId,"sessionType":"2"}
+            vm.searchDetailsYfdData=data;
             requestMethod(data,url)
             .then((data)=>{
                 vm.off.searchStaff=false;

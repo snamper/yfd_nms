@@ -197,12 +197,17 @@ export const translateData=(type,v)=> {
         case 8:
             return v==1?'身份证':'--';
         break
+        case 9:
+            return v==1?'拍照上传':v==2?'相册上传':'--';
+        break
         case 'userRole':
             val=["管理员","销售员","店长","采购员","业务员","提卡客服","开卡客服"];
             return val[v-1];
+        break
         case 'userState':
             val=["正常","黑名单","注销"]
             return val[v-1];
+        break
     }
 }
 
