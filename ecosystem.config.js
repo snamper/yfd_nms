@@ -29,7 +29,7 @@ module.exports = {
         ref  : 'origin/master',
         repo : 'https://github.com/thinkmix/yfd_nms.git',
         path : '/usr/local/nginx/html/yfd_nms',
-        'post-deploy' : 'cnpm install && npm run build && pm2 reload ecosystem.config.js --env production'
+        'post-deploy' : 'git pull origin master && cnpm install && npm run build && pm2 reload ecosystem.config.js --env production'
       },
   
   }

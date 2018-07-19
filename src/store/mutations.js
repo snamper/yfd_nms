@@ -15,7 +15,8 @@ export default {
 	//登出
 	[SIGN_OUT](state){
 		state.userInfo={};
-		removeStore("YFD_NMS_INFO");
+        removeStore("YFD_NMS_INFO");
+        removeStore("departId");
 		window.location.href='#/login';
 	}
 };
