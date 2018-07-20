@@ -73,7 +73,7 @@ export default{
 	},
 	methods:{
         getAuthCode(v){//获取验证码
-            const TIME_COUNT = 900;
+            const TIME_COUNT = 120;
             if (!this.timer) {
                 this.count = TIME_COUNT;
                 this.show = false;

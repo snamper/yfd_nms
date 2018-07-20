@@ -79,7 +79,7 @@ export default {
       }
       api.getIdentifyCode({phone:vm.form.phone})
       .then(res=>{
-        vm.countDown(900);
+        vm.countDown(120);
       })
       .catch(error=>{});
     },
