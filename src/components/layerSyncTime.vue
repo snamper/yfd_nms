@@ -277,8 +277,6 @@ export default {
           return false;
         }
         this.resetTimer();
-        debugger;
-        vm.authCode = "";
         let data = {
           userId: vm.user.userId,
           phone: vm.user.phone || "",
