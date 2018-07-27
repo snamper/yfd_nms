@@ -100,13 +100,13 @@
                         <td>
                             <div class="msgTime"><span class="timeBig">{{getDateTime(v.createTime)[2]}}日</span> {{getDateTime(v.createTime)[1]}}月 {{getDateTime(v.createTime)[0]}}年&nbsp;&nbsp;{{getDateTime(v.createTime)[5]}}<span class="fr">有效期 ：{{getDateTime(v.expTime)[0]}}年{{getDateTime(v.expTime)[1]}}月{{getDateTime(v.expTime)[2]}}日</span></div>
                             <div class="msgInfo">
-                                <p><img class="icon" src="../../assets/images/icon/book.svg" alt="" /><span class="c-green"><span v-if="v.type=='600'">(系统消息)</span><span v-if="v.type=='200'">(政策消息)</span><span v-if="v.type=='500'">(优惠消息)</span><span v-if="v.type=='400'">(新货上架)</span></span><span v-if="v.content!=''">{{v.content}}</span></p>
-                                <p><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
+                                <p v-if="v.content"><img class="icon" src="../../assets/images/icon/book.svg" alt="" /><span class="c-green"><span v-if="v.type=='600'">(系统消息)</span><span v-if="v.type=='200'">(政策消息)</span><span v-if="v.type=='500'">(优惠消息)</span><span v-if="v.type=='400'">(新货上架)</span></span><span v-if="v.content!=''">{{v.content}}</span></p>
+                                <p v-if="v.redirectUrl"><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
                                 <p>
-                                    <img class="icon" src="../../assets/images/icon/link.svg" alt="" />
-                                    <!-- 附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" @click="imgBigFunction(v)" href="javascript:void(0)" class="c-yellow textDec">{{v.annex[0].fileName}}</a><img v-if="v.annex.length>0" ref="imgBigFunction" :src=v.annex[0].base64String @click="clickImg($event)" class="imgS">
-                                     -->
-                                    附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" :href="v.annex[0].fileUrl" target=_blank class="c-yellow textDec">{{v.annex[0].fileName}}</a>                                    
+                                    <label  v-if="v.annex.length>0">
+                                        <img class="icon" src="../../assets/images/icon/link.svg" alt="" />
+                                        附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" :href="v.annex[0].fileUrl" target=_blank class="c-yellow textDec">{{v.annex[0].fileName}}</a>                                    
+                                    </label>
                                     <span class="fr">
                                         发送对象:<a v-if="v.receiverType==1" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
                                         <a v-if="v.receiverType==2" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>

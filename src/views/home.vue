@@ -73,6 +73,10 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
                             <span :class="crumb[0].name=='码号管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
 						</div>
 					</router-link>
+                    <ul class="g-side-subul nav2">
+                        <li><router-link to="/home/card/cardManage"><b></b>码号管理</router-link></li>
+                        <li><router-link to="/home/card/modifyPrice"><b></b>购物车价格修改</router-link></li>
+                    </ul>
 				</li>
 			</ul>
             <ul class="g-side-ul">

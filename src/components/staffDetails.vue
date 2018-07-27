@@ -50,6 +50,28 @@
                     </el-row>
                 </li>
                 <li>
+                    <el-row>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">职务&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        
+                        <el-col v-if="!off.modify"  :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
+                            <span v-for="(v,i) in forms.userRole.split(',')" :key="i">
+                                {{translateData('userRole',v)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
+                            </span>
+                        </div></el-col>
+                        <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
+                            <el-checkbox-group class="displayInline" v-model="role">
+                                <el-checkbox v-if="AddRoleyfd" label=1>管理员</el-checkbox>
+                                <el-checkbox v-if="AddRoleyfd" label=2>销售</el-checkbox>
+                                <el-checkbox v-if="AddRoleyfd" label=6>提卡客服</el-checkbox>
+                                <el-checkbox v-if="AddRoleyfd" label=7>开卡客服</el-checkbox>
+                                <!-- <el-checkbox label=3>店长</el-checkbox> -->
+                                <el-checkbox v-if="AddRoleagent" label=4>采购员</el-checkbox>
+                                <el-checkbox v-if="AddRoleagent" label=5>业务员</el-checkbox>
+                            </el-checkbox-group>
+                        </div></el-col>
+                    </el-row>
+                </li>
+                <li>
                      <el-row>
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">创建时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
@@ -88,17 +110,7 @@
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">{{forms.operatorName}}</div></el-col>
                     </el-row>
                 </li>
-                <li>
-                    <el-row>
-                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">职务&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        
-                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
-                            <span v-for="(v,i) in forms.userRole.split(',')" :key="i">
-                                {{translateData('userRole',v)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
-                            </span>
-                        </div></el-col>
-                    </el-row>
-                </li>
+                
                 <li>
                     <el-row>
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">当前状态&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
@@ -227,7 +239,10 @@ export default{
             list: [
             {a: '', b: '',checked:false,checked2:true},
             {a: '', b: '',checked:true,checked2:false}
-            ]
+            ],
+            role:[]
+            ,AddRoleyfd:""
+            ,AddRoleagent:""
 		}
 	},
 	components:{
@@ -239,6 +254,8 @@ export default{
         vm.company=vm.$parent.company;        
         vm.managerName=vm.$parent.managerName;
         vm.managerPhone=vm.$parent.managerPhone;
+        vm.AddRoleyfd=window.location.hash.indexOf("/organization/yfd")>-1
+        vm.AddRoleagent=window.location.hash.indexOf("/organization/agent")>-1
     },
 	methods:{
 		goBack(){
@@ -248,18 +265,17 @@ export default{
             this.$parent.search(vm.$parent.pa);
         }
         ,checkBtn(){
-            for(let v in this.forms.userRole){
-                if(this.forms.userRole=='3'){
-                    layer.open({
-                        content:"不允许修改店长信息",
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                    return false;
-                }
+            if(this.forms.userRole.split(",").indexOf('3')>-1){
+                layer.open({
+                    content:"不允许修改店长信息",
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
             }
             let vm=this;
+            vm.role=vm.forms.userRole.split(",");
             vm.off.noModify=false;
             vm.off.modify=true;
             vm.oldName=vm.forms.username;
@@ -278,7 +294,9 @@ export default{
             vm.off.modify=false;
             data.newUsername=vm.forms.username;
             data.newPhone=vm.forms.phone;
+            data.newUserRole=vm.role.join(',');
             data.searchUserId=v;
+            debugger;
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){

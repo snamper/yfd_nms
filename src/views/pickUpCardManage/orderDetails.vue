@@ -41,7 +41,7 @@
                                 <span v-if="v.isp==3">电信</span>
                             </td>
                             <td>码号数</td>
-                            <td>{{v.cuteTotal+v.normalTotal||'--'}}</td>
+                            <td>{{getNumberAmount('cn',v)}}</td>
                         </tr>
                         <tr>
                             <td>品牌</td>
@@ -60,13 +60,13 @@
                                 <span v-if="v.brand==12">长城</span>
                             </td>
                             <td>靓号数</td>
-                            <td>{{v.cuteTotal}}<a v-if="v.cuteTotal!=0&&v.productType==1||v.productType==2" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
+                            <td>{{getNumberAmount('c',v)}}<a v-if="v.cuteTotal!=0&&v.productType==1||v.productType==2" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>归属地</td>
                             <td>{{v.area||'--'}}</td>
                             <td>普号数</td>
-                            <td>{{v.normalTotal}}<a v-if="v.normalTotal!=0&&v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
+                            <td>{{getNumberAmount('n',v)}}<a v-if="v.normalTotal!=0&&v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>产品类型</td>
@@ -192,6 +192,54 @@ export default{
             let vm=this;
             vm.$parent.off.details=false;
         },
+        getNumberAmount(p,v){
+            if(p=='n'){//普号数
+                if(v.productType==1){//整号包
+                    return v.normalTotal;
+                }else if(v.productType==1){//靓号包
+                    return 0;
+                }else if(v.productType==3){//普号包
+                    return v.total;
+                }else{
+                    layer.open({
+                        content:"数据解析错误",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }
+            }else if(p=='c'){//靓号数
+                if(v.productType==1){//整号包
+                    return v.cuteTotal;
+                }else if(v.productType==1){//靓号包
+                    return v.total;
+                }else if(v.productType==3){//普号包
+                    return 0;
+                }else{
+                    layer.open({
+                        content:"数据解析错误",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }
+            }else if(p=='cn'){//总数
+                if(v.productType==1){//整号包
+                    return v.cuteTotal+v.normalTotal;
+                }else if(v.productType==1){//靓号包
+                    return v.total;
+                }else if(v.productType==3){//普号包
+                    return v.total;
+                }else{
+                    layer.open({
+                        content:"数据解析错误",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }
+            }
+        }
     }
 }
 </script>
