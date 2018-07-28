@@ -166,7 +166,7 @@
                                     <div v-if="!off.changePrice[i+1]">
                                         <span v-if="!v.strikePrice">{{(v.totalPrice/100).toFixed(2)}}</span>
                                         <span v-if="v.strikePrice">{{(v.strikePrice/100).toFixed(2)}}</span>
-                                        <el-button v-if="v.isInCart==1" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
+                                        <el-button v-if="false" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
                                     </div>
                                     <div class="box" v-if="off.changePrice[i+1]">
                                         <span class="span1">
@@ -413,11 +413,20 @@ export default{
                             resolve('yes');
                             this.$set(vm.listSwitch,'liang',true)
                             vm.searchLiang=[]
-                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                                vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                            if(data.data.numbers instanceof Array){
+                                for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                    vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                                }
+                                vm.searchLiang.len=data.data.numbers.length;
                             }
-                            vm.searchLiang.len=data.data.numbers.length;
-                        }).catch(e=>errorDeal(e,load.close()))
+                        }).catch((e)=>{
+                        layer.open({
+                            content:e,
+                            skin: 'msg',
+                            time: 2,
+                            msgSkin:'error',
+                        });
+                        })
                     }else{
                         vm.searchLiang=[]
                         resolve('yes');
@@ -434,11 +443,20 @@ export default{
                                 resolve('yes');                        
                                 this.$set(vm.listSwitch,'pu',true)                                                      
                                 vm.searchPu=[]
-                                for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                                    vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                                if(data.data.numbers instanceof Array){
+                                    for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                        vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                                    }
+                                    vm.searchPu.len=data.data.numbers.length;      
                                 }
-                                vm.searchPu.len=data.data.numbers.length;                        
-                            }).catch(e=>errorDeal(e,function(){load.close()}))
+                            }).catch((e)=>{
+                            layer.open({
+                                content:e,
+                                skin: 'msg',
+                                time: 2,
+                                msgSkin:'error',
+                            });
+                            })
                         }else{
                             vm.searchPu=[]
                             resolve('yes');                        
@@ -699,7 +717,6 @@ export default{
             }else if(vm.isSplit==false){
                 dataReq.splitFlag=1
             }
-            console.log(vm.isSplit);
             requestMethod(dataReq,vm.dourl)
             .then((data)=>{
                 vm.off.modify=false;

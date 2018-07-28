@@ -1,23 +1,3 @@
-<style scoped>
-#detailsView{position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
-#detailsView>div{display: table-cell;vertical-align: middle;}
-#detailsView table{box-shadow: 0 0 50px grey;margin:auto;width: 268px;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
-#detailsView table td{padding:10px 30px;}
-#detailsView table th{padding: 10px 0;border-radius: 4px 4px 0 0;color: #545454;font-size: 16px;}
-#detailsView table td>.fl{width:1rem;text-align: right;}
-#detailsView table td>.fright{margin-left: 1.05rem;text-align: left; }
-.lay-mask{position:absolute;background-color: rgba(0,0,0,0.3);z-index: -1;width: 100%;height: 100%;top: 0;left: 0;}
-.tdBtn span{ display: inline-block;width: 50%;height: 50px;padding: 20px;box-sizing: border-box;cursor: pointer}
-.tdBtn span:nth-child(1){border-top: 1px solid #ccc;border-right: 1px solid #ccc;color: red}
-.tdBtn span:nth-child(2){border-top: 1px solid #ccc;color:#43AAD4}
-.tdBtn2 {cursor: pointer}
-.tdBtn2 span{display: inline-block;width: 100%; box-sizing: border-box;border-top:1px solid #ccc;padding-top: 10px; }
-tbody tr{height: 36px;}
-thead tr:nth-child(1) td p{padding-top:10px; }
-thead tr:nth-child(1) td p{height:40px;background: url(../assets/images/icon/exclamation-circle.svg) no-repeat;background-size: contain;background-position: center center;}
-thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../assets/images/icon/question.svg) no-repeat;background-size: contain;background-position: center center;}
-
-</style>
 <template>
     <section  id="detailsView" class="greyFont">
         <div>
@@ -172,16 +152,32 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
                 <thead>
                     <tr><td><p class="IconQuestion_mark"></p></td></tr>
                     <tr>
-                        <th >
-                            是否确认修改<br>
-                            号包{{logisticsInfo.productName}}的价格？
-                        </th>
+                        <td>
+                            <p>是否确认修改</p>
+                            <p>号包'{{info.productName}}'的价格？</p>
+                        </td>
                     </tr>
                 </thead>
                 <tbody>
                     <tr class="tdBtn">
                         <span @click="close('1')">取消</span>
-                        <span @click="btnYes('changeCartMoney',logisticsInfo)">确认</span>
+                        <span @click="btnYes('changeCartMoney',info)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table class="changeCartsPrice" v-if="layerType=='modifyPrice'">
+                <tbody>
+                    <tr><td>修改价格</td></tr>
+                    <tr><td>{{info.productName}} ( {{info.amount}}个 )</td></tr>
+                    <tr>
+                        <td><span class="greyFont">号包价格 : </span>{{info.strikePrice/100}}元</td>
+                    </tr>
+                    <tr>
+                        <td><input v-model="newPrice" class="price" placeholder="请输入修改价格,单位:元"></td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close('1')">取消</span>
+                        <span @click="btnYes('changePriceYes')">确认</span>
                     </tr>
                 </tbody>
             </table>
@@ -190,12 +186,13 @@ thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../asse
 </template>
 <script>
 import {requestConfirmDelNotice,requestConfirmTakeGoods,requestChangeLogisticsId,requestConfirmPayMent,requestModify_Price} from "../config/service.js"; 
-import { errorDeal,getStore } from '../config/utils';
+import { errorDeal,getStore, trimFunc } from '../config/utils';
 export default{
     props:{
         layerType:String,
         isSure:Boolean,
-        logisticsInfo:Object
+        logisticsInfo:Object,
+        info:Object
     },
 	data (){
 		return {
@@ -207,12 +204,14 @@ export default{
             payMoney:'',//付款金额
             oddNumbers:'',//流水单号
             orderdeliveryName:'',
+            newPrice:""
         }		
     },
 	created:function(){
-        let vm=this;   
-        vm.orderId=vm.logisticsInfo.deliveryOrderId;
-        vm.logisticsCompany2 = vm.logisticsInfo.deliveryName;
+        console.log(this)
+        // let vm=this;   
+        // vm.orderId=vm.logisticsInfo.deliveryOrderId;
+        // vm.logisticsCompany2 = vm.logisticsInfo.deliveryName;
 	},
 	methods:{
         btnYes(e,v){
@@ -290,19 +289,19 @@ export default{
                 }else{
                     data={"sysOrderId": v.sysOrderId,"deliveryOrderId":vm.orderId,"deliveryName":vm.logisticsCompany2}
                 }
-            requestChangeLogisticsId(data)
-            .then((data)=>{
-                this.$parent.search(vm.$parent.pa);
-                this.$parent.off.layer=false;
-                if(data.code==200){
-                    layer.open({
-                        content:"操作成功",
-                        skin:"msg",
-                        time:2,
-                        msgSkin:"success"
-                    })
-                }
-            }).catch(e=>errorDeal(e));
+                requestChangeLogisticsId(data)
+                .then((data)=>{
+                    this.$parent.search(vm.$parent.pa);
+                    this.$parent.off.layer=false;
+                    if(data.code==200){
+                        layer.open({
+                            content:"操作成功",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"success"
+                        })
+                    }
+                }).catch(e=>errorDeal(e));
             }else if(e=="payMent"){//修改单号
                 let regular = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
                 if(!regular.test(vm.payMoney)){
@@ -343,7 +342,13 @@ export default{
                 }
             }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
             }else if(e=="changeCartMoney"){
-                requestModify_Price(vm.$parent.searchDataChangePrice)
+                let data={
+                    "buyerId": v.buyerId,
+                    "productId": v.productId,
+                    "id":v.id,
+                    "strikePrice": vm.newPrice
+                };
+                requestModify_Price(data)
                 .then((data)=>{
                     for(let i in vm.$parent.off.changePrice){
                         vm.$set(vm.$parent.off.changePrice,i,false)
@@ -356,9 +361,20 @@ export default{
                             msgSkin:"success"
                         })
                     }
-                    this.$parent.off.layerChangePrice=false;                
+                    this.$parent.off.layer=false;                
                     this.$parent.search(vm.$parent.pa);
-                }).catch(e=>errorDeal(e,function(){vm.$parent.off.layerChangePrice=false;}));
+                }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
+            }else if(e=="changePriceYes"){
+                if(trimFunc(vm.newPrice)&&!isNaN(vm.newPrice)){
+                    vm.layerType='confirmModifyPrice';
+                }else{
+                    layer.open({
+                        content:"请输入正确的产品价格,以元为单位",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"error"
+                    })
+                }
             }
         },
 		close:function(i){
@@ -367,8 +383,33 @@ export default{
                 vm.$parent.off.layerChangePrice=false;
             }
 			    vm.$parent.off.layer=false;
+        },
+        trimFunc(v){
+            return trimFunc(v)
         }
 	}
 }
 </script>
+<style scoped>
+#detailsView{position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
+#detailsView>div{display: table-cell;vertical-align: middle;}
+#detailsView table{box-shadow: 0 0 50px grey;margin:auto;width: 268px;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
+#detailsView table td{padding:10px 30px;}
+#detailsView table th{padding: 10px 0;border-radius: 4px 4px 0 0;color: #545454;font-size: 16px;}
+#detailsView table td>.fl{width:1rem;text-align: right;}
+#detailsView table td>.fright{margin-left: 1.05rem;text-align: left; }
+.lay-mask{position:absolute;background-color: rgba(0,0,0,0.3);z-index: -1;width: 100%;height: 100%;top: 0;left: 0;}
+.tdBtn span{ display: inline-block;width: 50%;height: 50px;padding: 20px;box-sizing: border-box;cursor: pointer}
+.tdBtn span:nth-child(1){border-top: 1px solid #ccc;border-right: 1px solid #ccc;color: red}
+.tdBtn span:nth-child(2){border-top: 1px solid #ccc;color:#43AAD4}
+.tdBtn2 {cursor: pointer}
+.tdBtn2 span{display: inline-block;width: 100%; box-sizing: border-box;border-top:1px solid #ccc;padding-top: 10px; }
+tbody tr{height: 36px;}
+thead tr:nth-child(1) td p{padding-top:10px; }
+thead tr:nth-child(1) td p{height:40px;background: url(../assets/images/icon/exclamation-circle.svg) no-repeat;background-size: contain;background-position: center center;}
+thead tr:nth-child(1) td p.IconQuestion_mark{height:40px;background: url(../assets/images/icon/question.svg) no-repeat;background-size: contain;background-position: center center;}
+input.price{width:100%;height:30px;border:1px solid grey;border-radius:4px;padding-left: 10px}
+table.changeCartsPrice tr:not(:first-child){text-align: left}
+table.changeCartsPrice tr.tdBtn{text-align: center}
+</style>
 

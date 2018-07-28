@@ -257,13 +257,14 @@ export const getTimeFunction=(t,d)=>{
     let vm=t,curMonth,curYear,timeStamp='';
     let curDate = (new Date()).getTime();
     if(typeof(d)=="undefined"){
-        curMonth=new Date(curDate).getMonth()+1;
         curYear=new Date(curDate).getFullYear();
-        let curDay=new Date(curDate).getDate()+1;
+        curMonth=new Date(curDate).getMonth()+1;
+        let curDay=new Date(curDate).getDate();
         let cur=curYear+"/"+curMonth+"/1";
         let Next=curYear+"/"+curMonth+"/"+curDay;
-        vm.startTime=new Date(cur).getTime();
+            Next=new Date(Next).getTime()+60*60*24*1000; 
         vm.endTime=new Date(Next).getTime()-1000;
+        vm.startTime=new Date(cur).getTime();
     }else if(d[1]=='1'){
         curMonth = new Date(d[0]).getMonth()+1;
         curYear=new Date(d[0]).getFullYear();  

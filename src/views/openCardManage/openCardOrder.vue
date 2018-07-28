@@ -101,9 +101,16 @@
             </div>
             <div v-if="searchResult">
                 <div>
-                    <div class="listTitleFoot"><h3>订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></h3></div>
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
+                            <tr>
+                                <td colspan="9">
+                                    <div class="listHeader">
+                                        <label style="text-align:left;padding-left:20px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
+                                        <label style="text-align:right;padding-right:20px;"><el-button style="width:60px;" type="success" size="mini">导出</el-button></label>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr class="f-s-14">
                                 <td>序号</td>
                                 <td>订单号码</td>
@@ -155,7 +162,7 @@
   	</section>
 </template>
 <script>
-import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction,translateData } from "../../config/utils";
+import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction,translateData,createDownload } from "../../config/utils";
 import {requestOpenCardOrder,requestOpenCardDetails} from "../../config/service.js";
 import orderDetails from "./orderDetails";
 export default {
@@ -173,6 +180,7 @@ export default {
             operator: "",//操作人
             openRes: "1,2,3",//开卡结果
             openType:"1,2,3",//开卡方式
+            searchJson:{},
             off: {
                 details:false,
                 layer:false,
@@ -277,6 +285,7 @@ export default {
                     "pageSize": 10,
                 }
             } 
+            vm.searchJson=data;
             requestOpenCardOrder(data)
             .then((data)=>{
                 if(data.code==200){
@@ -287,7 +296,8 @@ export default {
                     errorDeal(data);
                 }
             }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.searchResult="";}))
-        },details(v){
+        },
+        details(v){
             let vm=this;
             vm.off.details=true;
             requestOpenCardDetails({"sysOrderId":v.sysOrderId})
@@ -336,9 +346,8 @@ export default {
     @import url('../../assets/css/resetTimePickStyle.css');
     .openCardOrder .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
     .openCardOrder .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-    /*.openCardOrder .searchTab tr td:nth-child(1){text-align: center} */
-    /*.openCardOrder .searchTab tr:nth-child(1) td{text-align: center} */
-    /*.openCardOrder .searchTab{text-align: left} */
     .openCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
+    .listHeader{display: flex}
+    .listHeader label{flex: 1;line-height: 40px}
 </style>
 

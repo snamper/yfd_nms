@@ -18,8 +18,13 @@ export const requestChangeLogisticsId=(data)=>fetch("/nms/w/order/modifyDelivery
 export const requestConfirmTakeGoods=(data)=>fetch("/nms/w/order/modifyState",data,"POST")
 export const requestConfirmPayMent=(data)=>fetch("/nms/w/order/confirmPayment",data,"POST")
 export const requestModify_Price=(data)=>fetch("/nms/w/number/modifyCartPrice",data,"POST")
+export const requestgetOrderSplitNumbers=(data)=>fetch("/nms/w/order/getOrderSplitNumbers",data,"POST")
+
 /*开卡订单管理*/
 export const requestOpenCardOrder=(data)=>fetch("/nms/w/openReadyCard/getMngOpenCardOrders",data,"POST")
 export const requestOpenCardDetails=(data)=>fetch("/nms/w/openReadyCard/getMngOpenCardOrderDetail",data,"POST")
+
+/*码号管理*/
+export const requestGetCarts=(data)=>fetch("/nms/w/number/getCarts",data,"POST")
 
 

@@ -1,11 +1,3 @@
-<style scoped>
-    .headTitle{width: 96%;height: 28px;margin:30px 30px 0px 30px;}
-    .tab-container{width: 96%;margin:10px 30px 20px 30px;}
-    .zhenghaoduan table,.liang table,.pu table{border-collapse: collapse;width: 100%}
-    .zhenghaoduan table tr td,.liang table tr td,.pu table tr td{border: 1px solid rgb(209, 209, 209)}
-    .zhenghaoduan table tr td:nth-child(even),.liang table tr td:nth-child(even),.pu table tr td:nth-child(even){background: white;padding-left: 20px}
-    .zhenghaoduan table tr td:nth-child(odd),.liang table tr td:nth-child(odd),.pu table tr td:nth-child(odd){text-align: right;padding: 10px;width: 20%;color:grey}
-</style>
 <template>
     <section>
         <div v-if="off.notCardDetails">
@@ -35,46 +27,25 @@
                         </tr>
                         <tr>
                             <td>网络</td>
-                            <td>
-                                <span v-if="v.isp==1">移动</span>
-                                <span v-if="v.isp==2">联通</span>
-                                <span v-if="v.isp==3">电信</span>
-                            </td>
+                            <td>{{translateData(1,v.isp)}}</td>
                             <td>码号数</td>
                             <td>{{getNumberAmount('cn',v)}}</td>
                         </tr>
                         <tr>
                             <td>品牌</td>
-                            <td>
-                                <span v-if="v.brand==1">远特</span>
-                                <span v-if="v.brand==2">蜗牛</span>
-                                <span v-if="v.brand==3">迪信通</span>
-                                <span v-if="v.brand==4">极信</span>
-                                <span v-if="v.brand==5">小米</span>
-                                <span v-if="v.brand==6">海航</span>
-                                <span v-if="v.brand==7">乐语</span>
-                                <span v-if="v.brand==8">苏宁互联</span>
-                                <span v-if="v.brand==9">国美</span>
-                                <span v-if="v.brand==10">联想</span>
-                                <span v-if="v.brand==11">蓝猫移动</span>
-                                <span v-if="v.brand==12">长城</span>
-                            </td>
+                            <td>{{translateData(4,v.brand)}}</td>
                             <td>靓号数</td>
-                            <td>{{getNumberAmount('c',v)}}<a v-if="v.cuteTotal!=0&&v.productType==1||v.productType==2" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('l',v.productId)">查看列表</a></td>
+                            <td>{{getNumberAmount('c',v)}}<a v-if="getNumberAmount('c',v)" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','c',v)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>归属地</td>
                             <td>{{v.area||'--'}}</td>
                             <td>普号数</td>
-                            <td>{{getNumberAmount('n',v)}}<a v-if="v.normalTotal!=0&&v.productType==1||v.productType==3" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('p',v.productId)">查看列表</a></td>
+                            <td>{{getNumberAmount('n',v)}}<a v-if="getNumberAmount('n',v)" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','n',v)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>产品类型</td>
-                            <td>
-                                <span v-if="v.productType==1">整号包</span>
-                                <span v-if="v.productType==2">靓号包</span>
-                                <span v-if="v.productType==3">普号包</span>
-                            </td>
+                            <td>{{translateData(2,v.productType)}}</td>
                             <td rowspan="2">价格</td>
                             <td rowspan="2">
                                 <p class="t-linethrough">￥{{(detailsData.totalPrice/100).toFixed(2)}}</p>
@@ -92,14 +63,14 @@
                 </div>
             </div>
         </div>
-        <card-details :pickCardSwitch="off.pickCardDetailsSwitch" v-if="off.cardDetails" :listSwitch="listSwitch" :dataList="searchResData" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-details>
+        <card-details :pickCardSwitch="off.pickCardDetailsSwitch" :dataInfo="numberTotal" v-if="off.cardDetails" :listSwitch="listSwitch" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-details>
     </section>
 </template>
 <script>
-import { getDateTime,getUnixTime,errorDeal } from "../../config/utils";
+import { requestMethod,requestgetOrderSplitNumbers } from '../../config/service';
+import { errorDeal,translateData } from "../../config/utils";
 import { Loading } from 'element-ui';
-import cardDetails from "../../components/cardDetails";
-import { requestMethod } from '../../config/service';
+import cardDetails from "../../components/shopCard.vue";
 export default{
     props:{detailsData:Object},        
     data (){
@@ -115,78 +86,55 @@ export default{
                 notCardDetails:true,
                 cardDetails:false,
                 pickCardDetailsSwitch:true
-			}
+            },
+            numberTotal:{}
 		}
 	},
 	components:{
         "card-details":cardDetails
 	},
 	methods:{
-        details(v,i){
-            let vm=this,url="/nms/w/number/getProductDetail",data={}
-            data.searchProductId=i;
-            vm.searchProductListId=i;
-            data.sessionType="2";
-            requestMethod(data,url)
+        details(p,v,i){
+            let vm=this,
+            json={sysOrderId:i.sysOrderId,
+                numberId:i.numberId,
+                pageNum:p||1,
+                pageSize:90};
+            v=='c' ? json.phoneLevel="0,1,2,3,4,5,6":v=='n' ? json.phoneLevel="-1":"--";
+            vm.searchJson=json;
+            requestgetOrderSplitNumbers(json)
             .then((data)=>{
                 if(data.code==200){
-                    this.$set(vm.listSwitch,'allDetails',true)
-                    vm.searchResData=data.data
-                }
-            })
-            .then(()=>{
-                if(v=='l'){
-                    url="/nms/w/number/getProductCuteNumbers";
-                    data.phoneLevel=2;
-                    requestMethod(data,url)
-                    .then((data)=>{
-                        if(data.code==200){
-                            this.$set(vm.listSwitch,'liang',true)                            
-                            this.$set(vm.listSwitch,'pu',false)                            
-                            vm.searchLiang=[]
-                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                                vm.searchLiang.push(data.data.numbers.slice(i,i+6));
-                            }
-                            vm.searchLiang.len=data.data.numbers.length;
-                            this.off.notCardDetails=false;
-                            this.off.cardDetails=true;
-                        }else{
-                            layer.open({
-                                content:"data.msg",
-                                skin: 'msg',
-                                time: 2,
-                                msgSkin:'error',
-                            });
+                    if(v=='c'){
+                        this.$set(vm.listSwitch,'pu',false)
+                        this.$set(vm.listSwitch,'liang',true)   
+                        vm.numberTotal.l=data.data.total;                         
+                        vm.searchLiang=[]
+                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                            vm.searchLiang.push(data.data.numbers.slice(i,i+6));
                         }
-                    }).catch(e=>errorDeal(e))
-                }else if(v=='p'){
-                    url="/nms/w/number/getProductNumbers";
-                    data.phoneLevel=1;
-                    data.pageNum=1;
-                    data.pageSize=60;
-                    requestMethod(data,url)
-                    .then((data)=>{
-                        if(data.code==200){
-                            this.$set(vm.listSwitch,'pu',true)                             
-                            this.$set(vm.listSwitch,'liang',false)                            
-                            vm.searchPu=[]
-                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                                vm.searchPu.push(data.data.numbers.slice(i,i+6));
-                            }
-                            vm.searchPu.len=data.data.numbers.length;
-                            this.off.notCardDetails=false;
-                            this.off.cardDetails=true;
-                        }else{
-                            layer.open({
-                                content:"data.msg",
-                                skin: 'msg',
-                                time: 2,
-                                msgSkin:'error',
-                            });
+                        vm.searchLiang.len=data.data.numbers.length;
+                    }else if(v=='n'){
+                        this.$set(vm.listSwitch,'liang',false)                            
+                        this.$set(vm.listSwitch,'pu',true)
+                        vm.numberTotal.p=data.data.total;
+                        vm.searchPu=[]     
+                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
                         }
-                    }).catch(e=>errorDeal(e))
+                        vm.searchPu.len=data.data.numbers.length;                       
+                    }
+                    this.off.notCardDetails=false;
+                    this.off.cardDetails=true;
+                }else{
+                    layer.open({
+                        content:"data.msg",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
                 }
-            }).catch(e=>errorDeal(e));       
+            }) 
         },
         goBack(){
             let vm=this;
@@ -239,8 +187,19 @@ export default{
                     });
                 }
             }
+        },
+        translateData(v,i){
+            return translateData(v,i)
         }
     }
 }
 </script>
+<style scoped>
+    .headTitle{width: 96%;height: 28px;margin:30px 30px 0px 30px;}
+    .tab-container{width: 96%;margin:10px 30px 20px 30px;}
+    .zhenghaoduan table,.liang table,.pu table{border-collapse: collapse;width: 100%}
+    .zhenghaoduan table tr td,.liang table tr td,.pu table tr td{border: 1px solid rgb(209, 209, 209)}
+    .zhenghaoduan table tr td:nth-child(even),.liang table tr td:nth-child(even),.pu table tr td:nth-child(even){background: white;padding-left: 20px}
+    .zhenghaoduan table tr td:nth-child(odd),.liang table tr td:nth-child(odd),.pu table tr td:nth-child(odd){text-align: right;padding: 10px;width: 20%;color:grey}
+</style>
 

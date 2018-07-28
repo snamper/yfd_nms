@@ -48,7 +48,6 @@
                                 type="date"
                                 :clearable=false                                        
                                 :editable=false                    
-                                :picker-options="pickerOptionsS"
                                 @change="changeTimeS"
                                 style="border-radius:4px 0 4px 0"
                                 placeholder="选择开始时间">
@@ -58,7 +57,6 @@
                                 type="date"
                                 :clearable=false                                        
                                 :editable=false                    
-                                :picker-options="pickerOptionsE"
                                 @change="changeTimeE"                            
                                 placeholder="选择结束时间">
                                 </el-date-picker>
@@ -111,9 +109,17 @@
             </div>
             <div v-if="searchResult">
                 <div>
-                    <div class="listTitleFoot"><h3>订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></h3></div>
+                    <!-- <div class="listTitleFoot"><h3>订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></h3></div> -->
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
+                            <tr>
+                                <td colspan="12">
+                                    <div class="listHeader">
+                                        <label style="text-align:left;padding-left:5px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
+                                        <label style="text-align:right;padding-right:20px;"><el-button style="width:60px;" type="success" size="mini">导出</el-button></label>
+                                    </div>
+                                </td>
+                            </tr>
                             <tr class="f-s-14">
                                 <td>序号</td>
                                 <td>订单号码</td>
@@ -221,9 +227,9 @@
   	</section>
 </template>
 <script>
-import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc } from "../../config/utils";
+import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc,createDownload } from "../../config/utils";
+import { requestPickupOrder,requestgetOrderSplitNumbers } from "../../config/service.js";
 import { disabledDate }from "../../config/utilsTimeSelect";
-import {requestProductDetails,requestPickupOrder,requestChangeLogisticsId,requestConfirmTakeGoods} from "../../config/service.js";
 import orderDetails from "./orderDetails";
 import layerConfirm from "../../components/layerConfirm";
 export default {
@@ -444,5 +450,7 @@ export default {
     .pickCardOrder .iconMore1{-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg);transform:rotate(90deg);margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
     .pickCardOrder .listSpan{display: inline-block;margin-top: 2px;}
     .pickCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
+    .listHeader{display: flex}
+    .listHeader label{flex: 1;line-height: 40px}
 </style>
 

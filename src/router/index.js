@@ -23,28 +23,21 @@ const Home = resolve => {
         load();
     });
 };
-const Org = resolve => {
+const Organization = resolve => {
     load(true);
     require.ensure(["@/views/organizationalStructure/index"], () => {
         resolve(require("@/views/organizationalStructure/index"));
         load();
     });
 };
-const Card = resolve => {
-    load(true);
-    require.ensure(["@/views/phoneNumberManage/index"], () => {
-        resolve(require("@/views/phoneNumberManage/index"));
-        load();
-    });
-};
-const OpeLog = resolve => {
+const Logs = resolve => {
     load(true);
     require.ensure(["@/views/operationLog/index"], () => {
         resolve(require("@/views/operationLog/index"));
         load();
     });
 };
-const Brhistory = resolve => {
+const BrowseRecords = resolve => {
     load(true);
     require.ensure(["@/views/browsingHistory/index"], () => {
         resolve(require("@/views/browsingHistory/index"));
@@ -52,21 +45,21 @@ const Brhistory = resolve => {
     });
 };
 //架构管理
-const Org_Yfd = resolve => {
+const Org_yfd = resolve => {
     load(true);
     require.ensure(["@/views/organizationalStructure/yfd.vue"], () => {
         resolve(require("@/views/organizationalStructure/yfd.vue"));
         load();
     });
 };
-const Org_Dls = resolve => {
+const Org_dls = resolve => {
     load(true);
     require.ensure(["@/views/organizationalStructure/dls.vue"], () => {
         resolve(require("@/views/organizationalStructure/dls.vue"));
         load();
     });
 };
-const Org_Ygcx = resolve => {
+const Org_ygcx = resolve => {
     load(true);
     require.ensure(["@/views/organizationalStructure/ygcx.vue"], () => {
         resolve(require("@/views/organizationalStructure/ygcx.vue"));
@@ -74,29 +67,43 @@ const Org_Ygcx = resolve => {
     });
 };
 // 码号管理
-const Card_Mhgl = resolve => {
+const Card_mhgl = resolve => {
     load(true);
     require.ensure(["@/views/phoneNumberManage/mhgl.vue"], () => {
         resolve(require("@/views/phoneNumberManage/mhgl.vue"));
         load();
     });
 };
+const Card_changePrice = resolve => {
+    load(true);
+    require.ensure(["@/views/phoneNumberManage/changePrice.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/changePrice.vue"));
+        load();
+    });
+};
+const cardManage = resolve => {
+    load(true);
+    require.ensure(["@/views/phoneNumberManage/index.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/index.vue"));
+        load();
+    });
+};
 //操作日志
-const OpeLog_mhglrz = resolve => {
+const Logs_mhglrz = resolve => {
     load(true);
     require.ensure(["@/views/operationLog/mhglrz.vue"], () => {
         resolve(require("@/views/operationLog/mhglrz.vue"));
         load();
     });
 };
-const OpeLog_tbrz = resolve => {
+const Logs_tbrz = resolve => {
     load(true);
     require.ensure(["@/views/operationLog/tbrz.vue"], () => {
         resolve(require("@/views/operationLog/tbrz.vue"));
         load();
     });
 };
-const OpeLog_dlrz = resolve => {
+const Logs_dlrz = resolve => {
     load(true);
     require.ensure(["@/views/operationLog/dlrz.vue"], () => {
         resolve(require("@/views/operationLog/dlrz.vue"));
@@ -104,7 +111,7 @@ const OpeLog_dlrz = resolve => {
     });
 };
 //公告管理
-const Notice_noticePage = resolve => {
+const Notice = resolve => {
     load(true);
     require.ensure(["@/views/noticeManage/notice.vue"], () => {
         resolve(require("@/views/noticeManage/notice.vue"));
@@ -141,55 +148,65 @@ const router = new Router({
                 path: "organization",
                 redirect: "organization/yfd",
                 name: "organization",
-                component: Org,
+                component: Organization,
                 children: [{
                     path: "yfd",
                     name: "yfd",
-                    component: Org_Yfd
+                    component: Org_yfd
                 }, {
                     path: "agent",
                     name: "agent",
-                    component: Org_Dls,
+                    component: Org_dls,
                 }, {
                     path: "staff",
                     name: "staff",
-                    component: Org_Ygcx,
+                    component: Org_ygcx,
                 }
                 ]
             }
                 , {
                 path: "card",
                 name: "card",
-                component: Card_Mhgl,
+                redirect:"card/cardManage",
+                component:cardManage,
+                children:[{
+                    path:"cardManage",
+                    name:"cardManage",
+                    component:Card_mhgl
+                },{
+                    path:"modifyPrice",
+                    name:"modifyPrice",
+                    component:Card_changePrice
+                }]
             }
                 , {
                 path: "operationLog",
                 redirect: "operationLog/cardmanage",
                 name: "operationLog",
-                component: OpeLog,
+                component: Logs,
                 children: [{
                     path: "cardmanage",
                     name: "cardmanage",
-                    component: OpeLog_mhglrz
+                    component: Logs_mhglrz
                 }, {
                     path: "synclog",
                     name: "synclog",
-                    component: OpeLog_tbrz
+                    component: Logs_tbrz
                 }, {
                     path: "loginlog",
                     name: "loginlog",
-                    component: OpeLog_dlrz
+                    component: Logs_dlrz
                 }]
             }
                 , {
                 path: "browsingHistory",
                 name: "browsingHistory",
-                component: Brhistory,
+                component: BrowseRecords,
             }
                 , {
                 path: "notice",
                 name: "notice",
-                component: Notice_noticePage,
+                component: Notice,
             }, {
                 path: "pickCard",
                 name: "pickCard",
