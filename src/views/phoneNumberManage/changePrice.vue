@@ -155,7 +155,7 @@ export default{
         },getCartDetail(p,v){
             let vm=this;
             if(v.productType==3){//普号包详情
-                let data={"id": v,
+                let data={"id": v.id,
                 pageNum:p||1,
                 pageSize:60}
                 requestGetCartDetail(data)
