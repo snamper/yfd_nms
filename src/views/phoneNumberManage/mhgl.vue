@@ -152,9 +152,7 @@
                                 <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
                                     <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
                                 </td>
-                                <td>
-                                    {{((pa-1)*10+(i+1))}}
-                                </td>
+                                <td> {{((pa-1)*10+(i+1))}} </td>
                                 <td >
                                     <a class="textDec" @click="getDetails(v)">{{v.productName}}
                                         <span v-if="v.productType==1">({{v.normalTotal+v.cuteTotal}})</span>
@@ -166,7 +164,7 @@
                                     <span v-if="v.splitFlag==1">非拆分包</span>
                                     <span v-if="v.splitFlag==2">拆分包</span>
                                 </td>
-                                <td > {{translateData(2,v.productType)}} </td>
+                                <td>{{translateData(2,v.productType)}}</td>
                                 <td class="tac" style="width:140px">
                                     <div v-if="!off.changePrice[i+1]">
                                         <span v-if="!v.strikePrice">{{(v.totalPrice/100).toFixed(2)}}</span>
@@ -182,22 +180,16 @@
                                         </span>
                                     </div>
                                 </td>
-                                <td > {{translateData(4,v.brand)}} </td>
-                                <td >{{translateData(1,v.isp)}} </td>
-                                <td >
+                                <td>{{translateData(4,v.brand)}}</td>
+                                <td>{{translateData(1,v.isp)}}</td>
+                                <td>
                                     <span v-if="v.modifyTime"> {{getDateTime(v.modifyTime)[6]}} </span>
                                     <span v-if="!v.modifyTime"> -- </span>
                                 </td>
-                                <td >
-                                    {{v.operatorName}}
-                                </td>
-                                <td >
-                                    {{v.operatorPhone||'--'}}
-                                </td>
+                                <td> {{v.operatorName}} </td>
+                                <td> {{v.operatorPhone||'--'}} </td>
                                 <td :class="{red:v.productState==5}"> {{translateData(3,v.productState)}} </td>
-                                <td v-show="false">
-                                    {{v.productId}}
-                                </td>
+                                <td v-show="false"> {{v.productId}} </td>
                             </tr>
                             <tr v-if="searchList.length>0&&nowStatusHidden!=6&&nowStatusHidden!=5">
                                 <td colspan="6" style="text-align:left" class="pl20">

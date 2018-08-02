@@ -57,8 +57,10 @@
                             <tr v-for="(v,i) of searchList" :key="i">
                                <td>{{(pageNum-1)*20+(i+1)}}</td>
                                <td><a @click="getCartDetail(1,v)">{{v.productName}} ({{v.amount}}个)</a></td>
-                               <td>{{'--'}}</td>
-                               <td>{{'--'}}</td>
+                               <td>{{translateData(2,v.productType)}}</td>
+                               <td>
+                                    <span v-if="v.splitFlag==1">非拆分包</span><span v-if="v.splitFlag==2">拆分包</span>
+                                </td>
                                <td>{{translateData(4,v.brand)}}</td>
                                <td>{{translateData(1,v.isp)}}</td>
                                <td>{{getDateTime(v.expireTime)[6]}}</td>
