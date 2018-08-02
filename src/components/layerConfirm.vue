@@ -346,7 +346,7 @@ export default{
                     "buyerId": v.buyerId,
                     "productId": v.productId,
                     "id":v.id,
-                    "strikePrice": vm.newPrice
+                    "strikePrice": vm.newPrice*100
                 };
                 requestModify_Price(data)
                 .then((data)=>{

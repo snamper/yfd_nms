@@ -447,7 +447,6 @@ export default{
 }
 </script>
 <style>
-    /* @import url('../../assets/css/resetTimePickStyle.css'); */
     .displayInline .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
     .displayInline .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
     .displayInline .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}

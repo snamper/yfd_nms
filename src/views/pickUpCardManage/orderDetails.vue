@@ -10,10 +10,13 @@
                         <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2">
                                 &nbsp;
                         </el-col>
-                        <el-col :xs="23" :sm="23" :md="23" :lg="23" :xl="23">
+                        <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
                             <p class="lh30"><span class="letterSpacing1">订单号码&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.sysOrderId||'--'}}</span></p>
-                            <p class="lh30"><span class="letterSpacing1">生成时间&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.createTime||'--'}}</span></p>
                             <p class="lh30"><span class="letterSpacing1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.totalStrikePrice/100).toFixed(2)||'--'}} 元</span></p>
+                        </el-col>
+                        <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
+                            <p class="lh30"><span class="letterSpacing1">生成时间&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.createTime||'--'}}</span></p>
+                            <p class="lh30"><span class="letterSpacing1">修改时间&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.modifyTime||'--'}}</span></p>
                         </el-col>
                     </el-col>
                 </el-row>
@@ -70,7 +73,7 @@
 import { requestMethod,requestgetOrderSplitNumbers } from '../../config/service';
 import { errorDeal,translateData } from "../../config/utils";
 import { Loading } from 'element-ui';
-import cardDetails from "../../components/shopCard.vue";
+import cardDetails from "../../components/pickupCardList.vue";
 export default{
     props:{detailsData:Object},        
     data (){

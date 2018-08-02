@@ -116,7 +116,7 @@
                                 <td colspan="12">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:5px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
-                                        <label style="text-align:right;padding-right:20px;"><el-button style="width:60px;" type="success" size="mini">导出</el-button></label>
+                                        <label style="text-align:right;padding-right:20px;"><el-button @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></label>
                                     </div>
                                 </td>
                             </tr>
@@ -140,7 +140,7 @@
                                     {{((pa-1)*10+(i+1))}}
                                 </td>
                                 <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
-                                <td > {{v.createTime.split(' ')[0]}}<br> {{v.createTime.split(' ')[1]}} </td>
+                                <td > {{v.createTime.split(' ')[0]}}</td>
                                 <td>{{v.depName||'--'}}</td>   
                                 <td>
                                     <p v-if="v.isShow==true" class="abcd" v-for="(x,y) in v.productList" :key="y">
@@ -169,7 +169,7 @@
                                 </td> -->
                                 <td>{{v.operatorPhone||'--'}}</td>
                                 <td >
-                                    <span v-if="v.modifyTime"> {{v.modifyTime.split(' ')[0]}}<br> {{v.modifyTime.split(' ')[1]}} </span>
+                                    <span v-if="v.modifyTime"> {{v.modifyTime.split(' ')[0]}} </span>
                                     <span v-if="!v.modifyTime"> -- </span>
                                 </td>
                                 <td>
@@ -198,7 +198,7 @@
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
-                                <td colspan="12">
+                                <td style="text-align:center" colspan="12">
                                     暂无数据                                                        
                                 </td>
                             </tr>
@@ -227,9 +227,9 @@
   	</section>
 </template>
 <script>
-import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc,createDownload } from "../../config/utils";
+import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc,createDownload,getStore } from "../../config/utils";
 import { requestPickupOrder,requestgetOrderSplitNumbers } from "../../config/service.js";
-import { disabledDate }from "../../config/utilsTimeSelect";
+import { disabledDate } from "../../config/utilsTimeSelect";
 import orderDetails from "./orderDetails";
 import layerConfirm from "../../components/layerConfirm";
 export default {
@@ -253,6 +253,7 @@ export default {
             payMent:"0",//支付方式
             startTime:'',
             endTime:'',
+            downLoadJson:"",
             off: {
                 details:false,
                 layer:false,
@@ -352,6 +353,7 @@ export default {
                 "pageNum": index || 1,
                 "pageSize": 10,
             }
+            vm.downLoadJson=data;
             requestPickupOrder(data)
             .then((data)=>{
                 if(data.code==200){
@@ -362,6 +364,13 @@ export default {
                     errorDeal(data);
                 }
             }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.searchResult="";}))
+        },
+        downLoad(){
+            let vm=this,
+                userInfo=getStore('YFD_NMS_INFO'),
+                departId=getStore('departId');
+            let json = Object.assign(vm.downLoadJson,userInfo);
+            createDownload(url,Base64.encode(JSON.stringify(json)));
         },
         details(v){
             let vm=this;

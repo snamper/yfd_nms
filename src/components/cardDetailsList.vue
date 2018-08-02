@@ -32,13 +32,13 @@
                         <td>码号数量 ： </td>
                         <td>
                             <span class="deepGreyFont f-s-14" v-if="!pickCardSwitch">
-                                <span v-if="dataList.productType==1">普号数（{{dataList.normalTotal}}）+靓号数（{{dataList.cuteTotal}}）</span>
-                                <span v-if="dataList.productType==2">靓号数（{{dataList.cuteTotal}}）</span>
-                                <span v-if="dataList.productType==3">普号数（{{dataList.normalTotal}}）</span>
+                                <span v-if="dataList.productType==1">普号数（{{dataListPu.total||'0'}}）+靓号数（{{dataListLiang.total||'0'}}）</span>
+                                <span v-if="dataList.productType==2">靓号数（{{dataListLiang.total||'0'}}）</span>
+                                <span v-if="dataList.productType==3">普号数（{{dataListPu.total||'0'}}）</span>
                             </span>
                             <span class="deepGreyFont f-s-14" v-if="pickCardSwitch">
-                                <span v-if="listSwitch.liang">{{dataList.cuteTotal}}</span>
-                                <span v-if="listSwitch.pu">{{dataList.normalTotal}}</span>
+                                <span v-if="listSwitch.liang">{{dataListLiang.total}}</span>
+                                <span v-if="listSwitch.pu">{{dataListPu.total}}</span>
                             </span>
                         </td>
                         <td>修改时间 ： </td>
@@ -66,7 +66,7 @@
         </div>
         <div class="liang" v-if="listSwitch.liang">
             <div class="listTitleFoot">
-                <h3><span>靓号详情</span><span class="deepGreyFont"> ({{dataList.cuteTotal||'0'}})</span></h3>
+                <h3><span>靓号详情</span><span class="deepGreyFont"> ({{dataListLiang.total||'0'}})</span></h3>
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
@@ -106,10 +106,23 @@
                   </div>
                 </el-col> -->
             </div> 
+            <el-row style="padding-left:16px;" v-if="dataListLiang.length">
+                <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                    <div class="grid-content bg-purple">
+                        <el-pagination
+                            layout="prev, pager, next"
+                            :page-size="60"
+                            @current-change="searchNumberListCute"
+                            :current-page.sync="currentPage1"                                                        
+                            :total="dataListLiang.total">
+                        </el-pagination>    
+                    </div>
+                </el-col>
+            </el-row>
         </div>
         <div class="pu" v-if="listSwitch.pu">
             <div class="listTitleFoot">
-                <h3><span>普号详情</span><span class="deepGreyFont"> ({{dataList.normalTotal||'0'}})</span></h3>
+                <h3><span>普号详情</span><span class="deepGreyFont"> ({{dataListPu.total||'0'}})</span></h3>
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
@@ -138,18 +151,18 @@
                     </tr>
                 </table>
             </div> 
-            <el-row v-if="dataListPu.length">
-              <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-                  <div class="grid-content bg-purple">
-                      <el-pagination
-                          layout="prev, pager, next"
-                          :page-size="60"
-                          @current-change="searchNumberList"
-                          :current-page.sync="currentPage"                                                        
-                          :total="dataList.normalTotal">
-                      </el-pagination>    
-                  </div>
-              </el-col>
+            <el-row style="padding-left:16px;" v-if="dataListPu.length">
+                <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                    <div class="grid-content bg-purple">
+                        <el-pagination
+                            layout="prev, pager, next"
+                            :page-size="60"
+                            @current-change="searchNumberList"
+                            :current-page.sync="currentPage"                                                        
+                            :total="dataListPu.total">
+                        </el-pagination>    
+                    </div>
+                </el-col>
           </el-row>
         </div>  
     </section>
@@ -158,25 +171,25 @@
 import { getDateTime,getUnixTime,errorDeal,translateData } from "../config/utils.js";
 import { requestMethod } from "../config/service.js"
 export default{
-    props:{dataList:Object,dataListLiang:Array,dataListPu:Array,listSwitch:Object,pickCardSwitch:Boolean},        
+    props:{dataList:Object,
+    dataListLiang:Array,
+    dataListPu:Array,
+    listSwitch:Object,
+    pickCardSwitch:Boolean},        
     data (){
 		return {
             currentPage:0,
+            currentPage1:0,
             pageNumDetails:"",//号包详情
             pageNumLiang:"",//靓号详情
             pageNumPu:"",//普号详情
 			off:{
-                layer:false,
-                dlsDetails:false,
-                notDlsDetails:true,
+                layer:false
 			},
 			form:{
                 page:0
 			},
 		}
-    },
-    created:function(){
-        console.log(this);
     },
 	methods:{
         goBack(){
@@ -185,22 +198,6 @@ export default{
             if(this.$parent.off.searchList==true){
                 this.$parent.search();
             }
-        },
-		getDetails(){
-            this.off.notDlsDetails=false;
-            this.off.dlsDetails=true;
-        },
-        openSet(){
-            let vm=this;
-            vm.off.layer=true;
-            vm.off.setSync=true;
-            vm.off.sync=false;
-        },
-        sync(){
-            let vm=this;
-            vm.off.layer=true;
-            vm.off.setSync=false;
-            vm.off.sync=true;
         },getDateTime(v){
             return getDateTime(v)
         },searchNumberList(v){
@@ -217,7 +214,7 @@ export default{
               for(var i=0,len=data.data.numbers.length;i<len;i+=6){
                   vm.$parent.searchPu.push(data.data.numbers.slice(i,i+6));
               }
-              vm.$parent.searchPu.len=data.data.numbers.length;                        
+              vm.$parent.searchPu.total=data.data.total;                        
           }).catch(e=>errorDeal(e))
         },searchNumberListCute(v){
             let vm=this, url="/nms/w/number/getProductCuteNumbers",data={};
@@ -228,12 +225,12 @@ export default{
             data.pageSize=60;
             requestMethod(data,url)
             .then((data)=>{
-                this.$set(vm.$parent.listSwitch,'pu',true)                                                      
+                this.$set(vm.$parent.listSwitch,'liang',true)                                                      
                 vm.$parent.searchLiang=[]
                 for(var i=0,len=data.data.numbers.length;i<len;i+=6){
                     vm.$parent.searchLiang.push(data.data.numbers.slice(i,i+6));
                 }
-                vm.$parent.searchLiang.len=data.data.numbers.length;                        
+                vm.$parent.searchLiang.total=data.data.total;                        
             }).catch(e=>errorDeal(e))
           },translateData(type,v){
               return translateData(type,v)

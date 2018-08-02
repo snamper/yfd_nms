@@ -1,11 +1,10 @@
 <style>
     .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
     .el-checkbox-group{display: inline-block}
-
 </style>
 <template>
     <section ref="sec">
-        <div>
+        <div v-if="off.searchList">
             <!-- 查询模块 -->
             <div class="dls greyFont">
                 <el-row>
@@ -57,7 +56,7 @@
                             </tr>
                             <tr v-for="(v,i) of searchList" :key="i">
                                <td>{{(pageNum-1)*20+(i+1)}}</td>
-                               <td>{{v.productName}} ({{v.amount}}个)</td>
+                               <td><a @click="getCartDetail(1,v)">{{v.productName}} ({{v.amount}}个)</a></td>
                                <td>{{'--'}}</td>
                                <td>{{'--'}}</td>
                                <td>{{translateData(4,v.brand)}}</td>
@@ -92,25 +91,34 @@
             </div>  
         </div>
         <layer v-if="off.layer" :layerType="layerType" :info="changePrinceInfo"></layer>
+        <cardList v-if="off.cardlistDetails" :listSwitch="listSwitch" :dataListLiang="searchLiang" :dataListPu="searchPu" ></cardList>
     </section>
 </template>
 <script>
-import { requestGetCarts } from "../../config/service.js"
+import { requestMethod,requestGetCarts,requestGetCartDetail } from "../../config/service.js"
 import { translateData,getDateTime,errorDeal } from '../../config/utils.js';
-import layer from '../../components/layerConfirm';
+import { Loading } from 'element-ui';
+import layerConfirm from '../../components/layerConfirm';
+import cardList from "../../components/cardInCartDetailsList.vue";
 export default{
 	data (){
 		return {
+            total:1,
+            currentPage:1,
             sectionId:"",
             checkList: ["1","2","3"],
             checkListAll:true,
+            listSwitch:{"liang":false,"pu":false},//详情页面开关
+            searchLiang:[],//靓号列表
+            searchPu:[],//普号列表
             searchList:"",
             pageNum:"",
-            total:"",
             layerType:"modifyPrice",
             changePrinceInfo:{},
             off:{
-                layer:false
+                searchList:true,
+                layer:false,
+                cardlistDetails:false
             }
 		}
     },
@@ -124,7 +132,8 @@ export default{
         }
     },
     components:{
-        "layer":layer
+        "layer":layerConfirm,
+        "cardList":cardList
     },
 	methods:{
         search(p){
@@ -133,8 +142,8 @@ export default{
                 "productType": vm.checkList.join(','),
                 "sectionId": vm.sectionId,
                 "pageNum": p||1,
-                "pageSize": 20,
-            }
+                "pageSize": 20}
+                vm.currentPage=p||1;
             requestGetCarts(json)
             .then((data)=>{
                 if(data.code==200){
@@ -143,6 +152,113 @@ export default{
                     vm.pageNum=p||1;
                 }
             }).catch(e=>errorDeal(e))
+        },getCartDetail(p,v){
+            let vm=this;
+            if(v.productType==3){//普号包详情
+                let data={"id": v,
+                pageNum:p||1,
+                pageSize:60}
+                requestGetCartDetail(data)
+                .then((data)=>{
+                    vm.off.searchList=false;
+                    vm.off.layer=false;
+                    vm.off.cardlistDetails=true;
+                    vm.searchPu=[];
+                    this.$set(vm.listSwitch,'pu',true);
+                    if(data.data.numbers instanceof Array){
+                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                        }
+                        vm.searchPu.total=data.data.total;
+                    }
+                }).catch((e)=>{
+                    layer.open({
+                        content:e.msg||e,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                })
+            }else if(v.productType==1||v.productType==2){//整号包或靓号包
+                let vm=this,data={},url="";
+                vm.searchProductListId=v.productId;
+                data.searchProductId=v.productId;
+                data.sessionType="2";
+                let load=Loading.service(options);
+                let p1 = new Promise((resolve,reject)=>{
+                    if(v.productType==1||v.productType==2){
+                        url="/nms/w/number/getProductCuteNumbers";
+                        data.phoneLevel=2;
+                        data.pageNum=1;
+                        data.pageSize=60;
+                        requestMethod(data,url)
+                        .then((data)=>{
+                            vm.searchLiang=[]
+                            this.$set(vm.listSwitch,'liang',true)
+                            if(data.data.numbers instanceof Array){
+                                for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                    vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                                }
+                                vm.searchLiang.total = data.data.total;
+                            }
+                            resolve('step');
+                        }).catch((e)=>{
+                            layer.open({
+                                content:e||e.msg,
+                                skin: 'msg',
+                                time: 2,
+                                msgSkin:'error',
+                            });
+                        })
+                    }else{
+                        vm.searchLiang = [];
+                        resolve('step');
+                    }
+                });
+                let p2 = new Promise((resolve,reject)=>{
+                    if(v.productType==1){
+                        url="/nms/w/number/getProductNumbers";
+                        data.phoneLevel=1;
+                        data.pageNum=1;
+                        data.pageSize=60;
+                        requestMethod(data,url)
+                        .then((data)=>{
+                            vm.searchPu=[]
+                            this.$set(vm.listSwitch,'pu',true)                                                      
+                            if(data.data.numbers instanceof Array){
+                                for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                    vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                                }
+                                vm.searchPu.total=data.data.total;      
+                            }
+                            resolve('step1');                        
+                        }).catch((e)=>{
+                            layer.open({
+                                content:e,
+                                skin: 'msg',
+                                time: 2,
+                                msgSkin:'error',
+                            });
+                        })
+                    }else{
+                        vm.searchPu=[];
+                        resolve('step1');                        
+                    }
+                });
+                requestMethod(data,"/nms/w/number/getProductDetail")
+                .then((data)=>{
+                    if(data.code==200){
+                        this.$set(vm.listSwitch,'allDetails',true)
+                        vm.searchResData=data.data
+                }})
+                .then(Promise.all([p1,p2])
+                .then((result)=>{
+                    load.close();
+                    vm.off.searchList=false;
+                    vm.off.layer=false;
+                    vm.off.cardlistDetails=true;
+                })).catch(e=>errorDeal(e,()=>{load.close()}));
+            }
         },
         changePrice(v){
             let vm=this;

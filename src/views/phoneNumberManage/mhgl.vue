@@ -22,7 +22,7 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                                <el-input v-model="packagename" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
+                                <el-input v-model="productName" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
@@ -112,7 +112,7 @@
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
                             <tr>
-                                <td colspan="11">
+                                <td colspan="12">
                                     <el-row>
                                         <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
                                             <span class="greyFont">最后同步成功时间:</span>
@@ -138,6 +138,7 @@
                                 <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5"></td>
                                 <td>序号</td>
                                 <td>号包名称</td>
+                                <td>拆包售卖</td>
                                 <td>号包类型</td>
                                 <td>号包价格（元）</td>
                                 <td>归属品牌</td>
@@ -160,6 +161,10 @@
                                         <span v-if="v.productType==2">({{v.cuteTotal}})</span>
                                         <span v-if="v.productType==3">({{v.normalTotal}})</span>
                                     </a>
+                                </td>
+                                <td>
+                                    <span v-if="v.splitFlag==1">非拆分包</span>
+                                    <span v-if="v.splitFlag==2">拆分包</span>
                                 </td>
                                 <td > {{translateData(2,v.productType)}} </td>
                                 <td class="tac" style="width:140px">
@@ -198,12 +203,12 @@
                                 <td colspan="6" style="text-align:left" class="pl20">
                                     选择 : <a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
                                 </td>
-                                <td colspan="5" style="text-align:right;padding-right:20px;">
+                                <td colspan="6" style="text-align:right;padding-right:20px;">
                                    <el-checkbox v-model="isSplit"></el-checkbox> 拆包售卖<span class="greyFont">（仅普号包可拆分）</span>
                                 </td>
                             </tr>
                             <tr v-if="searchList.length<=0">
-                                <td colspan="11">
+                                <td colspan="12">
                                     暂无数据                                                        
                                 </td>
                             </tr>
@@ -256,29 +261,29 @@
     </section>
 </template>
 <script>
-import { Loading } from 'element-ui';
 import 'element-ui/lib/theme-chalk/display.css';
-import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
+import { Loading } from 'element-ui';
+import { getDateTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
 import {requestMethod,requestgetSyncTime,requestModify_Price} from "../../config/service.js"; 
 import layerSync from "../../components/layerSyncTime";
+import cardDetails from "../../components/cardDetailsList";
 import layerConfirm from "../../components/layerConfirm";
-import cardDetails from "../../components/cardDetails";
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
- cityOptions1=['远特'],
- cityOptions2=['蜗牛'],
- cityOptions3=['迪信通'],
- cityOptions4=['极信'],
- cityOptions5=['小米'],
- cityOptions6=['海航'],
- cityOptions7=['乐语'],
- cityOptions8=['苏宁互联',],
- cityOptions9=['国美'],
- cityOptions10=['联想'],
- cityOptions11=['蓝猫移动'],
- cityOptions12=['长城'];
+    cityOptions1=['远特'],
+    cityOptions2=['蜗牛'],
+    cityOptions3=['迪信通'],
+    cityOptions4=['极信'],
+    cityOptions5=['小米'],
+    cityOptions6=['海航'],
+    cityOptions7=['乐语'],
+    cityOptions8=['苏宁互联',],
+    cityOptions9=['国美'],
+    cityOptions10=['联想'],
+    cityOptions11=['蓝猫移动'],
+    cityOptions12=['长城'];
 export default{
-	data (){
-		return {
+	data(){
+		return{
             searchProductListId:'',
             currentPage:0,
             layerType:"",//弹框类型
@@ -299,10 +304,10 @@ export default{
             dataList:'',//号包详情页面
             dataListLiang:{},//号包详情页面
             dataListPu:{},//号包详情页面
-            packagename:"",//号包名称
+            productName:"",//号包名称
             cardType:"1,2,3",//号包类型
             nowStatus:"1,2,3,4,5,6",//号包状态
-            nowStatusHidden:"",
+            nowStatusHidden:"",//当前状态开关
             phone: "",//查询的手机号码
             radio: "1,2,3",//运营商
             name: "",//联系人姓名
@@ -374,121 +379,9 @@ export default{
         }
     },
 	methods:{
-        translateData(type,v){
-            return translateData(type,v)
-        },
-        checkBoxClick(v){
-
-        },handleCheckAllChange(val) {
-            this.checkedCities = val ? cityOptions : [];
-            this.isIndeterminate = false;
-        },
-        handleCheckedCitiesChange(value) {
-            let checkedCount = value.length;
-            this.checkAll = checkedCount === this.cities.length;
-            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
-        },
-		getDetails(v){
-            let vm=this,data={},url="/nms/w/number/getProductDetail";
-            data.searchProductId=v.productId;
-            vm.searchProductListId=v.productId;
-            data.sessionType="2";
-            let load=Loading.service(options);
-
-            requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    this.$set(vm.listSwitch,'allDetails',true)
-                    vm.searchResData=data.data
-                }
-            }).then(
-                Promise.all([new Promise((resolve,reject)=>{
-                    if(v.productType==1||v.productType==2){
-                        url="/nms/w/number/getProductCuteNumbers";
-                        data.phoneLevel=2;
-                        data.pageNum=1;
-                        data.pageSize=60;
-                        requestMethod(data,url)
-                        .then((data)=>{
-                            resolve('yes');
-                            this.$set(vm.listSwitch,'liang',true)
-                            vm.searchLiang=[]
-                            if(data.data.numbers instanceof Array){
-                                for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                                    vm.searchLiang.push(data.data.numbers.slice(i,i+6));
-                                }
-                                vm.searchLiang.len=data.data.numbers.length;
-                            }
-                        }).catch((e)=>{
-                        layer.open({
-                            content:e,
-                            skin: 'msg',
-                            time: 2,
-                            msgSkin:'error',
-                        });
-                        })
-                    }else{
-                        vm.searchLiang=[]
-                        resolve('yes');
-                    }
-                })]).then(
-                    Promise.all([new Promise((resolve,reject)=>{
-                        if(v.productType==1||v.productType==3){
-                            url="/nms/w/number/getProductNumbers";
-                            data.phoneLevel=1;
-                            data.pageNum=1;
-                            data.pageSize=60;
-                            requestMethod(data,url)
-                            .then((data)=>{
-                                resolve('yes');                        
-                                this.$set(vm.listSwitch,'pu',true)                                                      
-                                vm.searchPu=[]
-                                if(data.data.numbers instanceof Array){
-                                    for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                                        vm.searchPu.push(data.data.numbers.slice(i,i+6));
-                                    }
-                                    vm.searchPu.len=data.data.numbers.length;      
-                                }
-                            }).catch((e)=>{
-                            layer.open({
-                                content:e,
-                                skin: 'msg',
-                                time: 2,
-                                msgSkin:'error',
-                            });
-                            })
-                        }else{
-                            vm.searchPu=[]
-                            resolve('yes');                        
-                        }
-                    })]).then((result)=>{
-                        load.close();
-                        this.off.notCardDetails=false;
-                        this.off.cardDetails=true;
-            }))).catch(e=>errorDeal(e,()=>{load.close()}))       
-        },
-        openSet(){//同步设置
+        search(p){//查询
             let vm=this;
-            vm.off.layer=true;
-            vm.off.setSync=true;
-            vm.off.sync=false;
-        },
-        sync(){//手动同步
-            let vm=this;
-            vm.off.layer=true;
-            vm.off.setSync=false;
-            vm.off.sync=true;
-        },
-        changeChecked(){//单选按钮点击事件
-            this.ix.checkeda=!this.ix.checkeda;
-        },
-        addCheckBox(){//便利对象添加单选按钮状态
-            for(let i=0;i<this.ix.length;i++){
-                this.ix[i].checkeda=false;
-            }
-        }
-        ,search(p){//查询
-            let vm=this;
+            
             vm.currentPage=p||1;
             if(this.phone!=''){
                 checkMobile(this.phone,function(){vm.searchList="";vm.total="";vm.form.page="";return false});
@@ -505,7 +398,7 @@ export default{
                 // "isp":0,
                 "operatorName":vm.name,
                 "operatorPhone":vm.phone,
-                "productName":vm.packagename,
+                "productName":vm.productName,
                 "productType":vm.cardType,
                 "productState":vm.nowStatus,
                 "sessionType":2,
@@ -537,8 +430,117 @@ export default{
                 this.resetTimer();
                 this.getSyncTime();
             }).catch(e=>errorDeal(e,()=>{vm.searchList="";vm.total="";vm.form.page="";}));
-        }
-        ,copyData: function (dataSource) {  
+        },
+        translateData(type,v){
+            return translateData(type,v)
+        },handleCheckAllChange(val) {
+            this.checkedCities = val ? cityOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        },
+		getDetails(v){
+            let vm=this,data={},url="";
+            data.searchProductId=v.productId;
+            vm.searchProductListId=v.productId;
+            data.sessionType="2";
+            let load=Loading.service(options);
+            let p1 = new Promise((resolve,reject)=>{
+                if(v.productType==1||v.productType==2){
+                    url="/nms/w/number/getProductCuteNumbers";
+                    data.phoneLevel=2;
+                    data.pageNum=1;
+                    data.pageSize=60;
+                    requestMethod(data,url)
+                    .then((data)=>{
+                        resolve('step');
+                        this.$set(vm.listSwitch,'liang',true)
+                        vm.searchLiang=[]
+                        if(data.data.numbers instanceof Array){
+                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                vm.searchLiang.push(data.data.numbers.slice(i,i+6));
+                            }
+                            vm.searchLiang.total=data.data.total;
+                        }
+                    }).catch((e)=>{
+                        layer.open({
+                            content:e||e.msg,
+                            skin: 'msg',
+                            time: 2,
+                            msgSkin:'error',
+                        });
+                    })
+                }else{
+                    vm.searchLiang=[];
+                    resolve('step');
+                }
+            });
+            let p2 = new Promise((resolve,reject)=>{
+                if(v.productType==1||v.productType==3){
+                    url="/nms/w/number/getProductNumbers";
+                    data.phoneLevel=1;
+                    data.pageNum=1;
+                    data.pageSize=60;
+                    requestMethod(data,url)
+                    .then((data)=>{
+                        resolve('step1');                        
+                        this.$set(vm.listSwitch,'pu',true)                                                      
+                        vm.searchPu=[]
+                        if(data.data.numbers instanceof Array){
+                            for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                                vm.searchPu.push(data.data.numbers.slice(i,i+6));
+                            }
+                            vm.searchPu.total=data.data.total;      
+                        }
+                    }).catch((e)=>{
+                        layer.open({
+                            content:e,
+                            skin: 'msg',
+                            time: 2,
+                            msgSkin:'error',
+                        });
+                    })
+                }else{
+                    vm.searchPu=[];
+                    resolve('step1');                        
+                }
+            });
+            requestMethod(data,"/nms/w/number/getProductDetail")
+            .then((data)=>{
+                if(data.code==200){
+                    this.$set(vm.listSwitch,'allDetails',true)
+                    vm.searchResData=data.data
+            }})
+            .then(Promise.all([p1,p2])
+            .then((result)=>{
+                load.close();
+                this.off.notCardDetails=false;
+                this.off.cardDetails=true;
+            })).catch(e=>errorDeal(e,()=>{load.close()}));
+        },
+        openSet(){//同步设置
+            let vm=this;
+            vm.off.layer=true;
+            vm.off.setSync=true;
+            vm.off.sync=false;
+        },
+        sync(){//手动同步
+            let vm=this;
+            vm.off.layer=true;
+            vm.off.setSync=false;
+            vm.off.sync=true;
+        },
+        changeChecked(){//单选按钮点击事件
+            this.ix.checkeda=!this.ix.checkeda;
+        },
+        addCheckBox(){//便利对象添加单选按钮状态
+            for(let i=0;i<this.ix.length;i++){
+                this.ix[i].checkeda=false;
+            }
+        },copyData: function (dataSource) {  
             var obj={};  
             obj=JSON.parse(JSON.stringify(dataSource)); 
             return obj  
@@ -591,11 +593,15 @@ export default{
             vm.a="";
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
-                    if(vm.searchList[v].productState==6||vm.searchList[v].productState==5){
+                    if(vm.searchList[v].productState==6||vm.searchList[v].productState==5){//购物车中或已出售
                         isInArray='1';
-                    }else if(vm.isSplit==true){
-                        if(vm.searchList[v].productType!=3){
+                    }else if(vm.isSplit==true){//拆包售卖
+                        if(vm.searchList[v].productType!=3){//普号包
                             isInArray='2'
+                        }
+                    }else if(vm.searchList[v].splitFlag==2){//已拆包
+                        if(vm.isSplit==false){
+                            isInArray='3'
                         }
                     }
                 }
@@ -604,6 +610,8 @@ export default{
                 vm.off.modify='stop1';
             }else if(isInArray=='2'){
                 vm.off.modify='stop2';
+            }else if(isInArray=='3'){
+                vm.off.modify='stop3';
             }else{
                 vm.off.modify=true;
             }
@@ -611,7 +619,7 @@ export default{
                 layer.open({
                     content:"不允许操作购物车中和已售出的号包",
                     skin: 'msg',
-                    time: 2,
+                    time: 4,
                     msgSkin:'error',
                 });
                 return false;
@@ -619,7 +627,15 @@ export default{
                 layer.open({
                     content:"仅普号包可拆分售卖，请重新选择",
                     skin: 'msg',
-                    time: 2,
+                    time: 4,
+                    msgSkin:'error',
+                });
+                return false;
+            }else if(vm.off.modify=='stop3'){
+                layer.open({
+                    content:"已拆包上架售卖的号包再次上架，需要选择拆包售卖选项",
+                    skin: 'msg',
+                    time: 4,
                     msgSkin:'error',
                 });
                 return false;

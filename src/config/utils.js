@@ -28,7 +28,7 @@ export const errorDeal=(res,cb)=>{
 /**
  * iframe 文件下载
  */
-export const createDownload=(url,data,cb)=>{
+export const createDownload=(url,cb)=>{
 	var body=document.getElementsByTagName("body")[0],
 	ifr=document.getElementById("downLoadForm"),
     form = document.createElement("form"),
@@ -57,12 +57,12 @@ export const createDownload=(url,data,cb)=>{
     form.setAttribute("style","display:none");
     form.setAttribute("target","downLoadForm");
     form.setAttribute("enctype","application/x-www-form-urlencoded;charset=utf-8");
-    form.setAttribute("method","post");
+    form.setAttribute("method","get");
     form.setAttribute("action",url);
 
     input.setAttribute("type","hidden");
-    input.setAttribute("name","data");
-    input.setAttribute("value",data);
+    // input.setAttribute("name","data");
+    // input.setAttribute("value",data);
 
     body.appendChild(ifr);
     body.appendChild(form);
@@ -71,6 +71,19 @@ export const createDownload=(url,data,cb)=>{
     form.submit();
     form.remove();
 };
+/**
+ * 拼接参数到url
+ * @param {*} url 
+ * @param {*} param 
+ */
+export const createURL = (url,param/*链接和参数*/)=>{
+    Object.each(param,function(item,key){
+        var link = '&' + key + "=" + item;
+        myURL.link += link;                
+    })
+    myURL.link = url + "?" + myURL.link.substr(1);
+    return myURL.link.replace(' ','');
+}
 /**
  * 存储localStorage
  */

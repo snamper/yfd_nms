@@ -107,7 +107,7 @@
                                 <td colspan="9">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:20px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
-                                        <label style="text-align:right;padding-right:20px;"><el-button style="width:60px;" type="success" size="mini">导出</el-button></label>
+                                        <label style="text-align:right;padding-right:20px;"><el-button @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></label>
                                     </div>
                                 </td>
                             </tr>
@@ -162,9 +162,10 @@
   	</section>
 </template>
 <script>
-import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction,translateData,createDownload } from "../../config/utils";
+import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction,translateData,createDownload,getStore,createURL } from "../../config/utils";
 import {requestOpenCardOrder,requestOpenCardDetails} from "../../config/service.js";
 import orderDetails from "./orderDetails";
+import Base64 from '../../config/utils/base64.js';
 export default {
     data() {
         return {
@@ -296,8 +297,21 @@ export default {
                     errorDeal(data);
                 }
             }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.searchResult="";}))
-        },
-        details(v){
+        },downLoad(){
+            let vm=this,
+                parameter="",
+                url = "/nms/w/openReadyCard/exportOpenCard?",
+                userInfo=getStore('YFD_NMS_INFO');
+            let json = Object.assign(vm.searchJson,userInfo);
+                delete json.pageNum;
+                delete json.pageSize;
+                Object.keys(json).map((key)=>{
+                    url+=key+'='+json[key]+'&';    
+                })
+                url = url.substring(0, url.length-1);
+                window.location.href = url;
+                createDownload(url,function(){});
+        },details(v){
             let vm=this;
             vm.off.details=true;
             requestOpenCardDetails({"sysOrderId":v.sysOrderId})
@@ -332,12 +346,15 @@ export default {
                 vm.endTime=timeRangeE;
             }  
             getTimeFunction(this,[e,2])                      
-        },getDateTime(e){
+        },
+        getDateTime(e){
             return getDateTime(e)
         },trimFunc(v){
             return trimFunc(v);
         },translateData(v,i){
             return translateData(v,i)
+        },createURL(v,i){
+            return createURL(v,i)
         }
     }
 };

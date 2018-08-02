@@ -4,7 +4,7 @@
 <template>
     <section id="detailsView" class="greyFont">
         <!-- 同步时间设置 -->
-        <div v-if="off.set">
+        <div v-if="off.set" class="autoSync">
             <table>
                 <thead>
                     <tr>
@@ -357,4 +357,10 @@ export default {
   }
 };
 </script>
+<style scoped>
+    .autoSync .el-date-editor:nth-child(1) .el-input__inner{border-radius:4px;}
+    .autoSync .el-date-editor:nth-child(2) .el-input__inner{border-radius:4px;}
+    .autoSync .el-date-editor .el-input__inner{width:220px;}
+</style>
+
 
