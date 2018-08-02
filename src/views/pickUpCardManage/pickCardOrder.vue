@@ -116,7 +116,7 @@
                                 <td colspan="12">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:5px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
-                                        <label style="text-align:right;padding-right:20px;"><el-button @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></label>
+                                        <label style="text-align:right;padding-right:20px;"><el-button v-if="false" @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></label>
                                     </div>
                                 </td>
                             </tr>
@@ -367,10 +367,17 @@ export default {
         },
         downLoad(){
             let vm=this,
-                userInfo=getStore('YFD_NMS_INFO'),
-                departId=getStore('departId');
-            let json = Object.assign(vm.downLoadJson,userInfo);
-            createDownload(url,Base64.encode(JSON.stringify(json)));
+                parameter="",
+                url = "/nms/w/openReadyCard/exportOpenCard?",
+                userInfo=getStore('YFD_NMS_INFO');
+            let json = Object.assign(vm.searchJson,userInfo);
+                delete json.pageNum;
+                delete json.pageSize;
+                Object.keys(json).map((key)=>{
+                    url+=key+'='+json[key]+'&';    
+                })
+                url = url.substring(0, url.length-1);
+                window.location.href=url;
         },
         details(v){
             let vm=this;
