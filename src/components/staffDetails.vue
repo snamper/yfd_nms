@@ -254,8 +254,9 @@ export default{
         vm.company=vm.$parent.company;        
         vm.managerName=vm.$parent.managerName;
         vm.managerPhone=vm.$parent.managerPhone;
-        vm.AddRoleyfd=window.location.hash.indexOf("/organization/yfd")>-1
-        vm.AddRoleagent=window.location.hash.indexOf("/organization/agent")>-1
+        vm.AddRoleyfd=window.location.hash.indexOf("/organization/yfd")>-1||window.location.hash.indexOf("/organization/staff")>-1;
+        vm.AddRoleagent=window.location.hash.indexOf("/organization/agent")>-1||window.location.hash.indexOf("/organization/staff")>-1;
+        
     },
 	methods:{
 		goBack(){

@@ -161,7 +161,7 @@ export const secondsFormat=(v)=>{
  * 验证手机号
  */
 export const checkMobile=(v,f)=>{ 
-    if(!(/^1[3|4|5|8][0-9]\d{8}$/.test(v))){ 
+    if(!(/^1[3|4|5|6|7|8|9][0-9]\d{8}$/.test(v))){ 
         layer.open({
             content:'请输入正确的手机号码',
             skin: 'msg',
