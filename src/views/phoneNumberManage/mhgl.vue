@@ -129,7 +129,7 @@
                                             &nbsp;
                                         </div></el-col>
                                         <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
-                                            <el-button class="small-btn" type="success" @click="sync()">手动同步</el-button>
+                                            <el-button class="small-btn" type="success" @click="sync()">号段同步</el-button>
                                         </div></el-col>
                                     </el-row>
                                 </td>

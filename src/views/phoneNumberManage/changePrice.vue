@@ -156,6 +156,8 @@ export default{
             }).catch(e=>errorDeal(e))
         },getCartDetail(p,v){
             let vm=this;
+            vm.searchPu=[];
+            vm.searchLiang=[]
             if(v.productType==3){//普号包详情
                 let data={"id": v.id,
                 pageNum:p||1,
@@ -165,7 +167,6 @@ export default{
                     vm.off.searchList=false;
                     vm.off.layer=false;
                     vm.off.cardlistDetails=true;
-                    vm.searchPu=[];
                     this.$set(vm.listSwitch,'pu',true);
                     if(data.data.numbers instanceof Array){
                         for(var i=0,len=data.data.numbers.length;i<len;i+=6){
@@ -195,7 +196,6 @@ export default{
                         data.pageSize=60;
                         requestMethod(data,url)
                         .then((data)=>{
-                            vm.searchLiang=[]
                             this.$set(vm.listSwitch,'liang',true)
                             if(data.data.numbers instanceof Array){
                                 for(var i=0,len=data.data.numbers.length;i<len;i+=6){

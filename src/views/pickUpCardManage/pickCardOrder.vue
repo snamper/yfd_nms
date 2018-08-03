@@ -143,11 +143,11 @@
                                 <td > {{v.createTime.split(' ')[0]}}</td>
                                 <td>{{v.depName||'--'}}</td>   
                                 <td>
-                                    <p v-if="v.isShow==true" class="abcd" v-for="(x,y) in v.productList" :key="y">
+                                    <p v-if="v.isShow==true&&v.productList.length>0" class="abcd" v-for="(x,y) in v.productList" :key="y">
                                         <span class="listSpan">{{x.productName}}</span>
                                         <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
                                     </p>
-                                    <p v-if="!v.isShow" class="abcd">
+                                    <p v-if="!v.isShow&&v.productList.length>0" class="abcd">
                                         <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                                     </p>
                                 </td>
@@ -360,7 +360,8 @@ export default {
                     vm.form.page=data.data.total;
                     vm.searchResult=data.data.list;
                 }else{
-                    vm.form.page="";vm.searchResult="";
+                    vm.form.page="";
+                    vm.searchResult="";
                     errorDeal(data);
                 }
             }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.searchResult="";}))

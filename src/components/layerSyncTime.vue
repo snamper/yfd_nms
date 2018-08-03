@@ -55,7 +55,7 @@
                 <thead>
                     <tr>
                         <th colspan="2">
-                            手动同步
+                            号段同步
                         </th>
                     </tr>
                 </thead>
@@ -69,8 +69,7 @@
                     </tr>
                     <tr colspan="2">
                         <td>
-                            <el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%" placeholder="请输入短信验证码"></el-input>
-                            <el-button class="borderInputHarf w84" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
+                            <el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%;" placeholder="请输入短信验证码"></el-input><el-button style="border-radius:0 4px 4px 0" class="borderInputHarf w84" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
                         </td>
                     </tr>
                     <tr class="tdBtn" colspan="2">
