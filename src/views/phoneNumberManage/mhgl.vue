@@ -1,15 +1,3 @@
-<style scoped>
-    /* .listTitleFoot{width: 96%;margin: 10px 18px;}
-    .listTitleFoot label{display:block;width: 50%;}
-    label.el-checkbox{display: inline} */
-    input{border: 0 none;}
-    .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
-    .box span{float: left;display: inline-block;height: 26px;}
-    .span1{width: 100px;position: relative;background: red}
-    .span2{width: 40px;position: relative;background: green}
-    .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
-    .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-</style>
 <template>
     <section ref="sec">
         <div v-if="off.notCardDetails">
@@ -22,13 +10,13 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                                <el-input v-model="productName" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
+                            <el-input v-model="productName" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                                <el-input v-model="name" size="small"  placeholder="请输入查询的联系人姓名" :maxlength="10"></el-input>
+                            <el-input v-model="name" size="small"  placeholder="请输入查询的联系人姓名" :maxlength="10"></el-input>
                         </el-col>
                     </div></el-col>
                 </el-row>
@@ -45,7 +33,7 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                                <el-input v-model="phone" size="small"  placeholder="请输入查询的手机号码" :maxlength="11"></el-input>
+                            <el-input v-model="phone" size="small"  placeholder="请输入查询的手机号码" :maxlength="11"></el-input>
                         </el-col>
                     </div></el-col>
                 </el-row>
@@ -59,7 +47,6 @@
                             <el-radio v-model="nowStatus"  label="3">手动下架</el-radio>
                             <el-radio v-model="nowStatus"  label="4">系统下架</el-radio>
                             <el-radio v-model="nowStatus"  label="5">已出售</el-radio>
-                            <el-radio v-model="nowStatus"  label="6">购物车中</el-radio>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24"><div class="grid-content bg-purple-light">
@@ -138,7 +125,7 @@
                                 <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5"></td>
                                 <td>序号</td>
                                 <td>号包名称</td>
-                                <td>拆包售卖</td>
+                                <td>售卖方式</td>
                                 <td>号包类型</td>
                                 <td>号包价格（元）</td>
                                 <td>归属品牌</td>
@@ -161,8 +148,8 @@
                                     </a>
                                 </td>
                                 <td>
-                                    <span v-if="v.splitFlag==1">非拆分包</span>
-                                    <span v-if="v.splitFlag==2">拆分包</span>
+                                    <span v-if="v.splitFlag==1">不可拆包 <button class="m-button-split" @click="splitNumber(v)" v-if="v.productState==2&&v.productType==3">拆包</button> </span>
+                                    <span v-if="v.splitFlag==2">可拆包</span>
                                 </td>
                                 <td>{{translateData(2,v.productType)}}</td>
                                 <td class="tac" style="width:140px">
@@ -256,7 +243,7 @@
 import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
 import { getDateTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
-import {requestMethod,requestgetSyncTime,requestModify_Price} from "../../config/service.js"; 
+import {requestMethod,requestgetSyncTime,requestModify_Price,requestUpdateSplit} from "../../config/service.js"; 
 import layerSync from "../../components/layerSyncTime";
 import cardDetails from "../../components/cardDetailsList";
 import layerConfirm from "../../components/layerConfirm";
@@ -353,9 +340,6 @@ export default{
             },
 		}
     },
-    computed:{
-
-    },
 	components:{
         "common-layer":layerSync,
         "card-Details":cardDetails,
@@ -373,7 +357,6 @@ export default{
 	methods:{
         search(p){//查询
             let vm=this;
-            
             vm.currentPage=p||1;
             if(this.phone!=''){
                 checkMobile(this.phone,function(){vm.searchList="";vm.total="";vm.form.page="";return false});
@@ -579,8 +562,7 @@ export default{
                     }
                 }
             }
-        },
-         doFounction(val){
+        },doFounction(val){
             let vm=this,isInArray=false;
             vm.a="";
             for(let v in vm.searchList){
@@ -591,11 +573,10 @@ export default{
                         if(vm.searchList[v].productType!=3){//普号包
                             isInArray='2'
                         }
-                    }else if(vm.searchList[v].splitFlag==2){//已拆包
-                        if(vm.isSplit==false){
-                            isInArray='3'
-                        }
+                    }else if(vm.searchList[v].productState==2&&val=='1'){//手动上架
+                        isInArray='3'
                     }
+                    
                 }
             }
             if(isInArray=='1'){
@@ -615,7 +596,7 @@ export default{
                     msgSkin:'error',
                 });
                 return false;
-            }else if(vm.off.modify=='stop2'){
+            }else if(vm.off.modify=='stop2'&&val=='1'){
                 layer.open({
                     content:"仅普号包可拆分售卖，请重新选择",
                     skin: 'msg',
@@ -625,7 +606,7 @@ export default{
                 return false;
             }else if(vm.off.modify=='stop3'){
                 layer.open({
-                    content:"已拆包上架售卖的号包再次上架，需要选择拆包售卖选项",
+                    content:"已上架的号包不允许重复上架",
                     skin: 'msg',
                     time: 4,
                     msgSkin:'error',
@@ -651,6 +632,22 @@ export default{
            setTimeout(()=>{
                this.funScrollTop()
            },50)
+        },
+        splitNumber(v){
+            let vm=this,
+            json={productId:v.productId};
+            requestUpdateSplit(json)
+            .then((data)=>{
+                if(data.code==200){
+                    layer.open({
+                        content:'修改成功',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                    vm.search(vm.currentPage);
+                }
+            }).catch(e=>errorDeal(e))
         },
         funScrollTop(){
             let ch=this.$parent.$refs.psec.clientHeight;
@@ -818,4 +815,18 @@ export default{
     }
 }
 </script>
+<style scoped>
+    /* .listTitleFoot{width: 96%;margin: 10px 18px;}
+    .listTitleFoot label{display:block;width: 50%;}
+    label.el-checkbox{display: inline} */
+    input{border: 0 none;}
+    .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
+    .box span{display: inline-block;height: 26px;}
+    .span1{width: 100px;position: relative;background: red}
+    .span2{width: 40px;position: relative;background: green}
+    .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
+    .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
+    .m-button-split{outline:none;border:1px solid grey;border-radius:3px;padding:1px 2px}
+    .m-button-split:active{box-shadow:0 0 5px grey }
+</style>
 

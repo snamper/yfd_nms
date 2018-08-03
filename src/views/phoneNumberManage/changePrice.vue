@@ -55,19 +55,19 @@
                                 <td>操作</td>
                             </tr>
                             <tr v-for="(v,i) of searchList" :key="i">
-                               <td>{{(pageNum-1)*20+(i+1)}}</td>
-                               <td><a @click="getCartDetail(1,v)">{{v.productName}} ({{v.amount}}个)</a></td>
-                               <td>{{translateData(2,v.productType)}}</td>
-                               <td>
-                                    <span v-if="v.splitFlag==1">非拆分包</span><span v-if="v.splitFlag==2">拆分包</span>
+                                <td>{{(pageNum-1)*20+(i+1)}}</td>
+                                <td><a @click="getCartDetail(1,v)">{{v.productName}} ({{v.amount}}个)</a></td>
+                                <td>{{translateData(2,v.productType)}}</td>
+                                <td>
+                                    <span v-if="v.splitFlag==1">整包</span><span v-if="v.splitFlag==2">拆包</span>
                                 </td>
-                               <td>{{translateData(4,v.brand)}}</td>
-                               <td>{{translateData(1,v.isp)}}</td>
-                               <td>{{getDateTime(v.expireTime)[6]}}</td>
-                               <td>{{v.operatorName||'--'}}</td>
-                               <td>{{v.operatorPhone||'--'}}</td>
-                               <td>{{v.strikePrice/100}}</td>
-                               <td><a @click="changePrice(v)">修改价格</a></td>
+                                <td>{{translateData(4,v.brand)}}</td>
+                                <td>{{translateData(1,v.isp)}}</td>
+                                <td>{{getDateTime(v.expireTime)[6]}}</td>
+                                <td>{{v.operatorName||'--'}}</td>
+                                <td>{{v.operatorPhone||'--'}}</td>
+                                <td>{{v.strikePrice/100}}</td>
+                                <td><a @click="changePrice(v)">修改价格</a></td>
                             </tr>
                             <tr v-if="searchList.length<=0">
                                 <td colspan="11">

@@ -27,5 +27,8 @@ export const requestOpenCardDetails=(data)=>fetch("/nms/w/openReadyCard/getMngOp
 /*码号管理*/
 export const requestGetCarts=(data)=>fetch("/nms/w/number/getCarts",data,"POST")
 export const requestGetCartDetail=(data)=>fetch("/nms/w/number/getCartDetail",data,"POST")
+/*已上架普号包拆分*/
+export const requestUpdateSplit=(data)=>fetch("/nms/w/number/updateSplitFlag",data,"POST")
+
 
 

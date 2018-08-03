@@ -129,7 +129,7 @@
                                 <!-- <td>售卖方式</td> <td>购买数量（个）</td> -->
                                 <td>付款金额(元)</td>
                                 <td>操作人号码</td>
-                                <td>修改时间</td>
+                                <td>售卖方式</td>
                                 <td>付款方式</td>
                                 <td>订单状态</td>
                                 <td>物流单号</td>
@@ -168,9 +168,10 @@
                                     </div>
                                 </td> -->
                                 <td>{{v.operatorPhone||'--'}}</td>
-                                <td >
-                                    <span v-if="v.modifyTime"> {{v.modifyTime.split(' ')[0]}} </span>
-                                    <span v-if="!v.modifyTime"> -- </span>
+                                <td>
+                                    <span v-for="(value,index) in v.productList" v-if="value.splitFlag==2&&v.productList.length==1">拆包</span>
+                                    <span v-for="(value,index) in v.productList" v-if="value.splitFlag==1&&v.productList.length==1">整包</span>
+                                    <span v-if="v.productList.length>1">拆包+整包</span>
                                 </td>
                                 <td>
                                     <span v-if="v.paymentType==1">支付宝</span>
@@ -178,6 +179,9 @@
                                     <span v-if="v.paymentType==3">账户</span>
                                     <span v-if="v.paymentType==4">线下支付</span>
                                     <span v-if="v.paymentType==0">未付款</span>
+                                    <span v-if="v.paymentType==5">支付宝(威富通)</span>
+                                    <span v-if="v.paymentType==6">微信(威富通)</span>
+
                                 </td>
                                 <td >
                                     <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1">待付款</span>                                    

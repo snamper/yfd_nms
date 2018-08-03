@@ -60,9 +60,14 @@
                     </tr>
                 </thead>
                 <tbody v-if="true">
-                    <tr colspan="2">
+                    <tr>
+                        <td class="m-input-phone">
+                            <p style="width:100%;padding:0 10px"><input :maxlength="7" placeholder="请输入一个七位数的号段" style="width:100%" type="text"></p>
+                        </td>
+                    </tr>
+                    <tr>
                         <td class="fl">
-                            <p class="pdl12">验证号码:
+                            <p style="line-height:40px;" class="pdl12">验证号码:
                                 <span>{{user.phone}}</span>
                             </p>
                         </td>
