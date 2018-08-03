@@ -5,7 +5,7 @@
                 <el-container>
                     <el-header class="headTitleNav">
                         <el-row>
-                            <el-col :xs="18" :sm="18" :md="18" :lg="10" :xl="10"><div class="grid-content bg-purple greyFont">公司名称&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcdb">{{company}}</span></div></el-col>
+                            <el-col :xs="18" :sm="18" :md="18" :lg="10" :xl="10"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<span class="fcdb">{{company}}</span></div></el-col>
                             <el-col :xs="6" :sm="4" :md="4" :lg="6" :xl="6" class="hidden-md-and-down"><div class="grid-content bg-purple-light greyFont">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerName}}</span></div></el-col>
                             <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" class="hidden-md-and-down"><div class="grid-content bg-purple greyFont">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerPhone}}</span></div></el-col>
                             <el-col :xs="6" :sm="6" :md="6" :lg="2" :xl="2"><div class="grid-content bg-purple-light fr"><a class="fcaqua" href="javascript:void(0)" @click="goBack()">返回列表</a></div></el-col>
@@ -258,6 +258,7 @@ export default{
         vm.company=vm.$parent.companyName;
         vm.managerPhone=vm.$parent.managerPhone;
         vm.managerName=vm.$parent.managerName;
+        
     },
     methods:{
         goBack(){//返回上级
@@ -426,7 +427,7 @@ export default{
                 this.resetTimer()
             }).catch(e=>errorDeal(e));
         }
-        ,getStaffDetails(p){
+        ,getStaffDetails(p){//员工详情
             let data={},url='/ums/w/user/getUserDetail',vm=this
             vm.searchStaffInfo=p;
             data={"searchUserId":p.userId,"sessionType":"2"}

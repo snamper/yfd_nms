@@ -254,50 +254,6 @@ export default{
             this.off.addList=!this.off.addList;
         },
         AddStaff(){//添加员工按钮
-            // let data={"newUsers":[]},vm=this; 
-            // for(let i=0;i<this.list.length;i++){
-            //     if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
-            //         checkMobile(this.list[i].phone,()=>{return false});
-            //         this.list[i].userRole = this.list[i].role.join(',');
-            //         this.list[i].departId=vm.topDepartmentId;
-            //         data.newUsers.push(this.list[i])
-            //     }else{
-            //         layer.open({
-            //             content:'请填写完整的员工信息',
-            //             skin: 'msg',
-            //             time: 2,
-            //             msgSkin:'error',
-            //         });
-            //         return false;
-            //     }
-            // }
-            // this.addUsersData=data;
-            // let url='/ums/w/user/addUsers',json={};
-            // json = vm.addUsersData;
-            // requestMethod(json,url)
-            // .then((data)=>{                                  
-            //     if(data.code==200){
-            //         layer.open({
-            //             content:'操作成功',
-            //             skin: 'msg',
-            //             time: 2,
-            //             msgSkin:'success',
-            //         });
-            //         this.list=[],
-            //         this.list.push({username: '', phone: '',role:[],departName:"好亚飞达"}) 
-            //         if(vm.off.searchList==true){
-            //             this.search();
-            //         }
-            //     }else{
-            //         layer.open({
-            //             content:data.msg,
-            //             skin: 'msg',
-            //             time: 2,
-            //             msgSkin:'error',
-            //         });
-            //     }  
-            // }).catch(e=>errorDeal(e))
-
             let data={"newUsers":[]},vm=this; 
             for(let i=0;i<this.list.length;i++){
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
@@ -358,8 +314,7 @@ export default{
                 }
                 this.resetTimer()
             }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
-        }
-        ,getStaffDetails(p){
+        },getStaffDetails(p){
             let data={},url='/ums/w/user/getUserDetail',vm=this;
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchDetailsYfdData=data;

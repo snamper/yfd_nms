@@ -126,7 +126,7 @@
 <script>
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
-import { getDateTime,getUnixTime,errorDeal,checkMobile,translateData } from "../../config/utils.js";
+import { getStore,getDateTime,getUnixTime,errorDeal,checkMobile,translateData } from "../../config/utils.js";
 import staffDetails from "../../components/staffDetails.vue";
 export default{
 	data (){
@@ -152,14 +152,9 @@ export default{
                 page:1
 			},
 		}
-	},
-	components:{
+	},components:{
         "staffDetails":staffDetails
-	},
-	created:function(){
-       
-    },
-	methods:{
+	},methods:{
         search(p){//查询
             let vm=this;
             if(this.phone!=''){
@@ -192,11 +187,7 @@ export default{
                     });
                 }  
             }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
-        },
-        getDetails(v){
-            
-        }
-        ,getStaffDetails(p){
+        },getStaffDetails(p){//获取员工详情
             let data={},url='/ums/w/user/getUserDetail',vm=this;
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchUserId=p.userId;

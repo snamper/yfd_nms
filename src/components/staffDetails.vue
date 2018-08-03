@@ -17,7 +17,7 @@
             <el-container>
                 <el-header class="headTitleNav">
                     <el-row>
-                        <el-col :span="12"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<a class="c-blue" href="javascript:void(0)"  @click="goBack()">好亚飞达总部</a></div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<a class="c-blue" href="javascript:void(0)"  @click="goBack()">{{forms.departName}}</a></div></el-col>
                         <el-col :span="12"><div class="grid-content bg-purple-light fr " style="padding-right:40px"><a href="javascript:void(0)" class="fcaqua" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
@@ -60,13 +60,13 @@
                         </div></el-col>
                         <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <el-checkbox-group class="displayInline" v-model="role">
-                                <el-checkbox v-if="AddRoleyfd" label=1>管理员</el-checkbox>
-                                <el-checkbox v-if="AddRoleyfd" label=2>销售</el-checkbox>
-                                <el-checkbox v-if="AddRoleyfd" label=6>提卡客服</el-checkbox>
-                                <el-checkbox v-if="AddRoleyfd" label=7>开卡客服</el-checkbox>
+                                <el-checkbox v-if="userRoleSwitch==1" label=1>管理员</el-checkbox>
+                                <el-checkbox v-if="userRoleSwitch==1" label=2>销售</el-checkbox>
+                                <el-checkbox v-if="userRoleSwitch==1" label=6>提卡客服</el-checkbox>
+                                <el-checkbox v-if="userRoleSwitch==1" label=7>开卡客服</el-checkbox>
                                 <!-- <el-checkbox label=3>店长</el-checkbox> -->
-                                <el-checkbox v-if="AddRoleagent" label=4>采购员</el-checkbox>
-                                <el-checkbox v-if="AddRoleagent" label=5>业务员</el-checkbox>
+                                <el-checkbox v-if="userRoleSwitch==2" label=4>采购员</el-checkbox>
+                                <el-checkbox v-if="userRoleSwitch==2" label=5>业务员</el-checkbox>
                             </el-checkbox-group>
                         </div></el-col>
                     </el-row>
@@ -214,10 +214,6 @@ export default{
 		return {
             oldName:"",
             oldPhone:"",
-            company:"",
-            managerName:"",
-            managerPhone:"",
-            company:"",
             name:'',
             phone:'',
             radio:'1',
@@ -241,24 +237,19 @@ export default{
             {a: '', b: '',checked:true,checked2:false}
             ],
             role:[]
-            ,AddRoleyfd:""
-            ,AddRoleagent:""
+            ,userRoleSwitch:""
+            
 		}
-	},
-	components:{
-       
-	},
-	created:function(){
-        let vm=this,Info=getStore("YFD_NMS_INFO");
-        vm.user=Info;
-        vm.company=vm.$parent.company;        
-        vm.managerName=vm.$parent.managerName;
-        vm.managerPhone=vm.$parent.managerPhone;
-        vm.AddRoleyfd=window.location.hash.indexOf("/organization/yfd")>-1||window.location.hash.indexOf("/organization/staff")>-1;
-        vm.AddRoleagent=window.location.hash.indexOf("/organization/agent")>-1||window.location.hash.indexOf("/organization/staff")>-1;
-        
-    },
-	methods:{
+	},created:function(){
+        let vm=this;
+        vm.user=getStore("YFD_NMS_INFO");
+        vm.topId=getStore('departId');
+        if(vm.forms.departId==vm.topId){//一级部门
+            vm.userRoleSwitch=1
+        }else{//代理商
+            vm.userRoleSwitch=2
+        }
+    },methods:{
 		goBack(){
             let vm=this;
             this.$parent.off.staffDetails=false;
