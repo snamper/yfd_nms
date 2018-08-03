@@ -62,7 +62,7 @@
                 <tbody v-if="true">
                     <tr>
                         <td class="m-input-phone">
-                            <p style="width:100%;padding:0 10px"><input :maxlength="7" placeholder="请输入一个七位数的号段" style="width:100%" type="text"></p>
+                            <p style="width:100%;padding:0 10px"><input v-model="numberSection" :maxlength="7" placeholder="请输入一个七位数的号段" style="width:100%" type="text"></p>
                         </td>
                     </tr>
                     <tr>
@@ -124,6 +124,7 @@ export default {
       syncUrl: "", //同步时间url
       user: "", //token的值
       btnDisabled: false,
+      numberSection:"",
       off: {
         set: false, //同步时间设置
         sync: false, //手动同步

@@ -169,9 +169,9 @@
                                 </td> -->
                                 <td>{{v.operatorPhone||'--'}}</td>
                                 <td>
-                                    <span v-for="(value,index) in v.productList" v-if="value.splitFlag==2&&v.productList.length==1">拆包</span>
-                                    <span v-for="(value,index) in v.productList" v-if="value.splitFlag==1&&v.productList.length==1">整包</span>
-                                    <span v-if="v.productList.length>1">拆包+整包</span>
+                                    <!-- <span v-for="(value,index) in v.productList" v-if="value.splitFlag==2&&v.productList.length==1">拆包</span> -->
+                                    <!-- <span v-for="(value,index) in v.productList" v-if="value.splitFlag==1&&v.productList.length==1">整包</span> -->
+                                    <span>{{sealType(v.productList)}}</span>
                                 </td>
                                 <td>
                                     <span v-if="v.paymentType==1">支付宝</span>
@@ -369,8 +369,7 @@ export default {
                     errorDeal(data);
                 }
             }).catch(e=>errorDeal(e,()=>{vm.form.page="";vm.searchResult="";}))
-        },
-        downLoad(){
+        },downLoad(){
             let vm=this,
                 parameter="",
                 url = "/nms/w/openReadyCard/exportOpenCard?",
@@ -383,17 +382,28 @@ export default {
                 })
                 url = url.substring(0, url.length-1);
                 window.location.href=url;
-        },
-        details(v){
+        },details(v){
             let vm=this;
             vm.off.details=true;
             vm.productDetails=v;  
-        },
-        confirm(v){
+        },confirm(v){
             let vm=this,data={};
             vm.layerType="takeGoods";
             vm.logistics=v;
             vm.off.layer=true;
+        },sealType(v){
+            let vm=this;
+            if(v instanceof Array){
+                if(v.length===1){
+                    return v[0].splitFlag==1?"整包":v[0].splitFlag==2?"拆包":"--";
+                }else if(v.length>1){
+                   return v.every((value,i,v)=>{
+                        return value.splitFlag==1
+                    })?"整包":v.every((value,i,v)=>{
+                        return value.splitFlag==2
+                    })?"拆包":"混合";
+                }
+            }
         },
         deliverGoods(v){
             let vm=this;
