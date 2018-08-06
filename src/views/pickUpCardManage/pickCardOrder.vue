@@ -377,6 +377,7 @@ export default {
             let json = Object.assign(vm.searchJson,userInfo);
                 delete json.pageNum;
                 delete json.pageSize;
+                console.log(json);
                 Object.keys(json).map((key)=>{
                     url+=key+'='+json[key]+'&';    
                 })

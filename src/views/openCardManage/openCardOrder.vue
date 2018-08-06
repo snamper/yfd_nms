@@ -107,7 +107,7 @@
                                 <td colspan="9">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:20px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
-                                        <label style="text-align:right;padding-right:20px;"><el-button @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></label>
+                                        <b style="text-align:right;padding-right:20px;padding-top:5px"><el-button @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></b>
                                     </div>
                                 </td>
                             </tr>
@@ -305,6 +305,7 @@ export default {
             let json = Object.assign(vm.searchJson,userInfo);
                 delete json.pageNum;
                 delete json.pageSize;
+                console.log(json);
                 Object.keys(json).map((key)=>{
                     url+=key+'='+json[key]+'&';    
                 })
