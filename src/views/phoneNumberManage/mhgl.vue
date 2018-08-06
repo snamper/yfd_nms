@@ -116,7 +116,7 @@
                                             &nbsp;
                                         </div></el-col>
                                         <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
-                                            <el-button class="small-btn" type="success" @click="sync()">号段同步</el-button>
+                                            <button class="btnSyncNumber" @click="sync()">号段同步</button>
                                         </div></el-col>
                                     </el-row>
                                 </td>
@@ -205,7 +205,7 @@
                             </el-pagination>
                         </div></el-col>
                         <el-col :span="12" v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
-                            <div class="grid-content bg-purple-light fr">操作 : <el-button size="mini" @click="doFounction(1)">上架</el-button><el-button size="mini" @click="doFounction(2)">下架</el-button></div>
+                            <div class="grid-content bg-purple-light fr operate">操作 : <button size="mini" @click="doFounction(1)">上架</button><button size="mini" @click="doFounction(2)">下架</button></div>
                         </el-col>
                         </el-row>
                     </div>
@@ -225,9 +225,9 @@
                         <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
                     </p> 
                 </div> 
-                <div class="listTitleFoot">
+                <div style="height:35px" class="listTitleFoot">
                     <p style="float:right">
-                    <el-button type="success" size="small" @click="btnYes()">确定</el-button>
+                        <button class="buttonModifyYes"   @click="btnYes()">确定</button>
                     </p>
                 </div>
             </div> 
@@ -506,7 +506,7 @@ export default{
             let vm=this;
             vm.off.layer=true;
             vm.off.setSync=false;
-            vm.off.sync=true;
+            vm.off.syncNumberSection=true;
         },
         changeChecked(){//单选按钮点击事件
             this.ix.checkeda=!this.ix.checkeda;
@@ -650,10 +650,23 @@ export default{
             }).catch(e=>errorDeal(e))
         },
         funScrollTop(){
-            let ch=this.$parent.$refs.psec.clientHeight;
-            let sh=this.$parent.$refs.psec.scrollHeight;
-            let sch = sh-ch;
-            this.$parent.$refs.psec.scrollTop=sch;
+            let domdo=document.getElementById("main");
+            let ch=document.documentElement.clientHeight||document.body.clientHeight||window.innerHeight;
+            let oh=domdo.scrollHeight;
+            let och=oh-ch,
+                och1=80;
+            let st=document.getElementById("home").scrollTop;
+            if(st==och){
+                return false;
+            }
+            let timer=setInterval(()=>{
+                if(och>och1){
+                    och1+=10
+                }else{
+                    clearInterval(timer)
+                }
+                document.getElementById("home").scrollTop=och1;
+            },20)
         }
         ,getAuthCode(){
             const TIME_COUNT = 120;
@@ -816,9 +829,6 @@ export default{
 }
 </script>
 <style scoped>
-    /* .listTitleFoot{width: 96%;margin: 10px 18px;}
-    .listTitleFoot label{display:block;width: 50%;}
-    label.el-checkbox{display: inline} */
     input{border: 0 none;}
     .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
     .box span{display: inline-block;height: 26px;}
@@ -828,5 +838,10 @@ export default{
     .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
     .m-button-split{outline:none;border:1px solid grey;border-radius:3px;padding:1px 2px}
     .m-button-split:active{box-shadow:0 0 5px grey }
+    .buttonModifyYes{border-radius:4px;padding:5px 20px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
+    .buttonModifyYes:active{box-shadow: 0 0 5px green}
+    div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
+    div.operate button:active{box-shadow: 0 0 5px grey}
+    .btnSyncNumber{outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 3px 6px;margin-right: 10px;color: #fff}
 </style>
 

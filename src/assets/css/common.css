@@ -58,7 +58,7 @@ table.searchTab tr{height:35px;}
 table.searchTab tr:nth-child(odd){background: #fff;}
 table{color: #222}
 div.detailsListDiv{margin: 0px 20px;border: 1px solid #e7e7e7;}
-.searchBtn{width: 140px;height: 36px;background: #FE8800;border: 1px solid #FE8800;outline: none;border-radius: 8px;color: white}
+.searchBtn{width: 140px;height: 36px;background: #FE8800;border: 1px solid #FE8800;outline: none;border-radius: 4px;color: white}
 .searchBtn:active{box-shadow: 0 0 5px red}
 .grey{color: grey}
 .fs16{font-size: 16px;}

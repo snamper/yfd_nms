@@ -12,9 +12,7 @@
                 <el-col :xs="16" :sm="14" :md="14" :lg="16" :xl="16">
                      <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
-                <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4">
-                   
-                </el-col> 
+                <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4"></el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
@@ -179,13 +177,13 @@
                     <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
                 </div> 
                 <div class="listTitleFoot tar">
-                    验证号码:{{user.phone}}
+                    验证号码 : {{user.phone}}
                     <!-- <el-input v-model="authCode" size="mini" style="width:26%" placeholder="请输入验证码"></el-input>
                     <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button> -->
                     <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
                     <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
                 </div> 
-                <div class="listTitleFoot">
+                <div style="height:35px" class="listTitleFoot">
                     <p style="float:right">
                         <button class="buttonModifyYes"   @click="btnYes()">确定</button>
                     </p>
@@ -385,10 +383,23 @@ export default{
            },50)
         },
         funScrollTop(){
-            let ch=this.$parent.$parent.$refs.psec.clientHeight;
-            let sh=this.$parent.$parent.$refs.psec.scrollHeight;
-            let sch = sh-ch;
-            this.$parent.$parent.$refs.psec.scrollTop=sch;
+            let domdo=document.getElementById("main");
+            let ch=document.documentElement.clientHeight||document.body.clientHeight||window.innerHeight;
+            let oh=domdo.scrollHeight;
+            let och=oh-ch,
+                och1=80;
+            let st=document.getElementById("home").scrollTop;
+            if(st==och){
+                return false;
+            }
+            let timer=setInterval(()=>{
+                if(och>och1){
+                    och1+=10
+                }else{
+                    clearInterval(timer)
+                }
+                document.getElementById("home").scrollTop=och1;
+            },20)
         },btnYes(){
             let data={'operateUserIds':[]},vm=this;
             for(let v in vm.detailsList){
@@ -490,12 +501,12 @@ export default{
 </script>
 <style scoped>
     div.addList{border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px}
-    div.addStaffDiv button{border-radius:6px;padding:3px 10px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;} 
-    div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 8px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
+    div.addStaffDiv button{border-radius:4px;padding:3px 10px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;} 
+    div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
     div.operate button:active{box-shadow: 0 0 5px grey}
     div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid rgb(202, 202, 202)}
-    div.modifyStaffStateDiv .buttonModifyYes{border-radius:8px;padding:8px 30px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
+    div.modifyStaffStateDiv .buttonModifyYes{border-radius:4px;padding:5px 20px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
     div.modifyStaffStateDiv .buttonModifyYes:active{box-shadow: 0 0 5px green}
-    div.addStaffDiv button{border-radius:6px;padding:3px 10px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
+    div.addStaffDiv button{border-radius:4px;padding:3px 6px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
 </style>
 

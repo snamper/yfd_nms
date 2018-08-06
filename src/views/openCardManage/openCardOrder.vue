@@ -107,7 +107,7 @@
                                 <td colspan="9">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:20px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
-                                        <b style="text-align:right;padding-right:20px;padding-top:5px"><el-button @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></b>
+                                        <b style="text-align:right;padding-right:20px;"><button class="btnDownload" @click="downLoad" >导出</button></b>
                                     </div>
                                 </td>
                             </tr>
@@ -364,5 +364,6 @@ export default {
     .openCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
     .listHeader{display: flex}
     .listHeader label{flex: 1;line-height: 40px}
+    .btnDownload{margin-top: 9px;outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 4px 10px;margin-right: 10px;color: #fff}
 </style>
 

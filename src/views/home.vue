@@ -159,7 +159,7 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 </template>
 <script>
 import {mapState, mapMutations, mapActions} from 'vuex';
-import {getStore} from '../config/utils';
+import {getStore, errorDeal} from '../config/utils';
 import { signOut } from '../config/service';
 export default{
 	data (){
@@ -283,7 +283,7 @@ export default{
 			var vm=this;
 			signOut().then(function(res){
 				vm.SIGN_OUT();
-			});
+			}).catch(e=>errorDeal(e));
 		},
 	}
 }

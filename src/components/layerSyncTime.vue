@@ -49,8 +49,8 @@
             </table>
             <div class="lay-mask"></div>
         </div>
-        <!-- 手动同步 -->
-        <div v-if="off.sync">
+        <!-- 号段同步 -->
+        <div v-if="off.syncNumberSection">
             <table style="padding:20px;">
                 <thead>
                     <tr>
@@ -67,14 +67,45 @@
                     </tr>
                     <tr>
                         <td class="fl">
-                            <p style="line-height:40px;" class="pdl12">验证号码:
-                                <span>{{user.phone}}</span>
-                            </p>
+                            <p style="line-height:40px;" class="pdl12">验证号码 : <span>{{user.phone}}</span></p>
                         </td>
                     </tr>
                     <tr colspan="2">
                         <td>
-                            <el-input v-model="authCode" size="mini" :maxlength="6" style="width:60%;" placeholder="请输入短信验证码"></el-input><el-button style="border-radius:0 4px 4px 0" class="borderInputHarf w84" v-model="count" size="mini" type="primary" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</el-button>
+                            <div class="m-module-manualInput">
+                                <input v-model="authCode" :maxlength="6" placeholder="请输入短信验证码"></input><button v-model="count" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn" colspan="2">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes(3)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="lay-mask"></div>
+        </div>
+        <!-- 手动同步 -->
+        <div v-if="off.sync">
+            <table style="padding:20px;">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            手动同步
+                        </th>
+                    </tr>
+                </thead>
+                <tbody v-if="true">
+                    <tr colspan="2">
+                        <td class="fl">
+                            <p class="pdl12">验证号码 : <span>{{user.phone}}</span></p>
+                        </td>
+                    </tr>
+                    <tr colspan="2">
+                        <td>
+                            <div class="m-module-manualInput">
+                                <input v-model="authCode" :maxlength="6" placeholder="请输入短信验证码"></input><button class="borderInputHarf w84" v-model="count" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</button>
+                            </div>
                         </td>
                     </tr>
                     <tr class="tdBtn" colspan="2">
@@ -128,6 +159,7 @@ export default {
       off: {
         set: false, //同步时间设置
         sync: false, //手动同步
+        syncNumberSection:false,//号段同步
         rsync: false //手动同步操作结果
       },
       options: [ { value: 1, label: "1小时" }, { value: 2, label: "2小时" }, { value: 3, label: "3小时" }, { value: 4, label: "4小时" }, { value: 5, label: "5小时" }, { value: 6, label: "6小时" }, { value: 7, label: "7小时" }, { value: 8, label: "8小时" }, { value: 9, label: "9小时" }, { value: 10, label: "10小时" }, { value: 11, label: "11小时" }, { value: 12, label: "12小时" }, { value: 13, label: "13小时" }, { value: 14, label: "14小时" }, { value: 15, label: "15小时" }, { value: 16, label: "16小时" }, { value: 17, label: "17小时" }, { value: 18, label: "18小时" }, { value: 19, label: "19小时" }, { value: 20, label: "20小时" }, { value: 21, label: "21小时" },{ value: 22, label: "22小时" }, { value: 23, label: "23小时" }, { value: 24, label: "24小时" } ]
@@ -142,6 +174,9 @@ export default {
       vm.off.sync = false;
     } else if (vm.$parent.off.sync == true) {
       vm.off.sync = true;
+      vm.off.set = false;
+    }else if (vm.$parent.off.syncNumberSection == true) {
+      vm.off.syncNumberSection = true;
       vm.off.set = false;
     }
     var st = vm.$parent.syncStartTime;
@@ -203,7 +238,6 @@ export default {
     },
     btnYes(v) {//同步时间设置确认
       let vm = this;
-      debugger;
       if (window.location.hash.indexOf("agent") > -1) {
           if(v==1){
             var date = vm.date,
@@ -270,7 +304,62 @@ export default {
                     })
                 )
             }).catch(e=>errorDeal(e));
-          }
+          }else if(v==3){//号段同步
+            let vm=this;
+            if(vm.numberSection==""&&vm.numberSection.length!=7){
+                layer.open({
+                    content: "请输入正确的号段",
+                    skin: "msg",
+                    time: 2,
+                    msgSkin: "error"
+                });
+                return false;
+            }
+            else if (vm.authCode == ""&&vm.authCode.length!=6) {
+                layer.open({
+                    content: "请输入正确的验证码",
+                    skin: "msg",
+                    time: 2,
+                    msgSkin: "error"
+                });
+                return false;
+            }
+            this.resetTimer();
+            let data = {
+                phone: vm.user.phone,
+                authCode: vm.authCode
+            };
+            vm.syncUrl = "/uus/w/user/sync";
+            requestMethod(data,vm.syncUrl)
+            .then((data)=>{
+                vm.$parent.off.layer=false;
+                if(data.hasOwnProperty('code')&&data.code==200){
+                    vm.off.sync=false;
+                    vm.off.rsync=true;
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'success',
+                    });
+                    vm.$parent.search();
+                }else if(data.hasOwnProperty('code')&&data.code!=200){
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }else(
+                    layer.open({
+                        content:data,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    })
+                )
+            }).catch(e=>errorDeal(e));
+        }
       } else if (window.location.hash.indexOf("card" > -1)) {
         if (vm.authCode == "") {
           layer.open({
@@ -317,34 +406,6 @@ export default {
             )
         }).catch(e=>errorDeal(e));
       }
-      // requestMethod(data,vm.syncUrl)
-      // .then((data)=>{
-      //     vm.$parent.off.layer=false;
-      //     if(data.hasOwnProperty('code')&&data.code==200){
-      //         vm.off.sync=false;
-      //         vm.off.rsync=true;
-      //         layer.open({
-      //             content:data.msg,
-      //             skin: 'msg',
-      //             time: 2,
-      //             msgSkin:'success',
-      //         });
-      //     }else if(data.hasOwnProperty('code')&&data.code!=200){
-      //         layer.open({
-      //             content:data.msg,
-      //             skin: 'msg',
-      //             time: 2,
-      //             msgSkin:'error',
-      //         });
-      //     }else(
-      //         layer.open({
-      //             content:data,
-      //             skin: 'msg',
-      //             time: 2,
-      //             msgSkin:'error',
-      //         })
-      //     )
-      // }).catch(e=>errorDeal(e));
     },
     close: function() {
       var vm = this;
@@ -363,9 +424,10 @@ export default {
 };
 </script>
 <style scoped>
-    .autoSync .el-date-editor:nth-child(1) .el-input__inner{border-radius:4px;}
-    .autoSync .el-date-editor:nth-child(2) .el-input__inner{border-radius:4px;}
-    .autoSync .el-date-editor .el-input__inner{width:220px;}
+    .m-module-manualInput{ padding-left:12px;height:30px;display: flex;}
+    .m-module-manualInput>input{height:30px;width:180px;padding-left:10px;border-radius:4px 0 0 4px;outline:none;border:1px solid #DDDDDD}
+    .m-module-manualInput>input:focus{border:1px solid #409EFF}
+    .m-module-manualInput>button{height:30px;width:80px;border-radius:0 4px 4px 0;border:1px solid #409EFF;background:#409EFF;color:#fff}
 </style>
 
 

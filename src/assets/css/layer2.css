@@ -17,16 +17,16 @@ tbody tr{height: 36px;}
 .m-input-phone p{width: 100%}
 .m-input-phone p input{width:100%;padding: 0 10px;height: 30px;outline: none;border: 1px solid #e9e9e9;border-radius: 3px}
 .m-input-phone p input:focus{border:1px solid #409EFF}
-.m-input-phone p input::-webkit-input-placeholder{
+.m-module-manualInput>input::-webkit-input-placeholder, .m-input-phone p input::-webkit-input-placeholder{
     color:#bdbdbd;
 }
-.m-input-phone p input::-moz-placeholder{   /* Mozilla Firefox 19+ */
+.m-module-manualInput>input::-moz-placeholder, .m-input-phone p input::-moz-placeholder{   /* Mozilla Firefox 19+ */
     color:#bdbdbd;
 }
-.m-input-phone p input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
+.m-module-manualInput>input:-moz-placeholder, .m-input-phone p input:-moz-placeholder{    /* Mozilla Firefox 4 to 18 */
     color:#bdbdbd;
 }
-.m-input-phone p input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
+.m-module-manualInput>input:-ms-input-placeholder, .m-input-phone p input:-ms-input-placeholder{  /* Internet Explorer 10-11 */ 
     color:#bdbdbd;
 }
 .m-input-authCode{height:28px}
