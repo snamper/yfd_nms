@@ -204,11 +204,12 @@ export default {
       }
       let vm = this,
         data = { userId: vm.user.userId, phone: vm.user.phone || "" };
-      if (window.location.hash.indexOf("agent") > -1) {
+    //   if (window.location.hash.indexOf("agent") > -1) {
+    //     vm.authCodeUrl = "/uus/w/user/getAuthCode";
+    //   } else if (window.location.hash.indexOf("card" > -1)) {
+    //     vm.authCodeUrl = "/nus/w/number/getAuthCode";
+    //   }
         vm.authCodeUrl = "/uus/w/user/getAuthCode";
-      } else if (window.location.hash.indexOf("card" > -1)) {
-        vm.authCodeUrl = "/nus/w/number/getAuthCode";
-      }
       requestMethod(data, vm.authCodeUrl)
         .then(data => {
           if (data.hasOwnProperty("code") && data.code == 200) {
@@ -237,9 +238,9 @@ export default {
         );
     },
     btnYes(v) {//同步时间设置确认
-      let vm = this;
-      if (window.location.hash.indexOf("agent") > -1) {
-          if(v==1){
+        let vm = this;
+        // if (window.location.hash.indexOf("agent") > -1) {
+        if(v==1){
             var date = vm.date,
             time = vm.time,
             time = time.split(":"),
@@ -259,7 +260,7 @@ export default {
                     vm.$parent.search();
                 }
             }).catch(e => errorDeal(e,()=>{vm.$parent.off.layer=false; vm.$parent.off.setSync=false; vm.$parent.off.sync=true;}));
-          }else if(v==2){//手动同步
+        }else if(v==2){//手动同步
             if (vm.authCode == "") {
                 layer.open({
                     content: "请输入验证码",
@@ -304,9 +305,9 @@ export default {
                     })
                 )
             }).catch(e=>errorDeal(e));
-          }else if(v==3){//号段同步
+        }else if(v==3){//号段同步
             let vm=this;
-            if(vm.numberSection==""&&vm.numberSection.length!=7){
+            if(vm.numberSection==""||vm.numberSection.length!=7){
                 layer.open({
                     content: "请输入正确的号段",
                     skin: "msg",
@@ -315,7 +316,7 @@ export default {
                 });
                 return false;
             }
-            else if (vm.authCode == ""&&vm.authCode.length!=6) {
+            else if (vm.authCode == ""||vm.authCode.length!=6) {
                 layer.open({
                     content: "请输入正确的验证码",
                     skin: "msg",
@@ -327,9 +328,10 @@ export default {
             this.resetTimer();
             let data = {
                 phone: vm.user.phone,
-                authCode: vm.authCode
+                authCode: vm.authCode,
+                numberSection:vm.numberSection
             };
-            vm.syncUrl = "/uus/w/user/sync";
+            vm.syncUrl = "/uus/w/number/syncSection";
             requestMethod(data,vm.syncUrl)
             .then((data)=>{
                 vm.$parent.off.layer=false;
@@ -360,52 +362,53 @@ export default {
                 )
             }).catch(e=>errorDeal(e));
         }
-      } else if (window.location.hash.indexOf("card" > -1)) {
-        if (vm.authCode == "") {
-          layer.open({
-            content: "请输入验证码",
-            skin: "msg",
-            time: 2,
-            msgSkin: "error"
-          });
-          return false;
-        }
-        this.resetTimer();
-        let data = {
-          userId: vm.user.userId,
-          phone: vm.user.phone || "",
-          authCode: vm.authCode
-        };
-        vm.syncUrl = "/nus/w/number/sync";
-        requestMethod(data,vm.syncUrl)
-        .then((data)=>{
-            vm.$parent.off.layer=false;
-            if(data.hasOwnProperty('code')&&data.code==200){
-                vm.off.sync=false;
-                vm.off.rsync=true;
-                layer.open({
-                    content:data.msg,
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'success',
-                });
-            }else if(data.hasOwnProperty('code')&&data.code!=200){
-                layer.open({
-                    content:data.msg,
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-            }else(
-                layer.open({
-                    content:data,
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                })
-            )
-        }).catch(e=>errorDeal(e));
-      }
+        // } 
+        // else if (window.location.hash.indexOf("card" > -1)) {
+        //     if (vm.authCode == "") {
+        //     layer.open({
+        //         content: "请输入验证码",
+        //         skin: "msg",
+        //         time: 2,
+        //         msgSkin: "error"
+        //     });
+        //     return false;
+        //     }
+        //     this.resetTimer();
+        //     let data = {
+        //     userId: vm.user.userId,
+        //     phone: vm.user.phone || "",
+        //     authCode: vm.authCode
+        //     };
+        //     vm.syncUrl = "/nus/w/number/sync";
+        //     requestMethod(data,vm.syncUrl)
+        //     .then((data)=>{
+        //         vm.$parent.off.layer=false;
+        //         if(data.hasOwnProperty('code')&&data.code==200){
+        //             vm.off.sync=false;
+        //             vm.off.rsync=true;
+        //             layer.open({
+        //                 content:data.msg,
+        //                 skin: 'msg',
+        //                 time: 2,
+        //                 msgSkin:'success',
+        //             });
+        //         }else if(data.hasOwnProperty('code')&&data.code!=200){
+        //             layer.open({
+        //                 content:data.msg,
+        //                 skin: 'msg',
+        //                 time: 2,
+        //                 msgSkin:'error',
+        //             });
+        //         }else(
+        //             layer.open({
+        //                 content:data,
+        //                 skin: 'msg',
+        //                 time: 2,
+        //                 msgSkin:'error',
+        //             })
+        //         )
+        //     }).catch(e=>errorDeal(e));
+        // }
     },
     close: function() {
       var vm = this;

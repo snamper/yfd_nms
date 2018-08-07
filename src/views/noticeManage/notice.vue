@@ -9,7 +9,7 @@
         <div v-if="addMsg==true">
             <div class="messageBox">
                 <el-row :gutter="10">
-                    <el-col class="w70"><span>发送对象 :</span></el-col>
+                    <el-col class="w70"><span>发送对象 : </span></el-col>
                     <el-col class="w240">
                         <span>
                             <el-radio v-model="radio" label="1">全部</el-radio>
@@ -108,9 +108,9 @@
                                         附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" :href="v.annex[0].fileUrl" target=_blank class="c-yellow textDec">{{v.annex[0].fileName}}</a>                                    
                                     </label>
                                     <span class="fr">
-                                        发送对象:<a v-if="v.receiverType==1" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
-                                        <a v-if="v.receiverType==2" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>
-                                        <a v-if="v.receiverType==3" href="javascript:void(0)" @click="checkSendUser(1,v)">手动输入</a>
+                                        发送对象 : <a v-if="v.receiverType==1" class="blueFont" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
+                                        <a v-if="v.receiverType==2" class="blueFont" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>
+                                        <a v-if="v.receiverType==3" class="blueFont" href="javascript:void(0)" @click="checkSendUser(1,v)">手动输入</a>
                                     </span> 
                                 </p>
                             </div>
@@ -256,6 +256,7 @@ export default {
             vm.inputLink="";
             vm.formInline.region="600";
             vm.value1="";
+            vm.input="";
             vm.imgFileName="";
             vm.off.imgIcon=false;
             vm.$refs.file.value="";
