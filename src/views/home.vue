@@ -46,7 +46,7 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 			<header class="g-side-head"><img src="../assets/images/logo.png" alt="titleLogo"><br>
             <span>虚商联盟运营平台</span>
             </header>
-			<ul class="g-side-ul">
+			<ul v-if="isShow" class="g-side-ul">
 				<li :class="{active:crumb[0].name=='架构管理'}">
 					<b></b>
 					<router-link to="/home/organization">
@@ -79,7 +79,7 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
                     </ul>
 				</li>
 			</ul>
-            <ul class="g-side-ul">
+            <ul v-if="isShow" class="g-side-ul">
 				<li :class="{active:crumb[0].name=='操作日志'}">
 					<b></b>
 					<router-link to="/home/operationLog">
@@ -112,7 +112,7 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 					</ul>
 				</li>
 			</ul> -->
-            <ul class="g-side-ul">
+            <ul v-if="isShow" class="g-side-ul">
 				<li :class="{active:crumb[0].name=='公告管理'}">
 					<b></b>
 					<router-link to="/home/notice">
@@ -170,25 +170,24 @@ export default{
 				window:0,//浏览器窗口宽度
                 userMenu:0,//用户菜单开关
 			},
-			userInfo:{isadmin:''},
+            userInfo:{isadmin:''},
+            isShow:false,
             crumb:[{'name':''},{'name':''},{'name':''}],//面包屑
 		}
     },
     created:function(){
         let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
+        let r = Info.userRole.split(',');
+        r.some(function(value,index,r){
+            return value==6||value==7;
+        })?(vm.isShow=false,window.location.href="#/home/card/cardManage"):vm.isShow=true;
 	},
 	watch:{
 		'$route':'routeChange',
 	},
-	beforeDestroy:function(){
-		
-    },
 	mounted:function(){
         this.init();
-	},
-	computed:{
-		
 	},
 	methods:{
 		...mapMutations([
@@ -214,7 +213,7 @@ export default{
 			this.off.headMenu?this.off.headMenu=false:this.off.headMenu=true;
 		},
         routeChange:function(){//路由变化
-			this.windowChange();
+            this.windowChange();
 			var path=this.$route.path,
 				crumb=[{"name":""},{"name":""},{"name":""}],
 				mainDom=document.getElementById("main");
