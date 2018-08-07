@@ -98,7 +98,7 @@
                     </div>
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
-                            <tr>
+                            <tr v-if="false">
                                 <td colspan="12">
                                     <el-row>
                                         <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
