@@ -10,11 +10,12 @@
             <div class="messageBox">
                 <el-row :gutter="10">
                     <el-col class="w70"><span>发送对象 : </span></el-col>
-                    <el-col class="w240">
+                    <el-col style="width:300px">
                         <span>
                             <el-radio v-model="radio" label="1">全部</el-radio>
                             <el-radio v-model="radio" label="2">店长</el-radio>
                             <el-radio v-model="radio" label="3">手动输入</el-radio>
+                            <label class="u-label-upFiles" for="txt"><input type="file" ref="txt" name="txt" id="txt" accept="doc/*" @change="upFiles()" class="u-button-upFiles"/>上传</label>
                         </span>
                     </el-col>   
                     <el-col :xs="24" :sm="14" :md="16" :lg="16" :xl="18">
@@ -81,7 +82,14 @@
                                     </el-date-picker>
                                 </div>
                             </el-form>
-                        </el-col>                    
+                        </el-col>
+                        <!-- <el-col :xs="24" :sm="24" :md="24" :lg="8" :xl="10" class="upImgBox">
+                            <a href="javascript:void(0)" class="upLoada">
+                                <input type="file" ref="txt" name="txt" id="txt" accept="doc/*" @change="upFiles()">
+                                <span>{{imgFileName||'(注:上传图片大小100k内)'}}</span>
+                            </a>
+                            <img v-bind:src="valuesrc" :class="upLoad==true?'upS':'upF'" v-if="off.imgIcon">
+                        </el-col>                     -->
                     </el-col>   
                 </el-row>
                 <el-row :gutter="10">
@@ -481,6 +489,37 @@ export default {
                     this.$refs.imgBigFunction[i].click();
                 }
             }
+        },upFiles() {
+            let vm=this;
+            //支持chrome IE10
+            if (window.FileReader) {
+                var file = this.$refs.txt.files[0];
+                var reader = new FileReader();
+                reader.onload = function() {
+                    vm.input=this.result;
+                    vm.radio="3";
+                }
+                reader.readAsText(file);
+            } 
+            //支持IE 7 8 9 10
+            else if (typeof window.ActiveXObject != 'undefined'){
+                var xmlDoc; 
+                xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
+                xmlDoc.async = false; 
+                xmlDoc.load(this.$refs.txt.value); 
+                vm.input=xmlDoc.xml; 
+            } 
+            //支持FF
+            else if (document.implementation && document.implementation.createDocument) { 
+                var xmlDoc; 
+                xmlDoc = document.implementation.createDocument("", "", null); 
+                xmlDoc.async = false; 
+                xmlDoc.load(this.$refs.txt.value); 
+                vm.input=xmlDoc.xml;
+            } else { 
+                alert('error'); 
+            } 
+
         }
     }
 }

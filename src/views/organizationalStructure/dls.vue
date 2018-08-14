@@ -187,16 +187,16 @@
         </div> 
     </div>
     </div>
-    <!-- 弹框组件 -->
-    <common-layer v-if="off.layer"></common-layer>
+    <!-- 手动同步 -->
+    <layerSync v-if="off.layer"></layerSync>
     <!-- 查看员工详情组件 -->
-    <dls-Details v-if="off.dlsDetails" :lists="detailsList"></dls-Details>   
+    <dlsDetails v-if="off.dlsDetails" :lists="detailsList"></dlsDetails>   
 </section>
 </template>
 <script>
 import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
 import {requestMethod,requestgetSyncTime,requestgetSyncInfo,requestsetSyncTime} from "../../config/service.js"; 
-import layers from "../../components/layerSyncTime";
+import layerSync from "./layerSyncDls";
 import dlsDetails from "./dlsDetails";
 export default{
     name:'dls',
@@ -276,8 +276,8 @@ export default{
         }
     },
     components:{
-        "common-layer":layers,
-        "dls-Details":dlsDetails
+        "layerSync":layerSync,
+        "dlsDetails":dlsDetails
     },
     created:function(){
        getTimeFunction(this);
@@ -286,14 +286,14 @@ export default{
         openSet(){//设置
             let vm=this;
             vm.off.layer=true;
-            vm.off.setSync=true;
             vm.off.sync=false;
+            vm.off.setSync=true;
         },
         sync(){//手动同步
             let vm=this;
             vm.off.layer=true;
-            vm.off.setSync=false;
             vm.off.sync=true;
+            vm.off.setSync=false;
         },search(p){//查询
             let vm=this,
             sy=new Date(vm.startTime).getFullYear(),
@@ -382,8 +382,7 @@ export default{
                     vm.$set(vm.detailsList[v],'ischecked',false);
                 }
             }).catch(e=>errorDeal(e));
-        },
-        changeTimeS(e){
+        },changeTimeS(e){
             let vm=this,
             timeRange=disableTimeRange6(),
             timeRangeS=timeRange.next,

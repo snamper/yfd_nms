@@ -41,36 +41,33 @@
         </el-row>
     </div>
     <el-row>
-        <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light addStaffDiv" ><button  @click="AddStaffDiv()"  v-if="user.userRole!=2&&user.userRole!=3"> <span v-if="!off.addList"> 添加员工</span><span v-if="off.addList">隐藏</span> </button></div></el-col>
+        <el-col style="float:right" :xs="4" :sm="4" :md="4" :lg="2" :xl="2"><div class="grid-content bg-purple-light addStaffDiv" ><button  @click="AddStaffDiv()"  v-if="user.userRole!=2&&user.userRole!=3"> <span v-if="!off.addList"> 添加员工 </span><span v-if="off.addList"> 关闭 </span> </button></div></el-col>
     </el-row>
-    <div class="listTitleFoot addList" v-if="off.addList">
-        <el-row>
-            <el-col :xs="18" :sm="18" :md="20" :lg="22" :xl="22" >
-                <div v-for="(v,i) in list" :key="i" class="mt8">
-                    <el-col :xs="24" :sm="24" :md="12" :lg="10" :xl="10"><span>用户姓名 : </span><el-input style="width:80%" size="small" :maxlength="10" v-model="list[i].username" placeholder="请输入内容"></el-input></el-col>
-                    <el-col :xs="24" :sm="24" :md="12" :lg="10" :xl="10"><span>手机号码 : </span><el-input style="width:80%" size="small" :maxlength="11" v-model="list[i].phone" placeholder="请输入内容"></el-input></el-col>
-                    <el-col :xs="20" :sm="20" :md="22" :lg="22" :xl="20">
-                        <span>职&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;务 :  </span>
-                        <el-checkbox-group class="displayInline" v-model="list[i].role">
-                            <el-checkbox label=1>管理员</el-checkbox>
-                            <el-checkbox label=2>销售</el-checkbox>
-                            <!--<el-checkbox label=3>店长</el-checkbox>
-                            <el-checkbox label=4>采购员</el-checkbox>
-                            <el-checkbox label=5>业务员</el-checkbox>-->
-                            <el-checkbox label=6>提卡客服</el-checkbox>
-                            <el-checkbox label=7>开卡客服</el-checkbox>
-                        </el-checkbox-group>
-                    </el-col>
-                    <el-col :xs="4" :sm="4" :md="2" :lg="2" :xl="2"><span @click="deleteLine(i)" class="u-icon-del"></span></el-col>
+    <div class="m-addStaff-out">
+        <div class="m-addStaff" v-if="off.addList">
+            <div v-for="(v,i) in list" :key="i" style="width:100%">
+                <b><span>用户姓名：</span><input v-model="list[i].username" placeholder="请输入用户姓名" :maxlength="10" class="u-input" type="text"></b>
+                <b><span>手机号码：</span><input v-model="list[i].phone" placeholder="请输入手机号码" :maxlength="11" class="u-input" type="text"></b>
+                <b><span>职务：</span>
+                    <el-checkbox-group class="displayInline" v-model="list[i].role">
+                        <el-checkbox label=1>管理员</el-checkbox>
+                        <el-checkbox label=2>销售</el-checkbox>
+                        <el-checkbox label=6>提卡客服</el-checkbox>
+                        <el-checkbox label=7>开卡客服</el-checkbox>
+                        <!--<el-checkbox label=3>店长</el-checkbox>
+                        <el-checkbox label=4>采购员</el-checkbox>
+                        <el-checkbox label=5>业务员</el-checkbox>-->
+                    </el-checkbox-group>
+                </b>
+                <b><span @click="deleteLine(i)" class="u-icon-del"></span></b>
+            </div>
+            <div class="m-addStaff-btn">
+                <div class="m-addStaff-btn-in">
+                    <button @click="AddList()" >新增一条</button>
+                    <button @click="AddStaff()">确定添加</button>
                 </div>
-            </el-col>
-            <el-col :xs="6" :sm="4" :md="4" :lg="2" :xl="2" >
-                <div style="float:right;">
-                    <button @click="AddList()" style="display:block" class="buttonAddStaff">新增一条</button>
-                    <button @click="AddStaff()" class="buttonAddStaff">确定添加</button>
-                </div>
-            </el-col>
-        </el-row>
+            </div>
+        </div>
     </div>
     <!-- <div v-if="off.searchList"> -->
     <div v-if="detailsList">
@@ -171,18 +168,16 @@
             <div v-if="off.modify" class="modifyStaffStateDiv">
                 <div class="borderTopModifyStaffState"></div>
                 <div class="listTitleFoot" style="height:20px;">
-                    <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{a}}</p>
+                    <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{typeTitle}}</p>
                 </div>
                 <div class="listTitleFoot">
                     <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
                 </div> 
-                <div class="listTitleFoot tar">
+                <!-- <div class="listTitleFoot tar">
                     验证号码 : {{user.phone}}
-                    <!-- <el-input v-model="authCode" size="mini" style="width:26%" placeholder="请输入验证码"></el-input>
-                    <el-button size="mini" type="primary" @click="getAuthCode()">发送验证码</el-button> -->
                     <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
                     <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
-                </div> 
+                </div>  -->
                 <div style="height:35px" class="listTitleFoot">
                     <p style="float:right">
                         <button class="buttonModifyYes"   @click="btnYes()">确定</button>
@@ -192,20 +187,19 @@
         </div>
       </div>
       </div>
-      <yfdStaff v-if="off.staffDetails" :forms="searchRes"></yfdStaff>
-      <common-layer v-if="off.layer"></common-layer>      
+      <staffDetails v-if="off.staffDetails" :forms="searchRes"></staffDetails>
+      <layerConfirm v-if="off.layer" :layer="layerType" :operationType="operationType"></layerConfirm>      
   </div>	 
 </template>
 <script>
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
-import layerAddStaff from "./layeruseryfd";
+import layers from "./layerConfirmYfd";
 import staffDetails from "../../components/staffDetails.vue";
 export default{
 	data (){
 		return {
-            count:"点击获取验证码",
             user:'',//用户信息
             currentPage:0,//当前页面
             detailsList:'',
@@ -220,6 +214,11 @@ export default{
             reason:"",
             authCode:"",
             btnDisabled:false,
+            layerType:"",
+            operationType:"",
+            typeTitle:"",
+            operationJson:"",
+            doUrl:"",
 			off:{
                 showSearch:"",
                 searchList:false,
@@ -235,8 +234,8 @@ export default{
 		}
 	},
 	components:{
-        "yfdStaff":staffDetails,
-        "common-layer":layerAddStaff,        
+        "staffDetails":staffDetails,
+        "layerConfirm":layers,        
 	},
 	created:function(){
        let vm=this,Info=getStore("YFD_NMS_INFO");
@@ -245,13 +244,17 @@ export default{
        vm.topDepartmentId=depid;
     },
 	methods:{
-         AddList(){//添加员工
+        AddList(){//添加员工
             this.list.push({username: '', phone: '',role:[]})
-        },
-        AddStaffDiv(){//添加员工模块开关
+        },AddStaffDiv(){//添加员工模块开关
             this.off.addList=!this.off.addList;
-        },
-        AddStaff(){//添加员工按钮
+        },deleteLine(v){//添加员工删除行
+            let vm=this;
+            if(vm.list.length<=1){
+                return false;
+            }
+            vm.list.splice(v,1);
+        },AddStaff(){//添加员工按钮
             let data={"newUsers":[]},vm=this; 
             for(let i=0;i<this.list.length;i++){
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
@@ -271,14 +274,14 @@ export default{
             }
             this.off.layer=true;
             this.off.sync=true;
-            this.off.userAdd=true;
+            this.layerType='operationStaff';
             this.addUsersData=data;
         },
         search(p){//查询
             let data={},url='/ums/w/user/getDepartDetail',vm=this;
             vm.pa=p||1;
             vm.currentPage=p||1;
-            vm.$router.push({params:{type:"yfdList"}});
+            this.$router.push({name:'yfd',params:{type:"yfdList"}});
             if(vm.phone!=''){
                 checkMobile(vm.phone,function(){vm.off.searchList=false;vm.form.page="";vm.detailsList="";return false});
             }
@@ -326,14 +329,6 @@ export default{
                     errorDeal(data)
                 }  
             }).catch(e=>errorDeal(e));
-        },getDateTime(v){
-            return getDateTime(v);
-        },deleteLine(v){
-            let vm=this;
-            if(vm.list.length<=1){
-                return false;
-            }
-            vm.list.splice(v,1);
         },doFilter(s){//状态过滤操作
             if(s=="all"){
                 for(let v=0;v<this.detailsList.length;v++){
@@ -349,13 +344,11 @@ export default{
             for(let v in vm.detailsList){
                 if(vm.detailsList[v].ischecked==true){
                     data.operateUserIds.push(vm.detailsList[v].username);
-                    if(data.operateUserIds.length>1){
-                        che+=`、`
-                    }
-                    che+=vm.detailsList[v].username;
+                    che+=vm.detailsList[v].username+",";
                     vm.off.modify=true;
                 }
             }
+            che=che.substring(0,che.length-1);
             if(vm.off.modify==false){
                 layer.open({
                     content:'请选择要操作的用户',
@@ -367,20 +360,26 @@ export default{
             }
             if(val=='offLine'){
                 vm.doUrl="/ums/w/user/kickoutUsers";
-                vm.a=`强制离线(${che})`;
+                vm.typeTitle=`强制离线(${che})`;
             }else if(val=='addBlack'){               
                 vm.doUrl="/ums/w/user/blacklistUsers";
-                vm.a=`加入黑名单(${che})`;
+                vm.typeTitle=`加入黑名单(${che})`;
+                vm.operationType="HMD";
             }else if(val=='cancelBlack'){              
                 vm.doUrl="/ums/w/user/unblacklistUsers";
-                vm.a=`解除黑名单(${che})`;
+                vm.typeTitle=`解除黑名单(${che})`;
+                vm.operationType="JC";
             }else if(val=='delete'){
-                 vm.doUrl="/ums/w/user/delUsers";
-                 vm.a=`删除(${che})`;
+                vm.doUrl="/ums/w/user/delUsers";
+                vm.typeTitle=`删除(${che})`;
+                vm.operationType="SC";
             }
+            vm.operationJson=data;
             setTimeout(()=>{
                this.funScrollTop()
            },50)
+        },getDateTime(v){
+            return getDateTime(v);
         },
         funScrollTop(){
             let domdo=document.getElementById("main");
@@ -401,7 +400,10 @@ export default{
                 document.getElementById("home").scrollTop=och1;
             },20)
         },btnYes(){
-            let data={'operateUserIds':[]},vm=this;
+            let vm=this;
+            vm.off.layer=true;
+            vm.layerType='addStaff';
+            let data={'operateUserIds':[]};
             for(let v in vm.detailsList){
                 if(vm.detailsList[v].ischecked==true){
                     data.operateUserIds.push(vm.detailsList[v].userId)
@@ -416,39 +418,8 @@ export default{
                 });
                 return false;
             }
-            if(vm.authCode==""){
-                layer.open({
-                    content:'请输入验证码',
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
             data.reason=vm.reason;//操作原因
-            data.authCode=vm.authCode;//验证码
-            requestMethod(data,vm.doUrl)
-            .then((data)=>{
-                vm.reason="";
-                vm.authCode="";
-                vm.off.modify=false;
-                if(data.code==200){
-                    layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                    this.search(); 
-                }else{
-                     layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }
-            }).catch(e=>errorDeal(e));
+            // vm.operationType=data;
         },getAuthCode(){
             const TIME_COUNT = 120;
             if (!this.timer) {
@@ -500,7 +471,67 @@ export default{
 }
 </script>
 <style scoped>
-    div.addList{border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px}
+    .m-addStaff-out{width: 100%}
+    .m-addStaff{margin: 0 auto;border: 1px solid #c0c4cc;min-height: 100px;padding: 10px;background: white;border-radius: 4px;width:98%}
+    .m-addStaff b{height: 30px;display: inline-block;}
+    .m-addStaff b span{display: inline-block;width: 65px;text-align: justify;text-align-last: justify}
+    .m-addStaff b span.u-icon-del{width: 20px}
+    .m-addStaff b input{border: 1px solid #E8E8E8;height: 30px;border-radius: 4px;width: 80%;padding-left: 2%}
+    .m-addStaff-btn button{width: 70px;height: 25px;border-radius: 4px;outline:none;color: #fff;font-size: 14px}
+    .m-addStaff-btn button:nth-child(1){background: #00AA01;border: 1px solid #00AA01}
+    .m-addStaff-btn button:nth-child(2){background: #193163;border: 1px solid #193163}
+    .m-addStaff-btn button:active{box-shadow: 0 0 5px grey}
+    .m-addStaff-btn-in{text-align: center;margin-top: 15px}
+    @media screen and (min-width: 1400px){
+        .m-addStaff b:nth-child(1){
+            width: 30%
+        }
+        .m-addStaff b:nth-child(2){
+            width: 30%
+        }
+        .m-addStaff b:nth-child(3){
+            width: 35%
+        }
+    }
+    @media screen and (min-width:1200px) and (max-width:1400px){
+        .m-addStaff b input{width: 65%}
+        .m-addStaff b:nth-child(1){
+            width: 25%
+        }
+        .m-addStaff b:nth-child(2){
+            width: 25%
+        }
+        .m-addStaff b:nth-child(3){
+            width: 45%
+        }
+    }
+    @media screen and (min-width:600px) and (max-width:1200px){
+        .m-addStaff b input{width: 65%}
+        .m-addStaff b:nth-child(1){
+            width: 45%
+        }
+        .m-addStaff b:nth-child(2){
+            width: 45%
+        }
+        .m-addStaff b:nth-child(3){
+            margin-top: 10px;
+            width: 90%
+        }
+    }
+    @media screen and (max-width: 600px){
+        .m-addStaff b:not(:first-child){
+            margin-top: 10px;
+        }
+        .m-addStaff b:nth-child(1){
+            width: 100%
+        }
+        .m-addStaff b:nth-child(2){
+            width: 100%
+        }
+        .m-addStaff b:nth-child(3){
+            width: 95%
+        }
+    }
     div.addStaffDiv button{border-radius:4px;padding:3px 10px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;} 
     div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
     div.operate button:active{box-shadow: 0 0 5px grey}

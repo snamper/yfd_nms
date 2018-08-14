@@ -116,7 +116,7 @@
                                 <td colspan="12">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:5px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
-                                        <label style="text-align:right;padding-right:20px;"><el-button v-if="false" @click="downLoad" style="width:60px;" type="success" size="mini">导出</el-button></label>
+                                        <label style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" @click="downLoad" class="btnDownload">导出</button></label>
                                     </div>
                                 </td>
                             </tr>
@@ -372,12 +372,11 @@ export default {
         },downLoad(){
             let vm=this,
                 parameter="",
-                url = "/nms/w/openReadyCard/exportOpenCard?",
+                url = "/nms/w/order/exportPurchase?",
                 userInfo=getStore('YFD_NMS_INFO');
-            let json = Object.assign(vm.searchJson,userInfo);
+            let json = Object.assign(vm.downLoadJson,userInfo);
                 delete json.pageNum;
                 delete json.pageSize;
-                console.log(json);
                 Object.keys(json).map((key)=>{
                     url+=key+'='+json[key]+'&';    
                 })
@@ -484,5 +483,6 @@ export default {
     .pickCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}
     .listHeader{display: flex}
     .listHeader label{flex: 1;line-height: 40px}
+    .btnDownload{margin-top: 9px;outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 4px 10px;margin-right: 10px;color: #fff}
 </style>
 

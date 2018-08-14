@@ -208,10 +208,7 @@ export default{
         }		
     },
 	created:function(){
-        console.log(this)
-        // let vm=this;   
-        // vm.orderId=vm.logisticsInfo.deliveryOrderId;
-        // vm.logisticsCompany2 = vm.logisticsInfo.deliveryName;
+       
 	},
 	methods:{
         btnYes(e,v){

@@ -98,7 +98,7 @@
                     </div>
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
-                            <tr v-if="false">
+                            <tr v-if="true">
                                 <td colspan="12">
                                     <el-row>
                                         <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
@@ -214,17 +214,17 @@
             <!-- 操作 -->
             <div v-if="off.modify==true">
                 <div class="listTitleFoot">
-                    <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{a}}</p>
+                    <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{typeTitle}}</p>
                 </div>
                 <div class="listTitleFoot">
                     <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
                 </div> 
-                <div class="listTitleFoot">
+                <!-- <div class="listTitleFoot">
                     <p style="text-align:right">验证号码:{{user.phone}}
                         <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
                         <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
                     </p> 
-                </div> 
+                </div> -->
                 <div style="height:35px" class="listTitleFoot">
                     <p style="float:right">
                         <button class="buttonModifyYes"   @click="btnYes()">确定</button>
@@ -232,8 +232,8 @@
                 </div>
             </div> 
         </div>
-        <!-- 同步时间弹框 -->
-        <common-layer  v-if="off.layer"></common-layer>
+        <!-- 号码上架下架同步 -->
+        <numberOperation  v-if="off.layer1" :layer="layerType1" :operationType="operationType"></numberOperation>
         <!-- 卡详情 -->
         <card-Details  v-if="off.cardDetails" :listSwitch="listSwitch" :dataList="searchResData" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-Details>	 
         <layer-confirm v-if="off.layerChangePrice" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>           
@@ -244,7 +244,7 @@ import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
 import { getDateTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
 import {requestMethod,requestgetSyncTime,requestModify_Price,requestUpdateSplit} from "../../config/service.js"; 
-import layerSync from "../../components/layerSyncTime";
+import numberOperation from "./numberOperationLayer";
 import cardDetails from "../../components/cardDetailsList";
 import layerConfirm from "../../components/layerConfirm";
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
@@ -263,6 +263,7 @@ const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航'
 export default{
 	data(){
 		return{
+            layerType1:"",
             searchProductListId:'',
             currentPage:0,
             layerType:"",//弹框类型
@@ -298,6 +299,8 @@ export default{
             authCode:"",//验证码
             searchDataChangePrice:"",//修改价格
             translateSealPrice:"",
+            SJXJData:"",
+            operationType:"",
             checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
             cities: cityOptions,//选中的虚商
             cities1:cityOptions1,
@@ -320,11 +323,12 @@ export default{
             timeType:"a",
             searchData:"",
             dourl:'',
-            a:'',//上架，下架
+            typeTitle:'',//上架，下架
             newPrice:[],
             isSplit:false,//是否拆分
 			off:{
                 layer:false,
+                layer1:false,
                 layerChangePrice:false,
                 notCardDetails:true,//
                 cardDetails:false,//卡详情
@@ -341,18 +345,13 @@ export default{
 		}
     },
 	components:{
-        "common-layer":layerSync,
+        numberOperation,
         "card-Details":cardDetails,
         "layer-confirm":layerConfirm
     },
     created:function(){
         let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
-    },
-    watch:{
-        'off.modify'(){
-            this.$parent.$refs.psec.scrollTop=this.$parent.$refs.psec.scrollHeight;
-        }
     },
 	methods:{
         search(p){//查询
@@ -402,11 +401,9 @@ export default{
                     vm.$set(vm.off.changePrice,i,false)
                 }
                 vm.off.modify=false;
-                this.resetTimer();
                 this.getSyncTime();
             }).catch(e=>errorDeal(e,()=>{vm.searchList="";vm.total="";vm.form.page="";}));
-        },
-        translateData(type,v){
+        },translateData(type,v){
             return translateData(type,v)
         },handleCheckAllChange(val) {
             this.checkedCities = val ? cityOptions : [];
@@ -504,9 +501,8 @@ export default{
         },
         sync(){//手动同步
             let vm=this;
-            vm.off.layer=true;
-            vm.off.setSync=false;
-            vm.off.syncNumberSection=true;
+            vm.off.layer1=true;
+            vm.layerType1="numberSectionTB";
         },
         changeChecked(){//单选按钮点击事件
             this.ix.checkeda=!this.ix.checkeda;
@@ -564,7 +560,7 @@ export default{
             }
         },doFounction(val){
             let vm=this,isInArray=false;
-            vm.a="";
+            vm.typeTitle="";
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
                     if(vm.searchList[v].productState==6||vm.searchList[v].productState==5){//购物车中或已出售
@@ -623,11 +619,13 @@ export default{
                 return false;
             }
             if(val=='2'){
+                vm.operationType="XJ";
                 vm.dourl="/nms/w/number/pullOffProducts";
-                this.a="下架";
+                this.typeTitle="下架";
             }else if(val=='1'){
                 vm.dourl="/nms/w/number/putOnProducts";
-                this.a="上架";
+                vm.operationType="SJ";
+                this.typeTitle="上架";
             } 
            setTimeout(()=>{
                this.funScrollTop()
@@ -702,12 +700,14 @@ export default{
                     });
                 }  
             }).catch(e=>errorDeal(e));
-        }
-        ,btnYes(v){
-            let dataReq={'operateProductIds':[]},vm=this;
+        },btnYes(v){
+            let vm=this;
+            vm.off.layer1=true;
+            vm.layerType1="numberSJXJ";
+            let json={'operateProductIds':[]};
             for(let v in vm.searchList){
                 if(vm.searchList[v].ischecked==true){
-                    dataReq.operateProductIds.push(vm.searchList[v].productId)
+                    json.operateProductIds.push(vm.searchList[v].productId)
                 }
             }
             if(vm.reason==""){
@@ -719,49 +719,13 @@ export default{
                 });
                 return false;
             }
-            if(vm.authCode==""){
-                layer.open({
-                    content:'请输入验证码',
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
-            dataReq.reason=vm.reason;//操作原因
-            dataReq.authCode=vm.authCode;
+            json.reason=vm.reason;//操作原因
             if(vm.isSplit==true){
-                dataReq.splitFlag=2
+                json.splitFlag=2
             }else if(vm.isSplit==false){
-                dataReq.splitFlag=1
+                json.splitFlag=1
             }
-            requestMethod(dataReq,vm.dourl)
-            .then((data)=>{
-                vm.off.modify=false;
-                if(data.code==200){
-                    layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                    this.search();
-                }else{
-                    layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }
-            }).then(()=>{
-                vm.reason="";
-                vm.authCode="";
-                this.resetTimer();               
-                for(let v=0;v<vm.searchList.length;v++){
-                    vm.$set(vm.searchList[v],'ischecked',false);
-                }}
-            ).catch(e=>errorDeal(e));
+            vm.SJXJData=json;
         },
         getSyncTime(){
             let vm=this;
@@ -777,13 +741,6 @@ export default{
         },
         getDateTime:function(v){
             return getDateTime(v);
-        },
-        resetTimer(){
-            this.btnDisabled=false;                        
-            this.show = true;
-            this.count="点击获取验证码"                    
-            clearInterval(this.timer);
-            this.timer = null;
         }
         ,changePrice(i){
             let vm=this;

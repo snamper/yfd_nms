@@ -107,7 +107,7 @@
                                 <td colspan="9">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:20px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
-                                        <b style="text-align:right;padding-right:20px;"><button class="btnDownload" @click="downLoad" >导出</button></b>
+                                        <b style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" class="btnDownload" @click="downLoad" >导出</button></b>
                                     </div>
                                 </td>
                             </tr>

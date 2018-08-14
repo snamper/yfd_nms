@@ -1,4 +1,21 @@
 .w70{width: 70px!important;}
+.u-button-upFiles{
+    
+    display: none;
+}
+.u-button-upFiles:active{
+    box-shadow: 0 0 4px #17a3e9;
+}
+.u-label-upFiles{
+    margin-left: 20px;
+    padding: 2px;
+    border: 1px solid #3399cc;
+    background-color: #3399cc;
+    color: #fff;
+    border-radius: 4px;
+    outline: none;
+    width: 70px;
+}
 div.messageBox{
     padding: .2rem;
     box-sizing: border-box;

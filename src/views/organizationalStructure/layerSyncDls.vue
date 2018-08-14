@@ -1,9 +1,9 @@
 <style scoped>
-@import "../assets/css/layer2.css";
+@import "../../assets/css/layer2.css";
 </style>
 <template>
     <section id="detailsView" class="greyFont">
-        <!-- 同步时间设置 -->
+        <!-- 代理商管理自动同步时间设置 -->
         <div v-if="off.set" class="autoSync">
             <table>
                 <thead>
@@ -49,85 +49,26 @@
             </table>
             <div class="lay-mask"></div>
         </div>
-        <!-- 号段同步 -->
-        <div v-if="off.syncNumberSection">
-            <table style="padding:20px;">
-                <thead>
-                    <tr>
-                        <th colspan="2">
-                            号段同步
-                        </th>
-                    </tr>
-                </thead>
-                <tbody v-if="true">
-                    <tr>
-                        <td class="m-input-phone">
-                            <p style="width:100%;padding:0 10px"><input v-model="numberSection" :maxlength="7" placeholder="请输入一个七位数的号段" style="width:100%" type="text"></p>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="fl">
-                            <p style="line-height:40px;" class="pdl12">验证号码 : <span>{{user.phone}}</span></p>
-                        </td>
-                    </tr>
-                    <tr colspan="2">
-                        <td>
-                            <div class="m-module-manualInput">
-                                <input v-model="authCode" :maxlength="6" placeholder="请输入短信验证码"></input><button v-model="count" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</button>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr class="tdBtn" colspan="2">
-                        <span @click="close()">取消</span>
-                        <span @click="btnYes(3)">确认</span>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="lay-mask"></div>
-        </div>
-        <!-- 手动同步 -->
+        <!-- 代理商管理手动同步 -->
         <div v-if="off.sync">
-            <table style="padding:20px;">
+            <table style="width:260px;">
                 <thead>
                     <tr>
                         <th colspan="2">
-                            手动同步
+                            <img style="width:50px;height:50px" src="../../assets/images/questionMark.png" alt="">
                         </th>
                     </tr>
                 </thead>
                 <tbody v-if="true">
-                    <tr colspan="2">
-                        <td class="fl">
-                            <p class="pdl12">验证号码 : <span>{{user.phone}}</span></p>
+                    <tr>
+                        <td colspan="2">
+                            <h3>是否要执行手动同步</h3>
                         </td>
                     </tr>
-                    <tr colspan="2">
-                        <td>
-                            <div class="m-module-manualInput">
-                                <input v-model="authCode" :maxlength="6" placeholder="请输入短信验证码"></input><button class="borderInputHarf w84" v-model="count" @click="getAuthCode(userId)" :disabled="btnDisabled">{{count}}</button>
-                            </div>
+                    <tr class="tdBtn">
+                        <td colspan="2" style="padding:0">
+                            <span @click="close()">取消</span><span @click="btnYes(2)">确认</span>
                         </td>
-                    </tr>
-                    <tr class="tdBtn" colspan="2">
-                        <span @click="close()">取消</span>
-                        <span @click="btnYes(2)">确认</span>
-                    </tr>
-                </tbody>
-            </table>
-            <div class="lay-mask"></div>
-        </div>
-        <!-- 手动同步操作结果 -->
-        <div v-if="off.rsync">
-            <table>
-                <tbody v-if="true">
-                    <tr colspan="2">
-                        <img src="../assets/images/icon_wenhao.png" alt="">
-                    </tr>
-                    <tr colspan="2">
-                        码号手动同步已受理，请耐心等待结果
-                    </tr>
-                    <tr class="tdBtn2" colspan="2">
-                        <span @click="close()">确认</span>
                     </tr>
                 </tbody>
             </table>
@@ -136,9 +77,9 @@
     </section>
 </template>
 <script>
-import { requestMethod, requestsetSyncTime } from "../config/service.js";
-import { getStore } from "../config/utils/uutils";
-import { errorDeal,getDateTime } from "../config/utils";
+import { requestMethod, requestsetSyncTime } from "../../config/service.js";
+import { getStore } from "../../config/utils/uutils";
+import { errorDeal,getDateTime } from "../../config/utils";
 export default {
   data() {
     return {
@@ -160,57 +101,54 @@ export default {
         set: false, //同步时间设置
         sync: false, //手动同步
         syncNumberSection:false,//号段同步
-        rsync: false //手动同步操作结果
+        rsync: false, //手动同步操作结果
+        numberSection:false
       },
       options: [ { value: 1, label: "1小时" }, { value: 2, label: "2小时" }, { value: 3, label: "3小时" }, { value: 4, label: "4小时" }, { value: 5, label: "5小时" }, { value: 6, label: "6小时" }, { value: 7, label: "7小时" }, { value: 8, label: "8小时" }, { value: 9, label: "9小时" }, { value: 10, label: "10小时" }, { value: 11, label: "11小时" }, { value: 12, label: "12小时" }, { value: 13, label: "13小时" }, { value: 14, label: "14小时" }, { value: 15, label: "15小时" }, { value: 16, label: "16小时" }, { value: 17, label: "17小时" }, { value: 18, label: "18小时" }, { value: 19, label: "19小时" }, { value: 20, label: "20小时" }, { value: 21, label: "21小时" },{ value: 22, label: "22小时" }, { value: 23, label: "23小时" }, { value: 24, label: "24小时" } ]
     };
   },
-  created: function() {
-    let vm = this,
-      Info = getStore("YFD_NMS_INFO");
-    vm.user = Info;
-    if (vm.$parent.off.setSync == true) {
-      vm.off.set = true;
-      vm.off.sync = false;
-    } else if (vm.$parent.off.sync == true) {
-      vm.off.sync = true;
-      vm.off.set = false;
-    }else if (vm.$parent.off.syncNumberSection == true) {
-      vm.off.syncNumberSection = true;
-      vm.off.set = false;
-    }
-    var st = vm.$parent.syncStartTime;
-    vm.date=getDateTime(st)[8];
-    vm.time=getDateTime(st)[7];
-  },
+    created: function() {
+        let vm = this,
+            Info = getStore("YFD_NMS_INFO");
+            vm.user = Info;
+            vm.off.sync=false;
+        if (vm.$parent.off.setSync == true) {
+            vm.off.set = true;
+            vm.off.sync = false;
+        } else if (vm.$parent.off.sync == true) {//用户同步
+            vm.off.sync = true;
+            vm.off.set = false;
+        }else if (vm.$parent.off.syncNumberSection == true) {
+            vm.off.syncNumberSection = true;
+            vm.off.set = false;
+        }
+        var st = vm.$parent.syncStartTime;
+        vm.date=getDateTime(st)[8];
+        vm.time=getDateTime(st)[7];
+    },
   methods: {
     getAuthCode(v) {//获取验证码
-      const TIME_COUNT = 120;
-      if (!this.timer) {
-        this.count = TIME_COUNT;
-        this.show = false;
-        this.timer = setInterval(() => {
-          if (this.count > 0 && this.count <= TIME_COUNT) {
-            this.btnDisabled = true;
-            this.count--;
-          } else {
-            this.btnDisabled = false;
-            this.show = true;
-            this.count = "获取验证码";
-            clearInterval(this.timer);
-            this.timer = null;
-          }
-        }, 1000);
-      }
-      let vm = this,
+        const TIME_COUNT = 120;
+        if (!this.timer) {
+            this.count = TIME_COUNT;
+            this.show = false;
+            this.timer = setInterval(() => {
+                if (this.count > 0 && this.count <= TIME_COUNT) {
+                    this.btnDisabled = true;
+                    this.count--;
+                } else {
+                    this.btnDisabled = false;
+                    this.show = true;
+                    this.count = "获取验证码";
+                    clearInterval(this.timer);
+                    this.timer = null;
+                }
+            }, 1000);
+        }
+        let vm = this,
         data = { userId: vm.user.userId, phone: vm.user.phone || "" };
-    //   if (window.location.hash.indexOf("agent") > -1) {
-    //     vm.authCodeUrl = "/uus/w/user/getAuthCode";
-    //   } else if (window.location.hash.indexOf("card" > -1)) {
-    //     vm.authCodeUrl = "/nus/w/number/getAuthCode";
-    //   }
         vm.authCodeUrl = "/uus/w/user/getAuthCode";
-      requestMethod(data, vm.authCodeUrl)
+        requestMethod(data, vm.authCodeUrl)
         .then(data => {
           if (data.hasOwnProperty("code") && data.code == 200) {
             layer.open({
@@ -239,8 +177,8 @@ export default {
     },
     btnYes(v) {//同步时间设置确认
         let vm = this;
-        // if (window.location.hash.indexOf("agent") > -1) {
-        if(v==1){
+        vm.$parent.off.layer=false;
+        if(v==1){//自动同步设置
             var date = vm.date,
             time = vm.time,
             time = time.split(":"),
@@ -261,19 +199,9 @@ export default {
                 }
             }).catch(e => errorDeal(e,()=>{vm.$parent.off.layer=false; vm.$parent.off.setSync=false; vm.$parent.off.sync=true;}));
         }else if(v==2){//手动同步
-            if (vm.authCode == "") {
-                layer.open({
-                    content: "请输入验证码",
-                    skin: "msg",
-                    time: 2,
-                    msgSkin: "error"
-                });
-                return false;
-            }
             this.resetTimer();
             let data = {
                 phone: vm.user.phone,
-                authCode: vm.authCode
             };
             vm.syncUrl = "/uus/w/user/sync";
             requestMethod(data,vm.syncUrl)
@@ -316,23 +244,16 @@ export default {
                 });
                 return false;
             }
-            else if (vm.authCode == ""||vm.authCode.length!=6) {
-                layer.open({
-                    content: "请输入正确的验证码",
-                    skin: "msg",
-                    time: 2,
-                    msgSkin: "error"
-                });
-                return false;
-            }
             this.resetTimer();
-            let data = {
+            vm.syncNumberSectionData = {
                 phone: vm.user.phone,
-                authCode: vm.authCode,
                 numberSection:vm.numberSection
             };
             vm.syncUrl = "/uus/w/number/syncSection";
-            requestMethod(data,vm.syncUrl)
+            vm.off.syncNumberSection=false;
+            vm.off.numberSection=true;
+        }else if(v=='hdtb'){
+            requestMethod(vm.syncNumberSectionData,vm.syncUrl)
             .then((data)=>{
                 vm.$parent.off.layer=false;
                 if(data.hasOwnProperty('code')&&data.code==200){
@@ -362,59 +283,10 @@ export default {
                 )
             }).catch(e=>errorDeal(e));
         }
-        // } 
-        // else if (window.location.hash.indexOf("card" > -1)) {
-        //     if (vm.authCode == "") {
-        //     layer.open({
-        //         content: "请输入验证码",
-        //         skin: "msg",
-        //         time: 2,
-        //         msgSkin: "error"
-        //     });
-        //     return false;
-        //     }
-        //     this.resetTimer();
-        //     let data = {
-        //     userId: vm.user.userId,
-        //     phone: vm.user.phone || "",
-        //     authCode: vm.authCode
-        //     };
-        //     vm.syncUrl = "/nus/w/number/sync";
-        //     requestMethod(data,vm.syncUrl)
-        //     .then((data)=>{
-        //         vm.$parent.off.layer=false;
-        //         if(data.hasOwnProperty('code')&&data.code==200){
-        //             vm.off.sync=false;
-        //             vm.off.rsync=true;
-        //             layer.open({
-        //                 content:data.msg,
-        //                 skin: 'msg',
-        //                 time: 2,
-        //                 msgSkin:'success',
-        //             });
-        //         }else if(data.hasOwnProperty('code')&&data.code!=200){
-        //             layer.open({
-        //                 content:data.msg,
-        //                 skin: 'msg',
-        //                 time: 2,
-        //                 msgSkin:'error',
-        //             });
-        //         }else(
-        //             layer.open({
-        //                 content:data,
-        //                 skin: 'msg',
-        //                 time: 2,
-        //                 msgSkin:'error',
-        //             })
-        //         )
-        //     }).catch(e=>errorDeal(e));
-        // }
-    },
-    close: function() {
+    },close() {
       var vm = this;
       vm.$parent.off.layer = false;
-    },
-    resetTimer() {
+    },resetTimer() {
       this.btnDisabled = false;
       this.show = true;
       this.count = "获取验证码";
