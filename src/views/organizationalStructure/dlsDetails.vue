@@ -33,11 +33,11 @@
                 <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light greyFont">
                     <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                     <el-col :xs="19" :sm="21" :md="20" :lg="20" :xl="20" :span="20">
-                        <el-radio v-model="radio"  label="1,2" >全部</el-radio>
+                        <el-radio v-model="radio"  label="1,2,3,4" >全部</el-radio>
                         <el-radio v-model="radio"  label="1" >正常</el-radio>
                         <!-- <el-radio v-model="radio"  label="3" >离线</el-radio> -->
                         <el-radio v-model="radio"  label="2" >黑名单</el-radio>
-                        <!-- <el-radio v-model="radio"  label="2" >注销</el-radio> -->
+                        <el-radio v-model="radio"  label="3,4" >注销</el-radio>
                     </el-col>
                     <el-col :span="2"></el-col> 
                 </div></el-col>
@@ -206,7 +206,7 @@ export default{
             managerPhone:"",//..
             name:'',
             phone:'',
-            radio:'1,2',
+            radio:'1,2,3,4',
             checked:true,
             checked2:true,
             doUrl:'',
@@ -222,8 +222,7 @@ export default{
             form:{
                 page:0,
             },
-            list: [{username: '', phone: '',role:[]},]
-            ,off:{
+            list: [{username: '', phone: '',role:[]},],off:{
                 addList:false,
                 searchStaff:true,
                 staffDetails:false,
@@ -260,6 +259,15 @@ export default{
             this.list.push({username: '', phone: '',role:[]})
         },
         AddStaffDiv(){//添加员工模块开关
+            if(this.$parent.departState=='3'||this.$parent.departState=='4'){
+                layer.open({
+                        content:'注销状态的部门不允许添加新员工',
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                    return false;
+            } 
             this.off.addList=!this.off.addList;
         },
         AddStaff(){//添加员工按钮
@@ -269,6 +277,7 @@ export default{
                     checkMobile(this.list[i].phone,()=>{return false});
                     this.list[i].userRole = this.list[i].role.join(',');
                     this.list[i].departId=vm.searchDepartId;
+                    this.list[i].userHierachy=2;
                     data.newUsers.push(this.list[i])
                 }else{
                     layer.open({

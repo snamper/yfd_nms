@@ -27,9 +27,10 @@
             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="5" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                 <el-col :xs="16" :sm="16" :md="14" :lg="16" :xl="16">
-                    <el-radio v-model="radio"  label="1,2" >全部</el-radio>
+                    <el-radio v-model="radio"  label="1,2,3,4" >全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
                     <el-radio v-model="radio"  label="2" >黑名单</el-radio>
+                    <el-radio v-model="radio"  label="3,4" >注销</el-radio>
                 </el-col>
                 <el-col :xs="1" :sm="1" :md="4" :lg="4" :xl="4">
                    
@@ -205,7 +206,7 @@ export default{
             detailsList:'',
             name:'',
             phone:'',
-            radio:'1,2',
+            radio:'1,2,3,4',
             pa:'',
             searchDetailsYfdData:'',//查询人
             searchRes:"",
@@ -259,6 +260,7 @@ export default{
                     checkMobile(this.list[i].phone,()=>{return false});
                     this.list[i].userRole = this.list[i].role.join(',');
                     this.list[i].departId=vm.topDepartmentId;
+                    this.list[i].userHierachy=1;
                     data.newUsers.push(this.list[i])
                 }else{
                     layer.open({

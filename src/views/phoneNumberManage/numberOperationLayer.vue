@@ -81,7 +81,7 @@
 </template>
 <script>
 import {requestMethod} from "../../config/service.js"; 
-import { errorDeal,getStore } from '../../config/utils';
+import { errorDeal,getStore,checkNumberSection } from '../../config/utils';
 export default{
     props:['layer','operationType'],
 	data (){
@@ -137,6 +137,7 @@ export default{
                     });
                     return false;
                 }
+                checkNumberSection(vm.numberSection,()=>{return false});
                 vm.$parent.layerType1="";
                 vm.$parent.off.layer1=true;
                 vm.off.numberSection=true;
@@ -145,7 +146,7 @@ export default{
                     phone: vm.user.phone,
                     numberSection:vm.numberSection
                 },
-                url = "/uus/w/number/syncSection";
+                url = "/nus/w/number/syncSection";
                 vm.close();
                 requestMethod(json,url)
                 .then((data)=>{
@@ -160,6 +161,8 @@ export default{
                     }
                 }).catch((e)=>{errorDeal(e)})
             }
+        },checkNumberSection(v,f){
+            return checkNumberSection(v,f)
         },
 		close(){//取消
             var vm=this;

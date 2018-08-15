@@ -14,7 +14,7 @@
                         <el-date-picker
                         v-model="startTime"
                         size="small"
-                        type="date"
+                        type="datetime"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsS"
@@ -22,7 +22,7 @@
                         </el-date-picker><el-date-picker
                         v-model="endTime"
                         size="small"
-                        type="date"
+                        type="datetime"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsE"
@@ -64,9 +64,10 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                 <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
-                    <el-radio v-model="radio"  label="1,3">全部</el-radio>
+                    <el-radio v-model="radio"  label="1,2,3,4">全部</el-radio>
                     <el-radio v-model="radio"  label="1">正常</el-radio>
-                    <el-radio v-model="radio"  label="3">注销</el-radio>
+                    <el-radio v-model="radio"  label="2">黑名单</el-radio>
+                    <el-radio v-model="radio"  label="3,4">注销</el-radio>
                     <!-- <el-radio v-model="radio"  label="2">注销</el-radio> -->
                 </el-col>
                 <el-col :xs="24" :sm="2" :md="7" :lg="4" :xl="4">
@@ -93,7 +94,7 @@
                                     <span class="greyFont">最后同步成功时间 ：</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
                                 </div></el-col>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
-                                    <span class="greyFont">下次同步成功时间 ：</span><span>{{getDateTime(syncStartTime)[6]||'--'}}</span>
+                                    <span class="greyFont">下次同步成功时间 ：</span><span>{{getDateTime()[6]||'--'}}</span>
                                 </div></el-col>
                                 <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
                                     <span class="greyFont">同步间隔时间 ：<label v-if="timeCell">{{timeCell}}小时</label>
@@ -119,10 +120,10 @@
                     </tr>
                     <tr v-if="searchList.length>0" v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
                         <td >
-                        {{((pa-1)*15+(i+1))}}
+                            {{((pa-1)*15+(i+1))}}
                         </td>
                         <td >
-                        {{v.departName}}
+                            <a class="textDec" href="javascript:void(0)" @click="getCompanyDetails(v)">{{v.departName}}</a>
                         </td>
                         <td >
                             <span v-if="v.modifyTime">
@@ -133,21 +134,15 @@
                             </span>
                         </td>
                         <td >
-                        {{v.managerName}}
+                            {{v.managerName}}
                         </td>
                         <td >
-                        {{v.phone}}
+                            {{v.phone}}
+                        </td>
+                        <td>
+                            {{translateData('userState',v.departState)}}
                         </td>
                         <td >
-                        <span v-if="v.departState==1">
-                                正常
-                        </span>
-                        <span v-if="v.departState==3">
-                                黑名单
-                        </span>
-                        </td>
-                        <td >
-                        <!-- {{new Date(v.createTime).toLocaleString()}} -->
                             <span v-if="v.createTime">
                                 {{getDateTime(v.createTime)[6]}}
                             </span>
@@ -156,7 +151,7 @@
                             </span>
                         </td>
                         <td >
-                        <a class="textDec" href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
+                            <a class="textDec" href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
                         </td>
                     </tr>
                     <tr v-if="searchList.length==0">
@@ -189,13 +184,15 @@
     <layerSync v-if="off.layer"></layerSync>
     <!-- 查看员工详情组件 -->
     <dlsDetails v-if="off.dlsDetails" :lists="detailsList"></dlsDetails>   
+    <companyDetails v-if="off.companyDetails" :lists="companyDetails"></companyDetails>
 </section>
 </template>
 <script>
-import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction } from "../../config/utils";
+import { getDateTime,getUnixTime,errorDeal,disableTimeRange6,checkMobile,getTimeFunction,translateData } from "../../config/utils";
 import {requestMethod,requestgetSyncTime,requestgetSyncInfo,requestsetSyncTime} from "../../config/service.js"; 
 import layerSync from "./layerSyncDls";
 import dlsDetails from "./dlsDetails";
+import companyDetails from './companyDetails';
 export default{
     name:'dls',
     data (){
@@ -212,7 +209,7 @@ export default{
             cname: "",
             phone: "",
             name: "",
-            radio: "1,3",
+            radio: "1,2,3,4",
             timeType:"1",
             detailsList:[],
             pa:1,
@@ -220,11 +217,14 @@ export default{
             managerName:"",//..
             managerPhone:"",//..
             searchDetailsType:"",//查看员工详情
+            departState:"",//部门状态
+            companyDetails:"",
             off:{
                 dlsList:false,
                 layer:false,
                 dlsDetails:false,
-                notDlsDetails:true
+                notDlsDetails:true,
+                companyDetails:false
             },
             form:{
                 page:0
@@ -275,7 +275,8 @@ export default{
     },
     components:{
         "layerSync":layerSync,
-        "dlsDetails":dlsDetails
+        "dlsDetails":dlsDetails,
+        "companyDetails":companyDetails
     },
     created:function(){
        getTimeFunction(this);
@@ -335,15 +336,20 @@ export default{
                     errorDeal(data);
                 }
             }).catch(e=>errorDeal(e,()=>{vm.total="";vm.searchList="";vm.form.page="";}));
-        }
-        ,getDetails(v){//查看详情
+        },getCompanyDetails(v){
+            let vm=this;
+            vm.off.notDlsDetails=false;
+            vm.off.companyDetails=true;
+            vm.companyDetails=v;
+        },getDetails(v){//查看详情
             let vm=this,data={},url='/ums/w/user/getDepartDetail'
             vm.searchDetailsType=1;
             vm.searchDepartId=v.departId;
-            data={'searchDepartId':v.departId,userState:"1,2",username:"",phone:"",pageNum:"1",pageSize:"10"};
+            data={'searchDepartId':v.departId,userState:"1,2,3,4",username:"",phone:"",pageNum:"1",pageSize:"10"};
             vm.companyName=v.departName;
             vm.managerName=v.managerName;
             vm.managerPhone=v.phone;
+            vm.departState=v.departState;
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
@@ -368,36 +374,7 @@ export default{
                     vm.$set(vm.detailsList[v],'ischecked',false);
                 }
             }).catch(e=>errorDeal(e));
-        },changeTimeS(e){
-            let vm=this,
-            timeRange=disableTimeRange6(),
-            timeRangeS=timeRange.next,
-            timeRangeE=timeRange.nextYesterday,
-            timeCheck=new Date(e).getTime();
-            if(timeCheck<timeRangeS){
-                vm.startTime=timeRangeS;
-            }
-            if(timeCheck>timeRangeE){
-                vm.startTime=timeRangeE;
-            }   
-            let dt=new Date(e);
-            getTimeFunction(this,[dt,1])        
-        },changeTimeE(e){
-            let vm=this,
-            timeRange=disableTimeRange6(),
-            timeRangeS=timeRange.next,
-            timeRangeE=timeRange.nextYesterday,
-            timeCheck=new Date(e).getTime();
-            if(timeCheck<timeRangeS){
-                vm.endTime=timeRangeS;
-            }
-            if(timeCheck>timeRangeE){
-                vm.endTime=timeRangeE;
-            }     
-            let dt=new Date(e);   
-            getTimeFunction(this,[dt,2])                     
-        },
-        getSyncTime(){
+        },getSyncTime(){
             let vm=this,
                 data={"recordType":"3"};
             requestgetSyncTime(data)
@@ -408,8 +385,7 @@ export default{
                     errorDeal(data)
                 }
             }).catch(e=>errorDeal(e)); 
-        },
-        getSyncInfo(){
+        },getSyncInfo(){
             let vm=this;
             let data={};
             requestgetSyncInfo(data)
@@ -417,16 +393,16 @@ export default{
                 vm.syncStartTime=data.data.syncStartTime;
                 vm.timeCell=data.data.syncInterval;
             }).catch(e=>errorDeal(e));
-        },
-        getDateTime(v){
+        },getDateTime(v){
             return getDateTime(v);
-        },
-        resetTimer(){
+        },resetTimer(){
             this.btnDisabled=false;                        
             this.show = true;
             this.count="获取验证码"
             clearInterval(this.timer);
             this.timer = null;
+        },translateData(v,i){
+            return translateData(v,i)
         }
     }
 }

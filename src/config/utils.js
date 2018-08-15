@@ -174,6 +174,22 @@ export const checkMobile=(v,f)=>{
     } 
 }
 /**
+ * 验证七位数号段
+ */
+export const checkNumberSection=(v,f)=>{
+    if(!(/^1[3|4|5|6|7|8|9]\d{5}$/.test(v))){
+        layer.open({
+            content:'请输入正确的七位数号段',
+            skin: 'msg',
+            time: 2,
+            msgSkin:'error',
+        });
+        if(typeof(f)=="function"){
+            f()(); 
+        }
+    }
+}
+/**
  *去除空格
  */
 export const trimFunc=(v)=>{
@@ -218,7 +234,7 @@ export const translateData=(type,v)=> {
             return val[v-1];
         break
         case 'userState':
-            val=["正常","黑名单","注销","注销"]
+            val=["正常","黑名单","手动注销","系统注销"]
             return val[v-1];
         break
     }
