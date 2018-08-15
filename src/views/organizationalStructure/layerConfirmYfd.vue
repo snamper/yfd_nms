@@ -121,7 +121,7 @@ export default{
                             time: 2,
                             msgSkin:'success',
                         });
-                        this.search(); 
+                        vm.search(); 
                     }else{
                         layer.open({
                             content:data.msg,

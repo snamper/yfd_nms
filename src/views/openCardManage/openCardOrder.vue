@@ -162,7 +162,7 @@
   	</section>
 </template>
 <script>
-import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction,translateData,getStore } from "../../config/utils";
+import {disableTimeRange6,errorDeal,getDateTime,trimFunc,getTimeFunction,translateData,getStore,cloneObj } from "../../config/utils";
 import {requestOpenCardOrder,requestOpenCardDetails} from "../../config/service.js";
 import orderDetails from "./orderDetails";
 import Base64 from '../../config/utils/base64.js';
@@ -310,7 +310,10 @@ export default {
                     url+=key+'='+json[key]+'&';    
                 })
                 url = url.substring(0, url.length-1);
-                window.location.href=url;
+                var elemIF = document.createElement("iframe");
+                elemIF.src=url;
+                elemIF.style.display = "none";
+                document.body.appendChild(elemIF);
         },details(v){
             let vm=this;
             vm.off.details=true;
@@ -353,6 +356,8 @@ export default {
             return trimFunc(v);
         },translateData(v,i){
             return translateData(v,i)
+        },cloneObj(v){
+            return cloneObj(v);
         }
     }
 };

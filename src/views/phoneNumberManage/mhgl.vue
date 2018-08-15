@@ -213,12 +213,13 @@
             </div>  
             <!-- 操作 -->
             <div v-if="off.modify==true">
+                <div class="borderTopModifyStaffState"></div>
                 <div class="listTitleFoot">
                     <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{typeTitle}}</p>
                 </div>
-                <div class="listTitleFoot">
+                <!-- <div class="listTitleFoot">
                     <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
-                </div> 
+                </div>  -->
                 <!-- <div class="listTitleFoot">
                     <p style="text-align:right">验证号码:{{user.phone}}
                         <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
@@ -295,8 +296,6 @@ export default{
             pageNumLiang:"",//靓号详情
             pageNumPu:"",//普号详情
             pa:'',//页码
-            reason:"",//操作理由
-            authCode:"",//验证码
             searchDataChangePrice:"",//修改价格
             translateSealPrice:"",
             SJXJData:"",
@@ -710,16 +709,6 @@ export default{
                     json.operateProductIds.push(vm.searchList[v].productId)
                 }
             }
-            if(vm.reason==""){
-                layer.open({
-                    content:'请输入操作原因',
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
-            json.reason=vm.reason;//操作原因
             if(vm.isSplit==true){
                 json.splitFlag=2
             }else if(vm.isSplit==false){
@@ -738,9 +727,6 @@ export default{
                     errorDeal(data)
                 }
             }).catch(e=>errorDeal(e)); 
-        },
-        getDateTime:function(v){
-            return getDateTime(v);
         }
         ,changePrice(i){
             let vm=this;
@@ -776,6 +762,9 @@ export default{
         },confirm(v){
             let vm=this,data={};
         },
+        getDateTime(v){
+            return getDateTime(v);
+        }
     },directives: {
         focus:{
             inserted: function (el) {
@@ -800,5 +789,6 @@ export default{
     div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
     div.operate button:active{box-shadow: 0 0 5px grey}
     .btnSyncNumber{outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 3px 6px;margin-right: 10px;color: #fff}
+    div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid rgb(202, 202, 202)}
 </style>
 

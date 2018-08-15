@@ -170,9 +170,9 @@
                 <div class="listTitleFoot" style="height:20px;">
                     <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{typeTitle}}</p>
                 </div>
-                <div class="listTitleFoot">
+                <!-- <div class="listTitleFoot">
                     <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
-                </div> 
+                </div>  -->
                 <!-- <div class="listTitleFoot tar">
                     验证号码 : {{user.phone}}
                     <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
@@ -211,8 +211,6 @@ export default{
             searchRes:"",
             list: [{username: '', phone: '',role:[]}],//添加员工  
             topDepartmentId:"",//顶级部门Id          
-            reason:"",
-            authCode:"",
             btnDisabled:false,
             layerType:"",
             operationType:"",
@@ -343,7 +341,7 @@ export default{
             let vm=this,data={"operateUserIds":[]},url='',che='';vm.off.modify=false;
             for(let v in vm.detailsList){
                 if(vm.detailsList[v].ischecked==true){
-                    data.operateUserIds.push(vm.detailsList[v].username);
+                    data.operateUserIds.push(vm.detailsList[v].userId);
                     che+=vm.detailsList[v].username+",";
                     vm.off.modify=true;
                 }
@@ -409,17 +407,6 @@ export default{
                     data.operateUserIds.push(vm.detailsList[v].userId)
                 }
             }
-            if(vm.reason==""){
-                layer.open({
-                    content:'请输入操作原因',
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
-            data.reason=vm.reason;//操作原因
-            // vm.operationType=data;
         },getAuthCode(){
             const TIME_COUNT = 120;
             if (!this.timer) {

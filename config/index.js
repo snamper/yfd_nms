@@ -26,8 +26,8 @@ module.exports = {
             }
         },
         '/ums/':{
-            target:'http://192.168.10.105:8080/ums/',
-            // target:'http://192.168.10.162:10022/ums/',
+            // target:'http://192.168.10.105:8080/ums/',
+            target:'http://192.168.10.17:10022/ums/',
             changeOrigin:true,
             pathRewrite:{
                 '^/ums' : '/' 
@@ -35,7 +35,7 @@ module.exports = {
         },
         '/nms/':{
             // target:'http://192.168.10.105:8080/nms/',
-            target:'http://192.168.10.17:8080/nms/',
+            target:'http://192.168.10.17:10023/nms/',
             changeOrigin:true,
             pathRewrite:{
                 '^/nms' : '/'

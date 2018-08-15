@@ -14,20 +14,18 @@
                         <el-date-picker
                         v-model="startTime"
                         size="small"
-                        type="datetime"
+                        type="date"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsS"
-                        @change="changeTimeS"
                         placeholder="选择开始时间">
                         </el-date-picker><el-date-picker
                         v-model="endTime"
                         size="small"
-                        type="datetime"
+                        type="date"
                         :clearable=false                                        
                         :editable=false                    
                         :picker-options="pickerOptionsE"
-                        @change="changeTimeE"                           
                         placeholder="选择结束时间">
                         </el-date-picker>
                     </div>
@@ -295,20 +293,7 @@ export default{
             vm.off.sync=true;
             vm.off.setSync=false;
         },search(p){//查询
-            let vm=this,
-            sy=new Date(vm.startTime).getFullYear(),
-            sm=new Date(vm.startTime).getMonth(),
-            ey=new Date(vm.endTime).getFullYear(),
-            em=new Date(vm.endTime).getMonth();
-            if(sy!=ey||sm!=em){
-                layer.open({
-                    content:'开始和结束日期不能跨月',
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
+            let vm=this;
             if(new Date(vm.startTime).getTime()>new Date(vm.endTime).getTime()){
                 layer.open({
                     content:'开始时间必须小于结束时间',
@@ -316,6 +301,7 @@ export default{
                     time: 2,
                     msgSkin:'error',
                 });
+                vm.searchList="";
                 return false;
             }
             if(vm.phone!=''){

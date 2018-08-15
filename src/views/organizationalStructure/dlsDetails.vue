@@ -171,9 +171,9 @@
             <div class="listTitleFoot" style="height:20px;">
                 <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{typeTitle}}</p>
             </div>
-            <div class="listTitleFoot">
+            <!-- <div class="listTitleFoot">
                 <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
-            </div> 
+            </div>  -->
             <div class="listTitleFoot">
                 <p style="float:right">
                     <button class="buttonModifyYes"  @click="btnYes()">确定</button>
@@ -209,9 +209,7 @@ export default{
             radio:'1,2',
             checked:true,
             checked2:true,
-            reason:'',//操作原因
-            authCode:"",//验证码
-            doUrl:'',//强制离线，加入黑名单，解除黑名单，删除
+            doUrl:'',
             addUsersData:'',//添加员工信息
             searchType:0,//
             searchDepartId:'',//部门Id
@@ -286,7 +284,7 @@ export default{
             this.addUsersData=data;
             vm.layerType="add";
         },doFunction(val){
-            let vm=this,data={"operateUserIds":[]},url='',che='';vm.off.modify=false;
+            let vm=this,url='',che='';vm.off.modify=false;
             for(let v in vm.lists){
                 if(vm.lists[v].ischecked==true){
                     if(vm.lists[v].userRole==3&&val=="delete"){
@@ -299,7 +297,6 @@ export default{
                         vm.off.modify=false;
                         return false;
                     }
-                    data.operateUserIds.push(vm.lists[v].username);
                     che+=vm.lists[v].username+',';
                     vm.off.modify=true;
                 }
@@ -409,7 +406,6 @@ export default{
                     vm.$set(vm.$parent.detailsList[v],'ischecked',false);
                 }
                 vm.off.modify=false;
-                vm.reason="";
             }).catch(e=>errorDeal(e));
         },getStaffDetails(p){//员工详情
             let data={},url='/ums/w/user/getUserDetail',vm=this
@@ -431,20 +427,9 @@ export default{
                     data.operateUserIds.push(vm.lists[v].userId)
                 }
             }
-            if(vm.reason==""){
-                layer.open({
-                    content:'请输入操作原因',
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
-            data.reason=vm.reason;//操作原因
             vm.off.layer=true;
             vm.layerType="operation";
             vm.operationJson=data;
-
         },getDateTime(v){
             return getDateTime(v);
         },deleteLine(v){

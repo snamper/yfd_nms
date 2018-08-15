@@ -25,9 +25,10 @@
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                 <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                 <el-col :xs="19" :sm="18" :md="12" :lg="16" :xl="16">
-                    <el-radio v-model="radio"  label="1,2">全部</el-radio>
+                    <el-radio v-model="radio"  label="1,2,3,4">全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
                     <el-radio v-model="radio"  label="2" >黑名单</el-radio>
+                    <el-radio v-model="radio"  label="3,4" >注销</el-radio>
                 </el-col>
             </div></el-col>
         </el-row>
@@ -135,7 +136,7 @@ export default{
             detailsList:'',
             name:'',
             phone:'',
-            radio:'1,2',
+            radio:'1,2,3,4',
             pa:'',
             searchData:'',//查询人
             searchDetailsYfdData:'',

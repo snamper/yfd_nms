@@ -218,7 +218,7 @@ export const translateData=(type,v)=> {
             return val[v-1];
         break
         case 'userState':
-            val=["正常","黑名单","注销"]
+            val=["正常","黑名单","注销","注销"]
             return val[v-1];
         break
     }
@@ -309,6 +309,23 @@ export const initTime=(t,d)=>{
     let endTime=new Date(Next).getTime()-1000;
     vm.optime=[startTime,endTime];
 }
+/**
+ * 对象深拷贝
+ */
+export const cloneObj =  (obj) => { 
+    if(obj === null) return null 
+    if(typeof obj !== 'object') return obj;
+    if(obj.constructor===Date) return new Date(obj); 
+    if(obj.constructor === RegExp) return new RegExp(obj);
+    var newObj = new obj.constructor ();  //保持继承链
+    for (var key in obj) {
+        if (obj.hasOwnProperty(key)) {   //不遍历其原型链上的属性
+            var val = obj[key];
+            newObj[key] = typeof val === 'object' ? arguments.callee(val) : val; // 使用arguments.callee解除与函数名的耦合
+        }
+    }  
+    return newObj;  
+}; 
 
 
 

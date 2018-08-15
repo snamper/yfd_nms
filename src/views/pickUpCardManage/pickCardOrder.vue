@@ -87,17 +87,28 @@
                 <el-row>
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">支付方式：</div></el-col>
-                        <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
+                        <el-col :xs="18" :sm="16" :md="17" :lg="20" :xl="18">
                             <el-radio v-model="payMent"  label="0">全部</el-radio>
-                            <el-radio v-model="payMent"  label="2">微信支付</el-radio>
-                            <el-radio v-model="payMent"  label="1">支付宝支付</el-radio>
+                            <el-radio v-model="payMent"  label="2">微信</el-radio>
+                            <el-radio v-model="payMent"  label="1">支付宝</el-radio>
                             <el-radio v-model="payMent"  label="4">线下支付</el-radio>
+                            <el-radio v-model="payMent"  label="5">支付宝（威富通）</el-radio>
+                            <el-radio v-model="payMent"  label="6">微信（威富通）</el-radio>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
                         <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">商户名称：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="dealerName" size="small" maxlength=20 placeholder="请输入查询的商户名称"></el-input>
+                        </el-col>
+                        <el-col :span="2"></el-col> 
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">用户号码：</div></el-col>
+                        <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
+                            <el-input v-model="userPhone" size="small" maxlength=11 placeholder="请输入查询的用户手机号码"></el-input>
                         </el-col>
                         <el-col :span="2"></el-col> 
                     </el-col>
@@ -113,7 +124,7 @@
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
                             <tr>
-                                <td colspan="12">
+                                <td colspan="13">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:5px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
                                         <label style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" @click="downLoad" class="btnDownload">导出</button></label>
@@ -129,6 +140,7 @@
                                 <!-- <td>售卖方式</td> <td>购买数量（个）</td> -->
                                 <td>付款金额(元)</td>
                                 <td>操作人号码</td>
+                                <td>用户号码</td>
                                 <td>售卖方式</td>
                                 <td>付款方式</td>
                                 <td>订单状态</td>
@@ -168,6 +180,7 @@
                                     </div>
                                 </td> -->
                                 <td>{{v.operatorPhone||'--'}}</td>
+                                <td>{{v.userPhone||'--'}}</td>
                                 <td>
                                     <!-- <span v-for="(value,index) in v.productList" v-if="value.splitFlag==2&&v.productList.length==1">拆包</span> -->
                                     <!-- <span v-for="(value,index) in v.productList" v-if="value.splitFlag==1&&v.productList.length==1">整包</span> -->
@@ -231,7 +244,7 @@
   	</section>
 </template>
 <script>
-import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc,createDownload,getStore } from "../../config/utils";
+import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc,createDownload,getStore,cloneObj } from "../../config/utils";
 import { requestPickupOrder,requestgetOrderSplitNumbers } from "../../config/service.js";
 import { disabledDate } from "../../config/utilsTimeSelect";
 import orderDetails from "./orderDetails";
@@ -258,6 +271,7 @@ export default {
             startTime:'',
             endTime:'',
             downLoadJson:"",
+            userPhone:"",
             off: {
                 details:false,
                 layer:false,
@@ -356,8 +370,9 @@ export default {
                 "paymentType":vm.payMent,
                 "pageNum": index || 1,
                 "pageSize": 10,
+                "userPhone":vm.userPhone,
             }
-            vm.downLoadJson=data;
+            vm.downLoadJson=cloneObj(data);
             requestPickupOrder(data)
             .then((data)=>{
                 if(data.code==200){
@@ -381,7 +396,13 @@ export default {
                     url+=key+'='+json[key]+'&';    
                 })
                 url = url.substring(0, url.length-1);
-                window.location.href=url;
+                // window.location.href=url;
+                url = url.substring(0, url.length-1);
+                var elemIF = document.createElement("iframe");
+                elemIF.src=url;
+                var ee = elemIF.contentWindow;
+                elemIF.style.display = "none";
+                document.body.appendChild(elemIF);
         },details(v){
             let vm=this;
             vm.off.details=true;
@@ -462,6 +483,8 @@ export default {
             return getDateTime(e)
         },trimFunc(v){
             return trimFunc(v);
+        },cloneObj(v){
+            return cloneObj(v);
         }
     }
 };

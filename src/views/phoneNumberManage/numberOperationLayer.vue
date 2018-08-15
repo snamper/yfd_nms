@@ -123,7 +123,6 @@ export default{
                         });
                     }
                 }).then(()=>{
-                    vm.reason="";             
                     for(let v=0;v<vm.searchList.length;v++){
                         vm.$set(vm.searchList[v],'ischecked',false);
                     }}
@@ -139,6 +138,7 @@ export default{
                     return false;
                 }
                 vm.$parent.layerType1="";
+                vm.$parent.off.layer1=true;
                 vm.off.numberSection=true;
             }else if(v===3){
                 let json = {
