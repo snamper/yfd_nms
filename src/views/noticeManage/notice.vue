@@ -15,7 +15,7 @@
                             <el-radio v-model="radio" label="1">全部</el-radio>
                             <el-radio v-model="radio" label="2">店长</el-radio>
                             <el-radio v-model="radio" label="3">手动输入</el-radio>
-                            <label class="u-label-upFiles" for="txt"><input type="file" ref="txt" name="txt" id="txt" accept="doc/*" @change="upFiles()" class="u-button-upFiles"/>上传</label>
+                            <label class="u-label-upFiles" for="txt"><input type="file" ref="txt" name="txt" id="txt" accept="doc/*" @click="upFiles()" class="u-button-upFiles"/>上传</label>
                         </span>
                     </el-col>   
                     <el-col :xs="24" :sm="14" :md="16" :lg="16" :xl="18">
@@ -497,6 +497,7 @@ export default {
                 var reader = new FileReader();
                 reader.onload = function() {
                     vm.input=this.result;
+                    // vm.textarea3=this.result;
                     vm.radio="3";
                 }
                 reader.readAsText(file);

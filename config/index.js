@@ -11,8 +11,8 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/nus/':{
-            // target:'http://192.168.10.105:8080',
-            target:'http://192.168.10.162:10022',
+            target:'http://192.168.10.105:8080',
+            // target:'http://192.168.10.162:10022',
             changeOrigin:true,
             pathRewrite:{
                 '^/nus/':'/nus/'
@@ -27,16 +27,16 @@ module.exports = {
             }
         },
         '/ums/':{
-            // target:'http://192.168.10.105:8080',
-            target:'http://192.168.10.17:10022',
+            target:'http://192.168.10.105:8080',
+            // target:'http://192.168.10.17:10022',
             changeOrigin:true,
             pathRewrite:{
                 '^/ums' : '/ums/' 
             }
         },
         '/nms/':{
-            // target:'http://192.168.10.105:8080',
-            target:'http://192.168.10.17:10023',
+            target:'http://192.168.10.105:8080',
+            // target:'http://192.168.10.17:10023',
             changeOrigin:true,
             pathRewrite:{
                 '^/nms/' : '/nms/'
@@ -56,15 +56,7 @@ module.exports = {
             pathRewrite:{
                 '^/ors' : ''
             }
-        },
-        // '/nms/':{
-        //     target:'http://192.168.10.162:10023/nms/',
-        //     changeOrigin:true,
-        //     pathRewrite:{
-        //         '/nms' : '/'
-        //     }
-        // },
-       
+        }
     },
     // Various Dev Server settings
     host:"192.168.10.66",

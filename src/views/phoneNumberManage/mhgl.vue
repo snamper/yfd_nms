@@ -212,25 +212,25 @@
                 </div>
             </div>  
             <!-- 操作 -->
-            <div v-if="off.modify==true">
+            <!-- <div v-if="off.modify==true">
                 <div class="borderTopModifyStaffState"></div>
                 <div class="listTitleFoot">
                     <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{typeTitle}}</p>
                 </div>
-                <!-- <div class="listTitleFoot">
+                <div class="listTitleFoot">
                     <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
-                </div>  -->
-                <!-- <div class="listTitleFoot">
+                </div> 
+                <div class="listTitleFoot">
                     <p style="text-align:right">验证号码:{{user.phone}}
                         <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
                         <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
                     </p> 
-                </div> -->
+                </div>
                 <div style="height:35px" class="listTitleFoot">
                     <p style="float:right">
                         <button class="buttonModifyYes"   @click="btnYes()">确定</button>
                     </p>
-                </div>
+                </div> -->
             </div> 
         </div>
         <!-- 号码上架下架同步 -->
@@ -275,8 +275,8 @@ export default{
             btnDisabled:false,
             count:"点击获取验证码",
             timer:null,
-            checkAll: false,
-            isIndeterminate:true,
+            checkAll: true,
+            isIndeterminate:false,
             total:"",//号包总数
             listSwitch:{"allDetails":"","liang":"","pu":""},//详情页面开关
             searchResData:{},//号包详情查询结果
@@ -418,7 +418,7 @@ export default{
             data.searchProductId=v.productId;
             vm.searchProductListId=v.productId;
             data.sessionType="2";
-            let load=Loading.service(options);
+            // let load=Loading.service(options);
             let p1 = new Promise((resolve,reject)=>{
                 if(v.productType==1||v.productType==2){
                     url="/nms/w/number/getProductCuteNumbers";
@@ -487,10 +487,10 @@ export default{
             }})
             .then(Promise.all([p1,p2])
             .then((result)=>{
-                load.close();
+                // load.close();
                 this.off.notCardDetails=false;
                 this.off.cardDetails=true;
-            })).catch(e=>errorDeal(e,()=>{load.close()}));
+            })).catch(e=>errorDeal(e));
         },
         openSet(){//同步设置
             let vm=this;
@@ -581,7 +581,7 @@ export default{
             }else if(isInArray=='3'){
                 vm.off.modify='stop3';
             }else{
-                vm.off.modify=true;
+                vm.off.modify='1';
             }
             if(vm.off.modify=='stop1'){
                 layer.open({
@@ -626,9 +626,10 @@ export default{
                 vm.operationType="SJ";
                 this.typeTitle="上架";
             } 
-           setTimeout(()=>{
-               this.funScrollTop()
-           },50)
+            vm.btnYes();
+        //    setTimeout(()=>{
+        //        this.funScrollTop()
+        //    },50)
         },
         splitNumber(v){
             let vm=this,

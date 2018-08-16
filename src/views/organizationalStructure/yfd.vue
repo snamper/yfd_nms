@@ -166,25 +166,25 @@
                 </el-col>
                 </el-row>
             </div>
-            <div v-if="off.modify" class="modifyStaffStateDiv">
+            <!-- <div v-if="off.modify" class="modifyStaffStateDiv">
                 <div class="borderTopModifyStaffState"></div>
                 <div class="listTitleFoot" style="height:20px;">
                     <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{typeTitle}}</p>
                 </div>
-                <!-- <div class="listTitleFoot">
+                <div class="listTitleFoot">
                     <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
-                </div>  -->
-                <!-- <div class="listTitleFoot tar">
+                </div> 
+                <div class="listTitleFoot tar">
                     验证号码 : {{user.phone}}
                     <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
                     <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
-                </div>  -->
+                </div> 
                 <div style="height:35px" class="listTitleFoot">
                     <p style="float:right">
                         <button class="buttonModifyYes"   @click="btnYes()">确定</button>
                     </p>
                 </div>
-        </div>
+            </div> -->
         </div>
       </div>
       </div>
@@ -276,8 +276,7 @@ export default{
             this.off.sync=true;
             this.layerType='operationStaff';
             this.addUsersData=data;
-        },
-        search(p){//查询
+        },search(p){//查询
             let data={},url='/ums/w/user/getDepartDetail',vm=this;
             vm.pa=p||1;
             vm.currentPage=p||1;
@@ -313,7 +312,6 @@ export default{
                 for(let v=0;v<vm.detailsList.length;v++){
                     vm.$set(vm.detailsList[v],'ischecked',false);
                 }
-                this.resetTimer()
             }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
         },getStaffDetails(p){
             let data={},url='/ums/w/user/getUserDetail',vm=this;
@@ -375,30 +373,7 @@ export default{
                 vm.operationType="SC";
             }
             vm.operationJson=data;
-            setTimeout(()=>{
-               this.funScrollTop()
-           },50)
-        },getDateTime(v){
-            return getDateTime(v);
-        },
-        funScrollTop(){
-            let domdo=document.getElementById("main");
-            let ch=document.documentElement.clientHeight||document.body.clientHeight||window.innerHeight;
-            let oh=domdo.scrollHeight;
-            let och=oh-ch,
-                och1=80;
-            let st=document.getElementById("home").scrollTop;
-            if(st==och){
-                return false;
-            }
-            let timer=setInterval(()=>{
-                if(och>och1){
-                    och1+=10
-                }else{
-                    clearInterval(timer)
-                }
-                document.getElementById("home").scrollTop=och1;
-            },20)
+            vm.btnYes();
         },btnYes(){
             let vm=this;
             vm.off.layer=true;
@@ -409,52 +384,10 @@ export default{
                     data.operateUserIds.push(vm.detailsList[v].userId)
                 }
             }
-        },getAuthCode(){
-            const TIME_COUNT = 120;
-            if (!this.timer) {
-                this.count = TIME_COUNT;
-                this.show = false;
-                this.timer = setInterval(() => {
-                    if (this.count > 0 && this.count <= TIME_COUNT) {
-                        this.btnDisabled=true;
-                        this.count--;
-                    } else {
-                        this.btnDisabled=false;                        
-                        this.show = true;
-                        this.count="点击获取验证码"                    
-                        clearInterval(this.timer);
-                        this.timer = null;
-                    }
-                }, 1000)
-            }
-            let data={},url='/ums/w/user/getAuthCode',vm=this;
-            data={"phone":vm.user.phone}
-            requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    layer.open({
-                        content:'验证码发送成功',
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                }else{
-                    layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }  
-            }).catch(e=>errorDeal(e));
-        },resetTimer(){
-            this.btnDisabled=false;                        
-            this.show = true;
-            this.count="点击获取验证码"                    
-            clearInterval(this.timer);
-            this.timer = null;
         },translateData(v,i){
             return translateData(v,i);
+        },getDateTime(v){
+            return getDateTime(v);
         }
 	}
 }

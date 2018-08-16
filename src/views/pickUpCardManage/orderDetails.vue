@@ -147,7 +147,7 @@ export default{
             if(p=='n'){//普号数
                 if(v.productType==1){//整号包
                     return v.normalTotal;
-                }else if(v.productType==1){//靓号包
+                }else if(v.productType==2){//靓号包
                     return 0;
                 }else if(v.productType==3){//普号包
                     return v.total;
@@ -162,7 +162,7 @@ export default{
             }else if(p=='c'){//靓号数
                 if(v.productType==1){//整号包
                     return v.cuteTotal;
-                }else if(v.productType==1){//靓号包
+                }else if(v.productType==2){//靓号包
                     return v.total;
                 }else if(v.productType==3){//普号包
                     return 0;
@@ -177,7 +177,7 @@ export default{
             }else if(p=='cn'){//总数
                 if(v.productType==1){//整号包
                     return v.cuteTotal+v.normalTotal;
-                }else if(v.productType==1){//靓号包
+                }else if(v.productType==2){//靓号包
                     return v.total;
                 }else if(v.productType==3){//普号包
                     return v.total;
