@@ -149,7 +149,7 @@
                             </tr>
                             <tr v-for="(v,i) of searchResult" :key="i">
                                 <td>
-                                    {{((pa-1)*10+(i+1))}}
+                                    {{((pa-1)*15+(i+1))}}
                                 </td>
                                 <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                                 <td > {{v.createTime.split(' ')[0]}}</td>
@@ -227,7 +227,7 @@
                                 <div class="grid-content bg-purple">
                                     <el-pagination
                                         layout="prev, pager, next"
-                                        :page-size="10"
+                                        :page-size="15"
                                         @current-change="search"
                                         :current-page.sync="currentPage"                                                        
                                         :total="form.page">
@@ -369,7 +369,7 @@ export default {
                 "operatorPhone":trimFunc(vm.operator),
                 "paymentType":vm.payMent,
                 "pageNum": index || 1,
-                "pageSize": 10,
+                "pageSize": 15,
                 "userPhone":vm.userPhone,
             }
             vm.downLoadJson=cloneObj(data);

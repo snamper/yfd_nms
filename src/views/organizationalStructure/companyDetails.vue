@@ -54,7 +54,7 @@
                 </tr>
                 <tr>
                     <td>代理商名称 : </td>
-                    <td>{{lists.dealerName||'--'}}</td>
+                    <td>{{lists.dealerIdName||'--'}}</td>
                 </tr>
                 <tr>
                     <td>代理商ID : </td>

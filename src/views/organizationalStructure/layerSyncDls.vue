@@ -122,7 +122,7 @@ export default {
             vm.off.syncNumberSection = true;
             vm.off.set = false;
         }
-        var st = vm.$parent.syncStartTime;
+        var st = vm.$parent.nextSyncTime;
         vm.date=getDateTime(st)[8];
         vm.time=getDateTime(st)[7];
     },

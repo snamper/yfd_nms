@@ -139,7 +139,7 @@
                                 <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
                                     <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
                                 </td>
-                                <td> {{((pa-1)*10+(i+1))}} </td>
+                                <td> {{((pa-1)*15+(i+1))}} </td>
                                 <td >
                                     <a class="textDec" @click="getDetails(v)">{{v.productName}}
                                         <span v-if="v.productType==1">({{v.normalTotal+v.cuteTotal}})</span>
@@ -198,7 +198,7 @@
                         <el-col :span="12"><div class="grid-content bg-purple">
                             <el-pagination
                             layout="prev, pager, next"
-                            :page-size="10"
+                            :page-size="15"
                             @current-change="search"
                             :current-page.sync="currentPage"                            
                             :total="form.page">
@@ -375,7 +375,7 @@ export default{
                 "productType":vm.cardType,
                 "productState":vm.nowStatus,
                 "sessionType":2,
-                "pageSize":10
+                "pageSize":15
                 ,"pageNum":p||1}
             vm.searchData=data;
             requestMethod(data,url)

@@ -123,7 +123,7 @@
                                 <td>用户姓名</td>
                             </tr>
                             <tr v-for="(v,i) of searchResult" :key="i">
-                                <td>{{((pa-1)*10+(i+1))}}</td>
+                                <td>{{((pa-1)*15+(i+1))}}</td>
                                 <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                                 <td>{{v.phone||'--'}}</td>
                                 <td>{{v.operatorPhone||'--'}}</td>
@@ -146,7 +146,7 @@
                                 <div class="grid-content bg-purple">
                                     <el-pagination
                                         layout="prev, pager, next"
-                                        :page-size="10"
+                                        :page-size="15"
                                         @current-change="search"
                                         :current-page.sync="currentPage"                                                        
                                         :total="form.page">
@@ -257,7 +257,7 @@ export default {
                 data={
                     "sysOrderId":trimFunc(vm.orderId),
                      "pageNum": index || 1,
-                    "pageSize": 10
+                    "pageSize": 15
                 }
             }else if(vm.form.searchKind==2){
                 if(vm.openNum==''){
@@ -272,7 +272,7 @@ export default {
                 data={
                     "openCardPhone":trimFunc(vm.openNum),
                     "pageNum": index || 1,
-                    "pageSize": 10
+                    "pageSize": 15
                 }
             }else if(vm.form.searchKind==3){
                 data={
@@ -283,7 +283,7 @@ export default {
                     "operatorName": trimFunc(vm.operator),
                     "dealerName": trimFunc(vm.dealerName),
                     "pageNum": index || 1,
-                    "pageSize": 10,
+                    "pageSize": 15,
                 }
             } 
             vm.searchJson=data;

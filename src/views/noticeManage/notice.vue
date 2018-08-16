@@ -22,7 +22,7 @@
                         <el-col>
                             <el-input :disabled="radio==1||radio==2" v-model="input" size="small" placeholder="输入发送对象手机号码,可输入多个号码,以逗号隔开"></el-input>
                         </el-col>
-                    </el-col>   
+                    </el-col>  
                 </el-row>
                 <el-row :gutter="10">
                     <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2" class="w70"><span>消息内容 :</span></el-col>

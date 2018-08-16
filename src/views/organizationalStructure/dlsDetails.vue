@@ -166,20 +166,20 @@
             </el-row>
         </div>
         <!-- 代理商员工操作模块 -->
-        <div v-if="off.modify" class="modifyStaffStateDiv">
+        <!-- <div v-if="off.modify" class="modifyStaffStateDiv">
             <div class="borderTopModifyStaffState"></div>
             <div class="listTitleFoot" style="height:20px;">
                 <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{typeTitle}}</p>
             </div>
-            <!-- <div class="listTitleFoot">
+            <div class="listTitleFoot">
                 <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
-            </div>  -->
+            </div> 
             <div class="listTitleFoot">
                 <p style="float:right">
                     <button class="buttonModifyYes"  @click="btnYes()">确定</button>
                 </p>
             </div>
-       </div>
+        </div> -->
       </div> 
       <!-- 代理商员工个人详情和编辑模块 -->
       <dlsStaff v-if="off.staffDetails" :forms="searchRes"></dlsStaff>
@@ -336,6 +336,7 @@ export default{
                 vm.typeTitle=`删除(${che})`;
                 vm.operationType="SC";
             }
+            vm.btnYes();
         },doFilter(s){//状态过滤操作
             if(s=="all"){
                 for(let v=0;v<this.lists.length;v++){

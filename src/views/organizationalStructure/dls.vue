@@ -94,7 +94,7 @@
                                     <span class="greyFont">最后同步成功时间 ：</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
                                 </div></el-col>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
-                                    <span class="greyFont">下次同步成功时间 ：</span><span>{{getDateTime()[6]||'--'}}</span>
+                                    <span class="greyFont">下次同步成功时间 ：</span><span>{{getDateTime(nextSyncTime)[6]||'--'}}</span>
                                 </div></el-col>
                                 <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
                                     <span class="greyFont">同步间隔时间 ：<label v-if="timeCell">{{timeCell}}小时</label>
@@ -198,7 +198,7 @@ export default{
     data (){
         return {
             syncLastTime:'',//最后一次同步成功时间
-            syncStartTime:'',//下次同步成功时间
+            nextSyncTime:'',//下次同步成功时间
             currentPage:0,//当前页
             timeCell:'',//时间间隔
             hesdUserName:"",
@@ -390,7 +390,7 @@ export default{
             let data={};
             requestgetSyncInfo(data)
             .then((data)=>{
-                vm.syncStartTime=data.data.syncStartTime;
+                vm.nextSyncTime=data.data.nextSyncTime;
                 vm.timeCell=data.data.syncInterval;
             }).catch(e=>errorDeal(e));
         },getDateTime(v){
