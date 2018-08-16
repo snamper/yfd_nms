@@ -15,14 +15,29 @@
                             <el-radio v-model="radio" label="1">全部</el-radio>
                             <el-radio v-model="radio" label="2">店长</el-radio>
                             <el-radio v-model="radio" label="3">手动输入</el-radio>
-                            <label class="u-label-upFiles" for="txt"><input type="file" ref="txt" name="txt" id="txt" accept="doc/*" @click="upFiles()" class="u-button-upFiles"/>上传</label>
+                            <label class="u-label-upFiles" for="txt"><input type="file" ref="txt" name="txt" id="txt" accept="txt/*" @change="upFiles()" class="u-button-upFiles"/>上传</label>
                         </span>
                     </el-col>   
-                    <el-col :xs="24" :sm="14" :md="16" :lg="16" :xl="18">
+                    <!-- <el-col :xs="24" :sm="14" :md="16" :lg="16" :xl="18">
                         <el-col>
                             <el-input :disabled="radio==1||radio==2" v-model="input" size="small" placeholder="输入发送对象手机号码,可输入多个号码,以逗号隔开"></el-input>
                         </el-col>
-                    </el-col>  
+                    </el-col>   -->
+                </el-row>
+                <el-row :gutter="10" style="margin-bottom:10px;">
+                    <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2" class="w70"><span>&nbsp;</span></el-col>
+                    <p class="textareaBox">
+                        <el-col :xs="18" :sm="20" :md="21" :lg="22" :xl="22" >
+                        <el-input
+                            type="textarea"
+                            rows=3
+                            resize=none
+                            placeholder="输入发送对象手机号码,可输入多个号码,以逗号隔开"
+                            maxlength="140"
+                            v-model="input">
+                        </el-input>
+                        </el-col>   
+                    </p>
                 </el-row>
                 <el-row :gutter="10">
                     <el-col :xs="6" :sm="4" :md="3" :lg="2" :xl="2" class="w70"><span>消息内容 :</span></el-col>
@@ -89,7 +104,7 @@
                                 <span>{{imgFileName||'(注:上传图片大小100k内)'}}</span>
                             </a>
                             <img v-bind:src="valuesrc" :class="upLoad==true?'upS':'upF'" v-if="off.imgIcon">
-                        </el-col>                     -->
+                        </el-col> -->
                     </el-col>   
                 </el-row>
                 <el-row :gutter="10">
@@ -474,15 +489,9 @@ export default {
         },
         goBack(){
             this.addMsg=true;
-        },
-        clickImg(e) {
-            this.showImg = true;// 获取当前图片地址
-            this.imgSrc = e.currentTarget.src;
-        },
-        viewImg(){
+        },viewImg(){
             this.showImg = false;
-        },
-        imgBigFunction(e){
+        },imgBigFunction(e){
             let vm=this,imgSrc=e.annex[0].base64String;
             for(let i in vm.$refs.imgBigFunction){
                 if(vm.$refs.imgBigFunction[i].src==imgSrc){
@@ -495,11 +504,10 @@ export default {
             if (window.FileReader) {
                 var file = this.$refs.txt.files[0];
                 var reader = new FileReader();
-                reader.onload = function() {
+                reader.addEventListener("loadend", function() {
                     vm.input=this.result;
-                    // vm.textarea3=this.result;
                     vm.radio="3";
-                }
+                });
                 reader.readAsText(file);
             } 
             //支持IE 7 8 9 10

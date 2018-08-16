@@ -438,7 +438,7 @@ export default{
                         }
                     }).catch((e)=>{
                         layer.open({
-                            content:e||e.msg,
+                            content:e.msg||e,
                             skin: 'msg',
                             time: 2,
                             msgSkin:'error',
@@ -468,7 +468,7 @@ export default{
                         }
                     }).catch((e)=>{
                         layer.open({
-                            content:e,
+                            content:e.msg||e,
                             skin: 'msg',
                             time: 2,
                             msgSkin:'error',
@@ -485,12 +485,13 @@ export default{
                     this.$set(vm.listSwitch,'allDetails',true)
                     vm.searchResData=data.data
             }})
-            .then(Promise.all([p1,p2])
+            .then(Promise.all([p1,p2]))
             .then((result)=>{
                 // load.close();
                 this.off.notCardDetails=false;
                 this.off.cardDetails=true;
-            })).catch(e=>errorDeal(e));
+            })
+            .catch(e=>errorDeal(e));
         },
         openSet(){//同步设置
             let vm=this;
