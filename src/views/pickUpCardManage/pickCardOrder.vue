@@ -203,6 +203,7 @@
                                     <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
                                     <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
                                     <span class="c-green" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==2">已完成</span>
+                                    <span class="c-red" v-if="v.syncFlag==2">已退卡</span>
                                 </td>
                                 <td>
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a> 
@@ -212,6 +213,7 @@
                                     <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
                                     <el-button v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1&&v.paymentType==4" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.syncFlag!=2" class="small-btn" style="margin:5px;" @click="returnGoods(v)">退款</el-button>
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
@@ -245,7 +247,7 @@
 </template>
 <script>
 import { disableTimeRange6,getTimeFunction,errorDeal,getDateTime,trimFunc,createDownload,getStore,cloneObj } from "../../config/utils";
-import { requestPickupOrder,requestgetOrderSplitNumbers } from "../../config/service.js";
+import { requestPickupOrder } from "../../config/service.js";
 import { disabledDate } from "../../config/utilsTimeSelect";
 import orderDetails from "./orderDetails";
 import layerConfirm from "../../components/layerConfirm";
@@ -441,6 +443,12 @@ export default {
         confirmPayMoney(v){
             let vm=this;
             vm.layerType="payMent";
+            vm.logistics=v;
+            vm.off.layer=true;
+        },
+        returnGoods(v){
+            let vm=this;
+            vm.layerType="returnGoods";
             vm.logistics=v;
             vm.off.layer=true;
         },

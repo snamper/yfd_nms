@@ -158,12 +158,12 @@
             </div>
         </div>
         <div v-if="addMsg==false">
+            <div class="listTitleFoot">
+                <el-row>
+                    <el-col :span="24"><div class="grid-content bg-purple">员工列表<span v-if="form.page>0" class="fontWeight greyFont"> ({{userTotal}})</span><a href="javascript:void(0)" class="fr" style="line-height:45px" @click="goBack"><img style="width:30px;height:30px;vertical-align:middle" src="../../assets/images/backup.png" alt=""></a></div></el-col>
+                </el-row>        
+            </div>
             <div v-if="usersInfoArray.length>0">    
-                <div class="listTitleFoot">
-                    <el-row>
-                        <el-col :span="24"><div class="grid-content bg-purple">员工列表<span v-if="form.page>0" class="fontWeight greyFont"> ({{userTotal}})</span><a href="javascript:void(0)" class="fr" @click="goBack">返回</a></div></el-col>
-                    </el-row>        
-                </div>
                 <div class="detailsListDiv">
                     <table class="searchTab" style="width:100%;height:100%;">
                         <tr>

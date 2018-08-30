@@ -50,7 +50,7 @@ export default function service (url, params,selfLoad){
 			background: 'rgba(0, 0, 0, 0)'
 		});
 	}
-	if(url.indexOf('login')==-1&&url.indexOf('getAuthCode')==-1){
+	if(url.indexOf('login')==-1&&url.indexOf('getMngAuthCode')==-1){
 		let userInfo=getStore('YFD_NMS_INFO');
 		Object.assign(userInfo,params);
 		params=userInfo;

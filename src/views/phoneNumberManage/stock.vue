@@ -1,0 +1,342 @@
+<template>
+    <section ref="sec">
+        <div v-if="!off.numberDetails">
+            <!-- 查询模块 -->
+            <div class="dls greyFont">
+                <el-row>
+                    <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
+                </el-row>
+                <el-row>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                        <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
+                        <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+                            <el-input v-model="productName" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
+                        </el-col>
+                    </div></el-col>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                        <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">归属地：</div></el-col>
+                        <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+                            <el-select size="small" style="width:100%" v-model="value" placeholder="请选择">
+                                <el-option
+                                v-for="item in options"
+                                :key="item.areaPinYing"
+                                :label="item.areaCn"
+                                :value="item.areaCn"
+                                size="small">
+                                </el-option>
+                            </el-select>
+                        </el-col>
+                    </div></el-col>
+                </el-row>
+                <el-row class="marginTop">
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                        <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">面值：</div></el-col>
+                        <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+                            <el-radio v-model="cardType"  label="0">0</el-radio>
+                            <el-radio v-model="cardType"  label="10">10</el-radio>
+                            <el-radio v-model="cardType"  label="20">20</el-radio>
+                            <el-radio v-model="cardType"  label="30">30</el-radio>
+                            <el-radio v-model="cardType"  label="50">50</el-radio>
+                            <el-radio v-model="cardType"  label="100">100</el-radio>
+                        </el-col>
+                    </div></el-col>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
+                        <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">套餐：</div></el-col>
+                        <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+                            <el-input v-model="setMenu" size="small"  placeholder="请输入查询的套餐名称" :maxlength="11"></el-input>
+                        </el-col>
+                    </div></el-col>
+                </el-row>
+                <el-row class="marginTop">
+                        <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24"><div class="grid-content bg-purple-light">
+                        <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                        <el-col :xs="19" :sm="19" :md="19" :lg="20" :xl="20">
+                            <el-radio v-model="productStatus"  label="1,2,3,4,5,6">全部</el-radio>
+                            <el-radio v-model="productStatus"  label="1">未上架</el-radio>
+                            <el-radio v-model="productStatus"  label="2">手动上架</el-radio>
+                            <el-radio v-model="productStatus"  label="3">手动下架</el-radio>
+                            <el-radio v-model="productStatus"  label="4">系统下架</el-radio>
+                            <el-radio v-model="productStatus"  label="5">已出售</el-radio>
+                        </el-col>
+                    </div></el-col>
+                    <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24"><div class="grid-content bg-purple-light">
+                        <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">运营商：</div></el-col>
+                        <el-col :xs="19" :sm="19" :md="19" :lg="20" :xl="20">
+                            <el-radio v-model="isp"  label="1,2,3">全部</el-radio>
+                            <el-radio v-model="isp"  label="1">移动</el-radio>
+                            <el-radio v-model="isp"  label="2">联通</el-radio>
+                            <el-radio v-model="isp"  label="3">电信</el-radio>
+                        </el-col>
+                    </div></el-col>
+                </el-row>
+                <el-row class="marginTop">
+                    <el-col :span="24"><div class="grid-content bg-purple-light">
+                        <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
+                        <el-col :xs="19" :sm="21" :md="21" :lg="20" :xl="18">
+                            <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="20">
+                                <el-checkbox text-color="#48576a" style="display:inline;"  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>                       
+                                <el-checkbox-group style="display:inline" v-model="checkedCities" @change="handleCheckedCitiesChange">
+                                    <!-- <el-checkbox class="hidden-xs-and-down" v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>                        -->
+                                    <el-checkbox  v-for="city in cities1" :label="city" :key="city">{{city}}</el-checkbox>                       
+                                    <el-checkbox  v-for="city in cities2" :label="city" :key="city">{{city}}</el-checkbox>                       
+                                    <el-checkbox  v-for="city in cities3" :label="city" :key="city">{{city}}</el-checkbox>                       
+                                    <el-checkbox  v-for="city in cities4" :label="city" :key="city">{{city}}</el-checkbox>      
+                                    <el-checkbox  v-for="city in cities5" :label="city" :key="city">{{city}}</el-checkbox>      
+                                    <el-checkbox  v-for="city in cities6" :label="city" :key="city">{{city}}</el-checkbox>      
+                                    <el-checkbox  v-for="city in cities7" :label="city" :key="city">{{city}}</el-checkbox>                       
+                                    <el-checkbox  v-for="city in cities8" :label="city" :key="city">{{city}}</el-checkbox>                       
+                                    <el-checkbox  v-for="city in cities9" :label="city" :key="city">{{city}}</el-checkbox>                       
+                                    <el-checkbox  v-for="city in cities10" :label="city" :key="city">{{city}}</el-checkbox>      
+                                    <el-checkbox  v-for="city in cities11" :label="city" :key="city">{{city}}</el-checkbox>      
+                                    <el-checkbox  v-for="city in cities12" :label="city" :key="city">{{city}}</el-checkbox>      
+                                </el-checkbox-group>
+                            </el-col>
+                        </el-col>
+                    </div></el-col>
+                </el-row>
+                <el-row style="text-align:center" class="marginTop">
+                    <button class="searchBtn" @click="search()">搜索</button>
+                </el-row>
+            </div> 
+            <!-- 查询结果列表 -->
+            <div v-if="searchList" class="m-searchlist-container">
+                <p class="m-searchlist-title"><span>号段列表</span><span><button>导出</button></span></p>
+                <table class="m-searchlist-table">
+                    <tr>
+                        <td>序号</td>
+                        <td>号段</td>
+                        <td>归属地</td>
+                        <td>归属品牌</td>
+                        <td>运营商</td>
+                        <td>当前状态</td>
+                        <td class="m-button-switch"><button @click="switchTypeBtn(1)" :class="off.switchType==1?'active':''">按面值</button><button @click="switchTypeBtn(2)" :class="off.switchType==2?'active':''">按套餐</button></td>
+                        <td>总数（个）</td>
+                        <td>靓号数（个）</td>
+                        <td>带4比例</td>
+                        <td>入库价格</td>
+                        <td>售出价格</td>
+                    </tr>
+                    <tr v-for="(v,i) in datalist">
+                        <td colspan="12">
+                            <table style="width:100%" class="m-searchlist-table2">
+                                <tr>
+                                    <td>{{((currentPage-1)*15+(i+1))}}</td>
+                                    <td><a href="javascript:void(0)" style="text-decoration:underline;color:#66A1DF" @click="getSectionDetails(v)">{{v.sectionId}}</a></td>
+                                    <td>{{v.area}}</td>
+                                    <td>{{translateData(4,v.brand)}}</td>
+                                    <td>{{translateData(1,v.isp)}}</td>
+                                    <td style="border-right:1px solid #E4E4E4">{{translateData(3,v.productState)}}</td>
+                                    <td><a style="text-decoration:underline" href="javascript:void(0)" @click="open(i)">
+                                        <span style="color:#66A1DF" v-if="off.tableDetails.indexOf(i)>'-1'">收起</span>
+                                        <span style="color:#66A1DF" v-if="off.tableDetails.indexOf(i)=='-1'">展开</span>
+                                    </a></td>
+                                    <td>{{v.productTotal}}</td>
+                                    <td>{{v.cuteTotal}}</td>
+                                    <td>{{v.bl}}</td>
+                                    <td>{{v.inprice}}</td>
+                                    <td>{{v.inprice}}</td>
+                                </tr>
+                                <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)!='{}'">
+                                    <td colspan="6" :rowspan="v.packageDescMap.length" style="border-right:1px solid #e4e4e4"></td>
+                                    <td colspan="6" :rowspan="v.packageDescMap.length">
+                                        <table class="m-searchlist-table3" style="width:100%">
+                                            <tr v-for="(v,x) in v.packageDescMap">
+                                                <td>{{x}}</td>
+                                                <td>{{v.productTotal}}</td>
+                                                <td>{{v.cuteTotal}}</td>
+                                                <td>{{v.inprice}}</td>
+                                                <td>{{v.outprice}}</td>
+                                                <!-- <td>{{v.ratio}}</td> -->
+                                                <td>{{v.numberWithFour}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)=='{}'"><td style="border-top:1px solid #eaeaea" colspan="12">暂无详情</td></tr>
+                                <tr v-if="off.switchType==1&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('faceValueMap')&&JSON.stringify(v.faceValueMap)!='{}'">
+                                    <td colspan="6" :rowspan="v.faceValueMap.length" style="border-right:1px solid #e4e4e4"></td>
+                                    <td colspan="6" :rowspan="v.faceValueMap.length">
+                                        <table class="m-searchlist-table3" style="width:100%">
+                                            <tr v-for="(v,x) in v.faceValueMap">
+                                                <td>{{x}}</td>
+                                                <td>{{v.productTotal}}</td>
+                                                <td>{{v.cuteTotal}}</td>
+                                                <td>{{v.inprice}}</td>
+                                                <td>{{v.outprice}}</td>
+                                                <td>{{v.numberWithFour}}</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr v-if="off.switchType==1&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('faceValueMap')&&JSON.stringify(v.faceValueMap)=='{}'">
+                                    <td colspan="6" style="border-right:1px solid #e4e4e4"></td>
+                                    <td colspan="6">
+                                        <table class="m-searchlist-table3" style="width:100%">
+                                            <tr>
+                                                <td>该号包下暂无详情数据</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <div class="listTitleFoot">
+                    <el-row>
+                        <el-col :span="12"><div class="grid-content bg-purple">
+                            <el-pagination
+                            layout="prev, pager, next"
+                            :page-size="15"
+                            @current-change="search"
+                            :current-page.sync="currentPage"                            
+                            :total="maxpage">
+                            </el-pagination>
+                        </div></el-col>
+                    </el-row>
+                </div> 
+            </div>   
+        </div> 
+        <stock-details :faceValueDetails="faceValueDetails" :thousandDetails="thousandDetails" v-if="off.numberDetails"></stock-details>
+    </section>
+</template>
+<script>
+import 'element-ui/lib/theme-chalk/display.css';
+import { Loading } from 'element-ui';
+import { getDateTime,errorDeal,translateData } from "../../config/utils.js";
+import { getNumberStorage,getCityList,getNumberStorageThousand } from "../../config/service.js"; 
+import stockDetails from './stockDetails.vue';
+const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
+    cityOptions1=['远特'],
+    cityOptions2=['蜗牛'],
+    cityOptions3=['迪信通'],
+    cityOptions4=['极信'],
+    cityOptions5=['小米'],
+    cityOptions6=['海航'],
+    cityOptions7=['乐语'],
+    cityOptions8=['苏宁互联'],
+    cityOptions9=['国美'],
+    cityOptions10=['联想'],
+    cityOptions11=['蓝猫移动'],
+    cityOptions12=['长城'];
+export default{
+	data(){
+		return{
+            currentPage:0,
+            maxpage:0,
+            checkAll: true,
+            isIndeterminate:false,
+            searchList:"",
+            productName:"",//号包名称
+            cardType:"0",//卡面值
+            productStatus:"1,2,3,4,5,6",//号包状态
+            setMenu: "",//查询的套餐名称
+            isp: "1,2,3",//运营商
+            faceValueDetails:"",
+            thousandDetails:"",
+            datalist:"",
+            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
+            cities: cityOptions,//选中的虚商
+            cities1:cityOptions1,
+            cities2:cityOptions2,
+            cities3:cityOptions3,
+            cities4:cityOptions4,
+            cities5:cityOptions5,
+            cities6:cityOptions6,
+            cities7:cityOptions7,
+            cities8:cityOptions8,
+            cities9:cityOptions9,
+            cities10:cityOptions10,
+            cities11:cityOptions11,
+            cities12:cityOptions12,
+            /*地区选择*/
+            options: [{areaCn: "安庆", areaPinying: "anqing"}, {areaCn: "鞍山", areaPinying: "anshan"}],
+            value: '',//归属地
+            off:{
+                numberDetails:false,
+                tableDetails:[],
+                switchType:'1',//1、按面值2、按套餐
+            }
+		}
+    },
+    created:function(v){
+        let vm=this;
+        getCityList()
+        .then((data)=>{
+            vm.options=data.data.list;
+        })
+    },
+    components:{
+        stockDetails
+    },
+	methods:{
+        search(page){
+            let vm=this,checked=[];
+            vm.off.tableDetails=[];
+            for(let i in vm.checkedCities){
+                checked.push(cityOptions.indexOf(vm.checkedCities[i])+1);
+            }
+            checked=checked.join(",");
+            let json={
+                "area": vm.value,
+                "brand": checked,
+                "faceValue": vm.cardType,
+                "isp": vm.isp,
+                "packageDesc": vm.setMenu,
+                "pageNum":page||1,
+                "pageSize": 15,
+                "productState":vm.productStatus,
+                "sectionId": vm.productName
+            };
+            getNumberStorage(json)
+            .then((data)=>{
+                vm.searchList=true;
+                vm.datalist=data.data.entities;
+                vm.currentPage=page||1;
+                vm.maxpage=data.data.total;
+            }).catch((e)=>{errorDeal(e)})
+        },
+        getSectionDetails(v){
+            let vm=this,json={};
+            vm.faceValueDetails=v;
+            json.sectionId=v.sectionId;
+            getNumberStorageThousand(json)
+            .then((data)=>{
+                vm.off.numberDetails=true;
+                vm.thousandDetails=data.data.thousandSectionMap;
+            }).catch(e=>errorDeal(e))
+        },
+        open(v){
+            let vm=this;
+            if(vm.off.tableDetails.indexOf(v)==-1){
+                vm.off.tableDetails.push(v);
+            }else{
+                let i=vm.off.tableDetails.indexOf(v);
+                vm.off.tableDetails.splice(i,1);     
+            }
+        },  
+        switchTypeBtn(v){
+            let vm=this;
+            vm.off.switchType=v;
+        },
+        handleCheckAllChange(val) {
+            this.checkedCities = val ? cityOptions : [];
+            this.isIndeterminate = false;
+        },
+        handleCheckedCitiesChange(value) {
+            let checkedCount = value.length;
+            this.checkAll = checkedCount === this.cities.length;
+            this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        },
+        getDateTime(v){
+            return getDateTime(v);
+        },translateData(v,i){
+            return translateData(v,i)
+        }
+    }
+}
+</script>
+<style scoped>
+   @import "../../assets/css/stock.css";
+</style>
+

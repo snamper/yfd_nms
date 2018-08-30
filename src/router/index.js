@@ -88,6 +88,13 @@ const cardManage = resolve => {
         load();
     });
 };
+const stock = resolve => {
+    load(true);
+    require.ensure(["@/views/phoneNumberManage/stock.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/stock.vue"));
+        load();
+    });
+};
 //操作日志
 const Logs_mhglrz = resolve => {
     load(true);
@@ -177,6 +184,10 @@ const router = new Router({
                     path:"modifyPrice",
                     name:"modifyPrice",
                     component:Card_changePrice
+                },{
+                    path:"stock",
+                    name:"stock",
+                    component:stock
                 }]
             }
                 , {

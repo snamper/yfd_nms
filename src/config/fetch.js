@@ -55,7 +55,9 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 			});
         }
         return new Promise((resolve,reject)=>{
-            NProgress.start();
+            if(url!="/nms/w/number/getArea"){
+                NProgress.start();
+            }
             fetch(url, requestConfig)
             .then(response => {
                 NProgress.done();

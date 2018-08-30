@@ -4,7 +4,7 @@ export default {
 	* 获取验证码
 	*/
 	getIdentifyCode(params,selfLoad){
-		return service('/ums/w/user/getAuthCode',params,selfLoad);
+		return service('/ums/w/user/getMngAuthCode',params,selfLoad);
 	},
 	/**
 	* 业务平台登录

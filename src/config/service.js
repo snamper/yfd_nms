@@ -19,6 +19,8 @@ export const requestConfirmTakeGoods=(data)=>fetch("/nms/w/order/modifyState",da
 export const requestConfirmPayMent=(data)=>fetch("/nms/w/order/confirmPayment",data,"POST")
 export const requestModify_Price=(data)=>fetch("/nms/w/number/modifyCartPrice",data,"POST")
 export const requestgetOrderSplitNumbers=(data)=>fetch("/nms/w/order/getOrderSplitNumbers",data,"POST")
+/*提卡订单管理退款操作*/
+export const requestReturnGoods=(data)=>fetch("/nms/w/order/returnOrder",data,"POST")
 
 /*开卡订单管理*/
 export const requestOpenCardOrder=(data)=>fetch("/nms/w/openReadyCard/getMngOpenCardOrders",data,"POST")
@@ -29,6 +31,18 @@ export const requestGetCarts=(data)=>fetch("/nms/w/number/getCarts",data,"POST")
 export const requestGetCartDetail=(data)=>fetch("/nms/w/number/getCartDetail",data,"POST")
 /*已上架普号包拆分*/
 export const requestUpdateSplit=(data)=>fetch("/nms/w/number/updateSplitFlag",data,"POST")
+/*码号库存管理查询*/
+export const getNumberStorage=(data)=>fetch("/nms/w/number/searchStorage",data,"POST")
+/*千字段号码概况*/
+export const getNumberStorageThousand=(data)=>fetch("/nms/w/number/storageSectionDetail",data,"POST")
+/*各面值号码详情*/
+export const getNumberStorageFaceDtails=(data)=>fetch("/nms/w/number/storageFaceValueDetail",data,"POST")
+/*千字段号码详情*/
+export const getNumberStorageDetails=(data)=>fetch("/nms/w/number/storageThousandSectionDetail",data,"POST")
+
+/*获取城市列表*/
+export const getCityList=(data)=>fetch("/nms/w/number/getArea",data,"POST")
+
 
 
 

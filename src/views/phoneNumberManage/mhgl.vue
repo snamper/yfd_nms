@@ -368,7 +368,6 @@ export default{
             data={
                 "brand":checked,
                 "isp":vm.radio,
-                // "isp":0,
                 "operatorName":vm.name,
                 "operatorPhone":vm.phone,
                 "productName":vm.productName,

@@ -5,7 +5,7 @@
                 <thead>
                     <tr><td><p></p></td></tr>
                     <tr>
-                        <th >
+                        <th>
                             确认要删除此公告消息？
                         </th>
                     </tr>
@@ -64,6 +64,60 @@
                     <tr class="tdBtn">
                         <span @click="close()">取消</span>
                         <span @click="btnYes('sendGoods',logisticsInfo)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='returnGoods'">
+                <thead>
+                    <tr>
+                        <th >
+                        填写物流单号                        
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <el-select allow-create filterable style="display:block" v-model="logisticsCompany1" placeholder="请选择" size="small">
+                                <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value"
+                                >
+                                </el-option>
+                            </el-select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <el-input :maxlength="30"  v-model="logisticsOrderId1" placeholder="请输入物流单号" size="small"></el-input>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('returnGoods',logisticsInfo)">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='returnGoodsConfirm'">
+                <thead>
+                    <tr>
+                        <th colspan="2">
+                            <img style="width:50px;height:50px" src="../assets/images/questionMark.png" alt="">
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td colspan="2">
+                            <h3>是否确认退款</h3>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <td colspan="2" style="padding:0;width:100%">
+                            <span @click="close()">取消</span><span @click="btnYes('returnGoodsYes',logisticsInfo)">确认</span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -165,7 +219,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table class="changeCartsPrice" v-if="layerType=='modifyPrice'">
+            <table v-if="layerType=='modifyPrice'" class="changeCartsPrice">
                 <tbody>
                     <tr><td>修改价格</td></tr>
                     <tr><td>{{info.productName}} ( {{info.amount}}个 )</td></tr>
@@ -185,7 +239,13 @@
     </section>
 </template>
 <script>
-import {requestConfirmDelNotice,requestConfirmTakeGoods,requestChangeLogisticsId,requestConfirmPayMent,requestModify_Price} from "../config/service.js"; 
+import {
+    requestConfirmDelNotice,
+    requestConfirmTakeGoods,
+    requestChangeLogisticsId,
+    requestConfirmPayMent,
+    requestModify_Price,
+    requestReturnGoods} from "../config/service.js"; 
 import { errorDeal,getStore, trimFunc } from '../config/utils';
 export default{
     props:{
@@ -199,12 +259,15 @@ export default{
             options:[{value:'圆通',label:'圆通'},{value:'韵达',label:'韵达'},{value:'申通',label:'申通'},{value:'中通',label:'中通'},{value:'顺丰',label:'顺丰'},{value:'EMS',label:'EMS'},{value:'天天',label:'天天'},{value:'汇通',label:'汇通'},{value:'全峰',label:'全峰'},{value:'邮政',label:'邮政'},{value:'速尔',label:'速尔'}],
             logisticsCompany:'',
             logisticsOrderId:'',
+            logisticsCompany1:'',
+            logisticsOrderId1:'',
             logisticsCompany2:'',
             orderId:'',//订单Id
             payMoney:'',//付款金额
             oddNumbers:'',//流水单号
             orderdeliveryName:'',
-            newPrice:""
+            newPrice:"",
+            layerType:"",
         }		
     },
 	created:function(){
@@ -212,6 +275,7 @@ export default{
 	},
 	methods:{
         btnYes(e,v){
+            debugger;
             let vm=this;
             if(e=='notice'){
                 requestConfirmDelNotice(vm.$parent.cancelInfo)
@@ -259,9 +323,30 @@ export default{
                     "deliveryOrderId":vm.logisticsOrderId,
                     "deliveryName":vm.logisticsCompany ,
                     }
-                    debugger;
                requestChangeLogisticsId(data)
                .then((data)=>{
+                    this.$parent.search(vm.$parent.pa);
+                    this.$parent.off.layer=false;
+                    if(data.code==200){
+                        layer.open({
+                            content:"操作成功",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"success"
+                        })
+                    }
+                }).catch(e=>errorDeal(e));
+            }else if(e=="returnGoods"){//退货
+                vm.layerType="returnGoodsConfirm";
+                
+            }else if(e="returnGoodsYes"){
+                let data={
+                    "sysOrderId": v.sysOrderId,
+                    "returnDeliveryId":vm.logisticsOrderId1,
+                    "returnDeliveryName":vm.logisticsCompany1
+                }
+                requestReturnGoods(data)
+                .then((data)=>{
                     this.$parent.search(vm.$parent.pa);
                     this.$parent.off.layer=false;
                     if(data.code==200){
