@@ -159,7 +159,6 @@ export default{
             data.newPhone=vm.forms.phone;
             data.newUserRole=vm.role.join(',');
             data.searchUserId=v;
-            debugger;
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){

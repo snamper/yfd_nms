@@ -31,35 +31,13 @@
                 </tr>
                 <tr>
                     <td>码号数（个）</td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},0)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,0,'productTotal')}}
+                    <td v-for="(v,i) in mapFaceValue">
+                        <a :class="{'c-yellow':off.isShow1===v}" v-if="getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')!='--'"   href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},v)">
+                            {{getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')}}
                         </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},10)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'10','productTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},20)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'20','productTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},30)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'30','productTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},50)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'50','productTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},100)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'100','productTotal')}}
-                        </a>
+                        <span v-if="getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')=='--'">
+                            {{getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')}}
+                        </span>
                     </td>
                     <td></td>
                     <td></td>
@@ -68,35 +46,13 @@
                 </tr>
                 <tr>
                     <td>靓号数（个）</td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},0)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'0','cuteTotal')}}
+                    <td v-for="(v,i) in mapFaceValue">
+                        <a :class="{'c-yellow':off.isShow2===v}" v-if="getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},v)">
+                            {{getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')}}
                         </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},10)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'10','cuteTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},20)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'20','cuteTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},30)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'30','cuteTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},50)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'50','cuteTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},100)">                        
-                            {{getProVlaue(faceValueDetails.faceValueMap,'100','cuteTotal')}}
-                        </a>
+                        <span v-if="getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')=='--'">
+                            {{getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')}}
+                        </span>
                     </td>
                     <td></td>
                     <td></td>
@@ -105,35 +61,13 @@
                 </tr>
                 <tr>
                     <td>带4数（个）</td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},0)">                        
-                            {{getProVlaue(faceValueDetails.faceValueMap,'0','numberWithFour')}}
+                    <td  v-for="(v,i) in mapFaceValue">
+                        <a :class="{'c-yellow':off.isShow3===v}" v-if="getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},v)">
+                            {{getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')}}
                         </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},10)">                                                
-                            {{getProVlaue(faceValueDetails.faceValueMap,'10','numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},20)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'20','numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},30)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'30','numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},50)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'50','numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},100)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,'100','numberWithFour')}}
-                        </a>
+                        <span v-if="getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')=='--'">
+                            {{getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')}}
+                        </span>
                     </td>
                     <td></td>
                     <td></td>
@@ -142,12 +76,9 @@
                 </tr>
                 <tr>
                     <td>带4比例</td>
-                    <td>{{getProVlaue(faceValueDetails.faceValueMap,'0','ratio')}}</td>
-                    <td>{{getProVlaue(faceValueDetails.faceValueMap,'10','ratio')}}</td>
-                    <td>{{getProVlaue(faceValueDetails.faceValueMap,'20','ratio')}}</td>
-                    <td>{{getProVlaue(faceValueDetails.faceValueMap,'30','ratio')}}</td>
-                    <td>{{getProVlaue(faceValueDetails.faceValueMap,'50','ratio')}}</td>
-                    <td>{{getProVlaue(faceValueDetails.faceValueMap,'100','ratio')}}</td>
+                    <td v-for="(v,i) in mapFaceValue">
+                       {{getProVlaue(faceValueDetails.faceValueMap,v,'ratio')}}
+                    </td>
                     <td></td>
                     <td></td>
                     <td></td>
@@ -173,150 +104,48 @@
                 </tr>
                 <tr>
                     <td>码号数（个）</td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList({t:2,c:'productTotal'},0)">
-                            {{getProVlaue(thousandDetails,0,'productTotal')}}
+                    <td v-for="(v,i) in mapNumberSection">
+                        <a :class="{'c-yellow':off.isShow4===v}" v-if="getProVlaue(thousandDetails,v,'productTotal')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},v)">
+                            {{getProVlaue(thousandDetails,v,'productTotal')}}
                         </a>
+                        <span  v-if="getProVlaue(thousandDetails,v,'productTotal')=='--'" >
+                            {{getProVlaue(thousandDetails,v,'productTotal')}}
+                        </span>
                     </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},1)">
-                            {{getProVlaue(thousandDetails,1,'productTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},2)">
-                            {{getProVlaue(thousandDetails,2,'productTotal')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},3)">
-                            {{getProVlaue(thousandDetails,3,'productTotal')}}
-                        </a>
-                    </td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},4)">
-                            {{getProVlaue(thousandDetails,4,'productTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},5)">
-                            {{getProVlaue(thousandDetails,5,'productTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},6)">
-                            {{getProVlaue(thousandDetails,6,'productTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},7)">
-                            {{getProVlaue(thousandDetails,7,'productTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},8)">
-                            {{getProVlaue(thousandDetails,8,'productTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},9)">
-                            {{getProVlaue(thousandDetails,9,'productTotal')}}
-                        </a></td>
                 </tr>
                 <tr>
                     <td>靓号数（个）</td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},0)">
-                            {{getProVlaue(thousandDetails,0,'cuteTotal')}}
+                    <td v-for="(v,i) in mapNumberSection">
+                        <a :class="{'c-yellow':off.isShow5===v}" v-if="getProVlaue(thousandDetails,v,'cuteTotal')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},v)">
+                            {{getProVlaue(thousandDetails,v,'cuteTotal')}}
                         </a>
+                        <span  v-if="getProVlaue(thousandDetails,v,'cuteTotal')=='--'" >
+                            {{getProVlaue(thousandDetails,v,'cuteTotal')}}
+                        </span>
                     </td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},1)">
-                            {{getProVlaue(thousandDetails,1,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},2)">
-                            {{getProVlaue(thousandDetails,2,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},3)">
-                            {{getProVlaue(thousandDetails,3,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},4)">
-                            {{getProVlaue(thousandDetails,4,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},5)">
-                            {{getProVlaue(thousandDetails,5,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},6)">
-                            {{getProVlaue(thousandDetails,6,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},7)">
-                            {{getProVlaue(thousandDetails,7,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},8)">
-                            {{getProVlaue(thousandDetails,8,'cuteTotal')}}
-                        </a></td>
-                    <td><a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},9)">
-                            {{getProVlaue(thousandDetails,9,'cuteTotal')}}
-                        </a></td>
                 </tr>
                 <tr>
                     <td>带4数（个）</td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},0)">
-                            {{getProVlaue(thousandDetails,0,'numberWithFour')}}
+                    <td v-for="(v,i) in mapNumberSection">
+                        <a :class="{'c-yellow':off.isShow6===v}" v-if="getProVlaue(thousandDetails,v,'numberWithFour')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},v)">
+                            {{getProVlaue(thousandDetails,v,'numberWithFour')}}
                         </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},1)">
-                            {{getProVlaue(thousandDetails,1,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},2)">
-                            {{getProVlaue(thousandDetails,2,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},3)">
-                            {{getProVlaue(thousandDetails,3,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},4)">
-                            {{getProVlaue(thousandDetails,4,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},5)">
-                            {{getProVlaue(thousandDetails,5,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},6)">
-                            {{getProVlaue(thousandDetails,6,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},7)">
-                            {{getProVlaue(thousandDetails,7,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},8)">
-                            {{getProVlaue(thousandDetails,8,'numberWithFour')}}
-                        </a>
-                    </td>
-                    <td>
-                        <a href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},9)">
-                            {{getProVlaue(thousandDetails,9,'numberWithFour')}}
-                        </a>
+                        <span  v-if="getProVlaue(thousandDetails,v,'numberWithFour')=='--'" >
+                            {{getProVlaue(thousandDetails,v,'numberWithFour')}}
+                        </span>
                     </td>
                 </tr>
                 <tr>
-                    <td>带4比例</td>
-                    <td>{{getProVlaue(thousandDetails,0,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,1,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,2,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,3,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,4,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,5,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,6,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,7,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,8,'ratio')}}</td>
-                    <td>{{getProVlaue(thousandDetails,9,'ratio')}}</td>
+                    <td>带4数（个）</td>
+                    <td v-for="(v,i) in mapNumberSection">
+                        {{getProVlaue(thousandDetails,v,'ratio')}}
+                    </td>
                 </tr>
+
             </table>
         </div>
         <div class="numberList" v-if="off.numberlist">
-            <p></p>
+            <p style="font-size:14px"><span style="color:#66A1DF">{{listTitle}}</span>详情 ( 共<span style="color:#F78A24">{{listTotal}}</span>条 )</p>
             <table style="width:100%">
                 <tr>
                     <td>序号</td>
@@ -363,16 +192,26 @@ export default{
            search:"",
            maxpage:"",
            datav:"",//查询参数
-           datai:""//查询参数
+           datai:"",//查询参数
+           listTitle:"",
+           listTotal:"",
+           mapFaceValue:[0,10,20,30,50,100],
+           mapNumberSection:[0,1,2,3,4,5,6,7,8,9,]
            ,off:{
-               numberlist:false
+               numberlist:false,
+               isShow1:'',
+               isShow2:'',
+               isShow3:'',
+               isShow4:'',
+               isShow5:'',
+               isShow6:''
            }
 		}
 	},
 	methods:{
         getNumberList(p,v,i){
-            debugger;
-            let vm=this,json; 
+            let vm=this,json;
+            vm.getClickStatus(v,i);
             if(typeof(v)!="undefined"){
                 vm.datav=v;
                 vm.datai=i;
@@ -380,70 +219,121 @@ export default{
                 v=vm.datav;
                 i=vm.datai;
             }
-            if(v.t==1){
-                if(vm.getProVlaue(vm.faceValueDetails.faceValueMap,i,v.c)=='--'){
-                    return false
+            if(v.t==1){//面值
+                let withFour;
+                vm.listTitle=i+'面值码号';
+                vm.listTotal=vm.getProVlaue(vm.faceValueDetails.faceValueMap,i,v.c)
+                if(v.c=="numberWithFour"){
+                    withFour=1
                 }else{
-                    let withFour;
-                    if(v.c=="numberWithFour"){
-                        withFour=1
-                    }else{
-                        withFour=0
-                    }
-                    json={
-                        "faceValue": i,
-                        "pageNum": p||1,
-                        "pageSize": 5,
-                        "phoneLevel": "",
-                        "sectionId": vm.faceValueDetails.sectionId,
-                        "withFour": withFour
-                    }
-                    getNumberStorageFaceDtails(json)
-                    .then((data)=>{
-                        vm.off.numberlist=true;
-                        vm.numberlist=data.data.numbers;
-                        vm.maxpage=data.data.total;
-                        vm.currentPage=p||1;
-                    }).catch(e=>errorDeal(e))
+                    withFour=0
                 }
-            }else if(v.t==2){
-                if(vm.getProVlaue(vm.thousandDetails,i,v.c)=='--'){
-                    return false
+                json={
+                    "faceValue": i,
+                    "pageNum": p||1,
+                    "pageSize": 5,
+                    "phoneLevel": "",
+                    "sectionId": vm.faceValueDetails.sectionId,
+                    "withFour": withFour
+                }
+                getNumberStorageFaceDtails(json)
+                .then((data)=>{
+                    vm.off.numberlist=true;
+                    vm.numberlist=data.data.numbers;
+                    vm.maxpage=data.data.total;
+                    vm.currentPage=p||1;
+                }).catch(e=>errorDeal(e))
+            }else if(v.t==2){//号段
+                let withFour;
+                vm.listTitle=i+'千段码号';
+                vm.listTotal=vm.getProVlaue(vm.faceValueDetails.faceValueMap,i,v.c)
+                if(v.c=="numberWithFour"){
+                    withFour=1
                 }else{
-                    let withFour;
-                    if(v.c=="numberWithFour"){
-                        withFour=1
-                    }else{
-                        withFour=0
-                    }
-                    json={
-                        "faceValue": i,
-                        "pageNum": p||1,
-                        "pageSize": 5,
-                        "phoneLevel": "",
-                        "sectionId": vm.faceValueDetails.sectionId,
-                        "withFour": withFour
-                    }
-                    getNumberStorageDetails(json)
-                    .then((data)=>{
-                        vm.off.numberlist=true;
-                        vm.numberlist=data.data.numbers;
-                    }).catch(e=>errorDeal(e))
+                    withFour=0
                 }
+                json={
+                    "faceValue": i,
+                    "pageNum": p||1,
+                    "pageSize": 5,
+                    "phoneLevel": "",
+                    "sectionId": vm.faceValueDetails.sectionId,
+                    "withFour": withFour
+                }
+                getNumberStorageDetails(json)
+                .then((data)=>{
+                    console.log(data);
+                    vm.off.numberlist=true;
+                    vm.numberlist=data.data.numbers;
+                }).catch(e=>errorDeal(e))
             }else{
                 return false;
+            }
+        },getClickStatus(v,i){
+            let vm=this;
+            if(v.t==1){
+                if(v.c=='productTotal'){
+                    vm.off.isShow1=i; 
+                    vm.off.isShow2='';
+                    vm.off.isShow3='';
+                    vm.off.isShow4=''; 
+                    vm.off.isShow5='';
+                    vm.off.isShow6='';
+                }else if(v.c=='cuteTotal'){
+                    vm.off.isShow1=''; 
+                    vm.off.isShow2=i;
+                    vm.off.isShow3=''; 
+                    vm.off.isShow4=''; 
+                    vm.off.isShow5='';
+                    vm.off.isShow6='';
+                }else if(v.c=='numberWithFour'){
+                    vm.off.isShow1=''; 
+                    vm.off.isShow2='';
+                    vm.off.isShow3=i; 
+                    vm.off.isShow4=''; 
+                    vm.off.isShow5='';
+                    vm.off.isShow6='';
+                }
+            }else if(v.t==2){
+                if(v.c=='productTotal'){
+                    vm.off.isShow1=''; 
+                    vm.off.isShow2='';
+                    vm.off.isShow3=''; 
+                    vm.off.isShow4=i; 
+                    vm.off.isShow5='';
+                    vm.off.isShow6='';
+                }else if(v.c=='cuteTotal'){
+                    vm.off.isShow1=''; 
+                    vm.off.isShow2='';
+                    vm.off.isShow3=''; 
+                    vm.off.isShow4=''; 
+                    vm.off.isShow5=i;
+                    vm.off.isShow6=''; 
+                }else if(v.c=='numberWithFour'){
+                    vm.off.isShow1=''; 
+                    vm.off.isShow2='';
+                    vm.off.isShow3=''; 
+                    vm.off.isShow4=''; 
+                    vm.off.isShow5='';
+                    vm.off.isShow6=i; 
+                }
+            }
+            
+        },getProVlaue(v,i,p){
+            if(v.hasOwnProperty(i)&&v[i].hasOwnProperty(p)){
+                if(p=='ratio'){
+                    return parseInt(v[i][p])*100+'%'  
+                }else{
+                    return v[i][p]  
+                }
+            }else{
+                return '--'
             }
         },goBack(){
             let vm=this;
             vm.$parent.off.numberDetails=false;
         },translateData(v,i){
             return translateData(v,i)
-        },getProVlaue(v,i,p){
-            if(v.hasOwnProperty(i)&&v[i].hasOwnProperty(p)){
-                return v[i][p] 
-            }else{
-                return '--'
-            }
         }
     }
 }
@@ -463,6 +353,7 @@ export default{
     .faceValue table tr:nth-child(even),.thousand table tr:nth-child(even){background: #fff}
     .faceValue table tr td:nth-child(1),.thousand table tr td:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}
     .faceValue table tr td a,.thousand table tr td a{color:#66A1DF;text-decoration: underline}
+    .faceValue table tr td a.c-yellow,.thousand table tr td a.c-yellow{color: #F78A24;text-decoration: underline}
     .faceValue table tr td:last-child,.thousand table tr td:last-child{border-right: 1px solid #e2e2e2}
     .faceValue table tr:nth-child(1),.thousand table tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}
     .faceValue table tr td,.thousand table tr td{width: 9%;height: 35px;text-align: center}

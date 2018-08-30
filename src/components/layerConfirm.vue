@@ -270,15 +270,46 @@ export default{
             layerType:"",
         }		
     },
-	created:function(){
-       
-	},
 	methods:{
         btnYes(e,v){
-            debugger;
             let vm=this;
-            if(e=='notice'){
-                requestConfirmDelNotice(vm.$parent.cancelInfo)
+            if(e=='notice'){//删除公告
+                vm.cancelNotice(vm.$parent.cancelInfo);
+            }else if(e=="takeGoods"){//确认收货
+                vm.collectGoods(v);
+            }else if(e=="sendGoods"){//发货
+                vm.sendGoods(v);   
+            }else if(e=="returnGoods"){//退货
+                vm.layerType="returnGoodsConfirm";
+            }else if(e=="returnGoodsYes"){
+                vm.returnGoods(v);
+            }else if(e=="logistics"){//修改单号
+                vm.changeLogisticsId(v);     
+            }else if(e=="payMent"){//付款
+                vm.payMent(v);
+            }else if(e=="changeCartMoney"){
+                vm.changePrice(v)
+            }else if(e=="changePriceYes"){
+                if(trimFunc(vm.newPrice)&&!isNaN(vm.newPrice)){
+                    vm.layerType='confirmModifyPrice';
+                }else{
+                    layer.open({
+                        content:"请输入正确的产品价格,以元为单位",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"error"
+                    })
+                }
+            }
+        },close(i){
+            var vm=this;
+            if(i==1){
+                vm.$parent.off.layerChangePrice=false;
+            }
+			    vm.$parent.off.layer=false;
+        },cancelNotice(v){
+            let vm=this;
+            requestConfirmDelNotice(v)
                 .then((data)=>{
                     if(data.code==200){
                         layer.open({
@@ -295,121 +326,120 @@ export default{
                             msgSkin:"error"
                         }) 
                     }
-                this.$parent.search(vm.$parent.pa);
+                this.$parent.search(this.$parent.pa);
                 this.$parent.off.layer=false;
                 }).catch(e=>errorDeal(e));
-            }else if(e=="takeGoods"){//确认收货
-                let data={
-                    "sysOrderId": v.sysOrderId,
-                    "deliveryOrderId":v.deliveryOrderId,
-                    "deliveryName":v.deliveryName
-                    }
-                requestConfirmTakeGoods(data)
-                .then((data)=>{
-                    this.$parent.search(vm.$parent.pa);
-                    this.$parent.off.layer=false;
-                    if(data.code==200){
-                        layer.open({
-                            content:"操作成功",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"success"
-                        })
-                    }
-                }).catch(e=>errorDeal(e));
-            }else if(e=="sendGoods"){//发货
-                let data={
-                    "sysOrderId": v.sysOrderId,
-                    "deliveryOrderId":vm.logisticsOrderId,
-                    "deliveryName":vm.logisticsCompany ,
-                    }
-               requestChangeLogisticsId(data)
-               .then((data)=>{
-                    this.$parent.search(vm.$parent.pa);
-                    this.$parent.off.layer=false;
-                    if(data.code==200){
-                        layer.open({
-                            content:"操作成功",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"success"
-                        })
-                    }
-                }).catch(e=>errorDeal(e));
-            }else if(e=="returnGoods"){//退货
-                vm.layerType="returnGoodsConfirm";
-                
-            }else if(e="returnGoodsYes"){
-                let data={
-                    "sysOrderId": v.sysOrderId,
-                    "returnDeliveryId":vm.logisticsOrderId1,
-                    "returnDeliveryName":vm.logisticsCompany1
-                }
-                requestReturnGoods(data)
-                .then((data)=>{
-                    this.$parent.search(vm.$parent.pa);
-                    this.$parent.off.layer=false;
-                    if(data.code==200){
-                        layer.open({
-                            content:"操作成功",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"success"
-                        })
-                    }
-                }).catch(e=>errorDeal(e));
-            }else if(e=="logistics"){//修改单号
-                let data;
-                if(vm.orderId==""||vm.logisticsCompany2==""){
+        },collectGoods(v){
+            let vm=this;
+            let data={
+                "sysOrderId": v.sysOrderId,
+                "deliveryOrderId":v.deliveryOrderId,
+                "deliveryName":v.deliveryName
+            }
+            requestConfirmTakeGoods(data)
+            .then((data)=>{
+                this.$parent.search(this.$parent.pa);
+                this.$parent.off.layer=false;
+                if(data.code==200){
                     layer.open({
-                        content:"请填写完整的物流信息",
+                        content:"操作成功",
                         skin:"msg",
                         time:2,
-                        msgSkin:"error"
+                        msgSkin:"success"
                     })
-                    return false;
-                }else{
-                    data={"sysOrderId": v.sysOrderId,"deliveryOrderId":vm.orderId,"deliveryName":vm.logisticsCompany2}
                 }
-                requestChangeLogisticsId(data)
-                .then((data)=>{
-                    this.$parent.search(vm.$parent.pa);
-                    this.$parent.off.layer=false;
-                    if(data.code==200){
-                        layer.open({
-                            content:"操作成功",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"success"
-                        })
-                    }
-                }).catch(e=>errorDeal(e));
-            }else if(e=="payMent"){//修改单号
-                let regular = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
-                if(!regular.test(vm.payMoney)){
+            }).catch(e=>errorDeal(e));
+        },sendGoods(v){
+            let vm=this,data={
+                "sysOrderId": v.sysOrderId,
+                "deliveryOrderId":vm.logisticsOrderId,
+                "deliveryName":vm.logisticsCompany ,
+            };
+            requestChangeLogisticsId(data)
+            .then((data)=>{
+                this.$parent.search(vm.$parent.pa);
+                this.$parent.off.layer=false;
+                if(data.code==200){
                     layer.open({
-                        content:"请输入正确的金额，以元为单位，例如1.00",
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                    return false;
+                        content:"操作成功",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"success"
+                    })
                 }
-                if(vm.payMoney==''){
+            }).catch(e=>errorDeal(e));
+        },returnGoods(v){
+            let vm=this;
+            let data={
+                "sysOrderId": v.sysOrderId,
+                "returnDeliveryId":vm.logisticsOrderId1,
+                "returnDeliveryName":vm.logisticsCompany1
+            }
+            requestReturnGoods(data)
+            .then((data)=>{
+                this.$parent.search(vm.$parent.pa);
+                this.$parent.off.layer=false;
+                if(data.code==200){
                     layer.open({
-                        content:"请输入要付款的金额",
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                    return false;
+                        content:"操作成功",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"success"
+                    })
                 }
-                let data={"sysOrderId": v.sysOrderId,
-                    "deliveryOrderId":vm.orderId,
-                    "deliveryName":vm.logisticsCompany2 ,
-                    "strikePrice":vm.payMoney*100,
-                    "paymentSerialNumber":vm.oddNumbers,
+            }).catch(e=>errorDeal(e));
+        },changeLogisticsId(v){
+            let data,vm=this;
+            if(vm.orderId==""||vm.logisticsCompany2==""){
+                layer.open({
+                    content:"请填写完整的物流信息",
+                    skin:"msg",
+                    time:2,
+                    msgSkin:"error"
+                })
+                return false;
+            }else{
+                data={"sysOrderId": v.sysOrderId,"deliveryOrderId":vm.orderId,"deliveryName":vm.logisticsCompany2}
+            }
+            requestChangeLogisticsId(data)
+            .then((data)=>{
+                this.$parent.search(vm.$parent.pa);
+                this.$parent.off.layer=false;
+                if(data.code==200){
+                    layer.open({
+                        content:"操作成功",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"success"
+                    })
                 }
+            }).catch(e=>errorDeal(e));
+        },payMent(v){
+            let vm=this , regular = /(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/;
+            if(!regular.test(vm.payMoney)){
+                layer.open({
+                    content:"请输入正确的金额，以元为单位，例如1.00",
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            if(vm.payMoney==''){
+                layer.open({
+                    content:"请输入要付款的金额",
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }
+            let data={"sysOrderId": v.sysOrderId,
+                "deliveryOrderId":vm.orderId,
+                "deliveryName":vm.logisticsCompany2 ,
+                "strikePrice":vm.payMoney*100,
+                "paymentSerialNumber":vm.oddNumbers,
+            }
             requestConfirmPayMent(data)
             .then((data)=>{
                 this.$parent.search(vm.$parent.pa);
@@ -423,48 +453,29 @@ export default{
                     })
                 }
             }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
-            }else if(e=="changeCartMoney"){
-                let data={
-                    "buyerId": v.buyerId,
-                    "productId": v.productId,
-                    "id":v.id,
-                    "strikePrice": vm.newPrice*100
-                };
-                requestModify_Price(data)
-                .then((data)=>{
-                    for(let i in vm.$parent.off.changePrice){
-                        vm.$set(vm.$parent.off.changePrice,i,false)
-                    }
-                    if(data.code==200){
-                        layer.open({
-                            content:"修改价格成功",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"success"
-                        })
-                    }
-                    this.$parent.off.layer=false;                
-                    this.$parent.search(vm.$parent.pa);
-                }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
-            }else if(e=="changePriceYes"){
-                if(trimFunc(vm.newPrice)&&!isNaN(vm.newPrice)){
-                    vm.layerType='confirmModifyPrice';
-                }else{
+        },changePrice(v){
+            let vm=this , data={
+                "buyerId": v.buyerId,
+                "productId": v.productId,
+                "id":v.id,
+                "strikePrice": vm.newPrice*100
+            };
+            requestModify_Price(data)
+            .then((data)=>{
+                for(let i in vm.$parent.off.changePrice){
+                    vm.$set(vm.$parent.off.changePrice,i,false)
+                }
+                if(data.code==200){
                     layer.open({
-                        content:"请输入正确的产品价格,以元为单位",
+                        content:"修改价格成功",
                         skin:"msg",
                         time:2,
-                        msgSkin:"error"
+                        msgSkin:"success"
                     })
                 }
-            }
-        },
-		close:function(i){
-            var vm=this;
-            if(i==1){
-                vm.$parent.off.layerChangePrice=false;
-            }
-			    vm.$parent.off.layer=false;
+                this.$parent.off.layer=false;                
+                this.$parent.search(vm.$parent.pa);
+            }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
         },
         trimFunc(v){
             return trimFunc(v)

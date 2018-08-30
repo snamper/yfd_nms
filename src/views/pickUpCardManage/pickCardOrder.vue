@@ -197,13 +197,16 @@
 
                                 </td>
                                 <td >
-                                    <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1">待付款</span>                                    
+                                    <!-- <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1">待付款</span>                                    
                                     <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==3">手动关闭</span>                                    
                                     <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==4">超时关闭</span>                                    
                                     <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
                                     <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
                                     <span class="c-green" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==2">已完成</span>
-                                    <span class="c-red" v-if="v.syncFlag==2">已退卡</span>
+                                    <span class="c-red" v-if="v.syncFlag==2">已退卡</span> -->
+                                    <span :class="checkOrderStatus(v).style">
+                                        {{checkOrderStatus(v).title}}
+                                    </span>
                                 </td>
                                 <td>
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a> 
@@ -455,6 +458,24 @@ export default {
         getMore(i){
             let vm=this;
             this.$set(vm.searchResult[i],'isShow',!vm.searchResult[i].isShow);
+        },checkOrderStatus(v){
+            var x = "";
+            if(v.paymentState==1&&v.deliveryState==0&&v.orderState==1){
+                x = {'title':'待付款','style':'c-red'};
+            }else if(v.paymentState==1&&v.deliveryState==0&&v.orderState==3){
+                x = {'title':'手动关闭','style':'c-red'};
+            }else if(v.paymentState==1&&v.deliveryState==0&&v.orderState==4){
+                x = {'title':'自动关闭','style':'c-red'};
+            }else if(v.paymentState==2&&v.deliveryState==1&&v.orderState==1){
+                x = {'title':'待发货','style':'c-blue'};
+            }else if(v.paymentState==2&&v.deliveryState==2&&v.orderState==1){
+                x = {'title':'已发货','style':'c-blue'};
+            }else if(v.paymentState==2&&v.deliveryState==2&&v.orderState==2){
+                x = {'title':'已完成','style':'c-green'};
+            }else if(v.syncFlag==2&&v.paymentState==2){
+                x = {'title':'已退卡','style':'c-red'};
+            }
+            return x;
         },
         searchdelivery(n,v){
             let url="https://www.kuaidi100.com/chaxun?com="+n+"&nu="+v;
