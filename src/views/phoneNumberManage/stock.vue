@@ -100,7 +100,7 @@
             </div> 
             <!-- 查询结果列表 -->
             <div v-if="searchList" class="m-searchlist-container">
-                <p class="m-searchlist-title"><span>号段列表</span><span><button>导出</button></span></p>
+                <p class="m-searchlist-title"><span>号段列表</span><span><button @click="download">导出</button></span></p>
                 <table class="m-searchlist-table">
                     <tr>
                         <td>序号</td>
@@ -132,9 +132,9 @@
                                     </a></td>
                                     <td>{{v.productTotal}}</td>
                                     <td>{{v.cuteTotal}}</td>
-                                    <td>{{v.bl}}</td>
+                                    <td>{{v.ratio*100}}%</td>
                                     <td>{{v.inprice}}</td>
-                                    <td>{{v.inprice}}</td>
+                                    <td>{{v.outprice}}</td>
                                 </tr>
                                 <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)!='{}'">
                                     <td colspan="6" :rowspan="v.packageDescMap.length" style="border-right:1px solid #e4e4e4"></td>
@@ -144,15 +144,23 @@
                                                 <td>{{x}}</td>
                                                 <td>{{v.productTotal}}</td>
                                                 <td>{{v.cuteTotal}}</td>
+                                                <td>{{v.ratio*100}}%</td>
                                                 <td>{{v.inprice}}</td>
                                                 <td>{{v.outprice}}</td>
-                                                <!-- <td>{{v.ratio}}</td> -->
-                                                <td>{{v.numberWithFour}}</td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
-                                <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)=='{}'"><td style="border-top:1px solid #eaeaea" colspan="12">暂无详情</td></tr>
+                                <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)=='{}'">
+                                    <td colspan="6" style="border-right:1px solid #e4e4e4"></td>
+                                    <td colspan="6">
+                                        <table class="m-searchlist-table3" style="width:100%">
+                                            <tr>
+                                                <td>该号包下暂无详情数据</td>
+                                            </tr>
+                                        </table>
+                                    </td>
+                                </tr>
                                 <tr v-if="off.switchType==1&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('faceValueMap')&&JSON.stringify(v.faceValueMap)!='{}'">
                                     <td colspan="6" :rowspan="v.faceValueMap.length" style="border-right:1px solid #e4e4e4"></td>
                                     <td colspan="6" :rowspan="v.faceValueMap.length">
@@ -161,9 +169,9 @@
                                                 <td>{{x}}</td>
                                                 <td>{{v.productTotal}}</td>
                                                 <td>{{v.cuteTotal}}</td>
+                                                <td>{{v.ratio*100}}%</td>
                                                 <td>{{v.inprice}}</td>
                                                 <td>{{v.outprice}}</td>
-                                                <td>{{v.numberWithFour}}</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -203,7 +211,7 @@
 <script>
 import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
-import { getDateTime,errorDeal,translateData } from "../../config/utils.js";
+import { getDateTime,errorDeal,translateData,getStore } from "../../config/utils.js";
 import { getNumberStorage,getCityList,getNumberStorageThousand } from "../../config/service.js"; 
 import stockDetails from './stockDetails.vue';
 const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
@@ -234,6 +242,7 @@ export default{
             isp: "1,2,3",//运营商
             faceValueDetails:"",
             thousandDetails:"",
+            downloadData:"",
             datalist:"",
             checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
             cities: cityOptions,//选中的虚商
@@ -288,6 +297,7 @@ export default{
                 "productState":vm.productStatus,
                 "sectionId": vm.productName
             };
+            vm.downloadData=json;
             getNumberStorage(json)
             .then((data)=>{
                 vm.searchList=true;
@@ -295,6 +305,25 @@ export default{
                 vm.currentPage=page||1;
                 vm.maxpage=data.data.total;
             }).catch((e)=>{errorDeal(e)})
+        },
+        download(){
+            let vm=this,
+                parameter="",
+                url = "/nms/w/number/exportStorage?",
+                userInfo=getStore('YFD_NMS_INFO');
+            let json = Object.assign(vm.downloadData,userInfo);
+                delete json.pageNum;
+                delete json.pageSize;
+                Object.keys(json).map((key)=>{
+                    url+=key+'='+json[key]+'&';    
+                })
+                url = url.substring(0, url.length-1);
+                url = url.substring(0, url.length-1);
+                var elemIF = document.createElement("iframe");
+                elemIF.src=url;
+                var ee = elemIF.contentWindow;
+                elemIF.style.display = "none";
+                document.body.appendChild(elemIF);
         },
         getSectionDetails(v){
             let vm=this,json={};

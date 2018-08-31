@@ -237,6 +237,12 @@ export const translateData=(type,v)=> {
             val=["正常","黑名单","手动注销","系统注销"]
             return val[v-1];
         break
+        case 'phoneLevel':
+           if(!isNaN(v)){
+            return v==-1?'普号':v+'级靓号';
+           }else{
+            return '--';
+           }
     }
 }
 

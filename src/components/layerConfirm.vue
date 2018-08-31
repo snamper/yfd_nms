@@ -67,40 +67,10 @@
                     </tr>
                 </tbody>
             </table>
+            <!-- <table v-if="layerType=='returnGoods'">
+                <thead> <tr> <th > 填写物流单号 </th> </tr> </thead> <tbody> <tr> <td> <el-select allow-create filterable style="display:block" v-model="logisticsCompany1" placeholder="请选择" size="small"> <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" > </el-option> </el-select> </td> </tr> <tr> <td> <el-input :maxlength="30"  v-model="logisticsOrderId1" placeholder="请输入物流单号" size="small"></el-input> </td> </tr> <tr class="tdBtn"> <span @click="close()">取消</span> <span @click="btnYes('returnGoods',logisticsInfo)">确认</span> </tr></tbody>
+            </table> -->
             <table v-if="layerType=='returnGoods'">
-                <thead>
-                    <tr>
-                        <th >
-                        填写物流单号                        
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>
-                            <el-select allow-create filterable style="display:block" v-model="logisticsCompany1" placeholder="请选择" size="small">
-                                <el-option
-                                v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value"
-                                >
-                                </el-option>
-                            </el-select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <el-input :maxlength="30"  v-model="logisticsOrderId1" placeholder="请输入物流单号" size="small"></el-input>
-                        </td>
-                    </tr>
-                    <tr class="tdBtn">
-                        <span @click="close()">取消</span>
-                        <span @click="btnYes('returnGoods',logisticsInfo)">确认</span>
-                    </tr>
-                </tbody>
-            </table>
-            <table v-if="layerType=='returnGoodsConfirm'">
                 <thead>
                     <tr>
                         <th colspan="2">

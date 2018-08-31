@@ -136,7 +136,7 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>带4数（个）</td>
+                    <td>带4比例</td>
                     <td v-for="(v,i) in mapNumberSection">
                         {{getProVlaue(thousandDetails,v,'ratio')}}
                     </td>
@@ -156,9 +156,9 @@
                     <td>套餐名称</td>
                 </tr>
                 <tr v-for="(v,i) in numberlist">
-                    <td>{{(currentPage-1)*5+i+1}}</td>
+                    <td>{{(currentPage-1)*15+i+1}}</td>
                     <td>{{v.phone}}</td>
-                    <td>{{v.phoneLevel}}</td>
+                    <td>{{translateData('phoneLevel',v.phoneLevel)}}</td>
                     <td>{{v.sim}}</td>
                     <td>{{v.faceValue}}</td>
                     <td>{{v.packageDesc}}</td>
@@ -169,7 +169,7 @@
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
                         layout="prev, pager, next"
-                        :page-size="5"
+                        :page-size="15"
                         @current-change="getNumberList"
                         :current-page.sync="currentPage"                            
                         :total="maxpage">
@@ -211,7 +211,6 @@ export default{
 	methods:{
         getNumberList(p,v,i){
             let vm=this,json;
-            vm.getClickStatus(v,i);
             if(typeof(v)!="undefined"){
                 vm.datav=v;
                 vm.datai=i;
@@ -219,8 +218,9 @@ export default{
                 v=vm.datav;
                 i=vm.datai;
             }
+            vm.getClickStatus(v,i);
             if(v.t==1){//面值
-                let withFour;
+                let withFour,cute;
                 vm.listTitle=i+'面值码号';
                 vm.listTotal=vm.getProVlaue(vm.faceValueDetails.faceValueMap,i,v.c)
                 if(v.c=="numberWithFour"){
@@ -228,11 +228,16 @@ export default{
                 }else{
                     withFour=0
                 }
+                if(v.c=="cuteTotal"){
+                    cute='0,1,2,3,4,5,6';
+                }else{
+                    cute="";
+                }
                 json={
                     "faceValue": i,
                     "pageNum": p||1,
-                    "pageSize": 5,
-                    "phoneLevel": "",
+                    "pageSize": 15,
+                    "phoneLevel": cute,
                     "sectionId": vm.faceValueDetails.sectionId,
                     "withFour": withFour
                 }
@@ -244,85 +249,67 @@ export default{
                     vm.currentPage=p||1;
                 }).catch(e=>errorDeal(e))
             }else if(v.t==2){//号段
-                let withFour;
+                let withFour,cute;
                 vm.listTitle=i+'千段码号';
-                vm.listTotal=vm.getProVlaue(vm.faceValueDetails.faceValueMap,i,v.c)
+                vm.listTotal=vm.getProVlaue(vm.thousandDetails,i,v.c)
                 if(v.c=="numberWithFour"){
                     withFour=1
                 }else{
                     withFour=0
                 }
+                if(v.c=="cuteTotal"){
+                    cute='0,1,2,3,4,5,6';
+                }else{
+                    cute="";
+                }
                 json={
                     "faceValue": i,
                     "pageNum": p||1,
-                    "pageSize": 5,
-                    "phoneLevel": "",
+                    "pageSize": 15,
+                    "phoneLevel": cute,
+                    "section":i,
                     "sectionId": vm.faceValueDetails.sectionId,
                     "withFour": withFour
                 }
                 getNumberStorageDetails(json)
                 .then((data)=>{
-                    console.log(data);
                     vm.off.numberlist=true;
                     vm.numberlist=data.data.numbers;
+                    vm.maxpage=data.data.total;
+                    vm.currentPage=p||1;
                 }).catch(e=>errorDeal(e))
             }else{
                 return false;
             }
         },getClickStatus(v,i){
             let vm=this;
+            vm.off.isShow1=''; 
+            vm.off.isShow2='';
+            vm.off.isShow3='';
+            vm.off.isShow4=''; 
+            vm.off.isShow5='';
+            vm.off.isShow6='';
             if(v.t==1){
                 if(v.c=='productTotal'){
                     vm.off.isShow1=i; 
-                    vm.off.isShow2='';
-                    vm.off.isShow3='';
-                    vm.off.isShow4=''; 
-                    vm.off.isShow5='';
-                    vm.off.isShow6='';
                 }else if(v.c=='cuteTotal'){
-                    vm.off.isShow1=''; 
                     vm.off.isShow2=i;
-                    vm.off.isShow3=''; 
-                    vm.off.isShow4=''; 
-                    vm.off.isShow5='';
-                    vm.off.isShow6='';
                 }else if(v.c=='numberWithFour'){
-                    vm.off.isShow1=''; 
-                    vm.off.isShow2='';
                     vm.off.isShow3=i; 
-                    vm.off.isShow4=''; 
-                    vm.off.isShow5='';
-                    vm.off.isShow6='';
                 }
             }else if(v.t==2){
                 if(v.c=='productTotal'){
-                    vm.off.isShow1=''; 
-                    vm.off.isShow2='';
-                    vm.off.isShow3=''; 
                     vm.off.isShow4=i; 
-                    vm.off.isShow5='';
-                    vm.off.isShow6='';
                 }else if(v.c=='cuteTotal'){
-                    vm.off.isShow1=''; 
-                    vm.off.isShow2='';
-                    vm.off.isShow3=''; 
-                    vm.off.isShow4=''; 
                     vm.off.isShow5=i;
-                    vm.off.isShow6=''; 
                 }else if(v.c=='numberWithFour'){
-                    vm.off.isShow1=''; 
-                    vm.off.isShow2='';
-                    vm.off.isShow3=''; 
-                    vm.off.isShow4=''; 
-                    vm.off.isShow5='';
                     vm.off.isShow6=i; 
                 }
             }
-            
         },getProVlaue(v,i,p){
             if(v.hasOwnProperty(i)&&v[i].hasOwnProperty(p)){
                 if(p=='ratio'){
-                    return parseInt(v[i][p])*100+'%'  
+                    return parseFloat(v[i][p])*100+'%'  
                 }else{
                     return v[i][p]  
                 }
@@ -349,8 +336,9 @@ export default{
     .faceValue p::before,.thousand p::before{content: "";background: url('../../assets/images/dian.png') no-repeat center;width: 20px;height: 10px;background-size: contain;display: inline-block;margin-left: 5px;}
     .faceValue table,.thousand table,.numberList table{margin-left:2%;border-collapse: collapse;font-size: 12px}
     .faceValue table tr,.thousand table tr{border-bottom: 1px solid #e2e2e2}
-    .faceValue table tr:nth-child(odd),.thousand table tr:nth-child(odd){background: #EEF1F6}
+    .faceValue table tr:nth-child(odd),.thousand table tr:nth-child(odd){background: #FAFAFA}
     .faceValue table tr:nth-child(even),.thousand table tr:nth-child(even){background: #fff}
+    .faceValue table tr:nth-child(1),.thousand table tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}    
     .faceValue table tr td:nth-child(1),.thousand table tr td:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}
     .faceValue table tr td a,.thousand table tr td a{color:#66A1DF;text-decoration: underline}
     .faceValue table tr td a.c-yellow,.thousand table tr td a.c-yellow{color: #F78A24;text-decoration: underline}

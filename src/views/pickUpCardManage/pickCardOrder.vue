@@ -212,11 +212,11 @@
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a> 
                                 </td>
                                 <td>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
-                                    <el-button v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1&&v.paymentType==4" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.syncFlag!=2" class="small-btn" style="margin:5px;" @click="returnGoods(v)">退款</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.syncFlag!=2" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.syncFlag!=2" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.syncFlag!=2" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
+                                    <el-button v-if="v.paymentState == 1 && v.orderState == 1" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.syncFlag!=2" class="small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
@@ -459,25 +459,31 @@ export default {
             let vm=this;
             this.$set(vm.searchResult[i],'isShow',!vm.searchResult[i].isShow);
         },checkOrderStatus(v){
-            var x = "";
-            if(v.paymentState==1&&v.deliveryState==0&&v.orderState==1){
-                x = {'title':'待付款','style':'c-red'};
-            }else if(v.paymentState==1&&v.deliveryState==0&&v.orderState==3){
-                x = {'title':'手动关闭','style':'c-red'};
-            }else if(v.paymentState==1&&v.deliveryState==0&&v.orderState==4){
-                x = {'title':'自动关闭','style':'c-red'};
-            }else if(v.paymentState==2&&v.deliveryState==1&&v.orderState==1){
-                x = {'title':'待发货','style':'c-blue'};
-            }else if(v.paymentState==2&&v.deliveryState==2&&v.orderState==1){
-                x = {'title':'已发货','style':'c-blue'};
-            }else if(v.paymentState==2&&v.deliveryState==2&&v.orderState==2){
-                x = {'title':'已完成','style':'c-green'};
-            }else if(v.syncFlag==2&&v.paymentState==2){
-                x = {'title':'已退卡','style':'c-red'};
+            var orderState = "";
+            if(v.paymentState == 1 && v.orderState == 1){
+                return orderState = {'title':'待付款','style':'c-red'};
             }
-            return x;
-        },
-        searchdelivery(n,v){
+            if(v.paymentState == 1 && v.orderState == 3){
+                return orderState = {'title':'手动关闭','style':'c-red'};
+            }
+            if(v.paymentState == 1 && v.orderState == 4){
+                return orderState = {'title':'自动关闭','style':'c-red'};
+            }
+            if(v.paymentState == 2 && v.syncFlag == 2 ){
+                return orderState = {'title':'已退卡','style':'c-red'};
+            }
+            if(v.deliveryState == 1){
+                return orderState = {'title':'待发货','style':'c-blue'};
+            }
+            if(v.deliveryState == 2){
+                return orderState = {'title':'已发货','style':'c-blue'};
+            }
+            if(v.orderState == 2 ){
+                return orderState = {'title':'已完成','style':'c-green'};
+            }
+            
+            // return orderState;
+        },searchdelivery(n,v){
             let url="https://www.kuaidi100.com/chaxun?com="+n+"&nu="+v;
             window.open(url)
         },
