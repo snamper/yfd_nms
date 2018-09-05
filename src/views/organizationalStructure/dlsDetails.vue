@@ -248,6 +248,7 @@ export default{
         vm.managerPhone=vm.$parent.managerPhone;
         vm.managerName=vm.$parent.managerName;
     },
+
     methods:{
         goBack(){//返回上级
             let vm=this;

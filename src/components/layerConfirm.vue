@@ -78,7 +78,7 @@
                 <tbody>
                     <tr>
                         <td colspan="2">
-                            <h3>是否确认退款</h3>
+                            <h3>是否确认退卡</h3>
                         </td>
                     </tr>
                     <tr class="tdBtn">
@@ -202,7 +202,7 @@
                     </tr>
                 </tbody>
             </table>
-            <table v-if="layerType='deletePower'">
+            <table v-if="layerType=='deletePower'">
                 <tbody>
                     <tr style="height:140px;">
                         <td>
@@ -473,7 +473,9 @@ export default{
                         msgSkin:"success"
                     })
                 }
-                vm.getRoles()
+                vm.off.layer=false;
+                vm.layerType='';
+                vm.fgetRole();
             }).catch(e=>errorDeal(e))
         },
         trimFunc(v){

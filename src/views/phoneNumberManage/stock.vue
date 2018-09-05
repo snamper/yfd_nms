@@ -32,6 +32,7 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">面值：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+                            <el-radio v-model="cardType"  label="0,10,20,30,50,100">全部</el-radio>
                             <el-radio v-model="cardType"  label="0">0</el-radio>
                             <el-radio v-model="cardType"  label="10">10</el-radio>
                             <el-radio v-model="cardType"  label="20">20</el-radio>
@@ -76,7 +77,6 @@
                             <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="20">
                                 <el-checkbox text-color="#48576a" style="display:inline;"  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>                       
                                 <el-checkbox-group style="display:inline" v-model="checkedCities" @change="handleCheckedCitiesChange">
-                                    <!-- <el-checkbox class="hidden-xs-and-down" v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>                        -->
                                     <el-checkbox  v-for="city in cities1" :label="city" :key="city">{{city}}</el-checkbox>                       
                                     <el-checkbox  v-for="city in cities2" :label="city" :key="city">{{city}}</el-checkbox>                       
                                     <el-checkbox  v-for="city in cities3" :label="city" :key="city">{{city}}</el-checkbox>                       
@@ -113,8 +113,8 @@
                         <td>总数（个）</td>
                         <td>靓号数（个）</td>
                         <td>带4比例</td>
-                        <td>入库价格</td>
-                        <td>售出价格</td>
+                        <td>入库价格(元)</td>
+                        <td>售出价格(元)</td>
                     </tr>
                     <tr v-for="(v,i) in datalist">
                         <td colspan="12">
@@ -133,8 +133,8 @@
                                     <td>{{v.productTotal}}</td>
                                     <td>{{v.cuteTotal}}</td>
                                     <td>{{v.ratio*100}}%</td>
-                                    <td>{{v.inprice}}</td>
-                                    <td>{{v.outprice}}</td>
+                                    <td>{{translateData('fenToYuan',v.inprice)}}</td>
+                                    <td>{{translateData('fenToYuan',v.outprice)}}</td>
                                 </tr>
                                 <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)!='{}'">
                                     <td colspan="6" :rowspan="v.packageDescMap.length" style="border-right:1px solid #e4e4e4"></td>
@@ -236,7 +236,7 @@ export default{
             isIndeterminate:false,
             searchList:"",
             productName:"",//号包名称
-            cardType:"0",//卡面值
+            cardType:"0,10,20,30,50,100",//卡面值
             productStatus:"1,2,3,4,5,6",//号包状态
             setMenu: "",//查询的套餐名称
             isp: "1,2,3",//运营商

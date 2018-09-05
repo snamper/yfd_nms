@@ -89,9 +89,6 @@ export default{
 			},
 		}
     },
-    created:function(){
-        console.log(this);
-    },
 	methods:{
         goBack(){
             this.$parent.off.cardDetails=false;

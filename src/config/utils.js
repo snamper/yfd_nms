@@ -243,6 +243,14 @@ export const translateData=(type,v)=> {
            }else{
             return '--';
            }
+        case 'fenToYuan':
+        if(!isNaN(v)&&v!=0){
+            return v/100
+        }else if(!isNaN(v)&&v==0){
+            return '0'
+        }else{
+            return '--'
+        }
     }
 }
 

@@ -11,15 +11,15 @@
                         <td>角色名称</td>
                         <td>创建时间</td>
                         <td>角色描述</td>
-                        <td>权限ID</td>
+                        <td><a class="powerId">权限ID</a></td>
                         <td>操作</td>
                     </tr>
                     <tr v-for="(v,i) in rolelist">
                         <td>{{i+1}}</td>
                         <td>{{v.roleName}}</td>
-                        <td>{{getDateTime()[6]}}</td>
+                        <td>{{getDateTime(v.createTime)[6]}}</td>
                         <td>{{v.description}}</td>
-                        <td><a @click="getpowerlist(v)" class="m-jumplink">{{v.id}}</a></td>
+                        <td><a @click="getpowerlist(v)" class="m-jumplink powerId">{{v.privilege}}</a></td>
                         <td>
                             <a @click="changePower(v)" style="color:#29B038;text-decoration:underline;margin-right:20px" href="javascript:void(0)">修改</a>
                             <a @click="cancel(v)" style="color:#DB1E1E;text-decoration:underline" href="javascript:void(0)">删除</a>
@@ -34,7 +34,7 @@
             </div>
         </section>
         <layerconfirm v-if="off.layer" :layerType="layerType"></layerconfirm>
-        <changePower :type="ctype" :power="power" v-if="off.changePower"></changePower>
+        <changePower :ctype="ltype" :roleName="roleName" v-if="off.changePower"></changePower>
     </section>
 </template>
 <script>
@@ -46,18 +46,18 @@ export default{
     name:'powerDeploy',
     data (){
         return {
-             total:"",
-             rolelist: [ { "description": "角色描述", "id": "角色ID", "roleName": "角色名称" },{ "description": "角色描述", "id": "角色ID", "roleName": "角色名称" },{ "description": "角色描述", "id": "角色ID", "roleName": "角色名称" } ],
-             layerType:"",
-             ctype:"",
-             power:"",
-             roleId:"",
-             hasId:[101001,102001],
-             off:{
-                 searchlist:true,
-                 layer:false,
-                 changePower:false
-             }
+            total:"",
+            rolelist:"",
+            layerType:"",
+            ltype:"",
+            roleId:"",
+            hasId:"",
+            roleName:"",
+            off:{
+                searchlist:true,
+                layer:false,
+                changePower:false
+            }
         }
     },
     created:function(){
@@ -88,19 +88,29 @@ export default{
             vm.roleId=v.id;
         },getpowerlist(v){
             let vm=this;
-            vm.hasId=v.id.split(",");
+            vm.off.layer=false;
+            vm.off.searchlist=false;
+            vm.off.changePower=true;
+            vm.ltype="plist";
+            vm.roleId=v.id;
+            vm.roleName=v.roleName;
+            vm.hasId=v.privilege.split(',');
         },changePower(v){
             let vm=this;
             vm.off.layer=false;
             vm.off.searchlist=false;
             vm.off.changePower=true;
-            vm.ctype="change";
+            vm.ltype="change";
+            vm.roleId=v.id;
+            vm.roleName=v.roleName;
+            vm.hasId=v.privilege.split(',');
         },add(){
             let vm=this;
             vm.off.layer=false;
             vm.off.searchlist=false;
             vm.off.changePower=true;
-            vm.ctype="add";
+            vm.ltype="add";
+            vm.hasId=[];
         },getDateTime(v){
             return getDateTime(v)
         }
@@ -110,11 +120,12 @@ export default{
 <style scoped>
     .m-title1 button{width: 90px;height: 25px;border-radius: 4px;outline: none;border: 1px solid #00AA01;background: #00AA01;color: #fff}
     .m-searchlist{width: 98%;margin: 0 auto}
-    .m-searchlist table{width: 100%;text-align: center;border-collapse: collapse;border: 1px solid #eee}
+    .m-searchlist table{width: 100%;text-align: center;border-collapse: collapse;border: 1px solid #eee;}
     .m-searchlist table tr{height: 40px;}
     .m-searchlist table tr:not(:last-child){border-bottom: 1px solid #eee}
     .m-searchlist table tr:nth-child(odd){background: #fafbfd; }
     .m-searchlist table tr:nth-child(even){background: #FFF}
+    .m-searchlist table tr .powerId{display: inline-block;max-width: 200px;overflow: hidden;text-overflow: ellipsis}
 </style>
 
 
