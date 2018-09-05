@@ -6,7 +6,7 @@
     .detailsUlDiv ul{border-left: 1px solid rgb(228, 228, 228);border-right: 1px solid rgb(228, 228, 228);border-top: 1px solid rgb(228, 228, 228)}
     .detailsUlDiv ul li {padding: 6px 18px;border-bottom: 1px solid rgb(228, 228, 228)}
     .detailsUlDiv ul li:nth-child(odd){background: #FFF;}
-    input.modifyInput{height: 28px;border-radius: 6px;outline: none;border: 1px solid #ccc;padding-left: 10px;}
+    input.modifyInput{height: 30px;border-radius: 4px;outline: none;border: 1px solid #ccc;padding-left: 15px;padding-right:8px; }
     div.modifyStaffInfo .change{border-radius:6px;padding:6px 40px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
     div.modifyStaffInfo .changeNo{border-radius:6px;padding:6px 40px;background: #C14752;border:1px solid #C14752;outline: none;color:#fff;}
     div.modifyStaffInfo .changeYes{margin-left: 10px;border-radius:6px;padding:6px 40px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
@@ -58,16 +58,25 @@
                                 {{translateData('userRole',v)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
                             </span>
                         </div></el-col>
-                        <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
+                        <!-- <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <el-checkbox-group class="displayInline" v-model="role">
                                 <el-checkbox v-if="userRoleSwitch==1" label=1>管理员</el-checkbox>
                                 <el-checkbox v-if="userRoleSwitch==1" label=2>销售</el-checkbox>
                                 <el-checkbox v-if="userRoleSwitch==1" label=6>提卡客服</el-checkbox>
                                 <el-checkbox v-if="userRoleSwitch==1" label=7>开卡客服</el-checkbox>
-                                <!-- <el-checkbox label=3>店长</el-checkbox> -->
                                 <el-checkbox v-if="userRoleSwitch==2" label=4>采购员</el-checkbox>
                                 <el-checkbox v-if="userRoleSwitch==2" label=5>业务员</el-checkbox>
                             </el-checkbox-group>
+                        </div></el-col> -->
+                        <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
+                            <el-select size="mini" v-model="value1" placeholder="请选择">
+                                <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="item.value">
+                                </el-option>
+                            </el-select>
                         </div></el-col>
                     </el-row>
                 </li>
@@ -235,12 +244,20 @@ export default{
             list: [
             {a: '', b: '',checked:false,checked2:true},
             {a: '', b: '',checked:true,checked2:false}
-            ],
-            role:[]
+            ]
             ,userRoleSwitch:""
-            
+            ,value1: ''
 		}
-	},created:function(){
+    },
+    computed:{
+        options:function(){
+            if(this.userRoleSwitch==1){
+                return [{value: '1', label: '管理员' }, { value: '2', label: '销售员' },{ value: '6', label: '提卡客服' }, { value: '7', label: '开卡客服' }]
+            }else if(this.userRoleSwitch==2){
+                return [{ value: '4', label: '采购员' }, { value: '5', label: '业务员' }]
+            };
+        }
+    },created:function(){
         let vm=this;
         vm.user=getStore("YFD_NMS_INFO");
         vm.topId=getStore('departId');
@@ -267,7 +284,9 @@ export default{
                 return false;
             }
             let vm=this;
-            vm.role=vm.forms.userRole.split(",");
+            if(vm.forms.userRole.split(",").length==1){
+                vm.value1=vm.forms.userRole.split(",")[0]
+            }
             vm.off.noModify=false;
             vm.off.modify=true;
             vm.oldName=vm.forms.username;
@@ -286,7 +305,7 @@ export default{
             vm.off.modify=false;
             data.newUsername=vm.forms.username;
             data.newPhone=vm.forms.phone;
-            data.newUserRole=vm.role.join(',');
+            data.newUserRole=vm.value1;
             data.searchUserId=v;
             requestMethod(data,url)
             .then((data)=>{

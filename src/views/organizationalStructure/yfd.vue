@@ -50,15 +50,23 @@
                 <b><span>用户姓名：</span><input v-model="list[i].username" placeholder="请输入用户姓名" :maxlength="10" class="u-input" type="text"></b>
                 <b><span>手机号码：</span><input v-model="list[i].phone" placeholder="请输入手机号码" :maxlength="11" class="u-input" type="text"></b>
                 <b><span>职务：</span>
-                    <el-checkbox-group class="displayInline" v-model="list[i].role">
+                    <!-- <el-checkbox-group class="displayInline" v-model="list[i].role">
                         <el-checkbox label=1>管理员</el-checkbox>
                         <el-checkbox label=2>销售</el-checkbox>
                         <el-checkbox label=6>提卡客服</el-checkbox>
                         <el-checkbox label=7>开卡客服</el-checkbox>
-                        <!--<el-checkbox label=3>店长</el-checkbox>
+                        <el-checkbox label=3>店长</el-checkbox>
                         <el-checkbox label=4>采购员</el-checkbox>
-                        <el-checkbox label=5>业务员</el-checkbox>-->
-                    </el-checkbox-group>
+                        <el-checkbox label=5>业务员</el-checkbox>
+                    </el-checkbox-group> -->
+                    <el-select size="mini" v-model="list[i].value" placeholder="请选择">
+                        <el-option
+                        v-for="item in options"
+                        :key="item.value"
+                        :label="item.label"
+                        :value="item.value">
+                        </el-option>
+                    </el-select>
                 </b>
                 <b><span @click="deleteLine(i)" class="u-icon-del"></span></b>
             </div>
@@ -229,7 +237,9 @@ export default{
 			},
 			form:{
                 page:1
-			},
+            },
+            options:[{value: '1', label: '管理员' }, { value: '2', label: '销售员' },{ value: '6', label: '提卡客服' }, { value: '7', label: '开卡客服' }],
+            value:''
 		}
 	},
 	components:{
@@ -256,9 +266,10 @@ export default{
         },AddStaff(){//添加员工按钮
             let data={"newUsers":[]},vm=this; 
             for(let i=0;i<this.list.length;i++){
-                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
+                debugger;
+                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].value!=''){
                     checkMobile(this.list[i].phone,()=>{return false});
-                    this.list[i].userRole = this.list[i].role.join(',');
+                    this.list[i].userRole = this.list[i].value;
                     this.list[i].departId=vm.topDepartmentId;
                     this.list[i].userHierachy=1;
                     data.newUsers.push(this.list[i])

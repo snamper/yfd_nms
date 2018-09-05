@@ -60,6 +60,7 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 						<li><router-link to="/home/organization/yfd"><b></b>亚飞达管理</router-link></li>
 						<li><router-link to="/home/organization/agent"><b></b>代理商管理</router-link></li>
 						<li><router-link to="/home/organization/staff"><b></b>员工管理</router-link></li>
+						<li><router-link to="/home/organization/powerDeploy"><b></b>权限配置</router-link></li>
 					</ul>
 				</li>
 			</ul>
@@ -76,7 +77,7 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
                     <ul class="g-side-subul nav2">
                         <li><router-link to="/home/card/cardManage"><b></b>码号管理</router-link></li>
                         <li><router-link to="/home/card/modifyPrice"><b></b>购物车价格修改</router-link></li>
-                        <li v-if="false"><router-link to="/home/card/stock"><b></b>库存管理</router-link></li>
+                        <li v-if="true"><router-link to="/home/card/stock"><b></b>库存管理</router-link></li>
                     </ul>
 				</li>
 			</ul>
@@ -226,6 +227,8 @@ export default{
                     crumb[1]={"name":"代理商管理","href":"agent"}
                 }else  if(path.indexOf("home/organization/staff")>-1){
                     crumb[1]={"name":"员工管理","href":"staff"}
+                }else if(path.indexOf("home/organization/powerDeploy")>-1){
+                    crumb[1]={"name":"权限配置","href":"powerDeploy"}
                 }
             }
             if(path.indexOf("/home/card")>-1){

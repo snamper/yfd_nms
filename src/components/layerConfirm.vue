@@ -67,9 +67,6 @@
                     </tr>
                 </tbody>
             </table>
-            <!-- <table v-if="layerType=='returnGoods'">
-                <thead> <tr> <th > 填写物流单号 </th> </tr> </thead> <tbody> <tr> <td> <el-select allow-create filterable style="display:block" v-model="logisticsCompany1" placeholder="请选择" size="small"> <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" > </el-option> </el-select> </td> </tr> <tr> <td> <el-input :maxlength="30"  v-model="logisticsOrderId1" placeholder="请输入物流单号" size="small"></el-input> </td> </tr> <tr class="tdBtn"> <span @click="close()">取消</span> <span @click="btnYes('returnGoods',logisticsInfo)">确认</span> </tr></tbody>
-            </table> -->
             <table v-if="layerType=='returnGoods'">
                 <thead>
                     <tr>
@@ -205,6 +202,21 @@
                     </tr>
                 </tbody>
             </table>
+            <table v-if="layerType='deletePower'">
+                <tbody>
+                    <tr style="height:140px;">
+                        <td>
+                            <span class="f-fs14">删除角色可能会导致数据出现错误</span><br>
+                            <p style="height:5px"></p>
+                            <span class="f-s-18 c-red">是否删除？</span>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close('1')">取消</span>
+                        <span @click="btnYes('deletePower')">确认</span>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 </template>
@@ -215,7 +227,8 @@ import {
     requestChangeLogisticsId,
     requestConfirmPayMent,
     requestModify_Price,
-    requestReturnGoods} from "../config/service.js"; 
+    requestReturnGoods,
+    deleteRole} from "../config/service.js"; 
 import { errorDeal,getStore, trimFunc } from '../config/utils';
 export default{
     props:{
@@ -270,6 +283,8 @@ export default{
                         msgSkin:"error"
                     })
                 }
+            }else if(e=="deletePower"){
+                vm.deletePower(v)
             }
         },close(i){
             var vm=this;
@@ -446,6 +461,20 @@ export default{
                 this.$parent.off.layer=false;                
                 this.$parent.search(vm.$parent.pa);
             }).catch(e=>errorDeal(e,function(){vm.$parent.off.layer=false;}));
+        },deletePower(){
+            let vm=this.$parent,json={id:vm.roleId};
+            deleteRole(json)
+            .then((data)=>{
+                if(data.code==200){
+                    layer.open({
+                        content:"删除角色成功",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"success"
+                    })
+                }
+                vm.getRoles()
+            }).catch(e=>errorDeal(e))
         },
         trimFunc(v){
             return trimFunc(v)
@@ -456,14 +485,14 @@ export default{
 <style scoped>
 #detailsView{position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
 #detailsView>div{display: table-cell;vertical-align: middle;}
-#detailsView table{box-shadow: 0 0 50px grey;margin:auto;width: 268px;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
+#detailsView table{box-shadow: 0 0 50px grey;margin:auto;width: 270px;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
 #detailsView table td{padding:10px 30px;}
 #detailsView table th{padding: 10px 0;border-radius: 4px 4px 0 0;color: #545454;font-size: 16px;}
 #detailsView table td>.fl{width:1rem;text-align: right;}
 #detailsView table td>.fright{margin-left: 1.05rem;text-align: left; }
 .lay-mask{position:absolute;background-color: rgba(0,0,0,0.3);z-index: -1;width: 100%;height: 100%;top: 0;left: 0;}
 .tdBtn span{ display: inline-block;width: 50%;height: 50px;padding: 20px;box-sizing: border-box;cursor: pointer}
-.tdBtn span:nth-child(1){border-top: 1px solid #ccc;border-right: 1px solid #ccc;color: red}
+.tdBtn span:nth-child(1){border-top: 1px solid #ccc;border-right: 1px solid #ccc;color: #C6343B}
 .tdBtn span:nth-child(2){border-top: 1px solid #ccc;color:#43AAD4}
 .tdBtn2 {cursor: pointer}
 .tdBtn2 span{display: inline-block;width: 100%; box-sizing: border-box;border-top:1px solid #ccc;padding-top: 10px; }

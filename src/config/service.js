@@ -43,6 +43,22 @@ export const getNumberStorageDetails=(data)=>fetch("/nms/w/number/storageThousan
 /*获取城市列表*/
 export const getCityList=(data)=>fetch("/nms/w/number/getArea",data,"POST")
 
+/*获取角色列表*/
+export const getRoles=(data)=>fetch("/ums/w/user/getRoles",data,"POST")
+
+/*删除角色*/
+export const deleteRole=(data)=>fetch("/ums/w/user/deleteRole",data,"POST")
+
+/*获取角色权限列表*/ 
+export const getPrivileges=(data)=>fetch("/ums/w/user/getPrivileges",data,"POST")
+
+/*新增角色权限*/ 
+export const addRole=(data)=>fetch("/ums/w/user/addRole",data,"POST")
+
+
+
+/*修改角色权限*/ 
+export const updateRolePrivilege=(data)=>fetch("/ums/w/user/updateRolePrivilege",data,"POST")
 
 
 

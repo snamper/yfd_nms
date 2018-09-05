@@ -1,7 +1,5 @@
 /**
   *@info 路由模块
-  *@author: thinkmix
-  *@date 2018-3-15
 * */
 import Vue from "vue";
 import Router from "vue-router";
@@ -63,6 +61,13 @@ const Org_ygcx = resolve => {
     load(true);
     require.ensure(["@/views/organizationalStructure/ygcx.vue"], () => {
         resolve(require("@/views/organizationalStructure/ygcx.vue"));
+        load();
+    });
+};
+const Org_powerDeploy = resolve => {
+    load(true);
+    require.ensure(["@/views/organizationalStructure/powerDeploy.vue"], () => {
+        resolve(require("@/views/organizationalStructure/powerDeploy.vue"));
         load();
     });
 };
@@ -168,6 +173,10 @@ const router = new Router({
                     path: "staff",
                     name: "staff",
                     component: Org_ygcx,
+                }, {
+                    path:"powerDeploy",
+                    name:"powerDeploy",
+                    component: Org_powerDeploy,
                 }
                 ]
             }
