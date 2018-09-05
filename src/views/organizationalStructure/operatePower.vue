@@ -14,7 +14,7 @@
             <div class="m-content">
                 <p>角色名称：
                     <span class="f-fs-16" v-if="ctype=='plist'||ctype=='change'">{{roleName}}</span>
-                    <input v-model="powerName" v-if="ctype=='add'" type="text" class="m-input-add">
+                    <input placeholder="请输入角色名称" v-model="powerName" v-if="ctype=='add'" type="text" class="m-input-add">
                 </p>
                 <div>
                     <span v-if="ctype=='change'||ctype=='add'">当前权限：</span>
@@ -23,7 +23,7 @@
                             <span :class="{'m-powerlist':i>0}">
                                 <el-checkbox v-model="v.isChecked"></el-checkbox>
                                 <b style="padding-left:10px;">{{v.privilegeId}}</b>
-                                <b style="padding-left:5px;">【<label style="color:#00AA01">{{v.privilegeName}}</label>：<label>{{v.description}}</label>】</b>
+                                <b style="padding-left:5px;">【<label style="color:#00AA01">{{v.privilegeName}}</label> : <label>{{v.description}}</label>】</b>
                             </span>
                         </li>
                     </ul>
@@ -33,8 +33,8 @@
                     <ul>
                         <li v-for="(v,i) in powers" :key="i" v-if="ctype=='plist'&&v.isChecked">
                             <span v-if="v.isChecked" :class="{'m-powerlist':i>0}">
-                                <b style="padding-left:10px;">{{v.privilegeId}}</b>
-                                <b style="padding-left:5px;">【<label style="color:#00AA01">{{v.privilegeName}}</label>：<label>{{v.description}}</label>】</b>
+                                <b>{{v.privilegeId}}</b>
+                                <b style="padding-left:5px;">【<label style="color:#00AA01">{{v.privilegeName}}</label> : <label>{{v.description}}</label>】</b>
                             </span>
                         </li>
                     </ul>
@@ -48,18 +48,26 @@
                 </p>
             </div>
         </section>
+        <layerConfirm :changpowerData="changpowerData" v-if="off.layer" :layerType="layerType"></layerConfirm>
     </section>
 </template>
 <script>
-import { getPrivileges,addRole,updateRolePrivilege } from '../../config/service.js';
+import { getPrivileges,addRole } from '../../config/service.js';
 import { errorDeal } from '../../config/utils.js';
+import layerConfirm from '../../components/layerConfirm';
 export default{
     name:'changePower',
     props:['ctype','roleName'],
     data (){
         return {
             powers:"",
-            powerName:""
+            powerName:"",
+            layerType:"",
+            powerId:[],
+            changpowerData:"",
+            off:{
+                layer:false
+            }
         }
     },
     created:function(){
@@ -79,6 +87,9 @@ export default{
             })
         }).catch(e=>errorDeal(e))
     },
+    components:{
+        layerConfirm
+    },
     methods:{
         powerModiefy(v){
             let vm=this;
@@ -91,23 +102,12 @@ export default{
                         }
                     }
                 })
-                let json={
+                vm.changpowerData={
                     "privilege":powerId.join(","),
                     "id":vm.$parent.roleId
                 };
-                updateRolePrivilege(json)
-                .then((data)=>{
-                    if(data.code==200){
-                    layer.open({
-                            content:"修改角色权限成功",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"success"
-                        })
-                    }
-                    vm.$parent.fgetRole();
-                    vm.close();
-                }).catch(e=>errorDeal(e))
+                vm.off.layer=true;
+                vm.layerType='modifyPower';      
             }else if(v=='add'){
                 let powerId=[];
                 vm.powers.map(function(value,index){

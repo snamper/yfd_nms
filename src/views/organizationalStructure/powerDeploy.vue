@@ -18,7 +18,7 @@
                         <td>{{i+1}}</td>
                         <td>{{v.roleName}}</td>
                         <td>{{getDateTime(v.createTime)[6]}}</td>
-                        <td>{{v.description}}</td>
+                        <td>{{v.description||'--'}}</td>
                         <td><a @click="getpowerlist(v)" class="m-jumplink powerId">{{v.privilege}}</a></td>
                         <td>
                             <a @click="changePower(v)" style="color:#29B038;text-decoration:underline;margin-right:20px" href="javascript:void(0)">修改</a>

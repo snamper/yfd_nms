@@ -217,6 +217,21 @@
                     </tr>
                 </tbody>
             </table>
+            <table v-if="layerType=='modifyPower'">
+                <tbody>
+                    <tr style="height:140px;">
+                        <td>
+                            <span class="f-fs14">修改角色可能会导致数据出现错误</span><br>
+                            <p style="height:5px"></p>
+                            <span class="f-s-18 c-red">是否修改？</span>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close('1')">取消</span>
+                        <span @click="btnYes('modifyPower')">确认</span>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 </template>
@@ -228,14 +243,16 @@ import {
     requestConfirmPayMent,
     requestModify_Price,
     requestReturnGoods,
-    deleteRole} from "../config/service.js"; 
+    deleteRole,
+    updateRolePrivilege} from "../config/service.js"; 
 import { errorDeal,getStore, trimFunc } from '../config/utils';
 export default{
     props:{
         layerType:String,
         isSure:Boolean,
         logisticsInfo:Object,
-        info:Object
+        info:Object,
+        changpowerData:Object
     },
 	data (){
 		return {
@@ -285,6 +302,8 @@ export default{
                 }
             }else if(e=="deletePower"){
                 vm.deletePower(v)
+            }else if(e=="modifyPower"){
+                vm.modifyPower(v)
             }
         },close(i){
             var vm=this;
@@ -476,6 +495,21 @@ export default{
                 vm.off.layer=false;
                 vm.layerType='';
                 vm.fgetRole();
+            }).catch(e=>errorDeal(e))
+        },modifyPower(){
+            let vm=this;
+            updateRolePrivilege(vm.changpowerData)
+            .then((data)=>{
+                if(data.code==200){
+                layer.open({
+                        content:"修改角色权限成功",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"success"
+                    })
+                }
+                vm.$parent.$parent.fgetRole();
+                vm.$parent.close();
             }).catch(e=>errorDeal(e))
         },
         trimFunc(v){

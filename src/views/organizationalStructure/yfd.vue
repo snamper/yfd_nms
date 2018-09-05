@@ -266,7 +266,6 @@ export default{
         },AddStaff(){//添加员工按钮
             let data={"newUsers":[]},vm=this; 
             for(let i=0;i<this.list.length;i++){
-                debugger;
                 if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].value!=''){
                     checkMobile(this.list[i].phone,()=>{return false});
                     this.list[i].userRole = this.list[i].value;

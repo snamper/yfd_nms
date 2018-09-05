@@ -61,9 +61,6 @@ export const createDownload=(url,cb)=>{
     form.setAttribute("action",url);
 
     input.setAttribute("type","hidden");
-    // input.setAttribute("name","data");
-    // input.setAttribute("value",data);
-
     body.appendChild(ifr);
     body.appendChild(form);
 
@@ -245,7 +242,7 @@ export const translateData=(type,v)=> {
            }
         case 'fenToYuan':
         if(!isNaN(v)&&v!=0){
-            return v/100
+            return (v/100).toFixed(2)
         }else if(!isNaN(v)&&v==0){
             return '0'
         }else{
