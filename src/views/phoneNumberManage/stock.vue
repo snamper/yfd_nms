@@ -260,7 +260,7 @@ export default{
             cities12:cityOptions12,
             /*地区选择*/
             options: [{areaCn: "安庆", areaPinying: "anqing"}, {areaCn: "鞍山", areaPinying: "anshan"}],
-            value: '',//归属地
+            value: '全部',//归属地
             off:{
                 numberDetails:false,
                 tableDetails:[],
@@ -273,6 +273,7 @@ export default{
         getCityList()
         .then((data)=>{
             vm.options=data.data.list;
+            vm.options.unshift({areaCn: "全部", areaPinying: "quanbu"})
         })
     },
     components:{
@@ -286,8 +287,12 @@ export default{
                 checked.push(cityOptions.indexOf(vm.checkedCities[i])+1);
             }
             checked=checked.join(",");
+            let cvalue='';
+            if(vm.value!='全部'){
+                cvalue=vm.value
+            }
             let json={
-                "area": vm.value,
+                "area": cvalue,
                 "brand": checked,
                 "faceValue": vm.cardType,
                 "isp": vm.isp,

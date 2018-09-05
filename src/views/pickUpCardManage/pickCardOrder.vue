@@ -212,11 +212,11 @@
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a> 
                                 </td>
                                 <td>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=2" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=2" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=2" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
                                     <el-button v-if="v.paymentState == 1 && v.orderState == 1" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.returnFlag!=2" class="small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
@@ -469,7 +469,7 @@ export default {
             if(v.paymentState == 1 && v.orderState == 4){
                 return orderState = {'title':'自动关闭','style':'c-red'};
             }
-            if(v.paymentState == 2 && v.returnFlag == 2 ){
+            if(v.paymentState == 2 && v.returnFlag == 1 ){
                 return orderState = {'title':'已退卡','style':'c-red'};
             }
             if(v.deliveryState == 1){
