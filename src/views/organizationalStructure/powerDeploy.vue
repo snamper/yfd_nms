@@ -10,7 +10,7 @@
                         <td>序号</td>
                         <td>角色名称</td>
                         <td>创建时间</td>
-                        <td>角色描述</td>
+                        <td><span class="roleDesc">角色描述</span></td>
                         <td><a class="powerId">权限ID</a></td>
                         <td>操作</td>
                     </tr>
@@ -18,7 +18,7 @@
                         <td>{{i+1}}</td>
                         <td>{{v.roleName}}</td>
                         <td>{{getDateTime(v.createTime)[6]}}</td>
-                        <td>{{v.description||'--'}}</td>
+                        <td><span class="roleDesc">{{v.description||'--'}}</span></td>
                         <td><a @click="getpowerlist(v)" class="m-jumplink powerId">{{v.privilege}}</a></td>
                         <td>
                             <a @click="changePower(v)" style="color:#29B038;text-decoration:underline;margin-right:20px" href="javascript:void(0)">修改</a>
@@ -126,6 +126,7 @@ export default{
     .m-searchlist table tr:nth-child(odd){background: #fafbfd; }
     .m-searchlist table tr:nth-child(even){background: #FFF}
     .m-searchlist table tr .powerId{display: inline-block;max-width: 200px;overflow: hidden;text-overflow: ellipsis}
+    .m-searchlist table tr .roleDesc{display: inline-block;max-width: 200px;}
 </style>
 
 
