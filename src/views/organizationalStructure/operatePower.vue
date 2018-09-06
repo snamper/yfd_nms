@@ -14,7 +14,7 @@
             <div class="m-content">
                 <p>角色名称：
                     <span class="f-fs-16" v-if="ctype=='plist'||ctype=='change'">{{roleName}}</span>
-                    <input placeholder="请输入角色名称" v-model="powerName" v-if="ctype=='add'" type="text" class="m-input-add">
+                    <input placeholder="请输入角色名称" :maxlength="10" v-model="powerName" v-if="ctype=='add'" type="text" class="m-input-add">
                 </p>
                 <div>
                     <span v-if="ctype=='change'||ctype=='add'">当前权限：</span>
