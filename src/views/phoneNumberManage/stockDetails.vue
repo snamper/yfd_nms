@@ -310,7 +310,7 @@ export default{
         },getProVlaue(v,i,p){
             if(v.hasOwnProperty(i)&&v[i].hasOwnProperty(p)){
                 if(p=='ratio'){
-                    return parseFloat(v[i][p])+'%'  
+                    return v[i][p]
                 }else{
                     return v[i][p]  
                 }

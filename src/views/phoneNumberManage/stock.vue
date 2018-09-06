@@ -73,7 +73,7 @@
                     <el-col :span="24"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
                         <el-col :xs="19" :sm="21" :md="21" :lg="20" :xl="18">
-                            <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="20">
+                            <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="20">
                                 <el-checkbox text-color="#48576a" style="display:inline;"  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>                       
                                 <el-checkbox-group style="display:inline" v-model="checkedCities" @change="handleCheckedCitiesChange">
                                     <el-checkbox  v-for="city in cities1" :label="city" :key="city">{{city}}</el-checkbox>                       
@@ -88,6 +88,7 @@
                                     <el-checkbox  v-for="city in cities10" :label="city" :key="city">{{city}}</el-checkbox>      
                                     <el-checkbox  v-for="city in cities11" :label="city" :key="city">{{city}}</el-checkbox>      
                                     <el-checkbox  v-for="city in cities12" :label="city" :key="city">{{city}}</el-checkbox>      
+                                    <el-checkbox  v-for="city in cities13" :label="city" :key="city">{{city}}</el-checkbox>      
                                 </el-checkbox-group>
                             </el-col>
                         </el-col>
@@ -213,7 +214,7 @@ import { Loading } from 'element-ui';
 import { getDateTime,errorDeal,translateData,getStore } from "../../config/utils.js";
 import { getNumberStorage,getCityList,getNumberStorageThousand } from "../../config/service.js"; 
 import stockDetails from './stockDetails.vue';
-const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
+const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城','中邮'],
     cityOptions1=['远特'],
     cityOptions2=['蜗牛'],
     cityOptions3=['迪信通'],
@@ -225,7 +226,8 @@ const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航'
     cityOptions9=['国美'],
     cityOptions10=['联想'],
     cityOptions11=['蓝猫移动'],
-    cityOptions12=['长城'];
+    cityOptions12=['长城'],
+    cityOptions13=['中邮'];
 export default{
 	data(){
 		return{
@@ -243,7 +245,7 @@ export default{
             thousandDetails:"",
             downloadData:"",
             datalist:"",
-            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
+            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城','中邮'],//虚商品牌
             cities: cityOptions,//选中的虚商
             cities1:cityOptions1,
             cities2:cityOptions2,
@@ -257,6 +259,7 @@ export default{
             cities10:cityOptions10,
             cities11:cityOptions11,
             cities12:cityOptions12,
+            cities13:cityOptions13,
             /*地区选择*/
             options: [{areaCn: "安庆", areaPinying: "anqing"}, {areaCn: "鞍山", areaPinying: "anshan"}],
             value: '全部',//归属地
@@ -330,10 +333,10 @@ export default{
                 document.body.appendChild(elemIF);
         },
         getSectionDetails(v){
-            let vm=this,json={};
+            let vm=this;
+            vm.$set(vm.downloadData,'sectionId',v.sectionId);
             vm.faceValueDetails=v;
-            json.sectionId=v.sectionId;
-            getNumberStorageThousand(json)
+            getNumberStorageThousand(vm.downloadData)
             .then((data)=>{
                 vm.off.numberDetails=true;
                 vm.thousandDetails=data.data.thousandSectionMap;
