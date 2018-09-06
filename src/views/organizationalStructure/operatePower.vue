@@ -111,7 +111,7 @@ export default{
             vm.options=vm.rolelist;
         },
         powerModiefy(v){
-            let vm=this,isChecked=false,powerId=[];
+            let vm=this,isChecked=false,powerId=[],i=1;
             if(v=='change'||v=='add'){
                 vm.powers.map(function(value,index){
                     if(value.hasOwnProperty('isChecked')&&value.isChecked==true){
@@ -129,14 +129,17 @@ export default{
                 }
                 for(let v of vm.rolelist1){
                     if(v.privilege==powerId.join(',')){
-                        layer.open({
-                            content:"已有对应权限的角色，请勿重复添加",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"error"
-                        })
-                        return false;
+                        i++;
                     }
+                }
+                if(i>=2){
+                    layer.open({
+                        content:"已有对应权限的角色，请勿重复添加",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"error"
+                    })
+                    return false;
                 }
             }
             if(v=='change'){
