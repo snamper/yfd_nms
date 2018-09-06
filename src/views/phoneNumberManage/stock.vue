@@ -44,7 +44,7 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">套餐：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                            <el-input v-model="setMenu" size="small"  placeholder="请输入查询的套餐名称" :maxlength="11"></el-input>
+                            <el-input v-model="setMenu" size="small"  placeholder="请输入查询的套餐名称" :maxlength="30"></el-input>
                         </el-col>
                     </div></el-col>
                 </el-row>
