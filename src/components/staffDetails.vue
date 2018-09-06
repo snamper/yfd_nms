@@ -51,11 +51,11 @@
                 </li>
                 <li>
                     <el-row>
-                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">职务&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">角色&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         
                         <el-col v-if="!off.modify"  :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <span v-for="(v,i) in forms.userRole.split(',')" :key="i">
-                                {{translateData('userRole',v)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
+                                {{translateRole(v,rolelist1)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
                             </span>
                         </div></el-col>
                         <!-- <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
@@ -69,12 +69,12 @@
                             </el-checkbox-group>
                         </div></el-col> -->
                         <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
-                            <el-select size="mini" v-model="value1" placeholder="请选择">
+                            <el-select size="mini" v-model="value" placeholder="请选择">
                                 <el-option
                                 v-for="item in options"
-                                :key="item.value"
-                                :label="item.label"
-                                :value="item.value">
+                                :key="item.id"
+                                :label="item.roleName"
+                                :value="item.id">
                                 </el-option>
                             </el-select>
                         </div></el-col>
@@ -216,7 +216,8 @@
 </template>
 <script>
 import {requestMethod} from "../config/service.js"; 
-import {getDateTime,getStore,errorDeal,translateData} from "../config/utils";
+import {getDateTime,getStore,errorDeal,translateData, translateRole} from "../config/utils";
+import {mapState, mapMutations, mapActions} from 'vuex';
 export default{
     props:{forms:Object},
 	data (){
@@ -247,16 +248,9 @@ export default{
             ]
             ,userRoleSwitch:""
             ,value1: ''
+            ,options:""
+            ,value:""
 		}
-    },
-    computed:{
-        options:function(){
-            if(this.userRoleSwitch==1){
-                return [{value: '1', label: '管理员' }, { value: '2', label: '销售员' },{ value: '6', label: '提卡客服' }, { value: '7', label: '开卡客服' }]
-            }else if(this.userRoleSwitch==2){
-                return [{ value: '4', label: '采购员' }, { value: '5', label: '业务员' }]
-            };
-        }
     },created:function(){
         let vm=this;
         vm.user=getStore("YFD_NMS_INFO");
@@ -266,7 +260,26 @@ export default{
         }else{//代理商
             vm.userRoleSwitch=2
         }
-    },methods:{
+    },mounted:function(){
+        this.init()
+    },computed:{
+        ...mapState([
+            "rolelist",
+            "rolelist1"
+        ])
+    },
+    methods:{
+        ...mapMutations([
+            "GET_ROLE"
+        ]),
+        ...mapActions([
+            "getRolesInfo"
+        ]),
+        async init(){
+            let vm=this;
+            vm.getRolesInfo();
+            vm.options=vm.rolelist;
+        },
 		goBack(){
             let vm=this;
             this.$parent.off.staffDetails=false;
@@ -305,7 +318,7 @@ export default{
             vm.off.modify=false;
             data.newUsername=vm.forms.username;
             data.newPhone=vm.forms.phone;
-            data.newUserRole=vm.value1;
+            data.newUserRole=vm.value;
             data.searchUserId=v;
             requestMethod(data,url)
             .then((data)=>{
@@ -347,6 +360,8 @@ export default{
             return getDateTime(v);
         },translateData(v,i){
             return translateData(v,i)
+        },translateRole(v,i){
+            return translateRole(v,i)
         }
 	}
 }

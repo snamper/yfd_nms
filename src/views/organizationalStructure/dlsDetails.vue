@@ -54,16 +54,15 @@
                 <div v-for="(v,i) in list" :key="i" style="width:100%">
                     <b><span>用户姓名：</span><input v-model="list[i].username" placeholder="请输入用户姓名" :maxlength="10" class="u-input" type="text"></b>
                     <b><span>手机号码：</span><input v-model="list[i].phone" placeholder="请输入手机号码" :maxlength="11" class="u-input" type="text"></b>
-                    <b><span>职务：</span>
-                        <el-checkbox-group class="displayInline" v-model="list[i].role">
-                            <el-checkbox label=4>采购员</el-checkbox>
-                            <el-checkbox label=5>业务员</el-checkbox>
-                            <!--<el-checkbox label=1>管理员</el-checkbox>
-                            <el-checkbox label=2>销售</el-checkbox>
-                            <el-checkbox label=3>店长</el-checkbox>
-                            <el-checkbox label=6>提卡客服</el-checkbox>
-                            <el-checkbox label=7>开卡客服</el-checkbox>-->
-                        </el-checkbox-group>
+                    <b><span>角色：</span>
+                        <el-select size="mini" v-model="list[i].value" placeholder="请选择">
+                            <el-option
+                            v-for="item in options"
+                            :key="item.id"
+                            :label="item.roleName"
+                            :value="item.id">
+                            </el-option>
+                        </el-select>
                     </b>
                     <b><span @click="deleteLine(i)" class="u-icon-del"></span></b>
                 </div>
@@ -89,7 +88,7 @@
                     <td>用户姓名</td>
                     <td>手机号码</td>
                     <td>创建时间</td>
-                    <td>职务</td>
+                    <td>角色</td>
                     <td>当前状态</td>
                     <td>最后登录时间</td>
                 </tr>
@@ -122,7 +121,7 @@
                     </td>
                     <td >
                         <span v-for="(v,i) in v.userRole.split(',')" :key="i">
-                            {{translateData('userRole',v)}}
+                            {{translateRole(v,rolelist1)}}
                         </span>
                     </td>
                     <td >
@@ -188,9 +187,10 @@
 </template>
 <script>
 import {requestMethod} from "../../config/service"; 
-import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils";
+import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData, translateRole } from "../../config/utils";
 import staffDetails from "../../components/staffDetails.vue";
 import layerConfrim from "./layerConfirmDls";
+import {mapState, mapMutations, mapActions} from 'vuex';
 export default{
     name:'dlsDetails',
     props:{lists:Array},
@@ -230,7 +230,9 @@ export default{
                 layer:false,
                 sync:false,
                 userAdd:false
-            }
+            },
+            options:"",
+            value:""
         }
     },
     components:{
@@ -248,8 +250,27 @@ export default{
         vm.managerPhone=vm.$parent.managerPhone;
         vm.managerName=vm.$parent.managerName;
     },
-
+    mounted:function(){
+        this.init()
+    },
+    computed:{
+        ...mapState([
+            "rolelist",
+            "rolelist1"
+        ])
+    },
     methods:{
+        ...mapMutations([
+            "GET_ROLE"
+        ]),
+        ...mapActions([
+            "getRolesInfo"
+        ]),
+        async init(){
+            let vm=this;
+            vm.getRolesInfo();
+            vm.options=vm.rolelist;
+        },
         goBack(){//返回上级
             let vm=this;
             vm.$parent.off.dlsDetails=false;
@@ -274,9 +295,10 @@ export default{
         AddStaff(){//添加员工按钮
             let vm=this, data={"newUsers":[]};
             for(let i=0;i<this.list.length;i++){
-                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].role.length!=0){
+                debugger;
+                if(this.list[i].username!=""&&this.list[i].phone!=""&&this.list[i].value!=''){
                     checkMobile(this.list[i].phone,()=>{return false});
-                    this.list[i].userRole = this.list[i].role.join(',');
+                    this.list[i].userRole = this.list[i].value;
                     this.list[i].departId=vm.searchDepartId;
                     this.list[i].userHierachy=2;
                     data.newUsers.push(this.list[i])
@@ -451,6 +473,8 @@ export default{
             vm.list.splice(v,1);
         },translateData(v,i){
             return translateData(v,i)
+        },translateRole(v,i){
+            return translateRole(v,i)
         }
     }
 }

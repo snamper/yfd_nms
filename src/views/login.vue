@@ -29,6 +29,7 @@ import api from '../config/api/login.js';
 import {mapMutations} from 'vuex';
 import mutations from '../store/mutations';
 import { SET_USERINFO } from '../store/mutation-types';
+import { getRoles } from '../config/service.js';
 export default {
   props: ['login'],
   data(){

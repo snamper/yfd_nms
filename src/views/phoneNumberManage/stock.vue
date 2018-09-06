@@ -32,13 +32,13 @@
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">面值：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                            <el-radio v-model="cardType"  label="0,10,20,30,50,100">全部</el-radio>
+                            <el-radio v-model="cardType"  label="0,1000,2000,3000,5000,10000">全部</el-radio>
                             <el-radio v-model="cardType"  label="0">0</el-radio>
-                            <el-radio v-model="cardType"  label="10">10</el-radio>
-                            <el-radio v-model="cardType"  label="20">20</el-radio>
-                            <el-radio v-model="cardType"  label="30">30</el-radio>
-                            <el-radio v-model="cardType"  label="50">50</el-radio>
-                            <el-radio v-model="cardType"  label="100">100</el-radio>
+                            <el-radio v-model="cardType"  label="1000">10</el-radio>
+                            <el-radio v-model="cardType"  label="2000">20</el-radio>
+                            <el-radio v-model="cardType"  label="3000">30</el-radio>
+                            <el-radio v-model="cardType"  label="5000">50</el-radio>
+                            <el-radio v-model="cardType"  label="10000">100</el-radio>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
@@ -52,12 +52,11 @@
                         <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24"><div class="grid-content bg-purple-light">
                         <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="20" :xl="20">
-                            <el-radio v-model="productStatus"  label="1,2,3,4,5,6">全部</el-radio>
+                            <el-radio v-model="productStatus"  label="1,2,3,4">全部</el-radio>
                             <el-radio v-model="productStatus"  label="1">未上架</el-radio>
                             <el-radio v-model="productStatus"  label="2">手动上架</el-radio>
                             <el-radio v-model="productStatus"  label="3">手动下架</el-radio>
                             <el-radio v-model="productStatus"  label="4">系统下架</el-radio>
-                            <el-radio v-model="productStatus"  label="5">已出售</el-radio>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24"><div class="grid-content bg-purple-light">
@@ -132,7 +131,7 @@
                                     </a></td>
                                     <td>{{v.productTotal}}</td>
                                     <td>{{v.cuteTotal}}</td>
-                                    <td>{{v.ratio*100}}%</td>
+                                    <td>{{Math.formatFloat(v.ratio,2)}}%</td>
                                     <td>{{translateData('fenToYuan',v.inprice)}}</td>
                                     <td>{{translateData('fenToYuan',v.outprice)}}</td>
                                 </tr>
@@ -166,7 +165,7 @@
                                     <td colspan="6" :rowspan="v.faceValueMap.length">
                                         <table class="m-searchlist-table3" style="width:100%">
                                             <tr v-for="(v,x) in v.faceValueMap">
-                                                <td>{{x}}</td>
+                                                <td>{{x/100}}</td>
                                                 <td>{{v.productTotal}}</td>
                                                 <td>{{v.cuteTotal}}</td>
                                                 <td>{{v.ratio*100}}%</td>
@@ -236,8 +235,8 @@ export default{
             isIndeterminate:false,
             searchList:"",
             productName:"",//号包名称
-            cardType:"0,10,20,30,50,100",//卡面值
-            productStatus:"1,2,3,4,5,6",//号包状态
+            cardType:"0,1000,2000,3000,5000,10000",//卡面值
+            productStatus:"1,2,3,4",//号包状态
             setMenu: "",//查询的套餐名称
             isp: "1,2,3",//运营商
             faceValueDetails:"",
@@ -291,6 +290,7 @@ export default{
             if(vm.value!='全部'){
                 cvalue=vm.value
             }
+            
             let json={
                 "area": cvalue,
                 "brand": checked,

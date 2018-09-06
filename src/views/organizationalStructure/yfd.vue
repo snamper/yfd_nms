@@ -49,22 +49,13 @@
             <div v-for="(v,i) in list" :key="i" style="width:100%">
                 <b><span>用户姓名：</span><input v-model="list[i].username" placeholder="请输入用户姓名" :maxlength="10" class="u-input" type="text"></b>
                 <b><span>手机号码：</span><input v-model="list[i].phone" placeholder="请输入手机号码" :maxlength="11" class="u-input" type="text"></b>
-                <b><span>职务：</span>
-                    <!-- <el-checkbox-group class="displayInline" v-model="list[i].role">
-                        <el-checkbox label=1>管理员</el-checkbox>
-                        <el-checkbox label=2>销售</el-checkbox>
-                        <el-checkbox label=6>提卡客服</el-checkbox>
-                        <el-checkbox label=7>开卡客服</el-checkbox>
-                        <el-checkbox label=3>店长</el-checkbox>
-                        <el-checkbox label=4>采购员</el-checkbox>
-                        <el-checkbox label=5>业务员</el-checkbox>
-                    </el-checkbox-group> -->
+                <b><span>角色：</span>
                     <el-select size="mini" v-model="list[i].value" placeholder="请选择">
                         <el-option
                         v-for="item in options"
-                        :key="item.value"
-                        :label="item.label"
-                        :value="item.value">
+                        :key="item.id"
+                        :label="item.roleName"
+                        :value="item.id">
                         </el-option>
                     </el-select>
                 </b>
@@ -94,7 +85,7 @@
                         <td>用户姓名</td>
                         <td>手机号码</td>
                         <td>创建时间</td>
-                        <td>职务</td>
+                        <td>角色</td>
                         <td>当前状态</td>
                         <td>用户数据来源</td>
                         <td>最后登录时间</td>
@@ -126,7 +117,7 @@
                         </td>
                         <td>
                             <span v-for="(x,i) in v.userRole.split(',')">
-                                {{translateData('userRole',x)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
+                                {{translateRole(x,rolelist1)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
                             </span>
                         </td>
                         <td>
@@ -174,25 +165,6 @@
                 </el-col>
                 </el-row>
             </div>
-            <!-- <div v-if="off.modify" class="modifyStaffStateDiv">
-                <div class="borderTopModifyStaffState"></div>
-                <div class="listTitleFoot" style="height:20px;">
-                    <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{typeTitle}}</p>
-                </div>
-                <div class="listTitleFoot">
-                    <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
-                </div> 
-                <div class="listTitleFoot tar">
-                    验证号码 : {{user.phone}}
-                    <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
-                    <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
-                </div> 
-                <div style="height:35px" class="listTitleFoot">
-                    <p style="float:right">
-                        <button class="buttonModifyYes"   @click="btnYes()">确定</button>
-                    </p>
-                </div>
-            </div> -->
         </div>
       </div>
       </div>
@@ -203,7 +175,8 @@
 <script>
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
-import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
+import {mapState, mapMutations, mapActions} from 'vuex';
+import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData,translateRole } from "../../config/utils.js";
 import layers from "./layerConfirmYfd";
 import staffDetails from "../../components/staffDetails.vue";
 export default{
@@ -238,7 +211,7 @@ export default{
 			form:{
                 page:1
             },
-            options:[{value: '1', label: '管理员' }, { value: '2', label: '销售员' },{ value: '6', label: '提卡客服' }, { value: '7', label: '开卡客服' }],
+            options:"",
             value:''
 		}
 	},
@@ -246,13 +219,34 @@ export default{
         "staffDetails":staffDetails,
         "layerConfirm":layers,        
 	},
-	created:function(){
-       let vm=this,Info=getStore("YFD_NMS_INFO");
-       vm.user=Info;
-       let depid=window.localStorage.getItem("departId");
-       vm.topDepartmentId=depid;
+    
+    created:function(){
+        let vm=this,Info=getStore("YFD_NMS_INFO");
+        vm.user=Info;
+        let depid=window.localStorage.getItem("departId");
+        vm.topDepartmentId=depid;
+    },
+    mounted:function(){
+        this.init()
+    },
+    computed:{
+        ...mapState([
+            "rolelist",
+            "rolelist1"
+        ])
     },
 	methods:{
+        ...mapMutations([
+            "GET_ROLE"
+        ]),
+        ...mapActions([
+            "getRolesInfo"
+        ]),
+        async init(){
+            let vm=this;
+            vm.getRolesInfo();
+            vm.options=vm.rolelist;
+        },
         AddList(){//添加员工
             this.list.push({username: '', phone: '',role:[]})
         },AddStaffDiv(){//添加员工模块开关
@@ -396,6 +390,9 @@ export default{
             }
         },translateData(v,i){
             return translateData(v,i);
+        },
+        translateRole(v,i){
+            return translateRole(v,i);
         },getDateTime(v){
             return getDateTime(v);
         }

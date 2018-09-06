@@ -192,9 +192,13 @@ export default{
         this.init();
 	},
 	methods:{
+        ...mapState([
+            "rolelist"
+        ]),
 		...mapMutations([
             "SIGN_OUT",
-            "SET_USERINFO"
+            "SET_USERINFO",
+            "GET_ROLE"
         ]),
 		async init(){//页面初始化
 			const vm=this;

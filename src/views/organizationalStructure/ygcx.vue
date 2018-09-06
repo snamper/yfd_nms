@@ -51,7 +51,7 @@
                         <td class="nameIcon">用户姓名</td>
                         <td>手机号码</td>
                         <td>创建时间</td>
-                        <td>职务</td>
+                        <td>角色</td>
                         <td>当前状态</td>
                         <td>最后登录时间</td>
                     </tr>

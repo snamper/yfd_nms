@@ -195,7 +195,7 @@ export const trimFunc=(v)=>{
 /**
  * 开卡订单-数据翻译
  */
-export const translateData=(type,v)=> {
+export const translateData=(type,v,d)=> {
     v=parseInt(v);
     let val;
     switch(type){
@@ -226,10 +226,6 @@ export const translateData=(type,v)=> {
         case 9:
             return v==1?'拍照上传':v==2?'相册上传':'--';
         break
-        case 'userRole':
-            val=["管理员","销售员","店长","采购员","业务员","提卡客服","开卡客服"];
-            return val[v-1];
-        break
         case 'userState':
             val=["正常","黑名单","手动注销","系统注销"]
             return val[v-1];
@@ -241,12 +237,21 @@ export const translateData=(type,v)=> {
             return '--';
            }
         case 'fenToYuan':
-        if(!isNaN(v)&&v!=0){
-            return (v/100).toFixed(2)
-        }else if(!isNaN(v)&&v==0){
-            return '0'
-        }else{
-            return '--'
+            if(!isNaN(v)&&v!=0){
+                return (v/100).toFixed(2)
+            }else if(!isNaN(v)&&v==0){
+                return '0'
+            }else{
+                return '--'
+            }
+        
+    }
+}
+
+export const translateRole=(y,z)=>{
+    for(let i of z){
+        if(i.id==y){
+            return i.roleName;
         }
     }
 }
@@ -353,6 +358,10 @@ export const cloneObj =  (obj) => {
     }  
     return newObj;  
 }; 
-
+/*解决浮点计算精度丢失的问题*/
+Math.formatFloat = function (f, digit) {
+    var m = Math.pow(10, digit);
+    return Math.round(f * m, 10) / m;
+}
 
 

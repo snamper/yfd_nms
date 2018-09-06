@@ -55,8 +55,6 @@ export const getPrivileges=(data)=>fetch("/ums/w/user/getPrivileges",data,"POST"
 /*新增角色权限*/ 
 export const addRole=(data)=>fetch("/ums/w/user/addRole",data,"POST")
 
-
-
 /*修改角色权限*/ 
 export const updateRolePrivilege=(data)=>fetch("/ums/w/user/updateRolePrivilege",data,"POST")
 

@@ -8,7 +8,8 @@
                     <p><span>归属地 :</span> {{faceValueDetails.area}}</p>
                     <p><span>归属品牌 :</span> {{translateData(4,faceValueDetails.brand)}}</p>
                     <p><span>运营商 :</span> {{translateData(1,faceValueDetails.isp)}}</p>
-                    <p><span>当前状态 :</span> {{translateData(3,faceValueDetails.productState)}}</p> )
+                    <p><span>当前状态 :</span> {{translateData(3,faceValueDetails.productState)}}</p>
+                    <p><span>总数：</span>{{faceValueDetails.productTotal}}</p> )
                 </label>
                 <span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span>
             </div>

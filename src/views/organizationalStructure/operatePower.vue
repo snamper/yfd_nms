@@ -55,6 +55,7 @@
 import { getPrivileges,addRole } from '../../config/service.js';
 import { errorDeal } from '../../config/utils.js';
 import layerConfirm from '../../components/layerConfirm';
+import {mapState, mapMutations, mapActions} from 'vuex';
 export default{
     name:'changePower',
     props:['ctype','roleName'],
@@ -69,6 +70,9 @@ export default{
                 layer:false
             }
         }
+    },
+    components:{
+        layerConfirm
     },
     created:function(){
         let vm=this;
@@ -86,22 +90,56 @@ export default{
                 })
             })
         }).catch(e=>errorDeal(e))
+    },mounted:function(){
+        this.init()
     },
-    components:{
-        layerConfirm
+    computed:{
+        ...mapState([
+            "rolelist1"
+        ])
     },
     methods:{
-        powerModiefy(v){
+        ...mapMutations([
+            "GET_ROLE"
+        ]),
+        ...mapActions([
+            "getRolesInfo"
+        ]),
+        async init(){
             let vm=this;
-            if(v=='change'){
-                let powerId=[];
+            vm.getRolesInfo();
+            vm.options=vm.rolelist;
+        },
+        powerModiefy(v){
+            let vm=this,isChecked=false,powerId=[];
+            if(v=='change'||v=='add'){
                 vm.powers.map(function(value,index){
                     if(value.hasOwnProperty('isChecked')&&value.isChecked==true){
-                        if(value.hasOwnProperty('isChecked')&&value.isChecked==true){
-                            powerId.push(value.privilegeId);                        
-                        }
+                        powerId.push(value.privilegeId);                        
                     }
                 })
+                if(powerId.length==0){
+                    layer.open({
+                        content:"请选择要添加的权限",
+                        skin:"msg",
+                        time:2,
+                        msgSkin:"error"
+                    })
+                    return false;
+                }
+                for(let v of vm.rolelist1){
+                    if(v.privilege==powerId.join(',')){
+                        layer.open({
+                            content:"已有对应权限的角色，请勿重复添加",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"error"
+                        })
+                        return false;
+                    }
+                }
+            }
+            if(v=='change'){
                 vm.changpowerData={
                     "privilege":powerId.join(","),
                     "id":vm.$parent.roleId
@@ -109,12 +147,6 @@ export default{
                 vm.off.layer=true;
                 vm.layerType='modifyPower';      
             }else if(v=='add'){
-                let powerId=[];
-                vm.powers.map(function(value,index){
-                    if(value.hasOwnProperty('isChecked')&&value.isChecked==true){
-                        powerId.push(value.privilegeId);                        
-                    }
-                })
                 let json={
                     "description": "",
                     "privilege":powerId.join(","),
