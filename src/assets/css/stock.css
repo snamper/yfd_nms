@@ -28,3 +28,4 @@ table tr td{ margin: 0;padding: 0;}
 .m-button-switch button.active{background: #FE8800;border: 1px solid #FE8800;color: #fff}
 .m-button-switch button:nth-child(1){border-radius: 10px 0 0 10px}
 .m-button-switch button:nth-child(2){border-radius: 0 10px 10px 0}
+.el-checkbox+.el-checkbox{margin-left: 15px;}

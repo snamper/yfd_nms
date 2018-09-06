@@ -222,7 +222,7 @@ export default{
             vm.getClickStatus(v,i);
             if(v.t==1){//面值
                 let withFour,cute;
-                vm.listTitle=i+'面值码号';
+                vm.listTitle=i/100+'面值码号';
                 vm.listTotal=vm.getProVlaue(vm.faceValueDetails.faceValueMap,i,v.c)
                 if(v.c=="numberWithFour"){
                     withFour=1
@@ -264,7 +264,7 @@ export default{
                     cute="";
                 }
                 json={
-                    "faceValue": i,
+                    "faceValue": vm.$parent.downloadData.faceValue,
                     "pageNum": p||1,
                     "pageSize": 15,
                     "phoneLevel": cute,

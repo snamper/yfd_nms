@@ -79,6 +79,7 @@
                                     <el-checkbox  v-for="city in cities10" :label="city" :key="city">{{city}}</el-checkbox>      
                                     <el-checkbox  v-for="city in cities11" :label="city" :key="city">{{city}}</el-checkbox>      
                                     <el-checkbox  v-for="city in cities12" :label="city" :key="city">{{city}}</el-checkbox>      
+                                    <el-checkbox  v-for="city in cities13" :label="city" :key="city">{{city}}</el-checkbox>      
                                 </el-checkbox-group>
                             </el-col>
                         </el-col>
@@ -260,7 +261,8 @@ const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航'
     cityOptions9=['国美'],
     cityOptions10=['联想'],
     cityOptions11=['蓝猫移动'],
-    cityOptions12=['长城'];
+    cityOptions12=['长城'],
+    cityOptions13=['中邮'];
 export default{
 	data(){
 		return{
@@ -300,7 +302,7 @@ export default{
             translateSealPrice:"",
             SJXJData:"",
             operationType:"",
-            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],//虚商品牌
+            checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城','中邮'],//虚商品牌
             cities: cityOptions,//选中的虚商
             cities1:cityOptions1,
             cities2:cityOptions2,
@@ -314,6 +316,7 @@ export default{
             cities10:cityOptions10,
             cities11:cityOptions11,
             cities12:cityOptions12,
+            cities13:cityOptions13,
             startTime: "",
             endTime: "",
             cname: "",
@@ -791,5 +794,7 @@ export default{
     div.operate button:active{box-shadow: 0 0 5px grey}
     .btnSyncNumber{outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 3px 6px;margin-right: 10px;color: #fff}
     div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid rgb(202, 202, 202)}
+    .el-checkbox+.el-checkbox{margin-left: 15px;}
+
 </style>
 
