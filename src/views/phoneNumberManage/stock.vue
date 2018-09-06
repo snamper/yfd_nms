@@ -131,7 +131,7 @@
                                     </a></td>
                                     <td>{{v.productTotal}}</td>
                                     <td>{{v.cuteTotal}}</td>
-                                    <td>{{Math.formatFloat(v.ratio,2)}}%</td>
+                                    <td>{{v.ratio}}</td>
                                     <td>{{translateData('fenToYuan',v.inprice)}}</td>
                                     <td>{{translateData('fenToYuan',v.outprice)}}</td>
                                 </tr>
@@ -143,9 +143,9 @@
                                                 <td>{{x}}</td>
                                                 <td>{{v.productTotal}}</td>
                                                 <td>{{v.cuteTotal}}</td>
-                                                <td>{{v.ratio*100}}%</td>
-                                                <td>{{v.inprice}}</td>
-                                                <td>{{v.outprice}}</td>
+                                                <td>{{v.ratio}}</td>
+                                                <td>{{translateData('fenToYuan',v.inprice)}}</td>
+                                                <td>{{translateData('fenToYuan',v.outprice)}}</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -168,9 +168,9 @@
                                                 <td>{{x/100}}</td>
                                                 <td>{{v.productTotal}}</td>
                                                 <td>{{v.cuteTotal}}</td>
-                                                <td>{{v.ratio*100}}%</td>
-                                                <td>{{v.inprice}}</td>
-                                                <td>{{v.outprice}}</td>
+                                                <td>{{v.ratio}}</td>
+                                                <td>{{translateData('fenToYuan',v.inprice)}}</td>
+                                                <td>{{translateData('fenToYuan',v.outprice)}}</td>
                                             </tr>
                                         </table>
                                     </td>
@@ -290,7 +290,6 @@ export default{
             if(vm.value!='全部'){
                 cvalue=vm.value
             }
-            
             let json={
                 "area": cvalue,
                 "brand": checked,

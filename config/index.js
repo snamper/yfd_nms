@@ -19,16 +19,16 @@ module.exports = {
             }
         },
         '/uus/':{
-            // target:'http://192.168.10.162:10022',
             target:'http://192.168.10.105:8080',
+            // target:'http://192.168.10.162:10022',
             changeOrigin:true,
             pathRewrite:{
                 '^/uus':'/uus/'
             }
         },
         '/ums/':{
-            // target:'http://192.168.10.105:8080',
-            target:'http://192.168.10.17:10022',
+            target:'http://192.168.10.105:8080',
+            // target:'http://192.168.10.17:10022',
             changeOrigin:true,
             pathRewrite:{
                 '^/ums' : '/ums/' 

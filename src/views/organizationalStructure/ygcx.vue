@@ -83,7 +83,7 @@
                         </td>
                         <td >
                             <span v-for="(x,i) in v.userRole.split(',')">
-                                {{translateData('userRole',x)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
+                                {{translateRole(x,rolelist1)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
                             </span>
                         </td>
                         <td >
@@ -127,8 +127,9 @@
 <script>
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
-import { getStore,getDateTime,getUnixTime,errorDeal,checkMobile,translateData } from "../../config/utils.js";
+import { getStore,getDateTime,getUnixTime,errorDeal,checkMobile,translateData,translateRole } from "../../config/utils.js";
 import staffDetails from "../../components/staffDetails.vue";
+import { mapState,mapMutations,mapActions } from 'vuex';
 export default{
 	data (){
 		return {
@@ -151,11 +152,31 @@ export default{
 			},
 			form:{
                 page:1
-			},
+            },
+            
 		}
 	},components:{
         "staffDetails":staffDetails
-	},methods:{
+	},mounted:function(){
+        this.init()
+    },
+    computed:{
+        ...mapState([
+            "rolelist1"
+        ])
+    },
+	methods:{
+        ...mapMutations([
+            "GET_ROLE"
+        ]),
+        ...mapActions([
+            "getRolesInfo"
+        ]),
+        async init(){
+            let vm=this;
+            vm.getRolesInfo();
+            vm.options=vm.rolelist;
+        },
         search(p){//查询
             let vm=this;
             if(this.phone!=''){
@@ -206,6 +227,8 @@ export default{
             return getDateTime(v);
         },translateData(v,i){
             return translateData(v,i)
+        },translateRole(v,i){
+            return translateRole(v,i)
         }
 	}
 }

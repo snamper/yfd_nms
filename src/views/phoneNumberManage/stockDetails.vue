@@ -196,7 +196,7 @@ export default{
            datai:"",//查询参数
            listTitle:"",
            listTotal:"",
-           mapFaceValue:[0,10,20,30,50,100],
+           mapFaceValue:[0,1000,2000,3000,5000,10000],
            mapNumberSection:[0,1,2,3,4,5,6,7,8,9,]
            ,off:{
                numberlist:false,
@@ -310,7 +310,7 @@ export default{
         },getProVlaue(v,i,p){
             if(v.hasOwnProperty(i)&&v[i].hasOwnProperty(p)){
                 if(p=='ratio'){
-                    return parseFloat(v[i][p])*100+'%'  
+                    return parseFloat(v[i][p])+'%'  
                 }else{
                     return v[i][p]  
                 }
