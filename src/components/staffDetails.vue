@@ -277,8 +277,10 @@ export default{
         ]),
         async init(){
             let vm=this;
-            vm.getRolesInfo();
-            vm.options=vm.rolelist;
+            vm.getRolesInfo()
+            .then(()=>{
+                vm.options=vm.rolelist;
+            })
         },
 		goBack(){
             let vm=this;

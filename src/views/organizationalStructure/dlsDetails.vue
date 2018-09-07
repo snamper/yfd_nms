@@ -268,8 +268,10 @@ export default{
         ]),
         async init(){
             let vm=this;
-            vm.getRolesInfo();
-            vm.options=vm.rolelist;
+            vm.getRolesInfo()
+            .then(()=>{
+                vm.options=vm.rolelist;
+            })
         },
         goBack(){//返回上级
             let vm=this;

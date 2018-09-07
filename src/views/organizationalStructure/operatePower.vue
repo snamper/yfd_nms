@@ -107,8 +107,10 @@ export default{
         ]),
         async init(){
             let vm=this;
-            vm.getRolesInfo();
-            vm.options=vm.rolelist;
+            vm.getRolesInfo()
+            .then(()=>{
+                vm.options=vm.rolelist;
+            });
         },
         powerModiefy(v){
             let vm=this,isChecked=false,powerId=[],i=1;

@@ -174,8 +174,10 @@ export default{
         ]),
         async init(){
             let vm=this;
-            vm.getRolesInfo();
-            vm.options=vm.rolelist;
+            vm.getRolesInfo()
+            .then(()=>{
+                vm.options=vm.rolelist;
+            });
         },
         search(p){//查询
             let vm=this;

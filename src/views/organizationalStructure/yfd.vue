@@ -219,7 +219,6 @@ export default{
         "staffDetails":staffDetails,
         "layerConfirm":layers,        
 	},
-    
     created:function(){
         let vm=this,Info=getStore("YFD_NMS_INFO");
         vm.user=Info;
@@ -230,6 +229,9 @@ export default{
         this.init()
     },
     computed:{
+        rolelist(){
+            vm.options=rolelist;
+        },
         ...mapState([
             "rolelist",
             "rolelist1"
@@ -244,8 +246,10 @@ export default{
         ]),
         async init(){
             let vm=this;
-            vm.getRolesInfo();
-            vm.options=vm.rolelist;
+            vm.getRolesInfo()
+            .then(()=>{
+                vm.options=vm.rolelist
+            })
         },
         AddList(){//添加员工
             this.list.push({username: '', phone: '',role:[]})

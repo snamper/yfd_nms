@@ -13,7 +13,6 @@ export default async(url = '', data = {}, type = 'GET', load, method = 'fetch') 
 	const closeLoadLayout=()=>{
         typeof load==='function' ? load() : layer.close(layerIndex);
     };
-	
     //--------------------------------------------------------------------
     let userInfo=getStore("YFD_NMS_INFO");
     if(userInfo){
