@@ -225,6 +225,7 @@ export default{
             faceValueDetails:"",
             thousandDetails:"",
             downloadData:"",
+            searchDetails:{},
             datalist:"",
             checkedCities: ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城','中邮'],//虚商品牌
             cities: cityOptions,//选中的虚商
@@ -314,9 +315,9 @@ export default{
         },
         getSectionDetails(v){
             let vm=this;
-            vm.$set(vm.downloadData,'sectionId',v.sectionId);
             vm.faceValueDetails=v;
-            getNumberStorageThousand(vm.downloadData)
+            Object.assign(vm.searchDetails,vm.downloadData,{sectionId:v.sectionId})
+            getNumberStorageThousand(vm.searchDetails)
             .then((data)=>{
                 vm.off.numberDetails=true;
                 vm.thousandDetails=data.data.thousandSectionMap;

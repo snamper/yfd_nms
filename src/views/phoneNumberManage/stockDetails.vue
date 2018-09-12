@@ -292,6 +292,8 @@ export default{
     /* .faceValue>.m-searchTable>tr,.thousand .m-searchTable>tr{border-bottom: 1px solid #e2e2e2} */
     .faceValue>.m-searchTable>tr:nth-child(odd),.thousand .m-searchTable>tr:nth-child(odd){background: #FAFAFA}
     .faceValue>.m-searchTable>tr:nth-child(even),.thousand .m-searchTable>tr:nth-child(even){background: #fff}
+    .m-searchTable2>tr:nth-child(odd){background: #fff}
+    .m-searchTable2>tr:nth-child(even){background: #EEF1F6}
     .faceValue>.m-searchTable>tr:nth-child(1),.thousand .m-searchTable>tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}    
     .faceValue>.m-searchTable>tr>td:nth-child(1),.thousand>.m-searchTable>tr>td:nth-child(1){background: #EEF1F6;border-left: 1px solid #e2e2e2}
     .faceValue>.m-searchTable>tr>td a,.thousand .m-searchTable>tr>td a,.m-searchTable4>tr>td a{color:#66A1DF;text-decoration: underline}
