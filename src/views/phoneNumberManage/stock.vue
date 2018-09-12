@@ -114,7 +114,7 @@
                         <td>总数（个）</td>
                         <td>靓号数（个）</td>
                         <td>带4比例</td>
-                        <td></td>
+                        <td>操作</td>
                     </tr>
                     <tr v-for="(v,i) in datalist">
                         <td colspan="12">

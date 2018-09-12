@@ -63,7 +63,7 @@
             </table>
             <table v-if="off.switchlist==2" style="width:100%" class="m-searchTable4">
                 <tr>
-                    <td>面值</td>
+                    <td>千段</td>
                     <td>码号数（个）</td>
                     <td>靓号数（个）</td>
                     <td>带四数（个）</td>
