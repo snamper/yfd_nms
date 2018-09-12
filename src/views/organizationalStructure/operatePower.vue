@@ -141,17 +141,17 @@ export default{
                 }
             }
             if(v=='change'){
-                if(vm.$parent.hasId.toString()!=powerId.toString()){
-                    if(i>=2){
-                        layer.open({
-                            content:"已有对应权限的角色，请勿重复添加",
-                            skin:"msg",
-                            time:2,
-                            msgSkin:"error"
-                        })
-                        return false;
-                    }
-                }
+                // if(vm.$parent.hasId.toString()!=powerId.toString()){
+                //     if(i>=2){
+                //         layer.open({
+                //             content:"已有对应权限的角色，请勿重复添加",
+                //             skin:"msg",
+                //             time:2,
+                //             msgSkin:"error"
+                //         })
+                //         return false;
+                //     }
+                // }
                 vm.changpowerData={
                     "privilege":powerId.join(","),
                     "id":vm.$parent.roleId
@@ -159,15 +159,15 @@ export default{
                 vm.off.layer=true;
                 vm.layerType='modifyPower';      
             }else if(v=='add'){
-                if(i>=2){
-                    layer.open({
-                        content:"已有对应权限的角色，请勿重复添加",
-                        skin:"msg",
-                        time:2,
-                        msgSkin:"error"
-                    })
-                    return false;
-                }
+                // if(i>=2){
+                //     layer.open({
+                //         content:"已有对应权限的角色，请勿重复添加",
+                //         skin:"msg",
+                //         time:2,
+                //         msgSkin:"error"
+                //     })
+                //     return false;
+                // }
                 let json={
                     "description": vm.powerDescribe,
                     "roleName": vm.powerName,
