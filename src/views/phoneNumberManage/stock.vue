@@ -8,9 +8,9 @@
                 </el-row>
                 <el-row>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div></el-col>
+                        <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">号段：</div></el-col>
                         <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                            <el-input v-model="productName" size="small"  placeholder="请输入号包名称" :maxlength="15"></el-input>
+                            <el-input v-model="productName" size="small"  placeholder="请输入查询的七位号段" :maxlength="7"></el-input>
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
@@ -109,12 +109,12 @@
                         <td>归属品牌</td>
                         <td>运营商</td>
                         <td>当前状态</td>
-                        <td class="m-button-switch"><button @click="switchTypeBtn(1)" :class="off.switchType==1?'active':''">按面值</button><button @click="switchTypeBtn(2)" :class="off.switchType==2?'active':''">按套餐</button></td>
+                        <td>面值</td>
+                        <td>套餐</td>
                         <td>总数（个）</td>
                         <td>靓号数（个）</td>
                         <td>带4比例</td>
-                        <td>入库价格(元)</td>
-                        <td>售出价格(元)</td>
+                        <td></td>
                     </tr>
                     <tr v-for="(v,i) in datalist">
                         <td colspan="12">
@@ -126,57 +126,38 @@
                                     <td>{{translateData(4,v.brand)}}</td>
                                     <td>{{translateData(1,v.isp)}}</td>
                                     <td style="border-right:1px solid #E4E4E4">{{translateData(3,v.productState)}}</td>
-                                    <td><a style="text-decoration:underline" href="javascript:void(0)" @click="open(i)">
-                                        <span style="color:#66A1DF" v-if="off.tableDetails.indexOf(i)>'-1'">收起</span>
-                                        <span style="color:#66A1DF" v-if="off.tableDetails.indexOf(i)=='-1'">展开</span>
-                                    </a></td>
+                                    <td>--</td>
+                                    <td>--</td>
                                     <td>{{v.productTotal}}</td>
                                     <td>{{v.cuteTotal}}</td>
                                     <td>{{v.ratio}}</td>
-                                    <td>{{translateData('fenToYuan',v.inprice)}}</td>
-                                    <td>{{translateData('fenToYuan',v.outprice)}}</td>
+                                    <td><a href="javascript:void(0)" @click="open(i)">
+                                        <span style="color:#66A1DF;text-decoration:underline" v-if="off.tableDetails.indexOf(i)>-1">收起</span>
+                                        <span style="color:#66A1DF;text-decoration:underline" v-if="off.tableDetails.indexOf(i)==-1">展开</span>
+                                    </a></td>
                                 </tr>
-                                <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)!='{}'">
-                                    <td colspan="6" :rowspan="v.packageDescMap.length" style="border-right:1px solid #e4e4e4"></td>
-                                    <td colspan="6" :rowspan="v.packageDescMap.length">
-                                        <table class="m-searchlist-table3" style="width:100%">
-                                            <tr v-for="(v,x) in v.packageDescMap">
-                                                <td>{{x}}</td>
-                                                <td>{{v.productTotal}}</td>
-                                                <td>{{v.cuteTotal}}</td>
-                                                <td>{{v.ratio}}</td>
-                                                <td>{{translateData('fenToYuan',v.inprice)}}</td>
-                                                <td>{{translateData('fenToYuan',v.outprice)}}</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr v-if="off.switchType==2&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('packageDescMap')&&JSON.stringify(v.packageDescMap)=='{}'">
-                                    <td colspan="6" style="border-right:1px solid #e4e4e4"></td>
-                                    <td colspan="6">
-                                        <table class="m-searchlist-table3" style="width:100%">
-                                            <tr>
-                                                <td>该号包下暂无详情数据</td>
-                                            </tr>
-                                        </table>
-                                    </td>
-                                </tr>
-                                <tr v-if="off.switchType==1&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('faceValueMap')&&JSON.stringify(v.faceValueMap)!='{}'">
+                                <tr v-if="off.tableDetails.indexOf(i)>-1">
                                     <td colspan="6" :rowspan="v.faceValueMap.length" style="border-right:1px solid #e4e4e4"></td>
                                     <td colspan="6" :rowspan="v.faceValueMap.length">
                                         <table class="m-searchlist-table3" style="width:100%">
-                                            <tr v-for="(v,x) in v.faceValueMap">
-                                                <td>{{x/100}}</td>
-                                                <td>{{v.productTotal}}</td>
-                                                <td>{{v.cuteTotal}}</td>
-                                                <td>{{v.ratio}}</td>
-                                                <td>{{translateData('fenToYuan',v.inprice)}}</td>
-                                                <td>{{translateData('fenToYuan',v.outprice)}}</td>
+                                            <tr v-for="(v1,i1) in v.faceValueMap" style="border-top:1px solid #E6E6E6">
+                                                <td colspan="5">
+                                                    <table class="m-searchlist-table3" v-for="(v2,i2) in v1" style="width:100%">
+                                                        <tr class="border" v-for="(v3,i2) in v2">
+                                                            <td>{{i1/100}}</td>
+                                                            <td>{{i2}}</td>
+                                                            <td>{{v3.productTotal}}</td>
+                                                            <td>{{v3.cuteTotal}}</td>
+                                                            <td>{{v3.ratio}}</td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </table>
+                                                </td>
                                             </tr>
                                         </table>
                                     </td>
                                 </tr>
-                                <tr v-if="off.switchType==1&&off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('faceValueMap')&&JSON.stringify(v.faceValueMap)=='{}'">
+                                <tr v-if="off.tableDetails.indexOf(i)>-1&&v.hasOwnProperty('faceValueMap')&&JSON.stringify(v.faceValueMap)=='{}'">
                                     <td colspan="6" style="border-right:1px solid #e4e4e4"></td>
                                     <td colspan="6">
                                         <table class="m-searchlist-table3" style="width:100%">
@@ -266,7 +247,6 @@ export default{
             off:{
                 numberDetails:false,
                 tableDetails:[],
-                switchType:'1',//1、按面值2、按套餐
             }
 		}
     },
@@ -351,10 +331,6 @@ export default{
                 vm.off.tableDetails.splice(i,1);     
             }
         },  
-        switchTypeBtn(v){
-            let vm=this;
-            vm.off.switchType=v;
-        },
         handleCheckAllChange(val) {
             this.checkedCities = val ? cityOptions : [];
             this.isIndeterminate = false;

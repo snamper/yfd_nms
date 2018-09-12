@@ -16,6 +16,10 @@
                     <span class="f-fs-16" v-if="ctype=='plist'||ctype=='change'">{{roleName}}</span>
                     <input placeholder="请输入角色名称" :maxlength="10" v-model="powerName" v-if="ctype=='add'" type="text" class="m-input-add">
                 </p>
+                <p>角色描述：
+                    <span class="f-fs-16" v-if="ctype=='plist'||ctype=='change'">{{roleDesc}}</span>
+                    <input placeholder="请输入角色描述" :maxlength="50" v-model="powerDescribe" v-if="ctype=='add'" type="text" class="m-input-add">
+                </p>
                 <div>
                     <span v-if="ctype=='change'||ctype=='add'">当前权限：</span>
                     <ul>
@@ -58,11 +62,12 @@ import layerConfirm from '../../components/layerConfirm';
 import {mapState, mapMutations, mapActions} from 'vuex';
 export default{
     name:'changePower',
-    props:['ctype','roleName'],
+    props:['ctype','roleName','roleDesc'],
     data (){
         return {
             powers:"",
             powerName:"",
+            powerDescribe:"",
             layerType:"",
             powerId:[],
             changpowerData:"",
@@ -129,11 +134,31 @@ export default{
                     })
                     return false;
                 }
-                for(let v of vm.rolelist1){
-                    if(v.privilege==powerId.join(',')){
+                for(let value of vm.rolelist1){
+                    if(value.privilege==powerId.join(',')){
                         i++;
                     }
                 }
+            }
+            if(v=='change'){
+                if(vm.$parent.hasId.toString()!=powerId.toString()){
+                    if(i>=2){
+                        layer.open({
+                            content:"已有对应权限的角色，请勿重复添加",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"error"
+                        })
+                        return false;
+                    }
+                }
+                vm.changpowerData={
+                    "privilege":powerId.join(","),
+                    "id":vm.$parent.roleId
+                };
+                vm.off.layer=true;
+                vm.layerType='modifyPower';      
+            }else if(v=='add'){
                 if(i>=2){
                     layer.open({
                         content:"已有对应权限的角色，请勿重复添加",
@@ -143,19 +168,10 @@ export default{
                     })
                     return false;
                 }
-            }
-            if(v=='change'){
-                vm.changpowerData={
-                    "privilege":powerId.join(","),
-                    "id":vm.$parent.roleId
-                };
-                vm.off.layer=true;
-                vm.layerType='modifyPower';      
-            }else if(v=='add'){
                 let json={
-                    "description": "",
-                    "privilege":powerId.join(","),
+                    "description": vm.powerDescribe,
                     "roleName": vm.powerName,
+                    "privilege":powerId.join(","),
                 };
                 addRole(json)
                 .then((data)=>{
@@ -199,7 +215,7 @@ export default{
 .m-content div span{flex: 1;min-width: 74px;}
 .m-content div ul{flex: 17;}
 .m-content ul li{margin-bottom: 10px;}
-.m-input-add{height: 30px;border: 1px solid #e2e2e2;width: 200px;padding-left: 15px;}
+.m-input-add{height: 30px;border: 1px solid #e2e2e2;width: 500px;padding-left: 15px;}
 </style>
 
 

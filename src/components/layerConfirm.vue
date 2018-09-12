@@ -267,7 +267,7 @@ export default{
             oddNumbers:'',//流水单号
             orderdeliveryName:'',
             newPrice:"",
-            layerType:"",
+            // layerType:"",
         }		
     },
 	methods:{

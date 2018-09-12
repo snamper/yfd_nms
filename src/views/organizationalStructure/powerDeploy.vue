@@ -34,7 +34,7 @@
             </div>
         </section>
         <layerconfirm v-if="off.layer" :layerType="layerType"></layerconfirm>
-        <changePower :ctype="ltype" :roleName="roleName" v-if="off.changePower"></changePower>
+        <changePower :ctype="ltype" :roleName="roleName" :roleDesc="roleDesc" v-if="off.changePower"></changePower>
     </section>
 </template>
 <script>
@@ -53,6 +53,7 @@ export default{
             roleId:"",
             hasId:"",
             roleName:"",
+            roleDesc:"",
             off:{
                 searchlist:true,
                 layer:false,
@@ -94,6 +95,7 @@ export default{
             vm.ltype="plist";
             vm.roleId=v.id;
             vm.roleName=v.roleName;
+            vm.roleDesc=v.description;
             vm.hasId=v.privilege.split(',');
         },changePower(v){
             let vm=this;
@@ -103,6 +105,7 @@ export default{
             vm.ltype="change";
             vm.roleId=v.id;
             vm.roleName=v.roleName;
+            vm.roleDesc=v.description;
             vm.hasId=v.privilege.split(',');
         },add(){
             let vm=this;

@@ -22,8 +22,8 @@ table tr td{ margin: 0;padding: 0;}
 .m-searchlist-table>tr:nth-child(odd) .m-searchlist-table3>tr:nth-child(odd){background: #fff}
 .m-searchlist-table>tr:nth-child(even) .m-searchlist-table3>tr:nth-child(odd){background: #FAFAFA}
 .m-searchlist-table>tr:nth-child(even) .m-searchlist-table3>tr:nth-child(even){background: #fff}
-.m-searchlist-table3>tr:first-child{border-top: 1px solid #e6e6e6}
-.m-searchlist-table3>tr:not(:last-child){border-bottom: 1px solid #e6e6e6}
+.m-searchlist-table2>tr.border:first-child{border-top: 1px solid #e6e6e6}
+.m-searchlist-table3>tr.border:not(:last-child){border-bottom: 1px solid #e6e6e6}
 .m-button-switch button{width: 50px;height: 20px;outline: none;border: 1px solid #E5E5E5;background: #fff;font-size: 12px}
 .m-button-switch button.active{background: #FE8800;border: 1px solid #FE8800;color: #fff}
 .m-button-switch button:nth-child(1){border-radius: 10px 0 0 10px}

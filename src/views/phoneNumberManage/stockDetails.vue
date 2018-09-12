@@ -15,138 +15,71 @@
             </div>
         </div>
         <div class="faceValue">
-            <p>面值</p>
-            <table style="width:100%">
+            <p>
+                <label @click="listSwitch(1)" class="switch" :class="off.switchlist==1?'active':''">按面值</label>
+                <label @click="listSwitch(2)" class="switch" :class="off.switchlist==2?'active':''">按千段</label>
+            </p>
+            <table v-if="off.switchlist==1" style="width:100%" cellspacing="0" cellpadding="0"  class="m-searchTable">
                 <tr>
                     <td>面值</td>
-                    <td>0</td>
-                    <td>10</td>
-                    <td>20</td>
-                    <td>30</td>
-                    <td>50</td>
-                    <td>100</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
+                    <td>套餐</td>
                     <td>码号数（个）</td>
-                    <td v-for="(v,i) in mapFaceValue">
-                        <a :class="{'c-yellow':off.isShow1===v}" v-if="getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')!='--'"   href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'productTotal'},v)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')}}
-                        </a>
-                        <span v-if="getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')=='--'">
-                            {{getProVlaue(faceValueDetails.faceValueMap,v,'productTotal')}}
-                        </span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
                     <td>靓号数（个）</td>
-                    <td v-for="(v,i) in mapFaceValue">
-                        <a :class="{'c-yellow':off.isShow2===v}" v-if="getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'cuteTotal'},v)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')}}
-                        </a>
-                        <span v-if="getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')=='--'">
-                            {{getProVlaue(faceValueDetails.faceValueMap,v,'cuteTotal')}}
-                        </span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
                     <td>带4数（个）</td>
-                    <td  v-for="(v,i) in mapFaceValue">
-                        <a :class="{'c-yellow':off.isShow3===v}" v-if="getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:1,c:'numberWithFour'},v)">
-                            {{getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')}}
-                        </a>
-                        <span v-if="getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')=='--'">
-                            {{getProVlaue(faceValueDetails.faceValueMap,v,'numberWithFour')}}
-                        </span>
-                    </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                </tr>
-                <tr>
                     <td>带4比例</td>
-                    <td v-for="(v,i) in mapFaceValue">
-                       {{getProVlaue(faceValueDetails.faceValueMap,v,'ratio')}}
+                </tr>
+                <tr v-for="(v,i) in faceValueDetails.faceValueMap">
+                    <td colspan="6">
+                        <table cellspacing="0" cellpadding="0"  style="width:100%;" class="m-searchTable1">
+                            <tr v-for="(v1,i1) in v">
+                                <td colspan="6">
+                                    <table style="width:100%" cellspacing="0" cellpadding="0" class="m-searchTable2">
+                                        <tr v-for="(v2,i2) in v1">
+                                            <td>{{i/100}}</td>
+                                            <td>{{i2}}</td>
+                                            <td>
+                                                <a :class="{'c-yellow':off.isShow1==v2}" @click="getNumberList(1,{t:1,c:'productTotal',i:i/100},v2,i2)" href="javascript:void(0)">
+                                                    {{v2.productTotal}}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a :class="{'c-yellow':off.isShow2==v2}" @click="getNumberList(1,{t:1,c:'cuteTotal',i:i/100},v2,i2)" href="javascript:void(0)">
+                                                    {{v2.cuteTotal}}
+                                                </a>
+                                            </td>
+                                            <td>
+                                                <a :class="{'c-yellow':off.isShow3===v2}" @click="getNumberList(1,{t:1,c:'numberWithFour',i:i/100},v2,i2)" href="javascript:void(0)">
+                                                    {{v2.numberWithFour}}
+                                                </a>
+                                            </td>
+                                            <td>{{v2.ratio}}</td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </table>
                     </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                 </tr>
             </table>
-        </div>
-        <div class="thousand">
-            <p>千字段</p>
-            <table style="width:100%">
+            <table v-if="off.switchlist==2" style="width:100%" class="m-searchTable4">
                 <tr>
-                    <td>千段</td>
-                    <td>0千段</td>
-                    <td>1千段</td>
-                    <td>2千段</td>
-                    <td>3千段</td>
-                    <td>4千段</td>
-                    <td>5千段</td>
-                    <td>6千段</td>
-                    <td>7千段</td>
-                    <td>8千段</td>
-                    <td>9千段</td>
-                </tr>
-                <tr>
+                    <td>面值</td>
                     <td>码号数（个）</td>
-                    <td v-for="(v,i) in mapNumberSection">
-                        <a :class="{'c-yellow':off.isShow4===v}" v-if="getProVlaue(thousandDetails,v,'productTotal')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal'},v)">
-                            {{getProVlaue(thousandDetails,v,'productTotal')}}
-                        </a>
-                        <span  v-if="getProVlaue(thousandDetails,v,'productTotal')=='--'" >
-                            {{getProVlaue(thousandDetails,v,'productTotal')}}
-                        </span>
-                    </td>
-                </tr>
-                <tr>
                     <td>靓号数（个）</td>
-                    <td v-for="(v,i) in mapNumberSection">
-                        <a :class="{'c-yellow':off.isShow5===v}" v-if="getProVlaue(thousandDetails,v,'cuteTotal')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal'},v)">
-                            {{getProVlaue(thousandDetails,v,'cuteTotal')}}
-                        </a>
-                        <span  v-if="getProVlaue(thousandDetails,v,'cuteTotal')=='--'" >
-                            {{getProVlaue(thousandDetails,v,'cuteTotal')}}
-                        </span>
-                    </td>
+                    <td>带四数（个）</td>
+                    <td>带四比例</td>
                 </tr>
-                <tr>
-                    <td>带4数（个）</td>
-                    <td v-for="(v,i) in mapNumberSection">
-                        <a :class="{'c-yellow':off.isShow6===v}" v-if="getProVlaue(thousandDetails,v,'numberWithFour')!='--'" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour'},v)">
-                            {{getProVlaue(thousandDetails,v,'numberWithFour')}}
-                        </a>
-                        <span  v-if="getProVlaue(thousandDetails,v,'numberWithFour')=='--'" >
-                            {{getProVlaue(thousandDetails,v,'numberWithFour')}}
-                        </span>
-                    </td>
+                <tr v-for="(v,i) in thousandDetails">
+                    <td>{{i}}</td>
+                    <td><a :class="{'c-yellow':off.isShow4===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal',i:i},v)">{{v.productTotal}}</a></td>
+                    <td><a :class="{'c-yellow':off.isShow5===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal',i:i},v)">{{v.cuteTotal}}</a></td>
+                    <td><a :class="{'c-yellow':off.isShow6===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour',i:i},v)">{{v.numberWithFour}}</a></td>
+                    <td>{{v.ratio}}</td>
                 </tr>
-                <tr>
-                    <td>带4比例</td>
-                    <td v-for="(v,i) in mapNumberSection">
-                        {{getProVlaue(thousandDetails,v,'ratio')}}
-                    </td>
-                </tr>
-
             </table>
         </div>
         <div class="numberList" v-if="off.numberlist">
-            <p style="font-size:14px"><span style="color:#66A1DF">{{listTitle}}</span>详情 ( 共<span style="color:#F78A24">{{listTotal}}</span>条 )</p>
+            <p style="font-size:14px;height:30px;"><span style="color:#66A1DF">{{listTitle}}</span>详情 ( 共<span style="color:#F78A24">{{listTotal}}</span>条 )</p>
             <table style="width:100%">
                 <tr>
                     <td>序号</td>
@@ -205,25 +138,29 @@ export default{
                isShow3:'',
                isShow4:'',
                isShow5:'',
-               isShow6:''
+               isShow6:'',
+               switchlist:1,
            }
 		}
 	},
 	methods:{
-        getNumberList(p,v,i){
+        getNumberList(p,v,i,x){
             let vm=this,json;
             if(typeof(v)!="undefined"){
                 vm.datav=v;
                 vm.datai=i;
+                vm.datax=x;
             }else{
                 v=vm.datav;
                 i=vm.datai;
+                x=vm.datax;
             }
             vm.getClickStatus(v,i);
             if(v.t==1){//面值
-                let withFour,cute;
-                vm.listTitle=i/100+'面值码号';
-                vm.listTotal=vm.getProVlaue(vm.faceValueDetails.faceValueMap,i,v.c)
+                let withFour,cute,t;
+                t=v.c;
+                vm.listTitle=v.i+'面值码号';
+                vm.listTotal=i[t];
                 if(v.c=="numberWithFour"){
                     withFour=1
                 }else{
@@ -235,12 +172,13 @@ export default{
                     cute="";
                 }
                 json={
-                    "faceValue": i,
+                    "faceValue": v.i*100,
                     "pageNum": p||1,
                     "pageSize": 15,
                     "phoneLevel": cute,
                     "sectionId": vm.faceValueDetails.sectionId,
-                    "withFour": withFour
+                    "withFour": withFour,
+                    "packageDesc":x,
                 }
                 getNumberStorageFaceDtails(json)
                 .then((data)=>{
@@ -251,8 +189,8 @@ export default{
                 }).catch(e=>errorDeal(e))
             }else if(v.t==2){//号段
                 let withFour,cute;
-                vm.listTitle=i+'千段码号';
-                vm.listTotal=vm.getProVlaue(vm.thousandDetails,i,v.c)
+                vm.listTitle=v.i+'千段码号';
+                vm.listTotal=vm.getProVlaue(vm.thousandDetails,v.i,v.c)
                 if(v.c=="numberWithFour"){
                     withFour=1
                 }else{
@@ -268,7 +206,7 @@ export default{
                     "pageNum": p||1,
                     "pageSize": 15,
                     "phoneLevel": cute,
-                    "section":i,
+                    "section":v.i,
                     "sectionId": vm.faceValueDetails.sectionId,
                     "withFour": withFour
                 }
@@ -317,6 +255,18 @@ export default{
             }else{
                 return '--'
             }
+        },
+        listSwitch(v){
+            let vm=this;
+            if(v==1){
+                vm.off.switchlist=1;
+                vm.off.numberlist="";
+                vm.numberlist="";
+            }else if(v==2){
+                vm.off.switchlist=2;
+                vm.off.numberlist="";
+                vm.numberlist="";                
+            }
         },goBack(){
             let vm=this;
             vm.$parent.off.numberDetails=false;
@@ -327,29 +277,47 @@ export default{
 }
 </script>
 <style scoped>
-    .m-headTitle{width: 96%;height: 28px;margin:30px 30px 0px 30px;}
+    .m-headTitle{width: 96%;height: 28px;margin:30px 30px 0px 30px;border-bottom: 1px solid #E6E6E6}
     .m-headTitle .m-number-title{margin-left: 10px;font-size: 14px}
     .m-headTitle .m-number-title p{display: inline-block;margin-right: 20px}
     .m-headTitle .m-number-title p:last-child{margin-right: 0px;}
-    .m-headTitle .m-number-title p span{color: #999999;display: inline-block;}
-    .faceValue,.thousand,.numberList{width: 96%;}
-    .faceValue p,.thousand p,.numberList p{margin-left: 2%;height: 30px;margin-top: 20px;font-size: 16px}
-    .faceValue p::before,.thousand p::before{content: "";background: url('../../assets/images/dian.png') no-repeat center;width: 20px;height: 10px;background-size: contain;display: inline-block;margin-left: 5px;}
-    .faceValue table,.thousand table,.numberList table{margin-left:2%;border-collapse: collapse;font-size: 12px}
-    .faceValue table tr,.thousand table tr{border-bottom: 1px solid #e2e2e2}
-    .faceValue table tr:nth-child(odd),.thousand table tr:nth-child(odd){background: #FAFAFA}
-    .faceValue table tr:nth-child(even),.thousand table tr:nth-child(even){background: #fff}
-    .faceValue table tr:nth-child(1),.thousand table tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}    
-    .faceValue table tr td:nth-child(1),.thousand table tr td:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}
-    .faceValue table tr td a,.thousand table tr td a{color:#66A1DF;text-decoration: underline}
-    .faceValue table tr td a.c-yellow,.thousand table tr td a.c-yellow{color: #F78A24;text-decoration: underline}
-    .faceValue table tr td:last-child,.thousand table tr td:last-child{border-right: 1px solid #e2e2e2}
-    .faceValue table tr:nth-child(1),.thousand table tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}
-    .faceValue table tr td,.thousand table tr td{width: 9%;height: 35px;text-align: center}
-    .tab-container{width: 96%;margin:10px 30px 20px 30px;}
-    .numberList table{border: 1px solid #e2e2e2;margin-bottom: 10px}
-    .numberList table tr{height: 35px;border-bottom: 1px solid #e2e2e2;text-align: center}
-    .numberList table tr:nth-child(even){background: #fff}
+    .m-headTitle .m-number-title p .switch{color: #999999;display: inline-block;}
+    .faceValue p{margin-top: 10px;height: 35px;}
+    .faceValue,.thousand,.numberList{width: 96%;margin: 0 auto;}
+    .numberList{margin-top: 15px;}
+    .faceValue .switch,.thousand .switch,.numberList .switch{height: 30px;margin-top: 20px;font-size: 16px;cursor: pointer;text-decoration: underline}
+    .faceValue .switch.active,.thousand .switch.active,.numberList .switch.switch.active{color: #66A1DF;}
+    .faceValue .switch::before,.thousand .switch::before{content: "";background: url('../../assets/images/dian.png') no-repeat center;width: 20px;height: 10px;background-size: contain;display: inline-block;margin-left: 5px;}
+    .faceValue>.m-searchTable,.thousand>.m-searchTable,.numberList>.m-searchTable{border-collapse: collapse;font-size: 12px;}
+    /* .faceValue>.m-searchTable>tr,.thousand .m-searchTable>tr{border-bottom: 1px solid #e2e2e2} */
+    .faceValue>.m-searchTable>tr:nth-child(odd),.thousand .m-searchTable>tr:nth-child(odd){background: #FAFAFA}
+    .faceValue>.m-searchTable>tr:nth-child(even),.thousand .m-searchTable>tr:nth-child(even){background: #fff}
+    .faceValue>.m-searchTable>tr:nth-child(1),.thousand .m-searchTable>tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}    
+    .faceValue>.m-searchTable>tr>td:nth-child(1),.thousand>.m-searchTable>tr>td:nth-child(1){background: #EEF1F6;border-left: 1px solid #e2e2e2}
+    .faceValue>.m-searchTable>tr>td a,.thousand .m-searchTable>tr>td a,.m-searchTable4>tr>td a{color:#66A1DF;text-decoration: underline}
+    .faceValue>.m-searchTable>tr>td a.c-yellow,.thousand .m-searchTable>tr>td a.c-yellow,.m-searchTable4>tr>td a.c-yellow{color: #F78A24;text-decoration: underline}
+    .faceValue>.m-searchTable>tr>td:last-child,.thousand .m-searchTable>tr>td:last-child{border-right: 1px solid #e2e2e2}
+    .faceValue>.m-searchTable>tr:nth-child(1),.thousand .m-searchTable>tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}
+    .faceValue>.m-searchTable>tr>td,.thousand .m-searchTable>tr>td{height: 38px;text-align: center}
+    .numberList table{border-collapse: collapse;border: 1px solid #E2E2E2;font-size: 12px;}
+    .numberList table tr{height: 35px;text-align: center}
     .numberList table tr:nth-child(odd){background: #EEF1F6}
+    .numberList table tr:nth-child(even){background: #FFF}
+    .numberList table tr:first-child{background: #f2f5fc}
+    .numberList table tr:not(:last-child) td{border-bottom: 1px solid #e2e2e2;margin-bottom: 10px}
+    /* .numberList>.m-searchTable>tr{height: 35px;border-bottom: 1px solid #e2e2e2;text-align: center} */
+    .numberList>.m-searchTable>tr:nth-child(even){background: #fff}
+    .numberList>.m-searchTable>tr:nth-child(odd){background: #EEF1F6}
+    .tab-container{width: 96%;margin:10px 30px 20px 30px;}
+    .m-searchTable{vertical-align: text-top}
+    .m-searchTable>tr>td{width: 16.67%}
+    .m-searchTable1{margin: 0;padding: 0;}
+    /* .m-searchTable2>tr>td{} */
+    .m-searchTable2>tr>td{height: 38px;border-bottom: 1px solid #e6E6E6}
+    .m-searchTable2>tr>td{width: 16.67%}
+    .m-searchTable4{margin: 0;padding: 0;border: 1px solid #E2E2E2;text-align: center;border-collapse: collapse}
+    .m-searchTable4>tr:nth-child(odd){background: #EEF1F6}
+    .m-searchTable4>tr:nth-child(even){background: #FFF}
+    .m-searchTable4>tr>td{height: 38px;border-bottom: 1px solid #e6E6E6}
 </style>
 
