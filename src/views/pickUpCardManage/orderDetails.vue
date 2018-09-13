@@ -38,21 +38,21 @@
                             <td>品牌</td>
                             <td>{{translateData(4,v.brand)}}</td>
                             <td>靓号数</td>
-                            <td>{{getNumberAmount('c',v)}}<a v-if="getNumberAmount('c',v)" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','c',v)">查看列表</a></td>
+                            <td>{{getNumberAmount('c',v)}}<a v-if="getNumberAmount('c',v)&&getNumberAmount('c',v)!='--'" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','c',v)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>归属地</td>
                             <td>{{v.area||'--'}}</td>
                             <td>普号数</td>
-                            <td>{{getNumberAmount('n',v)}}<a v-if="getNumberAmount('n',v)" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','n',v)">查看列表</a></td>
+                            <td>{{getNumberAmount('n',v)}}<a v-if="getNumberAmount('n',v)&&getNumberAmount('c',v)!='--'" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','n',v)">查看列表</a></td>
                         </tr>
                         <tr>
                             <td>产品类型</td>
                             <td>{{translateData(2,v.productType)}}</td>
                             <td rowspan="2">价格</td>
                             <td rowspan="2">
-                                <p class="t-linethrough">￥{{(detailsData.totalPrice/100).toFixed(2)}}</p>
-                                <p class="f-s-18 c-yellow">￥{{(detailsData.totalStrikePrice/100).toFixed(2)}}</p>
+                                <p class="t-linethrough">￥{{Math.formatFloat(parseFloat(detailsData.totalPrice/100),2)}}</p>
+                                <p class="f-s-18 c-yellow">￥{{Math.formatFloat(parseFloat(detailsData.totalStrikePrice/100),2)}}</p>
                             </td>
                         </tr>
                         <tr>
@@ -151,6 +151,8 @@ export default{
                     return 0;
                 }else if(v.productType==3){//普号包
                     return v.total;
+                }else if(v.productType==4){//赠送号码
+                    return '--';
                 }else{
                     layer.open({
                         content:"数据解析错误",
@@ -166,6 +168,8 @@ export default{
                     return v.total;
                 }else if(v.productType==3){//普号包
                     return 0;
+                }else if(v.productType==4){//赠送号码
+                    return '--';
                 }else{
                     layer.open({
                         content:"数据解析错误",
@@ -181,6 +185,8 @@ export default{
                     return v.total;
                 }else if(v.productType==3){//普号包
                     return v.total;
+                }else if(v.productType==4){//赠送号码
+                    return '--';
                 }else{
                     layer.open({
                         content:"数据解析错误",
@@ -200,9 +206,9 @@ export default{
 <style scoped>
     .headTitle{width: 96%;height: 28px;margin:30px 30px 0px 30px;}
     .tab-container{width: 96%;margin:10px 30px 20px 30px;}
-    .zhenghaoduan table,.liang table,.pu table{border-collapse: collapse;width: 100%}
-    .zhenghaoduan table tr td,.liang table tr td,.pu table tr td{border: 1px solid rgb(209, 209, 209)}
-    .zhenghaoduan table tr td:nth-child(even),.liang table tr td:nth-child(even),.pu table tr td:nth-child(even){background: white;padding-left: 20px}
-    .zhenghaoduan table tr td:nth-child(odd),.liang table tr td:nth-child(odd),.pu table tr td:nth-child(odd){text-align: right;padding: 10px;width: 20%;color:grey}
+    .zhenghaoduan table{border-collapse: collapse;width: 100%}
+    .zhenghaoduan table tr td{border: 1px solid #d1d1d1;width: 25%}
+    .zhenghaoduan table tr td:nth-child(even){background: #ffffff;padding-left: 20px}
+    .zhenghaoduan table tr td:nth-child(odd){text-align: right;padding: 10px;width: 20%;color:grey}
 </style>
 

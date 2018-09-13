@@ -148,10 +148,7 @@ const openCardOrder = resolve => {
 };
 const router = new Router({
     routes: [
-        {
-            path: "/login",
-            component: Login,
-        },
+        {path: "/login",component: Login},
         {
             path: "/home",
             redirect: "home/organization",

@@ -120,11 +120,10 @@
             </div>
             <div v-if="searchResult">
                 <div>
-                    <!-- <div class="listTitleFoot"><h3>订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></h3></div> -->
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
                             <tr>
-                                <td colspan="13">
+                                <td colspan="15">
                                     <div class="listHeader">
                                         <label style="text-align:left;padding-left:5px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
                                         <label style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" @click="downLoad" class="btnDownload">导出</button></label>
@@ -136,15 +135,15 @@
                                 <td>订单号码</td>
                                 <td>创建时间</td>
                                 <td>商户名称</td>
+                                <td>所属渠道</td>
                                 <td>产品包</td>
-                                <!-- <td>售卖方式</td> <td>购买数量（个）</td> -->
                                 <td>付款金额(元)</td>
-                                <td>操作人号码</td>
-                                <td>用户号码</td>
+                                <td>提卡人</td>
                                 <td>售卖方式</td>
                                 <td>付款方式</td>
                                 <td>订单状态</td>
                                 <td>物流单号</td>
+                                <td>状态变更人</td>
                                 <td>操作</td>
                             </tr>
                             <tr v-for="(v,i) of searchResult" :key="i">
@@ -152,8 +151,13 @@
                                     {{((pa-1)*15+(i+1))}}
                                 </td>
                                 <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
-                                <td > {{v.createTime.split(' ')[0]}}</td>
-                                <td>{{v.depName||'--'}}</td>   
+                                <td>{{v.createTime.split(' ')[0]}}</td>
+                                <td>
+                                    <span>{{v.depName||'--'}}</span><br><span>{{v.userPhone||'--'}}</span>
+                                </td> 
+                                <td>
+                                    <span>{{v.dealerIdName||'--'}}</span><br><span>{{v.dealerIdPhone||'--'}}</span>
+                                </td>  
                                 <td>
                                     <p v-if="v.isShow==true&&v.productList.length>0" class="abcd" v-for="(x,y) in v.productList" :key="y">
                                         <span class="listSpan">{{x.productName}}</span>
@@ -163,29 +167,11 @@
                                         <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                                     </p>
                                 </td>
-                                <!-- <td></td> <td></td> -->
-                                <td>{{(v.totalStrikePrice/100).toFixed(2)||'--'}}</td>
-                                <!-- <td class="tac" style="width:140px">
-                                    <div v-if="!off.changePrice[i+1]">
-                                        <span>{{searchResult[i].totalStrikePrice/100+'.00'||'--'}}</span>
-                                        <el-button class="small-btn" @click="changePrice(i)">修改</el-button>                                     
-                                    </div>
-                                    <div class="box" v-if="off.changePrice[i+1]">
-                                        <span class="span1">
-                                            <input type="text" class="input" v-model="searchResult[i].totalStrikePrice">
-                                        </span>
-                                        <span class="span2">
-                                            <input type="button" value="确定"   class="button" @click="changePriceYes(searchResult[i].totalStrikePrice,i)">
-                                        </span>
-                                    </div>
-                                </td> -->
-                                <td>{{v.operatorPhone||'--'}}</td>
-                                <td>{{v.userPhone||'--'}}</td>
+                                <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
                                 <td>
-                                    <!-- <span v-for="(value,index) in v.productList" v-if="value.splitFlag==2&&v.productList.length==1">拆包</span> -->
-                                    <!-- <span v-for="(value,index) in v.productList" v-if="value.splitFlag==1&&v.productList.length==1">整包</span> -->
-                                    <span>{{sealType(v.productList)}}</span>
+                                    <span>{{v.agentName||'--'}}</span><br><span>{{v.agentPhone||'--'}}</span>
                                 </td>
+                                <td><span>{{sealType(v.productList)}}</span></td>
                                 <td>
                                     <span v-if="v.paymentType==1">支付宝</span>
                                     <span v-if="v.paymentType==2">微信</span>
@@ -194,16 +180,8 @@
                                     <span v-if="v.paymentType==0">未付款</span>
                                     <span v-if="v.paymentType==5">支付宝(威富通)</span>
                                     <span v-if="v.paymentType==6">微信(威富通)</span>
-
                                 </td>
                                 <td >
-                                    <!-- <span v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==1">待付款</span>                                    
-                                    <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==3">手动关闭</span>                                    
-                                    <span class="c-red" v-if="v.paymentState==1&&v.deliveryState==0&&v.orderState==4">超时关闭</span>                                    
-                                    <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==1&&v.orderState==1">待发货</span>
-                                    <span class="c-blue" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1">已发货</span>
-                                    <span class="c-green" v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==2">已完成</span>
-                                    <span class="c-red" v-if="v.returnFlag==2">已退卡</span> -->
                                     <span :class="checkOrderStatus(v).style">
                                         {{checkOrderStatus(v).title}}
                                     </span>
@@ -211,6 +189,7 @@
                                 <td>
                                     <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a> 
                                 </td>
+                                <td>{{v.operatorName||'--'}}<br>{{v.operatorPhone||'--'}}</td>
                                 <td>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
@@ -533,7 +512,6 @@ export default {
     .pickCardOrder .span2{width: 40px;position: relative;background: green}
     .pickCardOrder .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
     .pickCardOrder .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-    .pickCardOrder .searchTab tr td{text-align: left}
     .pickCardOrder .searchTab tr td:nth-child(1){width: 60px;padding-left: 15px;}
     .pickCardOrder .iconMore{margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
     .pickCardOrder .iconMore1{-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg);transform:rotate(90deg);margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
@@ -542,5 +520,6 @@ export default {
     .listHeader{display: flex}
     .listHeader label{flex: 1;line-height: 40px}
     .btnDownload{margin-top: 9px;outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 4px 10px;margin-right: 10px;color: #fff}
+    table.searchTab tr{height: 40px;}
 </style>
 
