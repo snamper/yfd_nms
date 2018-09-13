@@ -31,28 +31,24 @@
                         <tr>
                             <td>网络</td>
                             <td>{{translateData(1,v.isp)}}</td>
-                            <td>码号数</td>
-                            <td>{{getNumberAmount('cn',v)}}</td>
+                            <td>产品类型</td>
+                            <td>{{translateData(2,v.productType)}}</td>
                         </tr>
                         <tr>
                             <td>品牌</td>
                             <td>{{translateData(4,v.brand)}}</td>
-                            <td>靓号数</td>
-                            <td>{{getNumberAmount('c',v)}}<a v-if="getNumberAmount('c',v)&&getNumberAmount('c',v)!='--'" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','c',v)">查看列表</a></td>
+                            <td>码号数</td>
+                            <td>{{v.total}}
+                                <a v-if="!isNaN(v.total)&&v.total!=0" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('',v)">查看列表</a>
+                            </td>
                         </tr>
                         <tr>
                             <td>归属地</td>
                             <td>{{v.area||'--'}}</td>
-                            <td>普号数</td>
-                            <td>{{getNumberAmount('n',v)}}<a v-if="getNumberAmount('n',v)&&getNumberAmount('c',v)!='--'" href="javascript:void(0)" class="fcaqua fr pr20" @click="details('','n',v)">查看列表</a></td>
-                        </tr>
-                        <tr>
-                            <td>产品类型</td>
-                            <td>{{translateData(2,v.productType)}}</td>
                             <td rowspan="2">价格</td>
                             <td rowspan="2">
                                 <p class="t-linethrough">￥{{Math.formatFloat(parseFloat(v.strikePrice/100),2)}}</p>
-                                <p class="f-s-18 c-yellow">￥{{Math.formatFloat(parseFloat(detailsData.totalStrikePrice/100),2)}}</p>
+                                <p class="f-s-18 c-yellow">￥{{Math.formatFloat(parseFloat(v.discountPrice/100),2)}}</p>
                             </td>
                         </tr>
                         <tr>
@@ -97,36 +93,24 @@ export default{
         "card-details":cardDetails
 	},
 	methods:{
-        details(p,v,i){
+        details(p,i){
             let vm=this,
             json={sysOrderId:i.sysOrderId,
                 numberId:i.numberId,
                 pageNum:p||1,
                 pageSize:90};
-            v=='c' ? json.phoneLevel="0,1,2,3,4,5,6":v=='n' ? json.phoneLevel="-1":"--";
             vm.searchJson=json;
             requestgetOrderSplitNumbers(json)
             .then((data)=>{
                 if(data.code==200){
-                    if(v=='c'){
-                        this.$set(vm.listSwitch,'pu',false)
-                        this.$set(vm.listSwitch,'liang',true)   
-                        vm.numberTotal.l=data.data.total;                         
-                        vm.searchLiang=[]
-                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                            vm.searchLiang.push(data.data.numbers.slice(i,i+6));
-                        }
-                        vm.searchLiang.len=data.data.numbers.length;
-                    }else if(v=='n'){
-                        this.$set(vm.listSwitch,'liang',false)                            
-                        this.$set(vm.listSwitch,'pu',true)
-                        vm.numberTotal.p=data.data.total;
-                        vm.searchPu=[]     
-                        for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                            vm.searchPu.push(data.data.numbers.slice(i,i+6));
-                        }
-                        vm.searchPu.len=data.data.numbers.length;                       
+                    this.$set(vm.listSwitch,'pu',true)   
+                    vm.numberTotal.p=data.data.total;                         
+                    vm.searchPu=[]     
+                    for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                        vm.searchPu.push(data.data.numbers.slice(i,i+6));
                     }
+                    vm.searchPu.len=data.data.numbers.length;    
+
                     this.off.notCardDetails=false;
                     this.off.cardDetails=true;
                 }else{
@@ -142,60 +126,6 @@ export default{
         goBack(){
             let vm=this;
             vm.$parent.off.details=false;
-        },
-        getNumberAmount(p,v){
-            if(p=='n'){//普号数
-                if(v.productType==1){//整号包
-                    return v.normalTotal;
-                }else if(v.productType==2){//靓号包
-                    return 0;
-                }else if(v.productType==3){//普号包
-                    return v.total;
-                }else if(v.productType==4){//赠送号码
-                    return '--';
-                }else{
-                    layer.open({
-                        content:"数据解析错误",
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }
-            }else if(p=='c'){//靓号数
-                if(v.productType==1){//整号包
-                    return v.cuteTotal;
-                }else if(v.productType==2){//靓号包
-                    return v.total;
-                }else if(v.productType==3){//普号包
-                    return 0;
-                }else if(v.productType==4){//赠送号码
-                    return '--';
-                }else{
-                    layer.open({
-                        content:"数据解析错误",
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }
-            }else if(p=='cn'){//总数
-                if(v.productType==1){//整号包
-                    return v.cuteTotal+v.normalTotal;
-                }else if(v.productType==2){//靓号包
-                    return v.total;
-                }else if(v.productType==3){//普号包
-                    return v.total;
-                }else if(v.productType==4){//赠送号码
-                    return '--';
-                }else{
-                    layer.open({
-                        content:"数据解析错误",
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }
-            }
         },
         translateData(v,i){
             return translateData(v,i)

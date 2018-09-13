@@ -10,37 +10,9 @@
                 <span class="fl">订单详情</span><span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span>
             </div>
         </div>
-        <div class="liang" v-if="listSwitch.liang">
-            <div class="listTitleFoot">
-                <h3><span>靓号详情</span><span class="deepGreyFont"> ({{dataInfo.l||'0'}})</span></h3>
-            </div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
-                    <tr v-for="(v,i) of dataListLiang" :key="i">
-                        <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td>
-                    </tr>
-                    <tr v-if="!dataListLiang.length">
-                        <td class="tac deepGreyFont f-s-14">此号包下暂无靓号详情</td>
-                    </tr>
-                </table>
-            </div> 
-            <el-row v-if="dataListLiang.length">
-              <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-                  <div class="grid-content bg-purple" style="padding:10px 16px">
-                      <el-pagination
-                          layout="prev, pager, next"
-                          :page-size="90"
-                          @current-change="details"
-                          :current-page.sync="currentPage"                                                        
-                          :total="dataInfo.l">
-                      </el-pagination>    
-                  </div>
-              </el-col>
-          </el-row>
-        </div>
         <div class="pu" v-if="listSwitch.pu">
             <div class="listTitleFoot">
-                <h3><span>普号详情</span><span class="deepGreyFont"> ({{dataInfo.p||'0'}})</span></h3>
+                <h3><span>号包详情</span><span class="deepGreyFont"> ({{dataInfo.p||'0'}})</span></h3>
             </div>
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
@@ -48,7 +20,7 @@
                         <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
                     </tr>
                     <tr v-if="!dataListPu.length">
-                        <td class="tac deepGreyFont f-s-14">此号包下暂无普号详情</td>
+                        <td class="tac deepGreyFont f-s-14">此号包下暂无码号详情</td>
                     </tr>
                 </table>
             </div> 
