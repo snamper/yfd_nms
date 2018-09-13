@@ -51,7 +51,7 @@
                             <td>{{translateData(2,v.productType)}}</td>
                             <td rowspan="2">价格</td>
                             <td rowspan="2">
-                                <p class="t-linethrough">￥{{Math.formatFloat(parseFloat(detailsData.strikePrice/100),2)}}</p>
+                                <p class="t-linethrough">￥{{Math.formatFloat(parseFloat(v.strikePrice/100),2)}}</p>
                                 <p class="f-s-18 c-yellow">￥{{Math.formatFloat(parseFloat(detailsData.totalStrikePrice/100),2)}}</p>
                             </td>
                         </tr>
