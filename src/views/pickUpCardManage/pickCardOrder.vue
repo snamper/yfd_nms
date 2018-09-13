@@ -147,10 +147,8 @@
                                 <td>操作</td>
                             </tr>
                             <tr v-for="(v,i) of searchResult" :key="i">
-                                <td>
-                                    {{((pa-1)*15+(i+1))}}
-                                </td>
-                                <td  @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
+                                <td>{{((pa-1)*15+(i+1))}}</td>
+                                <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                                 <td>{{v.createTime.split(' ')[0]}}</td>
                                 <td>
                                     <span>{{v.depName||'--'}}</span><br><span>{{v.userPhone||'--'}}</span>
