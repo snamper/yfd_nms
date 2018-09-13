@@ -134,7 +134,7 @@
                                 <a class="textDec" href="javascript:void(0)" @click="openDetails(v)">查看详情</a>
                             </td>
                         </tr>
-                         <tr v-if="searchResult.length<=0">
+                        <tr v-if="searchResult.length<=0">
                             <td colspan="8">
                                 暂无数据                                                        
                             </td>

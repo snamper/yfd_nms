@@ -27,8 +27,7 @@
                             <el-time-select editable v-model="time" size="small" :picker-options="{
                             start: '00:00',
                             step: '00:15',
-                            end: '23:45'
-                        }" placeholder="选择时间">
+                            end: '23:45'}" placeholder="选择时间">
                             </el-time-select>
                         </td>
                     </tr>

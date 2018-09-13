@@ -145,6 +145,9 @@ export default{
                 "sectionId": vm.sectionId,
                 "pageNum": p||1,
                 "pageSize": 20}
+                if(vm.checkListAll==true){
+                    json.productType+=',4';
+                }
                 vm.currentPage=p||1;
             requestGetCarts(json)
             .then((data)=>{

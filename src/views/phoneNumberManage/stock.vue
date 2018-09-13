@@ -170,8 +170,13 @@
                             </table>
                         </td>
                     </tr>
+                    <tr v-if="datalist.length==0">
+                        <td colspan="12">
+                            暂无数据                                                        
+                        </td>
+                    </tr>
                 </table>
-                <div class="listTitleFoot">
+                <div class="listTitleFoot" v-if="datalist.length>0">
                     <el-row>
                         <el-col :span="12"><div class="grid-content bg-purple">
                             <el-pagination
