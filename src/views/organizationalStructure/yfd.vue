@@ -174,8 +174,8 @@
 </template>
 <script>
 import { Loading } from 'element-ui';
-import {requestMethod} from "../../config/service.js"; 
-import {mapState, mapMutations, mapActions} from 'vuex';
+import { requestMethod } from "../../config/service.js"; 
+import { mapState, mapMutations, mapActions } from 'vuex';
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData,translateRole } from "../../config/utils.js";
 import layers from "./layerConfirmYfd";
 import staffDetails from "../../components/staffDetails.vue";
@@ -221,9 +221,58 @@ export default{
 	},
     created:function(){
         let vm=this,Info=getStore("YFD_NMS_INFO");
-        vm.user=Info;
+            vm.user=Info;
         let depid=window.localStorage.getItem("departId");
-        vm.topDepartmentId=depid;
+            vm.topDepartmentId=depid;
+        let departName=vm.$route.query.dealerName;
+        if(departName){
+            vm.name=departName;
+        }else{
+            return false;
+        };
+        let f1 = new Promise((resolve,reject)=>{
+            let data={},url='/ums/w/user/getDepartDetail',vm=this;
+            vm.pa=1;
+            vm.currentPage=1;
+            this.$router.push({name:'yfd',params:{type:"yfdList"}});
+            if(vm.phone!=''){
+                checkMobile(vm.phone,function(){vm.off.searchList=false;vm.form.page="";vm.detailsList="";return false});
+            }
+            data={
+            "searchDepartId":"1803160000",
+            "username":vm.name
+            ,"phone":vm.phone
+            ,"userState":vm.radio
+            ,"pageSize":15
+            ,"pageNum":1}
+            requestMethod(data,url)
+            .then((data)=>{
+                resolve('success!')
+                if(data.code==200){
+                    vm.off.searchList=true;
+                    vm.form.page=data.data.total;
+                    vm.detailsList=data.data.users;
+                    return true;
+                }else{
+                    vm.off.searchList=false;
+                    vm.form.page="";
+                    vm.detailsList="";
+                    layer.open({
+                        content:data.msg,
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                }  
+            }).then(()=>{
+                for(let v=0;v<vm.detailsList.length;v++){
+                    vm.$set(vm.detailsList[v],'ischecked',false);
+                }
+            }).catch(e=>errorDeal(e,()=>{vm.off.searchList=false;vm.form.page="";vm.detailsList="";}));            
+        })
+        f1.then(()=>{
+            vm.getStaffDetails(vm.detailsList[0])
+        })
     },
     mounted:function(){
         this.init()
@@ -305,6 +354,7 @@ export default{
                     vm.off.searchList=true;
                     vm.form.page=data.data.total;
                     vm.detailsList=data.data.users;
+                    return true;
                 }else{
                     vm.off.searchList=false;
                     vm.form.page="";

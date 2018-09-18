@@ -1,7 +1,8 @@
 import {
     SIGN_OUT,
     SET_USERINFO,
-    GET_ROLE
+    GET_ROLE,
+    GET_DEPART
 } from './mutation-types.js';
 
 import {setStore, getStore, removeStore, secondsFormat} from '../config/utils';
@@ -24,5 +25,9 @@ export default {
     [GET_ROLE](state,res){
         state.rolelist1 = [].concat(res.data.roles);
         state.rolelist = Object.assign({},res.data.roles); 
+    },
+    //渠道列表
+    [GET_DEPART](state,res){
+        state.depart = [].concat(res.data.list);
     }
 };

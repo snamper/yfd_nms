@@ -122,12 +122,13 @@
                                     </el-row>
                                 </td>
                             </tr>
-                            <tr class="f-s-14">
+                            <tr class="f-s-14 m-table-title">
                                 <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5"></td>
                                 <td>序号</td>
                                 <td>号包名称</td>
-                                <td>售卖方式</td>
+                                <td></td>
                                 <td>号包类型</td>
+                                <td>售卖方式</td>
                                 <td>号包价格（元）</td>
                                 <td>归属品牌</td>
                                 <td>运营商</td>
@@ -136,59 +137,87 @@
                                 <td>手机号码</td>
                                 <td>当前状态</td>
                             </tr>
-                            <tr v-for="(v,i) of searchList" :key="i">
-                                <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
-                                    <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
+                            <tr v-for="(v,i) of searchList">
+                                <td colspan="13">
+                                    <table class="m-table1">
+                                        <tr>
+                                            <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
+                                                <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
+                                            </td>
+                                            <td> {{((pa-1)*15+(i+1))}} </td>
+                                            <td>
+                                                <a class="textDec" @click="getDetails(v)">{{v.productName}}
+                                                    <span v-if="v.productType==1">({{v.normalTotal+v.cuteTotal}})</span>
+                                                    <span v-if="v.productType==2">({{v.cuteTotal}})</span>
+                                                    <span v-if="v.productType==3">({{v.normalTotal}})</span>
+                                                </a>
+                                            </td>
+                                            <td></td>
+                                            <td>{{translateData(2,v.productType)}}</td>
+                                            <td>
+                                                <button class="m-button-split" @click="splitNumber(v,1,i)">拆包</button>
+                                            </td>
+                                            <td class="tac">
+                                                <div v-if="!off.changePrice[i+1]">
+                                                    <span v-if="!v.strikePrice">{{(v.totalPrice/100).toFixed(2)}}</span>
+                                                    <span v-if="v.strikePrice">{{(v.strikePrice/100).toFixed(2)}}</span>
+                                                    <el-button v-if="false" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
+                                                </div>
+                                                <div class="box" v-if="off.changePrice[i+1]">
+                                                    <span class="span1">
+                                                        <input v-focus @blur="closeInp(v,i)" type="text" class="input" v-model="translateSealPrice">
+                                                    </span>
+                                                    <span class="span2">
+                                                        <input  type="button" value="确定" class="button" @mousedown="changePriceYes(v,i)">
+                                                    </span>
+                                                </div>
+                                            </td>
+                                            <td>{{translateData(4,v.brand)}}</td>
+                                            <td>{{translateData(1,v.isp)}}</td>
+                                            <td>
+                                                <span v-if="v.modifyTime"> {{getDateTime(v.modifyTime)[8]}}<br>{{getDateTime(v.modifyTime)[5]}} </span>
+                                                <span v-if="!v.modifyTime"> -- </span>
+                                            </td>
+                                            <td> {{v.operatorName}} </td>
+                                            <td> {{v.operatorPhone||'--'}} </td>
+                                            <td :class="{red:v.productState==5}"> {{translateData(3,v.productState)}} </td>
+                                            <td v-show="false"> {{v.productId}} </td>
+                                        </tr>
+                                        <tr v-if="off.tableDetails.indexOf(i)>-1">
+                                            <td colspan="3" :rowspan="face.length" style="border-right:1px solid #e4e4e4;"></td>
+                                            <td colspan="10" :rowspan="face.length">
+                                                <table class="m-table2" style="width:100%">
+                                                    <tr v-for="(v1,i1) in face" style="border-top:1px solid #E6E6E6">
+                                                        <td colspan="11">
+                                                            <table class="m-table3" v-for="(v2,i2) in v1" style="width:100%">
+                                                                <tr class="border" v-for="(v3,i2) in v2">
+                                                                    <td><el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox></td>
+                                                                    <td>11</td>
+                                                                    <td>222</td>
+                                                                    <td>3333</td>
+                                                                    <td>1234</td>
+                                                                    <td>12345</td>
+                                                                    <td>55555</td>
+                                                                    <td>66666</td>
+                                                                    <td>77777</td>
+                                                                    <td>54321</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
-                                <td> {{((pa-1)*15+(i+1))}} </td>
-                                <td >
-                                    <a class="textDec" @click="getDetails(v)">{{v.productName}}
-                                        <span v-if="v.productType==1">({{v.normalTotal+v.cuteTotal}})</span>
-                                        <span v-if="v.productType==2">({{v.cuteTotal}})</span>
-                                        <span v-if="v.productType==3">({{v.normalTotal}})</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span v-if="v.splitFlag==1">不可拆包 <button class="m-button-split" @click="splitNumber(v)" v-if="v.productState==2&&v.productType==3">拆包</button> </span>
-                                    <span v-if="v.splitFlag==2">可拆包</span>
-                                </td>
-                                <td>{{translateData(2,v.productType)}}</td>
-                                <td class="tac" style="width:140px">
-                                    <div v-if="!off.changePrice[i+1]">
-                                        <span v-if="!v.strikePrice">{{(v.totalPrice/100).toFixed(2)}}</span>
-                                        <span v-if="v.strikePrice">{{(v.strikePrice/100).toFixed(2)}}</span>
-                                        <el-button v-if="false" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
-                                    </div>
-                                    <div class="box" v-if="off.changePrice[i+1]">
-                                        <span class="span1">
-                                            <input v-focus @blur="closeInp(v,i)" type="text" class="input" v-model="translateSealPrice">
-                                        </span>
-                                        <span class="span2">
-                                            <input  type="button" value="确定" class="button" @mousedown="changePriceYes(v,i)">
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>{{translateData(4,v.brand)}}</td>
-                                <td>{{translateData(1,v.isp)}}</td>
-                                <td>
-                                    <span v-if="v.modifyTime"> {{getDateTime(v.modifyTime)[6]}} </span>
-                                    <span v-if="!v.modifyTime"> -- </span>
-                                </td>
-                                <td> {{v.operatorName}} </td>
-                                <td> {{v.operatorPhone||'--'}} </td>
-                                <td :class="{red:v.productState==5}"> {{translateData(3,v.productState)}} </td>
-                                <td v-show="false"> {{v.productId}} </td>
                             </tr>
                             <tr v-if="searchList.length>0&&nowStatusHidden!=6&&nowStatusHidden!=5">
-                                <td colspan="6" style="text-align:left" class="pl20">
+                                <td colspan="13" style="text-align:left" class="pl20">
                                     选择 : <a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
-                                </td>
-                                <td colspan="6" style="text-align:right;padding-right:20px;">
-                                   <el-checkbox v-model="isSplit"></el-checkbox> 拆包售卖<span class="greyFont">（仅普号包可拆分）</span>
                                 </td>
                             </tr>
                             <tr v-if="searchList.length<=0">
-                                <td colspan="12">
+                                <td colspan="13">
                                     暂无数据                                                        
                                 </td>
                             </tr>
@@ -212,28 +241,7 @@
                     </div>
                 </div>
             </div>  
-            <!-- 操作 -->
-            <!-- <div v-if="off.modify==true">
-                <div class="borderTopModifyStaffState"></div>
-                <div class="listTitleFoot">
-                    <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{typeTitle}}</p>
-                </div>
-                <div class="listTitleFoot">
-                    <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
-                </div> 
-                <div class="listTitleFoot">
-                    <p style="text-align:right">验证号码:{{user.phone}}
-                        <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
-                        <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
-                    </p> 
-                </div>
-                <div style="height:35px" class="listTitleFoot">
-                    <p style="float:right">
-                        <button class="buttonModifyYes"   @click="btnYes()">确定</button>
-                    </p>
-                </div> -->
-            </div> 
-        </div>
+        </div> 
         <!-- 号码上架下架同步 -->
         <numberOperation  v-if="off.layer1" :layer="layerType1" :operationType="operationType"></numberOperation>
         <!-- 卡详情 -->
@@ -328,6 +336,7 @@ export default{
             typeTitle:'',//上架，下架
             newPrice:[],
             isSplit:false,//是否拆分
+            face:[{a:{1:'7A',3:100000,13:'未上架'}}],
 			off:{
                 layer:false,
                 layer1:false,
@@ -340,6 +349,7 @@ export default{
                 modify:false,//编辑栏
                 isCheckAll:true,//是否全选
                 changePrice:[],
+                tableDetails:[]
 			},
 			form:{
                 page:0
@@ -404,9 +414,11 @@ export default{
                 vm.off.modify=false;
                 this.getSyncTime();
             }).catch(e=>errorDeal(e,()=>{vm.searchList="";vm.total="";vm.form.page="";}));
-        },translateData(type,v){
+        },
+        translateData(type,v){
             return translateData(type,v)
-        },handleCheckAllChange(val) {
+        },
+        handleCheckAllChange(val) {
             this.checkedCities = val ? cityOptions : [];
             this.isIndeterminate = false;
         },
@@ -513,12 +525,8 @@ export default{
             for(let i=0;i<this.ix.length;i++){
                 this.ix[i].checkeda=false;
             }
-        },copyData: function (dataSource) {  
-            var obj={};  
-            obj=JSON.parse(JSON.stringify(dataSource)); 
-            return obj  
-        }  
-        ,doFilter(s){//状态过滤操作
+        },
+        doFilter(s){//状态过滤操作
             if(s=="all"){
                 for(let v=0;v<this.searchList.length;v++){
                     this.$set(this.searchList[v],'ischecked',true);
@@ -560,7 +568,8 @@ export default{
                     }
                 }
             }
-        },doFounction(val){
+        },
+        doFounction(val){
             let vm=this,isInArray=false;
             vm.typeTitle="";
             for(let v in vm.searchList){
@@ -574,7 +583,6 @@ export default{
                     }else if(vm.searchList[v].productState==2&&val=='1'){//手动上架
                         isInArray='3'
                     }
-                    
                 }
             }
             if(isInArray=='1'){
@@ -630,25 +638,27 @@ export default{
                 this.typeTitle="上架";
             } 
             vm.btnYes();
-        //    setTimeout(()=>{
-        //        this.funScrollTop()
-        //    },50)
         },
-        splitNumber(v){
-            let vm=this,
-            json={productId:v.productId};
-            requestUpdateSplit(json)
-            .then((data)=>{
-                if(data.code==200){
-                    layer.open({
-                        content:'修改成功',
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                    vm.search(vm.currentPage);
-                }
-            }).catch(e=>errorDeal(e))
+        splitNumber(v,x,i){
+            let vm=this;
+            if(x==1){
+                vm.off.tableDetails.push(i)
+                console.log(vm.off.tableDetails);
+            }else if(x==2){
+                let json={productId:v.productId};
+                requestUpdateSplit(json)
+                .then((data)=>{
+                    if(data.code==200){
+                        layer.open({
+                            content:'修改成功',
+                            skin: 'msg',
+                            time: 2,
+                            msgSkin:'success',
+                        });
+                        vm.search(vm.currentPage);
+                    }
+                }).catch(e=>errorDeal(e))
+            }
         },
         funScrollTop(){
             let domdo=document.getElementById("main");
@@ -668,8 +678,8 @@ export default{
                 }
                 document.getElementById("home").scrollTop=och1;
             },20)
-        }
-        ,getAuthCode(){
+        },
+        getAuthCode(){
             const TIME_COUNT = 120;
             if (!this.timer) {
                 this.count = TIME_COUNT;
@@ -703,7 +713,8 @@ export default{
                     });
                 }  
             }).catch(e=>errorDeal(e));
-        },btnYes(v){
+        },
+        btnYes(v){
             let vm=this;
             vm.off.layer1=true;
             vm.layerType1="numberSJXJ";
@@ -731,8 +742,8 @@ export default{
                     errorDeal(data)
                 }
             }).catch(e=>errorDeal(e)); 
-        }
-        ,changePrice(i){
+        },
+        changePrice(i){
             let vm=this;
             vm._copyData=vm.copyData(vm.searchList);
             for(let i in vm.off.changePrice){
@@ -743,13 +754,15 @@ export default{
                 vm.translateSealPrice=(vm.searchList[i].totalPrice/100).toFixed(2);
             else if(vm.searchList[i].strikePrice)
                 vm.translateSealPrice=(vm.searchList[i].strikePrice/100).toFixed(2);
-        },changePriceYes(i,v){
+        },
+        changePriceYes(i,v){
             let vm=this;
             vm.layerType="confirmModifyPrice";
             vm.logistics=i;
             vm.off.layerChangePrice=true;
             vm.searchDataChangePrice={"productId":i.productId,"buyerId":i.userId,"strikePrice":vm.translateSealPrice*100}
-        },changePriceReq(){
+        },
+        changePriceReq(){
             requestModify_Price(vm.searchDataChangePrice)
             .then((data)=>{
                 for(let i in vm.off.changePrice){
@@ -757,19 +770,27 @@ export default{
                 }
                 this.search();
             }).catch(e=>errorDeal(e));
-        },closeInp(i,v){
+        },
+        closeInp(i,v){
             let vm=this;
             for(let i in vm.off.changePrice){
                 vm.$set(vm.off.changePrice,i,false)
             }
             vm.searchList=vm._copyData;
-        },confirm(v){
+        },
+        confirm(v){
             let vm=this,data={};
         },
         getDateTime(v){
             return getDateTime(v);
-        }
-    },directives: {
+        },
+        copyData(dataSource) {  
+            var obj={};  
+            obj=JSON.parse(JSON.stringify(dataSource)); 
+            return obj  
+        },
+    },
+    directives: {
         focus:{
             inserted: function (el) {
                 el.focus()
@@ -793,8 +814,33 @@ export default{
     div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
     div.operate button:active{box-shadow: 0 0 5px grey}
     .btnSyncNumber{outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 3px 6px;margin-right: 10px;color: #fff}
-    div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid rgb(202, 202, 202)}
+    div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid #cacaca}
     .el-checkbox+.el-checkbox{margin-left: 15px;}
 
+    .searchTab{border: none;border-spacing:0}
+    .searchTab tr:nth-child(odd){background: transparent}
+    .searchTab>tr:nth-child(even){background: #FFF}
+    .searchTab .m-table2{border-spacing: 0}
+    .searchTab>tr:nth-child(odd) .m-table3{border-spacing: 0}
+    .searchTab>tr:nth-child(odd) .m-table3>tr:nth-child(odd){background: #FFF}
+    .searchTab>tr:nth-child(odd) .m-table3>tr:nth-child(even){background: transparent}
+    .searchTab>tr:nth-child(even) .m-table3>tr:nth-child(odd){background: #F1F2F3}
+    .searchTab>tr:nth-child(even) .m-table3>tr:nth-child(even){background: transparent}
+    .searchTab .m-table-title td{width: 7.6923%}
+    .searchTab .m-table-title td:nth-child(1){width: 2%}
+    .searchTab .m-table-title td:nth-child(2){width: 2%}
+    .searchTab .m-table-title td:nth-child(3){width: 10%}
+    .searchTab .m-table-title td:nth-child(4){width: 2%}
+    .searchTab .m-table1{width: 100%;padding: 0;margin: 0;border-spacing:0}
+    .searchTab .m-table1>tr:nth-child(2)>td{border-top: 1px solid #E4E4E4}
+    .searchTab .m-table1>tr:nth-child(2)>td{border-bottom: 1px solid #E4E4E4}
+    .searchTab .m-table1>tr>td{width: 7.6923%}
+    .searchTab .m-table1>tr>td:nth-child(1){width: 2%}
+    .searchTab .m-table1>tr>td:nth-child(2){width: 2%}
+    .searchTab .m-table1>tr>td:nth-child(3){width: 10%;border-right:1px solid #e4e4e4 }
+    .searchTab .m-table1>tr>td:nth-child(4){width: 2%}
+    .searchTab .m-table3{border-spacing: 0}
+    .searchTab .m-table3>tr>td{width: 7.6923%;}
+    .searchTab .m-table3>tr>td:nth-child(1){width: 2%}
 </style>
 

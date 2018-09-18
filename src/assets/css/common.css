@@ -80,4 +80,5 @@ div.detailsListDiv{margin: 0px 20px;border: 1px solid #e7e7e7;}
 .m-jumplink{color: #43AAD4;text-decoration: underline;cursor: pointer;}
 .m-btn{padding: 4px 40px;margin: 0 auto;border-radius:4px;outline: none;}
 .m-btn-orange{border: 1px solid #FF8702;background: #FF8702;color: #fff;}
-.m-btn-green{border: 1px solid #0B8317;background: #0B8317;color: #fff;}
+.m-btn-green{border: 1px solid #00AA00;background: #00AA00;color: #fff;}
+.m-link-a{color: #43aad4;text-decoration: underline}

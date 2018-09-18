@@ -212,7 +212,7 @@
                         </td>
                     </tr>
                     <tr class="tdBtn">
-                        <span @click="close('1')">取消</span>
+                        <span @click="close()">取消</span>
                         <span @click="btnYes('deletePower')">确认</span>
                     </tr>
                 </tbody>
@@ -227,8 +227,23 @@
                         </td>
                     </tr>
                     <tr class="tdBtn">
-                        <span @click="close('1')">取消</span>
+                        <span @click="close()">取消</span>
                         <span @click="btnYes('modifyPower')">确认</span>
+                    </tr>
+                </tbody>
+            </table>
+            <table v-if="layerType=='modifyDepart'">
+                <tbody>
+                    <tr style="height:140px;">
+                        <td>
+                            <span class="f-fs14">修改归属渠道可能会导致数据出现错误</span><br>
+                            <p style="height:5px"></p>
+                            <span class="f-s-18 c-red">是否修改？</span>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('modifyDepart')">确认</span>
                     </tr>
                 </tbody>
             </table>
@@ -244,7 +259,9 @@ import {
     requestModify_Price,
     requestReturnGoods,
     deleteRole,
-    updateRolePrivilege} from "../config/service.js"; 
+    updateRolePrivilege,
+    updateDealerInfo,
+    requestMethod} from "../config/service.js"; 
 import { errorDeal,getStore, trimFunc } from '../config/utils';
 export default{
     props:{
@@ -304,6 +321,8 @@ export default{
                 vm.deletePower(v)
             }else if(e=="modifyPower"){
                 vm.modifyPower(v)
+            }else if(e=="modifyDepart"){
+                vm.modifyDepart(v)
             }
         },close(i){
             var vm=this;
@@ -501,16 +520,51 @@ export default{
             updateRolePrivilege(vm.changpowerData)
             .then((data)=>{
                 if(data.code==200){
-                layer.open({
+                    layer.open({
+                            content:"修改角色权限成功",
+                            skin:"msg",
+                            time:2,
+                            msgSkin:"success"
+                        })
+                }
+                vm.$parent.$parent.fgetRole();
+                vm.$parent.close();
+            }).catch(e=>errorDeal(e))
+        },modifyDepart(){
+            let vm=this;
+            updateDealerInfo(vm.$parent.changeDepartInfo)
+            .then((data)=>{
+                if(data.code==200){
+                    layer.open({
                         content:"修改角色权限成功",
                         skin:"msg",
                         time:2,
                         msgSkin:"success"
                     })
+                    debugger;
+                    let json={
+                    "startTime":new Date(vm.$parent.$parent.startTime).getTime(),
+                    "endTime":new Date(vm.$parent.$parent.endTime).getTime()
+                    ,"searchType":'1'
+                    ,"departName":''
+                    ,"managerName":''
+                    ,"departState":'1,2,3,4'
+                    ,"phone":vm.$parent.lists.phone
+                    ,"pageSize":15
+                    ,"pageNum":1},url='/ums/w/user/departSearch';
+                    requestMethod(json,url)
+                    .then((data)=>{
+                        debugger;        
+                        if(data.code==200){
+                            vm.$parent.lists= data.data.departs[0]; 
+                        }else{
+                           
+                        }
+                    }).catch(e=>errorDeal(e));
                 }
-                vm.$parent.$parent.fgetRole();
-                vm.$parent.close();
-            }).catch(e=>errorDeal(e))
+                vm.$parent.change=false;
+                vm.$parent.off.layer=false;
+            }).catch(e=>errorDeal(e,vm.$parent.off.layer=false))
         },
         trimFunc(v){
             return trimFunc(v)
@@ -522,7 +576,7 @@ export default{
 #detailsView{position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
 #detailsView>div{display: table-cell;vertical-align: middle;}
 #detailsView table{box-shadow: 0 0 50px grey;margin:auto;width: 270px;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
-#detailsView table td{padding:10px 30px;}
+#detailsView table td{padding:10px 10px;}
 #detailsView table th{padding: 10px 0;border-radius: 4px 4px 0 0;color: #545454;font-size: 16px;}
 #detailsView table td>.fl{width:1rem;text-align: right;}
 #detailsView table td>.fright{margin-left: 1.05rem;text-align: left; }

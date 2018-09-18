@@ -88,7 +88,7 @@
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr>
-                        <td colspan="8">
+                        <td colspan="9">
                             <el-row>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
                                     <span class="greyFont">最后同步成功时间 ：</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
@@ -115,6 +115,7 @@
                         <td>联系人</td>
                         <td>手机号码</td>
                         <td>部门状态</td>
+                        <td>所属渠道</td>
                         <td>创建时间</td>
                         <td>员工详情</td>
                     </tr>
@@ -141,6 +142,9 @@
                         </td>
                         <td>
                             {{translateData('userState',v.departState)}}
+                        </td>
+                        <td>
+                            <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName}}</a>
                         </td>
                         <td >
                             <span v-if="v.createTime">
@@ -271,6 +275,10 @@ export default{
                     return time.getTime() > nextYesterday || time.getTime() < cur;
                 }
             }, 
+        }
+    },watch:{
+        lists(){
+            console.log(123456)
         }
     },
     components:{

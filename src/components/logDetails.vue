@@ -24,7 +24,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                     <td colspan="3" style="text-align:center;padding:10px 10px 0 0;line-height:20px;height:46px;"><h3 class="f-s-16">日志详情<a class="fr IconOff" @click="closeLayer()">x</a></h3></td>
                 </tr>
             </thead>
-			<tbody v-if="layerType=='number'">
+			<tbody v-if="layerType=='number'"><!--码号日志-->
                 <tr>
                     <td>号包名称：</td>
                     <td colspan="2">{{detailsData.productName||'--'}}</td>
@@ -98,7 +98,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                     <td colspan="2">{{detailsData.reason||'--'}}</td>
                 </tr>
 			</tbody>
-            <tbody v-if="layerType=='login'">
+            <tbody v-if="layerType=='login'"><!--登录日志-->
                 <tr>
                     <td>操作人：</td>
                     <td colspan="2">{{detailsData.operatorName||'--'}}</td>
@@ -176,7 +176,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                     </td>
                 </tr>
             </tbody>
-            <tbody v-if="layerType=='sync'&&syncLogType=='3'">
+            <tbody v-if="layerType=='sync'&&syncLogType=='3'"><!--同步日志-->
                 <tr>
                     <td>商户总数：</td>
                     <td colspan="2">{{detailsData.dbDealerCount||'--'}}</td>
@@ -222,7 +222,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                     </td>
                 </tr>
             </tbody>
-            <tbody v-if="layerType=='sync'&&syncLogType=='4'">
+            <tbody v-if="layerType=='sync'&&syncLogType=='4'"><!--同步日志-->
                 <tr>
                     <td>部门总数：</td>
                     <td colspan="2">{{detailsData.dbSectionTotal||'--'}}</td>

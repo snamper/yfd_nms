@@ -9,7 +9,8 @@ Vue.use(Vuex);
 const state = {
     userInfo:{},//
     rolelist:[],
-    rolelist1:[]
+    rolelist1:[],
+    depart:[]
 };
 
 export default new Vuex.Store({

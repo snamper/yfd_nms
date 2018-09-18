@@ -3,11 +3,19 @@
     .listTitleFoot label{display:block;width: 50%;}
     .m-company-detail table{width: 100%;border-collapse: collapse;border: 1px solid #e4e4e4}
     .m-company-detail table tr{height: 50px;}
-    /* .m-company-detail table tr:nth-child(odd){background: #EAEAEA} */
     .m-company-detail table tr:nth-child(even){background: #fff}
     .m-company-detail table tr{border-top: 1px solid #e4e4e4}
     .m-company-detail table tr td:nth-child(1){width: 200px;text-align: right;padding-right: 20px;}
-    /* .m-company-detail table tr td:nth-child(2){padding-left: 10px;} */
+    .m-btn-green{padding: 2px 4px;outline:none ;border-radius: 4px;}
+    .departChange{width: 100%;height: 100%;position: absolute;top: 0;left: 0;}
+    .departChange .m-departChange-con{width: 400px;height:200px;padding: 20px;border-radius: 6px;position: fixed;top: 0;left: 0;right: 0;bottom: 0;margin: auto;background: #fff;box-shadow: 0 0 30px grey;}
+    .departChange ul{width: 100%;height: 100%;overflow: auto;}
+    .departChange ul::-webkit-scrollbar{width: 4px;height: 4px;}
+    .departChange ul::-webkit-scrollbar-thumb {border-radius: 5px; -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2); background: rgba(0,0,0,0.2); }
+    .departChange ul li{height: 35px;line-height: 35px;}
+    .departChange p{height: 20px;line-height: 20px;text-align: center;position: absolute;top: 5px;left: 130px;}
+    .departChange p span{display: inline-block;width: 10px;height: 10px;cursor: pointer;position: absolute;top: 5px;right: -175px;background: url('../../assets/images/icon_close.png') no-repeat right;background-size: 10px;}
+    .m-btn-group{position:absolute;height:28px;left:395px;border-radius: 0 4px 4px 0;}
 </style>
 <template>
     <div>
@@ -53,16 +61,24 @@
                     <td>{{lists.phone||'--'}}</td>
                 </tr>
                 <tr>
-                    <td>代理商名称 : </td>
-                    <td>{{lists.dealerIdName||'--'}}</td>
-                </tr>
-                <tr>
-                    <td>代理商ID : </td>
-                    <td>{{lists.dealerId||'--'}}</td>
-                </tr>
-                <tr>
-                    <td>售卡区域 : </td>
-                    <td>{{lists.region||'--'}}</td>
+                    <td>归属渠道 : </td>
+                    <td v-if="!change">{{lists.dealerIdName||'--'}}【{{lists.dealerId||'--'}}】
+                        <a href="javascript:void(0)" @click="details">查看渠道变更记录</a>
+                        <button class="m-btn-green" @click="fchange(lists)">修改渠道</button>
+                    </td>
+                    <td v-if="change">
+                        <p style="height:100%;position:relative">
+                            <el-select  style="width:400px;" size="mini" v-model="value1" placeholder="请选择修改的渠道">
+                                <el-option
+                                v-for="item in options"
+                                :key="item.value"
+                                :label="item.label"
+                                :value="`${item.dealerIdName}`+`【${item.dealerId}】`">
+                                </el-option>
+                            </el-select>
+                            <button class="m-btn-green m-btn-group" @click="fdetermine">确定</button>
+                        </p>
+                    </td>
                 </tr>
                 <tr>
                     <td>客户门店地址 : </td>
@@ -78,124 +94,98 @@
                 </tr>
             </table>
         </div>
+        <div  v-if="departChangelist" class="departChange">
+            <div class="m-departChange-con">
+                <p>渠道修改详情<span class="icon-close" @click="closeDetails"></span></p>
+                <ul>
+                    <li v-for="(v,i) of departChange" v-if="departChange.length">
+                        <span>{{getDateTime(v.createTime)[8]}}</span>&nbsp;&nbsp;<span style="font-size:12px;color:grey">{{getDateTime(v.createTime)[5]}}</span>
+                        &nbsp;&nbsp;<span>{{v.dealerIdName}}{{v.dealerId}}</span>
+                    </li>
+                    <li v-if="!departChange.length">
+                        暂无渠道变更记录
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+        <layerConfirm v-if="off.layer" :layerType="layerType"></layerConfirm>
 	</div>	 
 </template>
 <script>
-import {requestMethod} from "../../config/service.js"; 
-import {getDateTime,getStore,errorDeal,translateData} from "../../config/utils";
+import { getDateTime,getStore,errorDeal,translateData } from "../../config/utils";
+import { requestMethod,getDepart,departChangeHistory } from "../../config/service.js"; 
+import { mapState,mapMutations,mapActions } from 'vuex';
+import layerConfirm from '../../components/layerConfirm';
 export default{
     props:['lists'],
 	data (){
-		return {
-            oldName:"",
-            oldPhone:"",
-            name:'',
-            phone:'',
-            radio:'1',
-            checked:true,
-            checked2:true,
-            reason:'',
-            item:'',
-            user:"",//登录信息
-			off:{
-                showSearch:"",
-                addList:"",
-                modify:false,
-                noModify:true
-			},
-			form:{
-                name:"张三",
-                phone:"15666666666"
-            },
-            list: [
-            {a: '', b: '',checked:false,checked2:true},
-            {a: '', b: '',checked:true,checked2:false}
-            ],
-            role:[]
-            ,userRoleSwitch:""
-            
+		return {    
+            departChangelist:false,
+            departChange:"",
+            change:false,
+            options: [{"dealerId": "代理商ID","dealerIdName": "代理商名称"}],
+            mdedealerName:"",
+            mdealerId:"",
+            mdepartId:"",
+            changeDepartInfo:{},
+            layerType:'',
+            value1: '',
+            off:{
+                layer:false
+            }
 		}
-	},created:function(){
+	},components:{
+        layerConfirm
+    },computed:{
+        ...mapState([
+            "depart"
+        ])
+    },created:function(){
         let vm=this;
         vm.user=getStore("YFD_NMS_INFO");
         vm.topId=getStore('departId');
-        
+        vm.init();
     },methods:{
-		goBack(){
+        ...mapActions([
+            "getDepart"
+        ]),
+        async init(){
+            let vm=this;
+            vm.getDepart()
+            .then(()=>{
+                vm.options=vm.depart;
+            });
+        },details(){
+            let vm=this;
+            departChangeHistory({departId:vm.lists.departId})
+            .then((data)=>{
+                if(data.code==200){
+                    vm.departChange=data.data.list;
+                }
+            }).catch(e=>errorDeal(e))
+            vm.departChangelist=true;
+        },fchange(v){
+            let vm=this;
+                vm.change=true;
+                vm.value1=v.dealerIdName+'【'+v.dealerId+'】'
+        },fdetermine(){
+            let vm=this;
+                vm.off.layer=true;
+                vm.layerType="modifyDepart";
+                vm.changeDepartInfo={
+                    departId :vm.lists.departId,
+                    dealerId:vm.value1.split('【')[1].split('】')[0],
+                    dealerIdName:vm.value1.split('【')[0]
+                };
+        },goBack(){
             let vm=this;
             this.$parent.off.companyDetails=false;
             this.$parent.off.notDlsDetails=true;
-            // this.$parent.search(vm.$parent.pa);
-        }
-        ,checkBtn(){
-            if(this.forms.userRole.split(",").indexOf('3')>-1){
-                layer.open({
-                    content:"不允许修改店长信息",
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
+        },closeDetails(){
             let vm=this;
-            vm.role=vm.forms.userRole.split(",");
-            vm.off.noModify=false;
-            vm.off.modify=true;
-            vm.oldName=vm.forms.username;
-            vm.oldPhone=vm.forms.phone
-        }
-        ,checkNo(){
-            let vm=this;
-            vm.off.noModify=true;
-            vm.off.modify=false;
-            vm.forms.username=vm.oldName;
-            vm.forms.phone=vm.oldPhone;
-        }
-        ,checkYes(v){
-            let vm=this,url="/ums/w/user/updateUserDetail",data={};
-            vm.off.noModify=true;
-            vm.off.modify=false;
-            data.newUsername=vm.forms.username;
-            data.newPhone=vm.forms.phone;
-            data.newUserRole=vm.role.join(',');
-            data.searchUserId=v;
-            requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    layer.open({
-                        content:'操作成功',
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                    let data={},url='/ums/w/user/getUserDetail',vm=this
-                    data=vm.$parent.searchDetailsYfdData;
-                    requestMethod(data,url)
-                    .then((data)=>{
-                        if(data.code==200){
-                            vm.off.searchStaff=false;
-                            vm.off.staffDetails=true;
-                            vm.$parent.searchRes=data.data;
-                        }  
-                    }).catch(e=>errorDeal(e));
-                }else{
-                    vm.forms.username=vm.oldName;
-                    vm.forms.phone=vm.oldPhone;
-                    layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    })
-                } 
-            }).catch(e=>errorDeal(e))
-        },toMap(){//查看地图
-			var w=document.documentElement.clientWidth,url='',vm=this;
-			let latitude=parseFloat(vm.forms.latitude);
-            let longitude=parseFloat(vm.forms.longitude);
-			w<640 ? url='http://map.baidu.com/mobile/?latlng='+latitude+','+longitude+'' : url='http://map.baidu.com/?latlng='+latitude+','+longitude+'';
-			window.open(url);
-		},getDateTime(v){
+                vm.departChangelist=false;
+        },getDateTime(v){
             return getDateTime(v);
         },translateData(v,i){
             return translateData(v,i)

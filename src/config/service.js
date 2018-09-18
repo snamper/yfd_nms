@@ -2,6 +2,9 @@ import fetch from "./fetch";
 
 export const signOut=(data)=>fetch("/ums/w/user/alogout",data,"POST");//登出
 export const requestMethod=(data,url,load)=>fetch(url,data,"POST",load);//请求的通用方法
+/*亚飞达管理*/
+export const getDepartDetail=(data)=>fetch("/ums/w/user/getDepartDetail",data,"POST")
+
 /* 公告消息 */
 export const requestConfirmDelNotice=(data)=>fetch("/mns/w/msg/delete",data,"POST")
 /* 操作日志 */
@@ -57,6 +60,22 @@ export const addRole=(data)=>fetch("/ums/w/user/addRole",data,"POST")
 
 /*修改角色权限*/ 
 export const updateRolePrivilege=(data)=>fetch("/ums/w/user/updateRolePrivilege",data,"POST")
+
+/*渠道列表获取*/
+export const getDealerList=(data)=>fetch("/ums/w/user/getDealerBaseInfoList",data,"POST")
+
+/*修改代理商归属渠道*/
+export const updateDealerInfo=(data)=>fetch("/ums/w/depart/updateDealerInfo",data,"POST")
+
+/*获取渠道变更历史*/
+export const departChangeHistory=(data)=>fetch("/ums/w/depart/getDealerInfoChangeHistory",data,"POST")
+
+
+
+
+
+
+
 
 
 

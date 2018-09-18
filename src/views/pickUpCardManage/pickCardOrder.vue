@@ -154,7 +154,7 @@
                                     <span>{{v.depName||'--'}}</span><br><span>{{v.userPhone||'--'}}</span>
                                 </td> 
                                 <td>
-                                    <span>{{v.dealerIdName||'--'}}</span><br><span>{{v.dealerIdPhone||'--'}}</span>
+                                    <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
                                 </td>  
                                 <td>
                                     <p v-if="v.isShow==true&&v.productList.length>0" class="abcd" v-for="(x,y) in v.productList" :key="y">
@@ -168,6 +168,7 @@
                                 <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
                                 <td>
                                     <span>{{v.agentName||'--'}}</span><br><span>{{v.agentPhone||'--'}}</span>
+                                    
                                 </td>
                                 <td><span>{{sealType(v.productList)}}</span></td>
                                 <td>

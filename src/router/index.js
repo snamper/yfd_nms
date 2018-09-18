@@ -161,7 +161,7 @@ const router = new Router({
                 children: [{
                     path: "yfd",
                     name: "yfd",
-                    component: Org_yfd
+                    component: Org_yfd,
                 }, {
                     path: "agent",
                     name: "agent",
