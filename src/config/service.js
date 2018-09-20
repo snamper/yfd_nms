@@ -34,6 +34,13 @@ export const requestGetCarts=(data)=>fetch("/nms/w/number/getCarts",data,"POST")
 export const requestGetCartDetail=(data)=>fetch("/nms/w/number/getCartDetail",data,"POST")
 /*已上架普号包拆分*/
 export const requestUpdateSplit=(data)=>fetch("/nms/w/number/updateSplitFlag",data,"POST")
+/*获取靓号类型包列表*/
+export const getCuteTypeList=(data)=>fetch("/nms/w/number/getCuteTypeProduct",data,"POST")
+/*修改靓号包拆包状态*/
+export const updateCuteSplitFlag=(data)=>fetch("/nms/w/number/updateCuteSplitFlag",data,"POST")
+/*修改靓号类型包上架下架*/
+export const updateCuteState=(data)=>fetch("/nms/w/number/updateCuteState",data,"POST")
+
 /*码号库存管理查询*/
 export const getNumberStorage=(data)=>fetch("/nms/w/number/searchStorage",data,"POST")
 /*千字段号码概况*/
