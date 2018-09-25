@@ -209,7 +209,7 @@
     </section>
 </template>
 <script>
-import {ImgToBase64} from "../../config/utils/ImgToBase64"
+import { ImgToBase64 } from "../../config/utils/ImgToBase64"
 import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { errorDeal,getDateTime } from '../../config/utils';

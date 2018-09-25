@@ -541,7 +541,6 @@ export default{
                         time:2,
                         msgSkin:"success"
                     })
-                    debugger;
                     let json={
                     "startTime":new Date(vm.$parent.$parent.startTime).getTime(),
                     "endTime":new Date(vm.$parent.$parent.endTime).getTime()
@@ -554,7 +553,6 @@ export default{
                     ,"pageNum":1},url='/ums/w/user/departSearch';
                     requestMethod(json,url)
                     .then((data)=>{
-                        debugger;        
                         if(data.code==200){
                             vm.$parent.lists= data.data.departs[0]; 
                         }else{

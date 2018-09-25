@@ -64,7 +64,7 @@
                         <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">品牌：</div></el-col>
                         <el-col :xs="19" :sm="21" :md="21" :lg="20" :xl="18">
                             <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="20">
-                                <el-checkbox text-color="#48576a" style="display:inline;"  :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>                       
+                                <el-checkbox text-color="#48576a" style="display:inline;" :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">全选</el-checkbox>                       
                                 <el-checkbox-group style="display:inline" v-model="checkedCities" @change="handleCheckedCitiesChange">
                                     <!-- <el-checkbox class="hidden-xs-and-down" v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>                        -->
                                     <el-checkbox  v-for="city in cities1" :label="city" :key="city">{{city}}</el-checkbox>                       
@@ -122,12 +122,13 @@
                                     </el-row>
                                 </td>
                             </tr>
-                            <tr class="f-s-14">
+                            <tr class="f-s-14 m-table-title">
                                 <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5"></td>
                                 <td>序号</td>
                                 <td>号包名称</td>
-                                <td>售卖方式</td>
+                                <td></td>
                                 <td>号包类型</td>
+                                <td>售卖方式</td>
                                 <td>号包价格（元）</td>
                                 <td>归属品牌</td>
                                 <td>运营商</td>
@@ -136,59 +137,89 @@
                                 <td>手机号码</td>
                                 <td>当前状态</td>
                             </tr>
-                            <tr v-for="(v,i) of searchList" :key="i">
-                                <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
-                                    <el-checkbox v-model="v.ischecked" :checked="v.ischecked" ></el-checkbox>
+                            <tr v-for="(v,i) of searchList">
+                                <td colspan="13">
+                                    <table class="m-table1">
+                                        <tr>
+                                            <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5">
+                                                <el-checkbox v-model="v.ischecked"></el-checkbox>
+                                            </td>
+                                            <td> {{((pa-1)*15+(i+1))}} </td>
+                                            <td>
+                                                <a class="textDec" @click="getDetails(v)">{{v.productName}}
+                                                    <span v-if="v.productType==1">({{v.normalTotal+v.cuteTotal}})</span>
+                                                    <span v-if="v.productType==2">({{v.cuteTotal}})</span>
+                                                    <span v-if="v.productType==3">({{v.normalTotal}})</span>
+                                                </a>
+                                            </td>
+                                            <td></td>
+                                            <td>{{translateData(2,v.productType)}}</td>
+                                            <td>
+                                                <button class="m-button-split" @click="splitNumber(v,1,i)" v-if="splitButton(v,i,1)==1">拆包</button>
+                                                <button class="m-button-split1" @click="splitNumber(v,1,i)" v-if="splitButton(v,i,2)==2"><span>拆包</span></button>
+                                            </td>
+                                            <td class="tac">
+                                                <div>
+                                                    <span v-if="!v.strikePrice">{{(v.totalPrice/100).toFixed(2)}}</span>
+                                                    <span v-if="v.strikePrice">{{(v.strikePrice/100).toFixed(2)}}</span>
+                                                </div>
+                                            </td>
+                                            <td>{{translateData(4,v.brand)}}</td>
+                                            <td>{{translateData(1,v.isp)}}</td>
+                                            <td>
+                                                <span v-if="v.modifyTime"> {{getDateTime(v.modifyTime)[8]}}<br>{{getDateTime(v.modifyTime)[5]}} </span>
+                                                <span v-if="!v.modifyTime"> -- </span>
+                                            </td>
+                                            <td> {{v.operatorName}} </td>
+                                            <td> {{v.operatorPhone||'--'}} </td>
+                                            <td :class="{red:v.productState==5}"> {{translateData(3,v.productState)}} </td>
+                                            <td v-show="false"> {{v.productId}} </td>
+                                        </tr>
+                                        <tr v-if="off.tableDetails.indexOf(i)>-1&&v.productType==2">
+                                            <td colspan="3" :rowspan="v.type.length" style="border-right:1px solid #e4e4e4;"></td>
+                                            <td colspan="10" :rowspan="v.type.length">
+                                                <table class="m-table2" style="width:100%">
+                                                    <tr v-if="cuteNumberList.length>0" v-for="(v1,i1) in cuteNumberList" style="border-top:1px solid #E6E6E6">
+                                                        <td colspan="11">
+                                                            <table class="m-table3" style="width:100%">
+                                                                <tr class="border">
+                                                                    <td>
+                                                                        <input type="checkbox" v-model="v1.ischecked2">
+                                                                    </td>
+                                                                    <td>{{v1.ruleDesc}}({{v1.total}})</td>
+                                                                    <td>
+                                                                        <button class="m-button-split" v-if="v1.splitFlag==1" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
+                                                                        <button class="m-button-split1" v-if="v1.splitFlag==2"><span>拆包</span></button>
+                                                                    </td>
+                                                                    <td>{{v1.price}}</td>
+                                                                    <td>--</td>
+                                                                    <td>--</td>
+                                                                    <td>--</td>
+                                                                    <td>--</td>
+                                                                    <td>--</td>
+                                                                    <td>{{translateData(3,v1.state)}}</td>
+                                                                </tr>
+                                                            </table>
+                                                        </td>
+                                                    </tr>
+                                                    <tr v-if="cuteNumberList.length==0">
+                                                        <td colspan="11">
+                                                           暂无靓号分类详情 
+                                                        </td>
+                                                    </tr>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </td>
-                                <td> {{((pa-1)*15+(i+1))}} </td>
-                                <td >
-                                    <a class="textDec" @click="getDetails(v)">{{v.productName}}
-                                        <span v-if="v.productType==1">({{v.normalTotal+v.cuteTotal}})</span>
-                                        <span v-if="v.productType==2">({{v.cuteTotal}})</span>
-                                        <span v-if="v.productType==3">({{v.normalTotal}})</span>
-                                    </a>
-                                </td>
-                                <td>
-                                    <span v-if="v.splitFlag==1">不可拆包 <button class="m-button-split" @click="splitNumber(v)" v-if="v.productState==2&&v.productType==3">拆包</button> </span>
-                                    <span v-if="v.splitFlag==2">可拆包</span>
-                                </td>
-                                <td>{{translateData(2,v.productType)}}</td>
-                                <td class="tac" style="width:140px">
-                                    <div v-if="!off.changePrice[i+1]">
-                                        <span v-if="!v.strikePrice">{{(v.totalPrice/100).toFixed(2)}}</span>
-                                        <span v-if="v.strikePrice">{{(v.strikePrice/100).toFixed(2)}}</span>
-                                        <el-button v-if="false" class="small-btn" @click="changePrice(i)">修改</el-button>                                     
-                                    </div>
-                                    <div class="box" v-if="off.changePrice[i+1]">
-                                        <span class="span1">
-                                            <input v-focus @blur="closeInp(v,i)" type="text" class="input" v-model="translateSealPrice">
-                                        </span>
-                                        <span class="span2">
-                                            <input  type="button" value="确定" class="button" @mousedown="changePriceYes(v,i)">
-                                        </span>
-                                    </div>
-                                </td>
-                                <td>{{translateData(4,v.brand)}}</td>
-                                <td>{{translateData(1,v.isp)}}</td>
-                                <td>
-                                    <span v-if="v.modifyTime"> {{getDateTime(v.modifyTime)[6]}} </span>
-                                    <span v-if="!v.modifyTime"> -- </span>
-                                </td>
-                                <td> {{v.operatorName}} </td>
-                                <td> {{v.operatorPhone||'--'}} </td>
-                                <td :class="{red:v.productState==5}"> {{translateData(3,v.productState)}} </td>
-                                <td v-show="false"> {{v.productId}} </td>
                             </tr>
                             <tr v-if="searchList.length>0&&nowStatusHidden!=6&&nowStatusHidden!=5">
-                                <td colspan="6" style="text-align:left" class="pl20">
+                                <td colspan="13" style="text-align:left" class="pl20">
                                     选择 : <a href="javascript:void(0)" @click="doFilter('all')">  全选  </a> - <a href="javascript:void(0)" @click="doFilter('none')">  取消全选  </a>
-                                </td>
-                                <td colspan="6" style="text-align:right;padding-right:20px;">
-                                   <el-checkbox v-model="isSplit"></el-checkbox> 拆包售卖<span class="greyFont">（仅普号包可拆分）</span>
                                 </td>
                             </tr>
                             <tr v-if="searchList.length<=0">
-                                <td colspan="12">
+                                <td colspan="13">
                                     暂无数据                                                        
                                 </td>
                             </tr>
@@ -212,28 +243,7 @@
                     </div>
                 </div>
             </div>  
-            <!-- 操作 -->
-            <!-- <div v-if="off.modify==true">
-                <div class="borderTopModifyStaffState"></div>
-                <div class="listTitleFoot">
-                    <p style="text-align:right;color:red;font-size:14px">将已选择内容批量{{typeTitle}}</p>
-                </div>
-                <div class="listTitleFoot">
-                    <el-input v-model="reason" placeholder="请输入原因，字数限制20个字符，必填" size="small" :maxlength="20"></el-input>
-                </div> 
-                <div class="listTitleFoot">
-                    <p style="text-align:right">验证号码:{{user.phone}}
-                        <el-input v-model="authCode" size="mini" style="width:30%" placeholder="请输入验证码" :maxlength="6"></el-input>
-                        <el-button size="mini" type="primary" @click="getAuthCode()" :disabled="btnDisabled">{{count}}</el-button>
-                    </p> 
-                </div>
-                <div style="height:35px" class="listTitleFoot">
-                    <p style="float:right">
-                        <button class="buttonModifyYes"   @click="btnYes()">确定</button>
-                    </p>
-                </div> -->
-            </div> 
-        </div>
+        </div> 
         <!-- 号码上架下架同步 -->
         <numberOperation  v-if="off.layer1" :layer="layerType1" :operationType="operationType"></numberOperation>
         <!-- 卡详情 -->
@@ -245,11 +255,17 @@
 import 'element-ui/lib/theme-chalk/display.css';
 import { Loading } from 'element-ui';
 import { getDateTime,errorDeal,getStore,checkMobile,translateData } from "../../config/utils.js";
-import {requestMethod,requestgetSyncTime,requestModify_Price,requestUpdateSplit} from "../../config/service.js"; 
+import {requestMethod,
+    requestgetSyncTime,
+    requestModify_Price,
+    requestUpdateSplit,
+    getCuteTypeList,
+    updateCuteSplitFlag,
+    updateCuteState} from "../../config/service.js"; 
 import numberOperation from "./numberOperationLayer";
 import cardDetails from "../../components/cardDetailsList";
 import layerConfirm from "../../components/layerConfirm";
-const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城'],
+const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航','乐语','苏宁互联','国美','联想','蓝猫移动','长城','中邮'],
     cityOptions1=['远特'],
     cityOptions2=['蜗牛'],
     cityOptions3=['迪信通'],
@@ -257,7 +273,7 @@ const cityOptions = ['远特', '蜗牛', '迪信通', '极信','小米','海航'
     cityOptions5=['小米'],
     cityOptions6=['海航'],
     cityOptions7=['乐语'],
-    cityOptions8=['苏宁互联',],
+    cityOptions8=['苏宁互联'],
     cityOptions9=['国美'],
     cityOptions10=['联想'],
     cityOptions11=['蓝猫移动'],
@@ -272,11 +288,7 @@ export default{
             layerType:"",//弹框类型
             logistics:"",
             _copyData:"",
-            newPrice:"",
             syncLastTime:'',//最后一次同步成功时间
-            btnDisabled:false,
-            count:"点击获取验证码",
-            timer:null,
             checkAll: true,
             isIndeterminate:false,
             total:"",//号包总数
@@ -326,8 +338,10 @@ export default{
             searchData:"",
             dourl:'',
             typeTitle:'',//上架，下架
-            newPrice:[],
             isSplit:false,//是否拆分
+            i:1,
+            index:'',
+            cuteNumberList:'',
 			off:{
                 layer:false,
                 layer1:false,
@@ -340,6 +354,8 @@ export default{
                 modify:false,//编辑栏
                 isCheckAll:true,//是否全选
                 changePrice:[],
+                tableDetails:[],
+                tableDetails2:[]
 			},
 			form:{
                 page:0
@@ -358,6 +374,8 @@ export default{
 	methods:{
         search(p){//查询
             let vm=this;
+            vm.off.tableDetails=[];
+            vm.off.tableDetails2=[];
             vm.currentPage=p||1;
             if(this.phone!=''){
                 checkMobile(this.phone,function(){vm.searchList="";vm.total="";vm.form.page="";return false});
@@ -388,6 +406,9 @@ export default{
                     vm.form.page=data.data.total;
                     vm._copyData=vm.copyData(data.data.products);
                     vm.nowStatusHidden=vm.nowStatus;
+                    vm.searchList.forEach((item,index)=>{
+                        Object.assign(item,{type:{A:{1:'7A',3:100000,13:'未上架'},B:{1:'3B',3:6666660,13:'手动上架'},C:{1:'2B',3:678911,13:'手上架'}}})
+                    })
                 }else{
                     vm.searchList="";
                     vm.total="";
@@ -397,16 +418,18 @@ export default{
             }).then(()=>{
                 for(let v=0;v<vm.searchList.length;v++){
                     vm.$set(vm.searchList[v],'ischecked',false);
-                }
-                for(let i in vm.off.changePrice){
-                    vm.$set(vm.off.changePrice,i,false)
+                    for(let i in vm.searchList[v].type){
+                        vm.$set(vm.searchList[v].type[i],'ischecked2',false);
+                    }
                 }
                 vm.off.modify=false;
                 this.getSyncTime();
             }).catch(e=>errorDeal(e,()=>{vm.searchList="";vm.total="";vm.form.page="";}));
-        },translateData(type,v){
+        },
+        translateData(type,v){
             return translateData(type,v)
-        },handleCheckAllChange(val) {
+        },
+        handleCheckAllChange(val) {
             this.checkedCities = val ? cityOptions : [];
             this.isIndeterminate = false;
         },
@@ -506,217 +529,195 @@ export default{
             vm.off.layer1=true;
             vm.layerType1="numberSectionTB";
         },
-        changeChecked(){//单选按钮点击事件
-            this.ix.checkeda=!this.ix.checkeda;
-        },
-        addCheckBox(){//便利对象添加单选按钮状态
-            for(let i=0;i<this.ix.length;i++){
-                this.ix[i].checkeda=false;
-            }
-        },copyData: function (dataSource) {  
-            var obj={};  
-            obj=JSON.parse(JSON.stringify(dataSource)); 
-            return obj  
-        }  
-        ,doFilter(s){//状态过滤操作
+        doFilter(s){//状态过滤操作
+            let vm=this;
             if(s=="all"){
-                for(let v=0;v<this.searchList.length;v++){
-                    this.$set(this.searchList[v],'ischecked',true);
+                for(let v=0;v<vm.searchList.length;v++){
+                    vm.$set(vm.searchList[v],'ischecked',true);
                 }
+                vm.cuteNumberList=[];
+                vm.off.tableDetails=[];
             }else if(s=="none"){
-                for(let v=0;v<this.searchList.length;v++){
-                    this.$set(this.searchList[v],'ischecked',false);
-                }
-            }else if(s=="off"){
-                for(let v=0;v<this.searchList.length;v++){
-                    if(this.searchList[v].productState=='3'){
-                       this.$set(this.searchList[v],'ischecked',true);
-                    }else{
-                       this.$set(this.searchList[v],'ischecked',false);
-                    }
-                }
-            }else if(s=="on"){
-                for(let v=0;v<this.searchList.length;v++){
-                    if(this.searchList[v].productState=='2'){
-                        this.$set(this.searchList[v],'ischecked',true);
-                    }else{
-                         this.$set(this.searchList[v],'ischecked',false);
-                    }
-                }
-            }else if(s=="noton"){
-                for(let v=0;v<this.searchList.length;v++){
-                    if(this.searchList[v].productState=='1'){
-                        this.$set(this.searchList[v],'ischecked',true);
-                    }else{
-                         this.$set(this.searchList[v],'ischecked',false);
-                    }
-                }
-            }else if(s=="seal"){
-                for(let v=0;v<this.searchList.length;v++){
-                    if(this.searchList[v].productState=='4'){
-                        this.$set(this.searchList[v],'ischecked',true);
-                    }else{
-                         this.$set(this.searchList[v],'ischecked',false);
-                    }
+                for(let v=0;v<vm.searchList.length;v++){
+                    vm.$set(vm.searchList[v],'ischecked',false);
                 }
             }
-        },doFounction(val){
-            let vm=this,isInArray=false;
-            vm.typeTitle="";
-            for(let v in vm.searchList){
-                if(vm.searchList[v].ischecked==true){
-                    if(vm.searchList[v].productState==6||vm.searchList[v].productState==5){//购物车中或已出售
-                        isInArray='1';
-                    }else if(vm.isSplit==true){//拆包售卖
-                        if(vm.searchList[v].productType!=3){//普号包
-                            isInArray='2'
-                        }
-                    }else if(vm.searchList[v].productState==2&&val=='1'){//手动上架
-                        isInArray='3'
-                    }
-                    
-                }
-            }
-            if(isInArray=='1'){
-                vm.off.modify='stop1';
-            }else if(isInArray=='2'){
-                vm.off.modify='stop2';
-            }else if(isInArray=='3'){
-                vm.off.modify='stop3';
-            }else{
-                vm.off.modify='1';
-            }
-            if(vm.off.modify=='stop1'){
-                layer.open({
-                    content:"不允许操作购物车中和已售出的号包",
-                    skin: 'msg',
-                    time: 4,
-                    msgSkin:'error',
-                });
-                return false;
-            }else if(vm.off.modify=='stop2'&&val=='1'){
-                layer.open({
-                    content:"仅普号包可拆分售卖，请重新选择",
-                    skin: 'msg',
-                    time: 4,
-                    msgSkin:'error',
-                });
-                return false;
-            }else if(vm.off.modify=='stop3'){
-                layer.open({
-                    content:"已上架的号包不允许重复上架",
-                    skin: 'msg',
-                    time: 4,
-                    msgSkin:'error',
-                });
-                return false;
-            }
-            if(vm.off.modify==false){
-                layer.open({
-                    content:"请选择要操作的号包",
-                    skin: 'msg',
-                    time: 2,
-                    msgSkin:'error',
-                });
-                return false;
-            }
-            if(val=='2'){
-                vm.operationType="XJ";
-                vm.dourl="/nms/w/number/pullOffProducts";
-                this.typeTitle="下架";
-            }else if(val=='1'){
-                vm.dourl="/nms/w/number/putOnProducts";
-                vm.operationType="SJ";
-                this.typeTitle="上架";
-            } 
-            vm.btnYes();
-        //    setTimeout(()=>{
-        //        this.funScrollTop()
-        //    },50)
         },
-        splitNumber(v){
-            let vm=this,
-            json={productId:v.productId};
-            requestUpdateSplit(json)
-            .then((data)=>{
-                if(data.code==200){
+        doFounction(val){
+            new Promise((resolve,reject)=>{
+                let vm=this,isInArray=false,isSplitInArray=false,ruleType=[],index=vm.off.tableDetails[0];
+                vm.typeTitle="";
+                for(let i in vm.searchList){
+                    if(vm.searchList[i].ischecked==true){
+                        if(vm.searchList[i].productState==6||vm.searchList[i].productState==5){//购物车中或已出售
+                            isInArray='1';
+                        }else if(vm.searchList[i].productState==2&&val=='1'){//手动上架
+                            isInArray='3'
+                        }else{
+                            isInArray=true;
+                        }
+                    }
+                }
+                for(let v of vm.cuteNumberList){
+                    if(v.hasOwnProperty('ischecked2')&&v.ischecked2==true){
+                        isSplitInArray=1;
+                    }
+                }
+                if(isInArray==='1'){
+                    vm.off.modify='stop1';
+                }else if(isInArray==='3'){
+                    vm.off.modify='stop3';
+                }else if(isInArray===false){
+                    vm.off.modify=false;
+                }else{
+                    vm.off.modify=true;
+                }
+                if(isInArray==='1'){
+                    layer.open({
+                        content:"不允许操作购物车中和已售出的号包",
+                        skin: 'msg',
+                        time: 4,
+                        msgSkin:'error',
+                    });
+                    return false;
+                }else if(isInArray==='3'){
+                    layer.open({
+                        content:"已上架的号包不允许重复上架",
+                        skin: 'msg',
+                        time: 4,
+                        msgSkin:'error',
+                    });
+                    return false;
+                }
+                if(isInArray===false&&isSplitInArray===false){
+                    layer.open({
+                        content:"请选择要操作的号包",
+                        skin: 'msg',
+                        time: 2,
+                        msgSkin:'error',
+                    });
+                    return false;
+                }
+                if(val=='2'){
+                    vm.operationType="XJ";
+                    vm.dourl="/nms/w/number/pullOffProducts";
+                    this.typeTitle="下架";
+                }else if(val=='1'){
+                    vm.dourl="/nms/w/number/putOnProducts";
+                    vm.operationType="SJ";
+                    this.typeTitle="上架";
+                } 
+                resolve('success!')
+            }).then(()=>{
+                this.btnYes(val);  
+            })
+        },
+        splitNumber(v,x,i){
+            let vm=this;
+            if(x==1){//大包拆包按钮
+                vm.off.tableDetails.length=0;
+                let json={productId:v.productId};
+                if(v.splitFlag==1){
+                    requestUpdateSplit(json)
+                    .then((data)=>{
+                        if(data.code==200){
+                            layer.open({
+                                content:'修改成功',
+                                skin: 'msg',
+                                time: 2,
+                                msgSkin:'success',
+                            });
+                            vm.search(vm.currentPage);
+                        }
+                    }).catch(e=>errorDeal(e))
+                }
+                if(v.productType==2){
+                    getCuteTypeList({productId:v.productId})
+                    .then((data)=>{
+                        vm.cuteNumberList=data.data.products;
+                    })
+                }
+                vm.off.tableDetails.push(i);
+            }else if(x==2){//靓号类型包拆分按钮
+                vm.off.tableDetails2.push(i);
+                let json={sectionId:v.v.sectionId,ruleType:v.v1.ruleType}
+                updateCuteSplitFlag(json)
+                .then((data)=>{
                     layer.open({
                         content:'修改成功',
                         skin: 'msg',
                         time: 2,
                         msgSkin:'success',
                     });
-                    vm.search(vm.currentPage);
+                }).
+                then(()=>{
+                    getCuteTypeList({productId:v.v.productId})
+                    .then((data)=>{
+                        vm.cuteNumberList=data.data.products;
+                    })
+                })
+                .catch((e)=>{
+                    layer.open({
+                        content:e.msg,
+                        skin:'msg',
+                        time:2,
+                        msgSkin:'error'
+                    })
+                })
+            }
+        },splitButton(v,i,key){
+            let vm=this;
+            if(v.productType==2){//靓号包
+                if(vm.off.tableDetails.indexOf(i)>-1){//已展开
+                    return 2;
+                }else if(vm.off.tableDetails.indexOf(i)==-1){//未展开
+                    return 1;
                 }
-            }).catch(e=>errorDeal(e))
-        },
-        funScrollTop(){
-            let domdo=document.getElementById("main");
-            let ch=document.documentElement.clientHeight||document.body.clientHeight||window.innerHeight;
-            let oh=domdo.scrollHeight;
-            let och=oh-ch,
-                och1=80;
-            let st=document.getElementById("home").scrollTop;
-            if(st==och){
+            }else if(v.productType==3){//普号包
+                if(v.splitFlag==1){
+                    return 1;
+                }else if(v.splitFlag==2){
+                    return 2;
+                }
+            }else if(v.productType==1){
                 return false;
             }
-            let timer=setInterval(()=>{
-                if(och>och1){
-                    och1+=10
-                }else{
-                    clearInterval(timer)
-                }
-                document.getElementById("home").scrollTop=och1;
-            },20)
-        }
-        ,getAuthCode(){
-            const TIME_COUNT = 120;
-            if (!this.timer) {
-                this.count = TIME_COUNT;
-                this.show = false;
-                this.timer = setInterval(() => {
-                if (this.count > 0 && this.count <= TIME_COUNT) {
-                        this.btnDisabled=true;
-                        this.count--;
-                    } else {
-                        this.resetTimer()
-                    }
-                }, 1000)
-            }
-            let data={},url='/ums/w/user/getAuthCode',vm=this;
-            data={"phone":vm.user.phone}
-            requestMethod(data,url)
-            .then((data)=>{
-                if(data.code==200){
-                    layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'success',
-                    });
-                }else{
-                     layer.open({
-                        content:data.msg,
-                        skin: 'msg',
-                        time: 2,
-                        msgSkin:'error',
-                    });
-                }  
-            }).catch(e=>errorDeal(e));
-        },btnYes(v){
-            let vm=this;
+        },
+        btnYes(i){
+            let vm=this,ruleType=[],index=vm.off.tableDetails[0],json={operateProductIds:[]};
             vm.off.layer1=true;
             vm.layerType1="numberSJXJ";
-            let json={'operateProductIds':[]};
-            for(let v in vm.searchList){
-                if(vm.searchList[v].ischecked==true){
-                    json.operateProductIds.push(vm.searchList[v].productId)
+            for(let v of vm.searchList){
+                if(v.ischecked==true){
+                    json.operateProductIds.push(v.productId);
                 }
             }
-            if(vm.isSplit==true){
-                json.splitFlag=2
-            }else if(vm.isSplit==false){
-                json.splitFlag=1
+            for(let v of vm.cuteNumberList){
+                if(v.hasOwnProperty('ischecked2')&&v.ischecked2==true){
+                    ruleType.push(v.ruleType);
+                }
+            }
+            if(json.operateProductIds.length>1){
+                for(let v of vm.searchList){
+                    if(v.ischecked==true){
+                        json.operateProductIds.push(v.productId);
+                    }
+                }
+            }else if(json.operateProductIds.length<=1&&ruleType.length>0){
+                ruleType=[];
+                for(let v of vm.cuteNumberList){
+                    if(v.hasOwnProperty('ischecked2')&&v.ischecked2==true){
+                        ruleType.push(v.ruleType);
+                    }
+                }
+                json.ruleType=ruleType.join(',');
+                json.sectionId=vm.searchList[index].sectionId;
+                vm.dourl="/nms/w/number/updateCuteState";
+                if(i==1){
+                    json.operate=2;
+                }else if(i==2){
+                    json.operate=3;
+                }
             }
             vm.SJXJData=json;
         },
@@ -731,45 +732,17 @@ export default{
                     errorDeal(data)
                 }
             }).catch(e=>errorDeal(e)); 
-        }
-        ,changePrice(i){
-            let vm=this;
-            vm._copyData=vm.copyData(vm.searchList);
-            for(let i in vm.off.changePrice){
-                vm.$set(vm.off.changePrice,i,false)
-            }
-            vm.$set(vm.off.changePrice,i+1,true)
-            if(!vm.searchList[i].strikePrice)
-                vm.translateSealPrice=(vm.searchList[i].totalPrice/100).toFixed(2);
-            else if(vm.searchList[i].strikePrice)
-                vm.translateSealPrice=(vm.searchList[i].strikePrice/100).toFixed(2);
-        },changePriceYes(i,v){
-            let vm=this;
-            vm.layerType="confirmModifyPrice";
-            vm.logistics=i;
-            vm.off.layerChangePrice=true;
-            vm.searchDataChangePrice={"productId":i.productId,"buyerId":i.userId,"strikePrice":vm.translateSealPrice*100}
-        },changePriceReq(){
-            requestModify_Price(vm.searchDataChangePrice)
-            .then((data)=>{
-                for(let i in vm.off.changePrice){
-                    vm.$set(vm.off.changePrice,i,false)
-                }
-                this.search();
-            }).catch(e=>errorDeal(e));
-        },closeInp(i,v){
-            let vm=this;
-            for(let i in vm.off.changePrice){
-                vm.$set(vm.off.changePrice,i,false)
-            }
-            vm.searchList=vm._copyData;
-        },confirm(v){
-            let vm=this,data={};
         },
         getDateTime(v){
             return getDateTime(v);
-        }
-    },directives: {
+        },
+        copyData(dataSource) {  
+            var obj={};  
+            obj=JSON.parse(JSON.stringify(dataSource)); 
+            return obj  
+        },
+    },
+    directives: {
         focus:{
             inserted: function (el) {
                 el.focus()
@@ -779,21 +752,7 @@ export default{
 }
 </script>
 <style scoped>
-    input{border: 0 none;}
-    .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
-    .box span{display: inline-block;height: 26px;}
-    .span1{width: 100px;position: relative;background: red}
-    .span2{width: 40px;position: relative;background: green}
-    .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
-    .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-    .m-button-split{outline:none;border:1px solid grey;border-radius:3px;padding:1px 2px}
-    .m-button-split:active{box-shadow:0 0 5px grey }
-    .buttonModifyYes{border-radius:4px;padding:5px 20px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
-    .buttonModifyYes:active{box-shadow: 0 0 5px green}
-    div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
-    div.operate button:active{box-shadow: 0 0 5px grey}
-    .btnSyncNumber{outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 3px 6px;margin-right: 10px;color: #fff}
-    div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid rgb(202, 202, 202)}
-    .el-checkbox+.el-checkbox{margin-left: 15px;}
-
+    @import "../../assets/css/mhgl.css";
+    
 </style>
+
