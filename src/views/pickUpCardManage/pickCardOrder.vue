@@ -198,7 +198,7 @@
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
-                                <td style="text-align:center" colspan="12">
+                                <td style="text-align:center" colspan="14">
                                     暂无数据                                                        
                                 </td>
                             </tr>

@@ -47,7 +47,7 @@
                             <td>{{v.area||'--'}}</td>
                             <td rowspan="2">价格</td>
                             <td rowspan="2">
-                                <p class="t-linethrough">￥{{Math.formatFloat(parseFloat(v.strikePrice/100),2)}}</p>
+                                <p v-if="v.discountPrice!=v.strikePrice" class="t-linethrough">￥{{Math.formatFloat(parseFloat(v.strikePrice/100),2)}}</p>
                                 <p class="f-s-18 c-yellow">￥{{Math.formatFloat(parseFloat(v.discountPrice/100),2)}}</p>
                             </td>
                         </tr>

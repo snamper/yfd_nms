@@ -92,6 +92,10 @@
                     <td>售卡区域 : </td>
                     <td>{{lists.soldProvince||'--'}}，{{lists.soldCity||'--'}}，{{lists.soldCounty||'--'}}</td>
                 </tr>
+                <tr>
+                    <td>客户地址 : </td>
+                    <td>{{lists.address||'--'}}</td>
+                </tr>
             </table>
         </div>
         <div  v-if="departChangelist" class="departChange">

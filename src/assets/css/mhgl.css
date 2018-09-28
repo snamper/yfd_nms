@@ -26,19 +26,19 @@ input{border: 0 none;}
     .searchTab>tr:nth-child(odd) .m-table3>tr:nth-child(even){background: transparent}
     .searchTab>tr:nth-child(even) .m-table3>tr:nth-child(odd){background: #F1F2F3}
     .searchTab>tr:nth-child(even) .m-table3>tr:nth-child(even){background: transparent}
-    .searchTab .m-table-title td{width: 7.6923%}
+    .searchTab .m-table-title td{width: 7.14286%}
     .searchTab .m-table-title td:nth-child(1){width: 2%}
-    .searchTab .m-table-title td:nth-child(2){width: 2%}
+    /* .searchTab .m-table-title td:nth-child(2){width: 2%}
     .searchTab .m-table-title td:nth-child(3){width: 10%}
-    .searchTab .m-table-title td:nth-child(4){width: 2%}
+    .searchTab .m-table-title td:nth-child(4){width: 2%} */
     .searchTab .m-table1{width: 100%;padding: 0;margin: 0;border-spacing:0}
     .searchTab .m-table1>tr:nth-child(2)>td{border-top: 1px solid #E4E4E4}
     .searchTab .m-table1>tr:nth-child(2)>td{border-bottom: 1px solid #E4E4E4}
-    .searchTab .m-table1>tr>td{width: 7.6923%}
+    .searchTab .m-table1>tr>td{width: 7.14286%}
     .searchTab .m-table1>tr>td:nth-child(1){width: 2%}
-    .searchTab .m-table1>tr>td:nth-child(2){width: 2%}
+    /* .searchTab .m-table1>tr>td:nth-child(2){width: 2%}
     .searchTab .m-table1>tr>td:nth-child(3){width: 10%;border-right:1px solid #e4e4e4 }
-    .searchTab .m-table1>tr>td:nth-child(4){width: 2%}
+    .searchTab .m-table1>tr>td:nth-child(4){width: 2%} */
     .searchTab .m-table3{border-spacing: 0}
-    .searchTab .m-table3>tr>td{width: 7.6923%;}
-    .searchTab .m-table3>tr>td:nth-child(1){width: 2%}
+    .searchTab .m-table3>tr>td{width: 10%}
+    /* .searchTab .m-table3>tr>td:nth-child(1){width: 2%} */

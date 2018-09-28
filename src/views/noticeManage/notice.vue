@@ -360,12 +360,6 @@ export default {
             .then((data)=>{
                 if(data.code==200){
                     this.search(vm.pa);
-                    // this.$refs.file.value="";
-                    // vm.off.imgIcon=false;
-                    // vm.textarea3=="";
-                    // vm.inputLink=="";
-                    // vm.formInline.region=="";
-                    // vm.value1=="";
                     layer.open({
                         content:"发送成功",
                         skin:"msg",

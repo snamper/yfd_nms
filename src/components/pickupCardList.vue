@@ -2,6 +2,12 @@
     table.numberInfo td:nth-child(odd){width: 200px;text-align: right}
     table.numberInfo td:nth-child(even){text-align: left;padding-left:20px; }
     .headTitle{height: 50px;padding: 10px 20px}
+    .m-number>span{display: inline-block;width: 100%;}
+    .m-number-desc{width: 70%;min-width: 140px;margin: 0 auto;text-align: left}
+    .m-number-desc span{display:inline-block;font-size: 12px;color: #9c9c9c}
+    .el-button.el-popover__reference{border: none;}
+    .el-button.el-popover__reference{background: transparent}
+
 </style>
 <template>
     <section>
@@ -17,7 +23,22 @@
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListPu" :key="i">
-                        <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
+                        <td class="m-number" v-for="(v,i) of dataListPu[i]" :key="i">
+                             <el-popover
+                                placement="bottom-start"
+                                title="资费介绍"
+                                width="200"
+                                trigger="hover">
+                                <span>{{v.remark}}</span>
+                                <el-button slot="reference">
+                                    <p class="m-number-desc">
+                                        <label>{{v.phone}}</label><br/>
+                                        <span>资费:{{v.voice}}</span>
+                                        <span>面额:{{v.faceValue/100}}</span>
+                                    </p>
+                                </el-button>
+                            </el-popover>
+                        </td>
                     </tr>
                     <tr v-if="!dataListPu.length">
                         <td class="tac deepGreyFont f-s-14">此号包下暂无码号详情</td>

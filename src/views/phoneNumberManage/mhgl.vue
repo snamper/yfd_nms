@@ -100,7 +100,7 @@
                     <div class="detailsListDiv">
                         <table class="searchTab" style="width:100%;height:100%;">
                             <tr v-if="true">
-                                <td colspan="12">
+                                <td colspan="13">
                                     <el-row>
                                         <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
                                             <span class="greyFont">最后同步成功时间:</span>
@@ -126,9 +126,9 @@
                                 <td v-if="nowStatusHidden!=6&&nowStatusHidden!=5"></td>
                                 <td>序号</td>
                                 <td>号包名称</td>
-                                <td></td>
                                 <td>号包类型</td>
                                 <td>售卖方式</td>
+                                <td></td>
                                 <td>号包价格（元）</td>
                                 <td>归属品牌</td>
                                 <td>运营商</td>
@@ -152,11 +152,13 @@
                                                     <span v-if="v.productType==3">({{v.normalTotal}})</span>
                                                 </a>
                                             </td>
-                                            <td></td>
                                             <td>{{translateData(2,v.productType)}}</td>
                                             <td>
-                                                <button class="m-button-split" @click="splitNumber(v,1,i)" v-if="splitButton(v,i,1)==1">拆包</button>
-                                                <button class="m-button-split1" @click="splitNumber(v,1,i)" v-if="splitButton(v,i,2)==2"><span>拆包</span></button>
+                                                <button v-if="splitButton(v,i,1)==1" class="m-button-split" @click="splitNumber(v,1,i)">拆包</button>
+                                                <button v-if="splitButton(v,i,2)==2" class="m-button-split1"><span>拆包</span></button>
+                                            </td>
+                                            <td>
+                                                <a v-if="v.productType==2&&splitButton(v,i,2)==2" @click="openList(v,1,i)">展开</a>    
                                             </td>
                                             <td class="tac">
                                                 <div>
@@ -183,14 +185,15 @@
                                                         <td colspan="11">
                                                             <table class="m-table3" style="width:100%">
                                                                 <tr class="border">
-                                                                    <td>
+                                                                    <!-- <td>
                                                                         <input type="checkbox" v-model="v1.ischecked2">
-                                                                    </td>
+                                                                    </td> -->
                                                                     <td>{{v1.ruleDesc}}({{v1.total}})</td>
                                                                     <td>
                                                                         <button class="m-button-split" v-if="v1.splitFlag==1" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
                                                                         <button class="m-button-split1" v-if="v1.splitFlag==2"><span>拆包</span></button>
                                                                     </td>
+                                                                    <td></td>
                                                                     <td>{{v1.price}}</td>
                                                                     <td>--</td>
                                                                     <td>--</td>
@@ -615,7 +618,7 @@ export default{
         splitNumber(v,x,i){
             let vm=this;
             if(x==1){//大包拆包按钮
-                vm.off.tableDetails.length=0;
+                
                 let json={productId:v.productId};
                 if(v.splitFlag==1){
                     requestUpdateSplit(json)
@@ -631,13 +634,7 @@ export default{
                         }
                     }).catch(e=>errorDeal(e))
                 }
-                if(v.productType==2){
-                    getCuteTypeList({productId:v.productId})
-                    .then((data)=>{
-                        vm.cuteNumberList=data.data.products;
-                    })
-                }
-                vm.off.tableDetails.push(i);
+                
             }else if(x==2){//靓号类型包拆分按钮
                 vm.off.tableDetails2.push(i);
                 let json={sectionId:v.v.sectionId,ruleType:v.v1.ruleType}
@@ -665,15 +662,19 @@ export default{
                     })
                 })
             }
+        },openList(v,x,i){
+            let vm=this;
+            vm.off.tableDetails.length=0;
+            if(v.productType==2){
+                getCuteTypeList({productId:v.productId})
+                .then((data)=>{
+                    vm.cuteNumberList=data.data.products;
+                })
+            }
+            vm.off.tableDetails.push(i);
         },splitButton(v,i,key){
             let vm=this;
-            if(v.productType==2){//靓号包
-                if(vm.off.tableDetails.indexOf(i)>-1){//已展开
-                    return 2;
-                }else if(vm.off.tableDetails.indexOf(i)==-1){//未展开
-                    return 1;
-                }
-            }else if(v.productType==3){//普号包
+            if(v.productType==3||v.productType==2){
                 if(v.splitFlag==1){
                     return 1;
                 }else if(v.splitFlag==2){
@@ -753,6 +754,5 @@ export default{
 </script>
 <style scoped>
     @import "../../assets/css/mhgl.css";
-    
 </style>
 
