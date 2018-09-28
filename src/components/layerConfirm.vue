@@ -571,7 +571,7 @@ export default{
 }
 </script>
 <style scoped>
-#detailsView{position: absolute;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
+#detailsView{position: fixed;top: 0;left: 0;width: 100%;height: 100%;display: table; z-index: 997;text-align: center;}
 #detailsView>div{display: table-cell;vertical-align: middle;}
 #detailsView table{box-shadow: 0 0 50px grey;margin:auto;width: 270px;border-radius: 4px;background-color: #fff;border-collapse: collapse;table-layout: fixed;word-wrap:break-word;word-break: break-word;white-space: normal;}
 #detailsView table td{padding:10px 10px;}
