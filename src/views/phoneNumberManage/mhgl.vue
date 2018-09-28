@@ -154,7 +154,7 @@
                                             </td>
                                             <td>{{translateData(2,v.productType)}}</td>
                                             <td>
-                                                <button v-if="splitButton(v,i,1)==1" class="m-button-split" @click="splitNumber(v,1,i)">拆包</button>
+                                                <button v-if="splitButton(v,i,1)==1" class="m-button-split2" @click="splitNumber(v,1,i)">拆包</button>
                                                 <button v-if="splitButton(v,i,2)==2" class="m-button-split1"><span>拆包</span></button>
                                             </td>
                                             <td>
@@ -190,7 +190,7 @@
                                                                     </td> -->
                                                                     <td>{{v1.ruleDesc}}({{v1.total}})</td>
                                                                     <td>
-                                                                        <button class="m-button-split" v-if="v1.splitFlag==1" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
+                                                                        <button class="m-button-split2" v-if="v1.splitFlag==1" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
                                                                         <button class="m-button-split1" v-if="v1.splitFlag==2"><span>拆包</span></button>
                                                                     </td>
                                                                     <td></td>
