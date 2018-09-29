@@ -20,6 +20,16 @@
                         </el-col>
                     </el-col>
                 </el-row>
+                <el-row class="greyFont">
+                    <el-col :span=24>
+                        <el-col :xs="2" :sm="1" :md="1" :lg="1" :xl="1">
+                            &nbsp;
+                        </el-col>
+                        <el-col :xs="22" :sm="11" :md="11" :lg="11" :xl="11">
+                            <p class="lh30"><span class="letterSpacing1">下单备注&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.remark||'--'}}</span></p>
+                        </el-col>
+                    </el-col>
+                </el-row>
             </div>
             <div class="zhenghaoduan" v-if="true">
                 <div v-for="(v,i) in detailsData.productList" :key="i" class="tab-container letterSpacing1">

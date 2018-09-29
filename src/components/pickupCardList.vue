@@ -27,13 +27,13 @@
                              <el-popover
                                 placement="bottom-start"
                                 title="资费介绍"
-                                width="200"
+                                width="300"
                                 trigger="hover">
-                                <span>{{v.remark}}</span>
+                                <p style="word-wrap: break-word;white-space:normal; width:180px;font-size:12px;color:grey">{{v.remark||'--'}}</p>
                                 <el-button slot="reference">
                                     <p class="m-number-desc">
                                         <label>{{v.phone}}</label><br/>
-                                        <span>资费:{{v.voice}}</span>
+                                        <span>资费:{{v.voice||'--'}}</span>
                                         <span>面额:{{v.faceValue/100}}</span>
                                     </p>
                                 </el-button>
