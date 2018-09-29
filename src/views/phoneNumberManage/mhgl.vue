@@ -158,7 +158,10 @@
                                                 <button v-if="splitButton(v,i,2)==2" class="m-button-split1"><span>拆包</span></button>
                                             </td>
                                             <td>
-                                                <a v-if="v.productType==2&&splitButton(v,i,2)==2" @click="openList(v,1,i)">展开</a>    
+                                                <a v-if="v.productType==2&&splitButton(v,i,2)==2" @click="openList(v,1,i)">
+                                                    <span v-if="off.tableDetails.indexOf(i)>-1&&v.productType==2">收起</span>
+                                                    <span v-else>展开</span>
+                                                </a>    
                                             </td>
                                             <td class="tac">
                                                 <div>
@@ -664,7 +667,11 @@ export default{
             }
         },openList(v,x,i){
             let vm=this;
-            vm.off.tableDetails.length=0;
+            if(vm.off.tableDetails[0]==i){
+                vm.off.tableDetails=[];                
+                return false
+            }
+            vm.off.tableDetails=[];
             if(v.productType==2){
                 getCuteTypeList({productId:v.productId})
                 .then((data)=>{
