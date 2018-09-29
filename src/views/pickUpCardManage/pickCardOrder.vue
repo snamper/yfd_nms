@@ -193,7 +193,7 @@
                                     <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
                                     <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
-                                    <el-button v-if="v.paymentState == 1 && v.orderState == 1" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
+                                    <el-button v-if="v.paymentState == 1&&v.orderState == 1&&v.paymentType==4" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
                                     <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
                                 </td>
                             </tr>
