@@ -193,8 +193,8 @@
                                                                     </td> -->
                                                                     <td>{{v1.ruleDesc}}({{v1.total}})</td>
                                                                     <td>
-                                                                        <button class="m-button-split2" v-if="v1.splitFlag==1" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
-                                                                        <button class="m-button-split1" v-if="v1.splitFlag==2"><span>拆包</span></button>
+                                                                        <button class="m-button-split2" v-if="v1.splitFlag==1&&v1.state!=5" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
+                                                                        <button class="m-button-split1" v-if="v1.splitFlag==2&&v1.state!=5"><span>拆包</span></button>
                                                                     </td>
                                                                     <td></td>
                                                                     <td>{{v1.price}}</td>
