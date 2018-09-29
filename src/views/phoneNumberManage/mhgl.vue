@@ -160,7 +160,7 @@
                                                 <button v-if="splitButton(v,i,2)==2" class="m-button-split1"><span>拆包</span></button>
                                             </td>
                                             <td>
-                                                <a v-if="v.productType==2&&splitButton(v,i,2)==2" @click="openList(v,1,i)">
+                                                <a v-if="v.productType==2" @click="openList(v,1,i)">
                                                     <span v-if="off.tableDetails.indexOf(i)>-1&&v.productType==2">收起</span>
                                                     <span v-else>展开</span>
                                                 </a>    
@@ -195,8 +195,8 @@
                                                                     </td> -->
                                                                     <td>{{v1.ruleDesc}}({{v1.total}})</td>
                                                                     <td>
-                                                                        <button class="m-button-split2" v-if="v1.splitFlag==1&&v1.state!=5" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
-                                                                        <button class="m-button-split1" v-if="v1.splitFlag==2&&v1.state!=5"><span>拆包</span></button>
+                                                                        <button class="m-button-split2" v-if="v.splitFlag==2&&v1.splitFlag==1&&v1.state!=5" @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
+                                                                        <button class="m-button-split1" v-if="v.splitFlag==2&&v1.splitFlag==2&&v1.state!=5"><span>拆包</span></button>
                                                                     </td>
                                                                     <td></td>
                                                                     <td>{{v1.price}}</td>
@@ -382,8 +382,7 @@ export default{
 	methods:{
         search(p){//查询
             let vm=this;
-            vm.off.tableDetails=[];
-            vm.off.tableDetails2=[];
+            // vm.off.tableDetails=[];
             vm.currentPage=p||1;
             if(this.phone!=''){
                 checkMobile(this.phone,function(){vm.searchList="";vm.total="";vm.form.page="";return false});
@@ -623,7 +622,6 @@ export default{
         splitNumber(v,x,i){
             let vm=this;
             if(x==1){//大包拆包按钮
-                
                 let json={productId:v.productId};
                 if(v.splitFlag==1){
                     requestUpdateSplit(json)
@@ -639,7 +637,6 @@ export default{
                         }
                     }).catch(e=>errorDeal(e))
                 }
-                
             }else if(x==2){//靓号类型包拆分按钮
                 vm.off.tableDetails2.push(i);
                 let json={sectionId:v.v.sectionId,ruleType:v.v1.ruleType}
