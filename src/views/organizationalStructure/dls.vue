@@ -88,7 +88,7 @@
             <div class="detailsListDiv">
                 <table class="searchTab" style="width:100%;height:100%;">
                     <tr>
-                        <td colspan="9">
+                        <td colspan="10">
                             <el-row>
                                 <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
                                     <span class="greyFont">最后同步成功时间 ：</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
@@ -117,6 +117,7 @@
                         <td>部门状态</td>
                         <td>所属渠道</td>
                         <td>创建时间</td>
+                        <td>客户地址</td>
                         <td>员工详情</td>
                     </tr>
                     <tr v-if="searchList.length>0" v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
@@ -154,6 +155,7 @@
                                 --
                             </span>
                         </td>
+                        <td>{{v.address||'--'}}</td>
                         <td >
                             <a class="textDec" href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
                         </td>
