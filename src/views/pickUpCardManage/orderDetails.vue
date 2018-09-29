@@ -22,10 +22,10 @@
                 </el-row>
                 <el-row class="greyFont">
                     <el-col :span=24>
-                        <el-col :xs="2" :sm="1" :md="1" :lg="1" :xl="1">
+                        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2">
                             &nbsp;
                         </el-col>
-                        <el-col :xs="22" :sm="11" :md="11" :lg="11" :xl="11">
+                        <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
                             <p class="lh30"><span class="letterSpacing1">下单备注&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.remark||'--'}}</span></p>
                         </el-col>
                     </el-col>
