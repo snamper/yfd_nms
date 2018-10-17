@@ -71,7 +71,7 @@
                         <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <el-select size="mini" v-model="value" placeholder="请选择">
                                 <el-option
-                                v-for="item in options"
+                                v-for="item in rolelist"
                                 :key="item.id"
                                 :label="item.roleName"
                                 :value="item.id">
@@ -217,7 +217,7 @@
 <script>
 import {requestMethod} from "../config/service.js"; 
 import {getDateTime,getStore,errorDeal,translateData, translateRole} from "../config/utils";
-import {mapState, mapMutations, mapActions} from 'vuex';
+import {mapState} from 'vuex';
 export default{
     props:{forms:Object},
 	data (){
@@ -260,8 +260,6 @@ export default{
         }else{//代理商
             vm.userRoleSwitch=2
         }
-    },mounted:function(){
-        this.init()
     },computed:{
         ...mapState([
             "rolelist",
@@ -269,19 +267,6 @@ export default{
         ])
     },
     methods:{
-        ...mapMutations([
-            "GET_ROLE"
-        ]),
-        ...mapActions([
-            "getRolesInfo"
-        ]),
-        async init(){
-            let vm=this;
-            vm.getRolesInfo()
-            .then(()=>{
-                vm.options=vm.rolelist;
-            })
-        },
 		goBack(){
             let vm=this;
             this.$parent.off.staffDetails=false;

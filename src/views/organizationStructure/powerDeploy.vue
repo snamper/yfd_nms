@@ -40,14 +40,13 @@
 <script>
 import layerconfirm from '../../components/layerConfirm';
 import changePower from './operatePower';
-import { getRoles } from '../../config/service.js';
 import { errorDeal,getDateTime } from '../../config/utils';
+import { mapState } from 'vuex';
 export default{
     name:'powerDeploy',
     data (){
         return {
             total:"",
-            rolelist:"",
             layerType:"",
             ltype:"",
             roleId:"",
@@ -61,28 +60,17 @@ export default{
             }
         }
     },
-    created:function(){
-        let vm=this;
-        vm.fgetRole();
-    },
     components:{
         layerconfirm,
         changePower
     },
+    computed:{
+        ...mapState([
+            "rolelist"
+        ])
+    },
     methods:{
-        fgetRole(){
-            let vm=this;
-            getRoles()
-            .then((data)=>{
-                if(data.data.hasOwnProperty('roles')){
-                    vm.rolelist=data.data.roles;
-                    vm.total=data.data.roles.length;
-                }else{
-                    vm.rolelist="";
-                    vm.total=0;
-                }
-            }).catch(e=>errorDeal(e))
-        },cancel(v){
+       cancel(v){
             let vm=this;
             vm.off.layer=true;
             vm.layerType='deletePower';

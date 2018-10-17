@@ -21,7 +21,7 @@ export default {
     /**
     *获取部门ID 
     */
-   actionGetDepartmentId(params,selfLoad){
+    actionGetDepartmentId(params,selfLoad){
         return service('/ums/w/depart/getTopInfo',params,selfLoad);
     }
 };

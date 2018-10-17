@@ -247,6 +247,19 @@
                     </tr>
                 </tbody>
             </table>
+            <table v-if="layerType=='commissionWithdrawal'">
+                <tbody>
+                    <tr style="height:140px;">
+                        <td>
+                            <span class="f-fs14">是否提取账户余额至</span><br>
+                        </td>
+                    </tr>
+                    <tr class="tdBtn">
+                        <span @click="close()">取消</span>
+                        <span @click="btnYes('modifyDepart')">确认</span>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </section>
 </template>

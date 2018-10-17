@@ -129,7 +129,7 @@ import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { getStore,getDateTime,getUnixTime,errorDeal,checkMobile,translateData,translateRole } from "../../config/utils.js";
 import staffDetails from "../../components/staffDetails.vue";
-import { mapState,mapMutations,mapActions } from 'vuex';
+import { mapState } from 'vuex';
 export default{
 	data (){
 		return {
@@ -157,28 +157,15 @@ export default{
 		}
 	},components:{
         "staffDetails":staffDetails
-	},mounted:function(){
-        this.init()
-    },
+	},
     computed:{
         ...mapState([
-            "rolelist1"
+            "rolelist1",
+            "rolelist"
         ])
     },
 	methods:{
-        ...mapMutations([
-            "GET_ROLE"
-        ]),
-        ...mapActions([
-            "getRolesInfo"
-        ]),
-        async init(){
-            let vm=this;
-            vm.getRolesInfo()
-            .then(()=>{
-                vm.options=vm.rolelist;
-            });
-        },
+        
         search(p){//查询
             let vm=this;
             if(this.phone!=''){

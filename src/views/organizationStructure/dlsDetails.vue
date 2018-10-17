@@ -57,7 +57,7 @@
                     <b><span>角色：</span>
                         <el-select size="mini" v-model="list[i].value" placeholder="请选择">
                             <el-option
-                            v-for="item in options"
+                            v-for="item in rolelist"
                             :key="item.id"
                             :label="item.roleName"
                             :value="item.id">
@@ -190,7 +190,7 @@ import {requestMethod} from "../../config/service";
 import { getDateTime,getUnixTime,errorDeal,getStore,checkMobile,translateData, translateRole } from "../../config/utils";
 import staffDetails from "../../components/staffDetails.vue";
 import layerConfrim from "./layerConfirmDls";
-import {mapState, mapMutations, mapActions} from 'vuex';
+import {mapState} from 'vuex';
 export default{
     name:'dlsDetails',
     props:{lists:Array},
@@ -250,9 +250,6 @@ export default{
         vm.managerPhone=vm.$parent.managerPhone;
         vm.managerName=vm.$parent.managerName;
     },
-    mounted:function(){
-        this.init()
-    },
     computed:{
         ...mapState([
             "rolelist",
@@ -260,19 +257,6 @@ export default{
         ])
     },
     methods:{
-        ...mapMutations([
-            "GET_ROLE"
-        ]),
-        ...mapActions([
-            "getRolesInfo"
-        ]),
-        async init(){
-            let vm=this;
-            vm.getRolesInfo()
-            .then(()=>{
-                vm.options=vm.rolelist;
-            })
-        },
         goBack(){//返回上级
             let vm=this;
             vm.$parent.off.dlsDetails=false;

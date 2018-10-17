@@ -23,13 +23,11 @@
 </template>
 
 <script>
-// import base64 from '../../utils/base64';
-import { errorDeal,windowJump,setStore } from '../config/utils/uutils';
+import { errorDeal,windowJump,setStore,getStore } from '../config/utils/uutils';
 import api from '../config/api/login.js';
-import {mapMutations} from 'vuex';
 import mutations from '../store/mutations';
 import { SET_USERINFO } from '../store/mutation-types';
-import { getRoles } from '../config/service.js';
+import { mapMutations,mapActions,mapGetters } from 'vuex';
 export default {
   props: ['login'],
   data(){
@@ -51,52 +49,54 @@ export default {
       ]
     }
   },
-  mounted:function(){
-  },
+  mounted:function(){},
   beforeDestroy:function(){
-    this.initForm();
+     this.initForm();
   },
   methods:{
     ...mapMutations([
-        "SET_USERINFO",
+        "SET_USERINFO"
+    ]),
+    ...mapActions([
+        "getRolesInfo"
     ]),
     shiftLoginType(type){
-      this.loginType=type;
-      this.initForm();
+        this.loginType=type;
+        this.initForm();
     },
     initForm(){
-      clearInterval(window.Timer);
-      this.form={
-        phone:'',
-        authCode:''
-      };
-      this.count=0;
+        clearInterval(window.Timer);
+        this.form={
+            phone:'',
+            authCode:''
+        };
+        this.count=0;
     },
     identifyBtnClick(){
-      const vm=this;
-      if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
-        errorDeal('手机号码格式错误');
-        return false;
-      }
-      api.getIdentifyCode({phone:vm.form.phone})
-      .then(res=>{
-        vm.countDown(120);
-      })
-      .catch(error=>{});
+        const vm=this;
+        if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
+            errorDeal('手机号码格式错误');
+            return false;
+        }
+        api.getIdentifyCode({phone:vm.form.phone})
+        .then(res=>{
+            vm.countDown(120);
+        })
+        .catch(error=>{});
     },
     actionLogin(){
-      const vm=this;
-      let errorText='';
-      if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
-        errorText='手机号码格式错误';
-      }else if(!vm.form.authCode){
-        errorText='请输入验证码';
-      }
-      if(errorText){
-        errorDeal(errorText);
-        return false;
-      }    
-    api.actionMagLogin({phone:vm.form.phone,authCode:vm.form.authCode})
+        const vm=this;
+        let errorText='';
+        if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
+            errorText='手机号码格式错误';
+        }else if(!vm.form.authCode){
+            errorText='请输入验证码';
+        }
+        if(errorText){
+            errorDeal(errorText);
+            return false;
+        }    
+        api.actionMagLogin({phone:vm.form.phone,authCode:vm.form.authCode})
         .then(res=>{
             res.data.phone=vm.form.phone;
             // Object.assign(res.data,{departName:''});
@@ -108,6 +108,14 @@ export default {
             .then((data)=>{
                 window.localStorage.setItem("departId",data.data.departId)
             })
+        }).
+        then(()=>{
+            let id = getStore('YFD_NMS_INFO').userId;
+            vm.getRolesInfo(id)
+            .then(()=>{
+               
+            })
+            .catch(e=>errorDeal(e))
         }).catch(error=>{
             errorDeal(error);
         });

@@ -52,7 +52,7 @@
                 <b><span>角色：</span>
                     <el-select size="mini" v-model="list[i].value" placeholder="请选择">
                         <el-option
-                        v-for="item in options"
+                        v-for="item in rolelist"
                         :key="item.id"
                         :label="item.roleName"
                         :value="item.id">
@@ -117,7 +117,7 @@
                         </td>
                         <td>
                             <span v-for="(x,i) in v.userRole.split(',')">
-                                {{translateRole(x,rolelist1)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
+                                {{translateRole(x,rolelist)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
                             </span>
                         </td>
                         <td>
@@ -274,32 +274,13 @@ export default{
             vm.getStaffDetails(vm.detailsList[0])
         })
     },
-    mounted:function(){
-        this.init()
-    },
     computed:{
-        rolelist(){
-            vm.options=rolelist;
-        },
         ...mapState([
             "rolelist",
             "rolelist1"
         ])
     },
 	methods:{
-        ...mapMutations([
-            "GET_ROLE"
-        ]),
-        ...mapActions([
-            "getRolesInfo"
-        ]),
-        async init(){
-            let vm=this;
-            vm.getRolesInfo()
-            .then(()=>{
-                vm.options=vm.rolelist
-            })
-        },
         AddList(){//添加员工
             this.list.push({username: '', phone: '',role:[]})
         },AddStaffDiv(){//添加员工模块开关
@@ -335,6 +316,7 @@ export default{
             this.addUsersData=data;
         },search(p){//查询
             let data={},url='/ums/w/user/getDepartDetail',vm=this;
+            console.log(this.$store);
             vm.pa=p||1;
             vm.currentPage=p||1;
             this.$router.push({name:'yfd',params:{type:"yfdList"}});
@@ -350,6 +332,7 @@ export default{
             ,"pageNum":p||1}
             requestMethod(data,url)
             .then((data)=>{
+                console.log(this);
                 if(data.code==200){
                     vm.off.searchList=true;
                     vm.form.page=data.data.total;

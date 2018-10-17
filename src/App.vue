@@ -9,6 +9,14 @@
 
 <script>
 export default {
-  name: 'app'
+    name: 'app',
+    created:function(){
+        window.addEventListener('beforeunload',()=>{
+            localStorage.setItem('store',JSON.stringify(this.$store.state.rolelist));
+        })
+        if(localStorage.getItem('store')){
+            this.$store.state.rolelist=JSON.parse(localStorage.getItem('store'));
+        }
+    }
 }
 </script>

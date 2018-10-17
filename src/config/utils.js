@@ -249,9 +249,9 @@ export const translateData=(type,v,d)=> {
 }
 
 export const translateRole=(y,z)=>{
-    for(let i of z){
-        if(i.id==y){
-            return i.roleName;
+    for(let i in z){
+        if(z[i].id==y){
+            return z[i].roleName;
         }
     }
 }

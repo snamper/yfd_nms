@@ -1,5 +1,4 @@
 /*页面基础布局*/
-
 #home {
   width: 100%;
   height: 100%;
@@ -338,6 +337,16 @@ b.countIcon{
   }
   .u-icon-tika{
     background-image: url(../assets/images/icon_tika.png);
+    width: .17rem;
+    height: .17rem;
+}
+.u-icon-chongzhi{
+    background-image: url(../assets/images/icon_chongzhi.png);
+    width: .17rem;
+    height: .17rem;
+}
+.u-icon-zhanghu{
+    background-image: url(../assets/images/icon_zhanghu.png);
     width: .17rem;
     height: .17rem;
 }

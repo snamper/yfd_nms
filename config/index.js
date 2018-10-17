@@ -27,7 +27,7 @@ module.exports = {
             }
         },
         '/ums/':{
-            target:'http://192.168.10.105:8080',
+            target:'http://192.168.10.103:8080',
             // target:'http://192.168.10.162:10022',
             changeOrigin:true,
             pathRewrite:{
@@ -55,6 +55,13 @@ module.exports = {
             changeOrigin:true,
             pathRewrite:{
                 '^/ors' : ''
+            }
+        },
+        '/rfs/':{
+            target:'http://192.168.10.28:10042/rfs',
+            changeOrigin:true,
+            pathRewrite:{
+                '^/rfs' : ''
             }
         }
     },

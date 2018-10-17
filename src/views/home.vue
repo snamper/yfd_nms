@@ -81,6 +81,18 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
                     </ul>
 				</li>
 			</ul>
+            <ul v-if="false" class="g-side-ul">
+				<li :class="{active:crumb[0].name=='账户管理'}">
+					<b></b>
+					<router-link to="/home/accountManage">
+						<div>
+							<i class="u-icon-zhanghu"></i>
+							<span>账户管理</span>
+                            <span :class="crumb[0].name=='账户管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
+						</div>
+					</router-link>
+				</li>
+			</ul>
             <ul v-if="isShow" class="g-side-ul">
 				<li :class="{active:crumb[0].name=='操作日志'}">
 					<b></b>
@@ -146,6 +158,18 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
 							<i class="u-icon-kaika"></i>
 							<span>开卡订单管理</span>
                             <span :class="crumb[0].name=='开卡订单管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
+						</div>
+					</router-link>
+				</li>
+			</ul>
+            <ul class="g-side-ul">
+				<li :class="{active:crumb[0].name=='充值订单管理'}">
+					<b></b>
+					<router-link to="/home/recharge">
+						<div>
+							<i class="u-icon-chongzhi"></i>
+							<span>充值订单管理</span>
+                            <span :class="crumb[0].name=='充值订单管理'?'iconFoldOpen':'iconFoldClose'"></span>                            
 						</div>
 					</router-link>
 				</li>
@@ -238,6 +262,9 @@ export default{
             if(path.indexOf("/home/card")>-1){
                 crumb[0]={"name":"码号管理","href":"/home/card"}
             }
+            if(path.indexOf("/home/accountManage")>-1){
+                crumb[0]={"name":"账户管理","href":"/home/accountManage"}
+            }
             if(path.indexOf("/home/operationLog")>-1){
                 crumb[0]={"name":"操作日志","href":"/home/operationLog"}
                  if(path.indexOf("home/operationLog/cardmanage")>-1){
@@ -257,6 +284,8 @@ export default{
 				crumb[0]={"name":"提卡订单管理","href":"/home/pickCard"}
             }if(path.indexOf("/home/openCard")>-1){
 				crumb[0]={"name":"开卡订单管理","href":"/home/openCard"}
+            }if(path.indexOf("/home/recharge")>-1){
+				crumb[0]={"name":"充值订单管理","href":"/home/recharge"}
             }
 			this.crumb=crumb;
 			mainDom.style.overflowY='hidden';

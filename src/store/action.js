@@ -1,8 +1,8 @@
 import { getRoles,getDealerList } from '../config/service';
 import { GET_ROLE,GET_DEPART } from './mutation-types';
 export default {    
-    async getRolesInfo({commit,state}){
-        let res = await getRoles();
+    async getRolesInfo({id,commit,state}){
+        let res = await getRoles(id);
             res&&commit(GET_ROLE,res);
     },
     async getDepart({commit,state}){

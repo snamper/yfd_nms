@@ -59,7 +59,7 @@
 import { getPrivileges,addRole } from '../../config/service.js';
 import { errorDeal } from '../../config/utils.js';
 import layerConfirm from '../../components/layerConfirm';
-import {mapState, mapMutations, mapActions} from 'vuex';
+import {mapState} from 'vuex';
 export default{
     name:'changePower',
     props:['ctype','roleName','roleDesc'],
@@ -95,8 +95,6 @@ export default{
                 })
             })
         }).catch(e=>errorDeal(e))
-    },mounted:function(){
-        this.init()
     },
     computed:{
         ...mapState([
@@ -104,19 +102,6 @@ export default{
         ])
     },
     methods:{
-        ...mapMutations([
-            "GET_ROLE"
-        ]),
-        ...mapActions([
-            "getRolesInfo"
-        ]),
-        async init(){
-            let vm=this;
-            vm.getRolesInfo()
-            .then(()=>{
-                vm.options=vm.rolelist;
-            });
-        },
         powerModiefy(v){
             let vm=this,isChecked=false,powerId=[],i=1;
             if(v=='change'||v=='add'){

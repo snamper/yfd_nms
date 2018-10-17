@@ -280,7 +280,7 @@ export default{
         }
     },watch:{
         lists(){
-            console.log(123456)
+           
         }
     },
     components:{

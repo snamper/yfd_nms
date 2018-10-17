@@ -77,6 +77,8 @@ export const updateDealerInfo=(data)=>fetch("/ums/w/depart/updateDealerInfo",dat
 /*获取渠道变更历史*/
 export const departChangeHistory=(data)=>fetch("/ums/w/depart/getDealerInfoChangeHistory",data,"POST")
 
+/*获取充值订单列表*/
+export const getRechargeOrders=(data)=>fetch("/rfs/w/phone/getMngOrders",data,"POST")
 
 
 

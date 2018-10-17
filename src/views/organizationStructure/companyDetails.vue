@@ -128,13 +128,13 @@ export default{
             departChangelist:false,
             departChange:"",
             change:false,
-            options: [{"dealerId": "代理商ID","dealerIdName": "代理商名称"}],
             mdedealerName:"",
             mdealerId:"",
             mdepartId:"",
-            changeDepartInfo:{},
             layerType:'',
             value1: '',
+            options: [{"dealerId": "代理商ID","dealerIdName": "代理商名称"}],
+            changeDepartInfo:{},
             off:{
                 layer:false
             }

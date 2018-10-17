@@ -23,8 +23,8 @@ const Home = resolve => {
 };
 const Organization = resolve => {
     load(true);
-    require.ensure(["@/views/organizationalStructure/index"], () => {
-        resolve(require("@/views/organizationalStructure/index"));
+    require.ensure(["@/views/organizationStructure/index"], () => {
+        resolve(require("@/views/organizationStructure/index"));
         load();
     });
 };
@@ -45,29 +45,29 @@ const BrowseRecords = resolve => {
 //架构管理
 const Org_yfd = resolve => {
     load(true);
-    require.ensure(["@/views/organizationalStructure/yfd.vue"], () => {
-        resolve(require("@/views/organizationalStructure/yfd.vue"));
+    require.ensure(["@/views/organizationStructure/yfd.vue"], () => {
+        resolve(require("@/views/organizationStructure/yfd.vue"));
         load();
     });
 };
 const Org_dls = resolve => {
     load(true);
-    require.ensure(["@/views/organizationalStructure/dls.vue"], () => {
-        resolve(require("@/views/organizationalStructure/dls.vue"));
+    require.ensure(["@/views/organizationStructure/dls.vue"], () => {
+        resolve(require("@/views/organizationStructure/dls.vue"));
         load();
     });
 };
 const Org_ygcx = resolve => {
     load(true);
-    require.ensure(["@/views/organizationalStructure/ygcx.vue"], () => {
-        resolve(require("@/views/organizationalStructure/ygcx.vue"));
+    require.ensure(["@/views/organizationStructure/ygcx.vue"], () => {
+        resolve(require("@/views/organizationStructure/ygcx.vue"));
         load();
     });
 };
 const Org_powerDeploy = resolve => {
     load(true);
-    require.ensure(["@/views/organizationalStructure/powerDeploy.vue"], () => {
-        resolve(require("@/views/organizationalStructure/powerDeploy.vue"));
+    require.ensure(["@/views/organizationStructure/powerDeploy.vue"], () => {
+        resolve(require("@/views/organizationStructure/powerDeploy.vue"));
         load();
     });
 };
@@ -97,6 +97,14 @@ const stock = resolve => {
     load(true);
     require.ensure(["@/views/phoneNumberManage/stock.vue"], () => {
         resolve(require("@/views/phoneNumberManage/stock.vue"));
+        load();
+    });
+};
+//账号管理
+const accountManage = resolve => {
+    load(true);
+    require.ensure(["@/views/accountManage/accountManage.vue"], () => {
+        resolve(require("@/views/accountManage/accountManage.vue"));
         load();
     });
 };
@@ -146,6 +154,14 @@ const openCardOrder = resolve => {
         load();
     });
 };
+//充值订单管理
+const rechargeOrder = resolve => {
+    load(true);
+    require.ensure(["@/views/rechargeOrder/rechargeOrder.vue"], () => {
+        resolve(require("@/views/rechargeOrder/rechargeOrder.vue"));
+        load();
+    });
+};
 const router = new Router({
     routes: [
         {path: "/login",component: Login},
@@ -174,10 +190,8 @@ const router = new Router({
                     path:"powerDeploy",
                     name:"powerDeploy",
                     component: Org_powerDeploy,
-                }
-                ]
-            }
-                , {
+                }]
+            },{
                 path: "card",
                 name: "card",
                 redirect:"card/cardManage",
@@ -195,8 +209,11 @@ const router = new Router({
                     name:"stock",
                     component:stock
                 }]
-            }
-                , {
+            },{
+                path:"accountManage",
+                name:"accountManage",
+                component:accountManage
+            },{
                 path: "operationLog",
                 redirect: "operationLog/cardmanage",
                 name: "operationLog",
@@ -232,6 +249,10 @@ const router = new Router({
                 path: "openCard",
                 name: "openCard",
                 component: openCardOrder,
+            }, {
+                path: "recharge",
+                name: "recharge",
+                component: rechargeOrder,
             }]
         }
     ]
