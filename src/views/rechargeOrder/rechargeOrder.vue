@@ -85,19 +85,21 @@
                             <td>充值号码</td>
                             <td>操作人</td>
                             <td>公司名称</td>
+                            <td>代理商订单号</td>
                             <td>A端订单号</td>
                             <td>充值金额（元）</td>
                             <td>终端类型</td>
                             <td>支付状态</td>
-                            <td>操作结果</td>
+                            <td>充值结果</td>
                         </tr>
                         <tr v-for="(v,i) in searchList" :key="i">
                             <td>{{((currentPage-1)*15+(i+1))}}</td>
                             <td>{{v.sysOrderId||"--"}}</td>
                             <td>{{getDateTime(v.createTime)[6]||"--"}}</td>
                             <td>{{v.phone||"--"}}</td>
-                            <td>{{v.userName||"--"}}</br>({{v.userId||'--'}})</td>
+                            <td>{{v.userName||"--"}}</br>({{v.userPhone||'--'}})</td>
                             <td>{{v.departName||"--"}}</td>
+                            <td>{{v.customerOrderId||"--"}}</td>
                             <td>{{v.transactionId||"--"}}</td>
                             <td>{{v.faceValue/100}}</td>
                             <td>{{translate(3,v.terminalType)}}</td>
