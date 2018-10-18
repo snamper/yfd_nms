@@ -80,25 +80,28 @@
                 </div> 
             </div>
         </div>
-        <balance v-if="off.balance"></balance>
-        <commission v-if="off.commission"></commission>
-        <commissionWithdrawal v-if="off.commissionWithdrawal"></commissionWithdrawal>
+        <balance v-if="off.balance" :list="details"></balance>
+        <commission v-if="off.commission" :list="details"></commission>
+        <commissionWithdrawal v-if="off.commissionWithdrawal" :list="details"></commissionWithdrawal>
     </section>
 </template>
 <script>
 import balance from './balance.vue';
 import commission from './commission.vue';
 import commissionWithdrawal from './commissionWithdrawal.vue';
+import { requestMethod } from '../../config/service.js';
+import { errorDeal } from '../../config/utils';
 export default{
 	data(){
 		return{
-            searchList:[{}],
             name:"",
             phone:"",
             company:"",
             department:"",
             total:0,
             currentPage:0,
+            details:"",
+            searchList:[{}],
             options:{},
             off:{
                 list:true,
@@ -114,8 +117,31 @@ export default{
       commissionWithdrawal
     },
 	methods:{
+        search(p){
+            let vm=this,json={};
+            if(isNaN(vm.phone)){
+                layer.open({
+                    content:'请输入正确的手机号码',
+                    skin: 'msg',
+                    time: 2,
+                    msgSkin:'error',
+                });
+                return false;
+            }else{
+
+            }
+            requestMethod(json)
+            .then((data)=>{
+                vm.searchList=data.data;
+                vm.currentPage=p||1;
+            }).catch(e=>errorDeal(e))
+        },
         details(i){
             let vm=this;
+            requestMethod(json)
+            .then((data)=>{
+
+            }).catch(e=>errorDeal(e))
             vm.off.list=false;
             vm.off.balance=false;
             vm.off.commission=false;

@@ -212,7 +212,7 @@ export default{
                     return v==1?"支付宝":v==2?"微信":v==3?"账户":v==4?"线下支付":v==5?"支付宝第三方":v==6?"微信第三方":"--";
                     break;
                 case 2:
-                    return v==1?"成功":v==2?"支付中":v==3?"失败 , 超时":"--";
+                    return v==1?"成功":v==2?"支付中":v==3?"失败":"--";
                     break;
                 case 3:
                     return v==1?"IOS":v==2?"Android":v==3?"WEB":"--";
