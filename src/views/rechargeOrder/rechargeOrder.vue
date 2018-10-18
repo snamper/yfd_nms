@@ -32,7 +32,7 @@
             </el-row>
             <el-row>
                 <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                    <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">订单号码：</div></el-col>
+                    <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">充值订单号：</div></el-col>
                     <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
                         <el-input v-model="orderId" size="small"  placeholder="请输入查询的订单号码" :maxlength="30"></el-input>
                     </el-col>
@@ -57,7 +57,7 @@
                         <el-col :xs="16" :sm="16" :md="14" :lg="16" :xl="16">
                             <el-radio v-model="orderState"  label="1,2,3" >全部</el-radio>
                             <el-radio v-model="orderState"  label="2" >成功</el-radio>
-                            <el-radio v-model="orderState"  label="1" >支付中</el-radio>
+                            <el-radio v-model="orderState"  label="1" >充值中</el-radio>
                             <el-radio v-model="orderState"  label="3" >失败</el-radio>
                         </el-col>
                         <el-col :xs="1" :sm="1" :md="4" :lg="4" :xl="4"></el-col> 
