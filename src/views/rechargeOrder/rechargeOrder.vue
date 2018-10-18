@@ -56,8 +56,8 @@
                         <el-col :xs="5" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">充值状态：</div></el-col>
                         <el-col :xs="16" :sm="16" :md="14" :lg="16" :xl="16">
                             <el-radio v-model="orderState"  label="1,2,3" >全部</el-radio>
-                            <el-radio v-model="orderState"  label="1" >成功</el-radio>
-                            <el-radio v-model="orderState"  label="2" >支付中</el-radio>
+                            <el-radio v-model="orderState"  label="2" >成功</el-radio>
+                            <el-radio v-model="orderState"  label="1" >支付中</el-radio>
                             <el-radio v-model="orderState"  label="3" >失败</el-radio>
                         </el-col>
                         <el-col :xs="1" :sm="1" :md="4" :lg="4" :xl="4"></el-col> 
@@ -80,12 +80,15 @@
                     <table class="searchTab" style="width:100%;height:100%;">
                         <tr>
                             <td>序号</td>
-                            <td>订单号码</td>
+                            <td>充值订单号</td>
                             <td>操作时间</td>
                             <td>充值号码</td>
                             <td>操作人</td>
                             <td>公司名称</td>
+                            <td>A端订单号</td>
                             <td>充值金额（元）</td>
+                            <td>终端类型</td>
+                            <td>支付状态</td>
                             <td>操作结果</td>
                         </tr>
                         <tr v-for="(v,i) in searchList" :key="i">
@@ -95,9 +98,12 @@
                             <td>{{v.phone||"--"}}</td>
                             <td>{{v.userName||"--"}}</br>({{v.userId||'--'}})</td>
                             <td>{{v.departName||"--"}}</td>
+                            <td>{{v.customerOrderId||"--"}}</td>
                             <td>{{v.faceValue/100}}</td>
+                            <td>{{translate(3,v.terminalType)}}</td>
+                            <td>{{translate(4,v.paymentState)}}</td>
                             <td>
-                                <span :class="v.state==1?'fcgreen':v.state==2?'fcaqua':v.state==3?'fcred':'--'">{{translate(2,v.state)}}</span>
+                                <span :class="v.state==1?'fcaqua':v.state==2?'fcgreen':v.state==3?'fcred':'--'">{{translate(2,v.state)}}</span>
                             </td>
                         </tr>
                     </table>
@@ -212,10 +218,13 @@ export default{
                     return v==1?"支付宝":v==2?"微信":v==3?"账户":v==4?"线下支付":v==5?"支付宝第三方":v==6?"微信第三方":"--";
                     break;
                 case 2:
-                    return v==1?"成功":v==2?"支付中":v==3?"失败":"--";
+                    return v==1?"充值中":v==2?"成功":v==3?"失败":"--";
                     break;
                 case 3:
                     return v==1?"IOS":v==2?"Android":v==3?"WEB":"--";
+                    break;
+                case 4:
+                    return v==1?"未支付":v==2?"已支付":"--";
                     break;
             }
         },getDateTime(v){
@@ -224,9 +233,4 @@ export default{
     }
 }
 </script>
-<style scoped>
-    .displayInline .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
-    .displayInline .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .displayInline .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
-</style>
 

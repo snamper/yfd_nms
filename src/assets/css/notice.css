@@ -23,9 +23,7 @@ div.messageBox{
 div.messageBox>p{
     margin-bottom: .2rem;
 }
-el-row{
-    margin-top: .1rem;
-}
+
 p.textareaBox{
     position: relative;
 }

@@ -11,7 +11,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
         '/nus/':{
-            target:'http://192.168.10.105:8080',
+            target:'http://192.168.10.103:8080',
             // target:'http://192.168.10.162:10022',
             changeOrigin:true,
             pathRewrite:{
@@ -19,7 +19,7 @@ module.exports = {
             }
         },
         '/uus/':{
-            target:'http://192.168.10.105:8080',
+            target:'http://192.168.10.103:8080',
             // target:'http://192.168.10.162:10022',
             changeOrigin:true,
             pathRewrite:{
@@ -36,7 +36,7 @@ module.exports = {
         },
         '/nms/':{
             // target:'http://192.168.10.105:8080',
-            target:'http://192.168.10.28:10023',
+            target:'http://192.168.10.103:8080',
             changeOrigin:true,
             pathRewrite:{
                 '^/nms/' : '/nms/'
@@ -44,24 +44,24 @@ module.exports = {
         },
         '/mns/':{
             // target:'http://192.168.10.35:10034',
-            target:'http://192.168.10.105:8080',
+            target:'http://192.168.10.103:8080',
             changeOrigin:true,
             pathRewrite:{
                 '^/mns/' : '/mns/'
             }
         },
         '/ors/':{
-            target:'http://192.168.10.105:8080/ors',
+            target:'http://192.168.10.103:8080',
             changeOrigin:true,
             pathRewrite:{
-                '^/ors' : ''
+                '^/ors/' : '/ors/'
             }
         },
         '/rfs/':{
-            target:'http://192.168.10.28:10042/rfs',
+            target:'http://192.168.10.103:8080',
             changeOrigin:true,
             pathRewrite:{
-                '^/rfs' : ''
+                '^/rfs/' : '/rfs/'
             }
         }
     },

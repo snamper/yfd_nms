@@ -80,9 +80,9 @@
                 </div> 
             </div>
         </div>
-        <balance v-if="off.balance" :list="details"></balance>
-        <commission v-if="off.commission" :list="details"></commission>
-        <commissionWithdrawal v-if="off.commissionWithdrawal" :list="details"></commissionWithdrawal>
+        <balance v-if="off.balance" :list="detailedData"></balance>
+        <commission v-if="off.commission" :list="detailedData"></commission>
+        <commissionWithdrawal v-if="off.commissionWithdrawal" :list="detailedData"></commissionWithdrawal>
     </section>
 </template>
 <script>
@@ -100,7 +100,7 @@ export default{
             department:"",
             total:0,
             currentPage:0,
-            details:"",
+            detailedData:"",
             searchList:[{}],
             options:{},
             off:{
@@ -137,7 +137,7 @@ export default{
             }).catch(e=>errorDeal(e))
         },
         details(i){
-            let vm=this;
+            let vm=this,json={};
             requestMethod(json)
             .then((data)=>{
 

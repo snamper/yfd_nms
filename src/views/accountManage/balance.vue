@@ -195,6 +195,12 @@ export default{
                 vm.total=data.data.total;
                 vm.currentPage=p||1;
             }).catch(e=>errorDeal(e))
+        },back(){
+            let vm=this;
+            vm.$parent.off.list=true;
+            vm.$parent.off.balance=false;
+            vm.$parent.off.commission=false;
+            vm.$parent.off.commissionWithdrawal=false;
         },translateData(v,i){
             return translateData(v,i)
         },translate(type,v){
@@ -209,21 +215,11 @@ export default{
                     return v==1?"IOS":v==2?"Android":v==3?"WEB":"--";
                 break;
             }
-        },back(){
-            let vm=this;
-            vm.$parent.off.list=true;
-            vm.$parent.off.balance=false;
-            vm.$parent.off.commission=false;
-            vm.$parent.off.commissionWithdrawal=false;
         }
     }
 }
 </script>
 <style scoped>
-    .displayInline .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
-    .displayInline .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .displayInline .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
-    .displayInline .el-checkbox+.el-checkbox{margin-left: 15px}
     .m-head-title{height: 45px;border-bottom: 1px solid #ccc;width: 98%;margin-left: 1%;display: flex}
     .m-head-title label{flex: 1}
     .m-head-title label:nth-child(2){text-align: right;margin-right: 1%;}

@@ -3,8 +3,8 @@
   <div>
       <div v-if="off.searchStaff">
       <div class="ygcx greyFont">
-      <el-row>
-        <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
+        <el-row>
+            <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
         </el-row>
         <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
@@ -316,7 +316,6 @@ export default{
             this.addUsersData=data;
         },search(p){//查询
             let data={},url='/ums/w/user/getDepartDetail',vm=this;
-            console.log(this.$store);
             vm.pa=p||1;
             vm.currentPage=p||1;
             this.$router.push({name:'yfd',params:{type:"yfdList"}});
@@ -332,7 +331,6 @@ export default{
             ,"pageNum":p||1}
             requestMethod(data,url)
             .then((data)=>{
-                console.log(this);
                 if(data.code==200){
                     vm.off.searchList=true;
                     vm.form.page=data.data.total;

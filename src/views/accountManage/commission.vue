@@ -217,10 +217,6 @@ export default{
 }
 </script>
 <style scoped>
-    .displayInline .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
-    .displayInline .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .displayInline .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
-    .displayInline .el-checkbox+.el-checkbox{margin-left: 15px}
     .m-list-title{height: 40px;padding: 0 20px;display: flex}
     .m-list-title label{flex: 1}
     .m-list-title label:nth-child(1){font-weight: bold}

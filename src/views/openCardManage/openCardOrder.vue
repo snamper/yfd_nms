@@ -362,7 +362,6 @@ export default {
 };
 </script>
 <style>
-    @import url('../../assets/css/resetTimePickStyle.css');
     .openCardOrder .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
     .openCardOrder .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
     .openCardOrder .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 150px;}

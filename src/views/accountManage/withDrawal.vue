@@ -8,27 +8,27 @@
         </div>
         <div class="m-withDrawalCon">
             <div class="m-withDrawalAccount">
-                <label>提现账户：</label>
+                <label class="greyFont">提现账户：</label>
                 <div :class="{'active':off.huafen}" @click="chooseType(1)">
                     <p>话分佣金</p>
-                    <p><span>可提现金额 </span><span class="fcblue f-s-20">100.00元</span></p>
+                    <p><span class="f-s-12 greyFont">可提现金额 </span><span class="fcblue f-s-20">100.00元</span></p>
                     <span></span>
                     <a></a>
                 </div><div :class="{'active':off.kaika}" @click="chooseType(2)">
                     <p>开卡激励</p>
-                    <p><span>可提现金额 </span><span class="fcblue f-s-20">100.00元</span></p>
+                    <p><span class="f-s-12 greyFont">可提现金额 </span><span class="fcblue f-s-20">100.00元</span></p>
                     <span></span>
                     <a></a>
                 </div>
             </div>
             <div class="m-withDrawalMoney">
-                <p><span>提现金额：</span>
+                <p><span class="greyFont">提现金额：</span>
                     <input type="text" v-model="withdrawalMoney" placeholder="请输入提现金额">
-                    <a class="fcblue" style="cursor: pointer" @click="allWithDrawal">全部提现</a>
+                    <a class="fcblue f-s-12" style="cursor: pointer" @click="allWithDrawal">全部提现</a>
                 </p>
             </div>
             <div class="m-collectionAccount">
-                <label>到账账户：</label>
+                <label class="greyFont">到账账户：</label>
                 <div class="m-accountname">
                     <p>
                         <el-radio v-model="radio" label="1">业务账户</el-radio>

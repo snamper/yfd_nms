@@ -1,5 +1,3 @@
-<style scoped>
-</style>
 <template>
   <div>
       <div v-if="off.searchStaff">
@@ -83,7 +81,7 @@
                         </td>
                         <td >
                             <span v-for="(x,i) in v.userRole.split(',')">
-                                {{translateRole(x,rolelist1)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
+                                {{translateRole(x,rolelist)}} <span v-if="v.userRole.split(',').length-1>i">,</span>
                             </span>
                         </td>
                         <td >

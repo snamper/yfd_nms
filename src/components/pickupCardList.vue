@@ -5,8 +5,7 @@
     .m-number>span{display: inline-block;width: 100%;}
     .m-number-desc{width: 70%;min-width: 140px;margin: 0 auto;text-align: left}
     .m-number-desc span{display:inline-block;font-size: 12px;color: #9c9c9c}
-    .el-button.el-popover__reference{border: none;}
-    .el-button.el-popover__reference{background: transparent}
+
 
 </style>
 <template>

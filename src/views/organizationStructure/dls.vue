@@ -418,9 +418,6 @@ export default{
 }
 </script>
 <style>
-    .displayInline .el-date-editor.el-input, .el-date-editor.el-input__inner{width: 182px;}
-    .displayInline .el-date-editor:nth-child(1) .el-input__inner{border-radius: 4px 0 0 4px}
-    .displayInline .el-date-editor:nth-child(2) .el-input__inner{border-radius: 0 4px 4px 0}
     .dls .setBtn{margin-left: 20px;background: #2A7CE0; color: #fff; padding: 2px 8px; border: 1px solid #2A7CE0; border-radius: 4px;outline: none;}
     .dls .syncBtn{margin-right: 10px;background: #00AA01;color: #fff; padding: 3px 6px; border: 1px solid #2BAF08; border-radius: 4px;outline: none;}
 </style>

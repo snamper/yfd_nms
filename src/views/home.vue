@@ -81,7 +81,7 @@ span.iconFoldClose{display: inline-block;width: 18px;height: 18px;background: ur
                     </ul>
 				</li>
 			</ul>
-            <ul class="g-side-ul">
+            <ul v-if="false" class="g-side-ul">
 				<li :class="{active:crumb[0].name=='账户管理'}">
 					<b></b>
 					<router-link to="/home/accountManage">

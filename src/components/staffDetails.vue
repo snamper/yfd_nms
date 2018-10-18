@@ -1,7 +1,6 @@
 <style scoped>
     .listTitleFoot{width: 96%;margin: 10px 38px;}
     .listTitleFoot label{display:block;width: 50%;}
-    label.el-checkbox{display: inline}
     .detailsUlDiv{width: 90%;height: 90%;margin-left:40px;}
     .detailsUlDiv ul{border-left: 1px solid rgb(228, 228, 228);border-right: 1px solid rgb(228, 228, 228);border-top: 1px solid rgb(228, 228, 228)}
     .detailsUlDiv ul li {padding: 6px 18px;border-bottom: 1px solid rgb(228, 228, 228)}
@@ -10,23 +9,33 @@
     div.modifyStaffInfo .change{border-radius:6px;padding:6px 40px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
     div.modifyStaffInfo .changeNo{border-radius:6px;padding:6px 40px;background: #C14752;border:1px solid #C14752;outline: none;color:#fff;}
     div.modifyStaffInfo .changeYes{margin-left: 10px;border-radius:6px;padding:6px 40px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}
+    .m-head-title{height: 45px;border-bottom: 1px solid #ccc;width: 98%;margin-left: 1%;display: flex}
+    .m-head-title label{flex: 1}
+    .m-head-title label:nth-child(1){text-align: left;padding-left: 1%}
+    .m-head-title label:nth-child(1) a{line-height: 45px;font-size: 16px}
+    .m-head-title label:nth-child(2){text-align: right;margin-right: 1%;}
+    .m-head-title label:nth-child(2) a{line-height: 45px;color:#43AAD4;cursor: pointer;}
 </style>
 <template>
     <div>
-        <div class="yfd f-s-16">
-            <el-container>
+        <div class="yfd">
+            <!-- <el-container>
                 <el-header class="headTitleNav">
                     <el-row>
                         <el-col :span="12"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<a class="c-blue" href="javascript:void(0)"  @click="goBack()">{{forms.departName}}</a></div></el-col>
                         <el-col :span="12"><div class="grid-content bg-purple-light fr " style="padding-right:40px"><a href="javascript:void(0)" class="fcaqua" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
-            </el-container>
+            </el-container> -->
+        <p class="m-head-title">
+            <label>公司名称 : &nbsp;<a class="c-blue" href="javascript:void(0)"  @click="goBack()">{{forms.departName}}</a></label>
+            <label><a @click="goBack()">返回列表</a></label>
+        </p>
         </div>
         <div class="listTitleFoot" style="margin:0 38px;">
             <el-row>
                 <el-col :span="20"><div class="grid-content bg-purple"><h3 style="padding-left:20px;">员工详情</h3></div></el-col>
-            </el-row>        
+            </el-row> 
         </div>
         <div class="detailsUlDiv f-s-14">
             <ul>
@@ -83,7 +92,6 @@
                 <li>
                      <el-row>
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">创建时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <span v-if="forms.createTime">
@@ -353,4 +361,5 @@ export default{
 	}
 }
 </script>
+
 

@@ -121,7 +121,7 @@
                     </td>
                     <td >
                         <span v-for="(v,i) in v.userRole.split(',')" :key="i">
-                            {{translateRole(v,rolelist1)}}
+                            {{translateRole(v,rolelist)}}
                         </span>
                     </td>
                     <td >
