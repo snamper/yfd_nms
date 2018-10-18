@@ -69,7 +69,7 @@
                             </p>
                         </td>
                         <td >
-                            <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>                            
+                            <a @click="getStaffDetails(v)">{{v.phone}}</a>                            
                         </td>
                         <td >
                             <span v-if="v.createTime">
@@ -85,7 +85,8 @@
                             </span>
                         </td>
                         <td >
-                            <span :class="v.userState==1?'fcgreen':v.userState==2?'greyFont':''">{{translateData('userState',v.userState)}}</span> 
+                           <span :class="v.userState==1?'fcgreen':v.userState==2?'fcred':v.userState==3||v.userState==4?'fcgrey':'--'">{{translateData('userState',v.userState)}}</span>
+
                         </td>
                         <td >
                             <span v-if="v.lastLoginTime">

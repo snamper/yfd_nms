@@ -115,7 +115,7 @@ export default{
               vm.$parent.searchPu.total=data.data.total;                        
           }).catch(e=>errorDeal(e))
         },searchNumberListCute(v){
-            let vm=this, url="/nms/w/number/getProductCuteNumbers",data={};
+            let vm=this, url="/nms/w/number/getMngCuteNumbers",data={};
             data.searchProductId=vm.$parent.searchProductListId;
             data.sessionType="1";
             data.phoneLevel=1;

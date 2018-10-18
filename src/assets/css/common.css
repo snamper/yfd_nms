@@ -26,6 +26,16 @@
 .f-s-20{font-size:20px !important;}
 .f-fs14{font-size: 14px !important;}
 .f-fs16{font-size: 16px !important;}
+.grey{color: grey}
+.fs16{font-size: 16px;}
+.textDec{text-decoration: underline}
+.fcdb{color: #3943b4}
+.fcb{color: black !important}
+.fcaqua{color: #43AAD4 !important}
+.fcblue{color:#129AFF}
+.fcgreen{color: #008800}
+.fcred{color:red}
+.fcgrey{color:#9c9c9c}
 .f-fw{font-weight: bold}
 .f-underline{text-decoration: underline}
 .f-displayFlex{display:flex}
@@ -45,7 +55,6 @@
 .small-btn{padding:2px 4px !important;margin-right:20px;}
 .listTitleFoot{width: 96%;margin: 10px 18px;}
 .listTitleFoot label{display:block;width: 50%;}
-/* label.el-checkbox{display: inline} */
 
 /* 图标 */
 .u-icon-del{display: inline-block;width: 20px;height:20px;background: url('../images/icon/delete.svg') no-repeat;background-size: 100%;cursor: pointer;}
@@ -56,22 +65,14 @@
 .inputTitle{font-size: .14rem;}
 table.searchTab{border-collapse:collapse;text-align: center;font-size: 12px;}
 table.searchTab a{color:#43AAD4;cursor: pointer;}
-table.searchTab a:active{color:rgb(82, 24, 241)}
+table.searchTab a:active{color:#5218f1}
 table.searchTab tr{height:35px;}
 table.searchTab tr:nth-child(odd){background: #fff;}
 table{color: #222}
 div.detailsListDiv{margin: 0px 20px;border: 1px solid #e7e7e7;}
 .searchBtn{width: 140px;height: 36px;background: #FE8800;border: 1px solid #FE8800;outline: none;border-radius: 4px;color: white}
 .searchBtn:active{box-shadow: 0 0 5px red}
-.grey{color: grey}
-.fs16{font-size: 16px;}
-.textDec{text-decoration: underline}
-.fcdb{color: rgb(57, 67, 180)}
-.fcb{color: black !important}
-.fcaqua{color: #43AAD4 !important}
-.fcblue{color:#4DA6FD}
-.fcgreen{color: #008800}
-.fcred{color:red}
+
 .adminIcon{width: 14px;height: 14px;}
 .allDetails .detailsListDiv .searchTab{text-align:left;}
 .allDetails .detailsListDiv .searchTab tr td{padding-left: 40px;}

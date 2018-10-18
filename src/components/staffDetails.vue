@@ -64,7 +64,7 @@
                         
                         <el-col v-if="!off.modify"  :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <span v-for="(v,i) in forms.userRole.split(',')" :key="i">
-                                {{translateRole(v,rolelist1)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
+                                {{translateRole(v,rolelist)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
                             </span>
                         </div></el-col>
                         <!-- <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
@@ -123,7 +123,6 @@
                 <li>
                     <el-row>
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">操作人&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">{{forms.operatorName}}</div></el-col>
                     </el-row>
                 </li>
@@ -131,21 +130,19 @@
                 <li>
                     <el-row>
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">当前状态&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
                             <span v-if="forms.userState==1" class="fcgreen">正常</span>
-                            <span v-if="forms.userState==2" class="greyFont">黑名单</span>
-                            <span v-if="forms.userState==3">注销</span>
+                            <span v-else-if="forms.userState==2" class="fcred">黑名单</span>
+                            <span v-else-if="forms.userState==3" class="fcgrey">注销</span>
+                            <span v-else>--</span>
                         </div></el-col>
                     </el-row>
                 </li>
                 <li>
                      <el-row>
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">最后登录时间&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
-                        
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
-                                <!-- {{new Date(forms.lastLoginTime).toLocaleString()}} -->
                                 <span v-if="forms.lastLoginTime">
                                     {{getDateTime(forms.lastLoginTime)[6]}}
                                 </span>

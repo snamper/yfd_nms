@@ -103,7 +103,7 @@
                             <td>{{translate(3,v.terminalType)}}</td>
                             <td>{{translate(4,v.paymentState)}}</td>
                             <td>
-                                <span :class="v.state==1?'fcaqua':v.state==2?'fcgreen':v.state==3?'fcred':'--'">{{translate(2,v.state)}}</span>
+                                <span :class="v.state==1?'fcblue':v.state==2?'fcgreen':v.state==3?'fcred':'--'">{{translate(2,v.state)}}</span>
                             </td>
                         </tr>
                     </table>

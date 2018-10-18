@@ -108,10 +108,9 @@
                         </p>
                     </td>
                     <td >
-                       <a class="textDec" @click="getStaffDetails(v)">{{v.phone}}</a>
+                       <a @click="getStaffDetails(v)">{{v.phone}}</a>
                     </td>
                     <td >
-                       <!-- {{new Date(v.createTime).toLocaleString()}} -->
                         <span v-if="v.createTime">
                             {{getDateTime(v.createTime)[6]}}
                         </span>
@@ -125,7 +124,7 @@
                         </span>
                     </td>
                     <td >
-                       {{translateData('userState',v.userState)}}
+                        <span :class="v.userState==1?'fcgreen':v.userState==2?'fcred':v.userState==3||v.userState==4?'fcgrey':'--'">{{translateData('userState',v.userState)}}</span>                        
                     </td>
                     <td >
                         <span v-if="v.lastLoginTime">

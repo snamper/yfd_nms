@@ -125,7 +125,7 @@
                             {{((pa-1)*15+(i+1))}}
                         </td>
                         <td >
-                            <a class="textDec" href="javascript:void(0)" @click="getCompanyDetails(v)">{{v.departName}}</a>
+                            <a href="javascript:void(0)" @click="getCompanyDetails(v)">{{v.departName}}</a>
                         </td>
                         <td >
                             <span v-if="v.modifyTime">
@@ -142,7 +142,7 @@
                             {{v.phone}}
                         </td>
                         <td>
-                            {{translateData('userState',v.departState)}}
+                           <span :class="v.departState==1?'fcgreen':v.departState==2?'fcred':v.departState==3||v.departState==4?'fcgrey':'--'">{{translateData('userState',v.departState)}}</span>
                         </td>
                         <td>
                             <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName}}</a>
@@ -157,7 +157,7 @@
                         </td>
                         <td>{{v.address||'--'}}</td>
                         <td >
-                            <a class="textDec" href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
+                            <a href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
                         </td>
                     </tr>
                     <tr v-if="searchList.length==0">

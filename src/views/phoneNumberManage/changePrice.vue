@@ -193,7 +193,7 @@ export default{
                 let load=Loading.service(options);
                 let p1 = new Promise((resolve,reject)=>{
                     if(v.productType==1||v.productType==2){
-                        url="/nms/w/number/getProductCuteNumbers";
+                        url="/nms/w/number/getMngCuteNumbers";
                         data.phoneLevel=2;
                         data.pageNum=1;
                         data.pageSize=60;
