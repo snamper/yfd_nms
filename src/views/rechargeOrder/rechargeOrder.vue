@@ -98,7 +98,7 @@
                             <td>{{v.phone||"--"}}</td>
                             <td>{{v.userName||"--"}}</br>({{v.userId||'--'}})</td>
                             <td>{{v.departName||"--"}}</td>
-                            <td>{{v.customerOrderId||"--"}}</td>
+                            <td>{{v.transactionId||"--"}}</td>
                             <td>{{v.faceValue/100}}</td>
                             <td>{{translate(3,v.terminalType)}}</td>
                             <td>{{translate(4,v.paymentState)}}</td>
