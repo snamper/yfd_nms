@@ -199,7 +199,7 @@
                                                                         <button class="m-button-split1" v-if="v.splitFlag==2&&v1.splitFlag==2&&v1.state!=5"><span>拆包</span></button>
                                                                     </td>
                                                                     <td></td>
-                                                                    <td>{{v1.price}}</td>
+                                                                    <td>{{(v1.price/100).toFixed(2)}}</td>
                                                                     <td>--</td>
                                                                     <td>--</td>
                                                                     <td>--</td>
