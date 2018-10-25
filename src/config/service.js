@@ -80,6 +80,26 @@ export const departChangeHistory=(data)=>fetch("/ums/w/depart/getDealerInfoChang
 /*获取充值订单列表*/
 export const getRechargeOrders=(data)=>fetch("/rfs/w/phone/getMngOrders",data,"POST")
 
+/*获取归属渠道列表*/
+export const getAccountDealer=(data,load)=>fetch("/ums/w/account/dealer",data,"POST",load)
+
+/*账户列表*/
+export const getAccounts=(data,load)=>fetch("/ums/w/account/accounts",data,"POST",load)
+
+/*账户余额明细*/
+export const getBalance=(data,load)=>fetch("/ums/w/account/balance-detail",data,"POST",load)
+
+/*佣金账户余额明细*/
+export const getCmsBalance=(data,load)=>fetch("/ums/w/account/cms-balance-detail",data,"POST",load)
+
+/*佣金账户提现明细*/
+export const getCmsWithdrawal=(data,load)=>fetch("/ums/w/account/cms-transfer-records",data,"POST",load)
+
+/*佣金账户明细*/
+export const commission=(data,load)=>fetch("/ums/w/account/commission",data,"POST",load)
+
+/*佣金账户提现*/
+export const transfer=(data,load)=>fetch("/ums/w/account/transfer",data,"POST",load)
 
 
 

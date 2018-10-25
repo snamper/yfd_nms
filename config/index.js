@@ -27,8 +27,8 @@ module.exports = {
             }
         },
         '/ums/':{
-            target:'http://192.168.10.103:8080',
-            // target:'http://192.168.10.162:10022',
+            // target:'http://192.168.10.103:8080',
+            target:'http://192.168.10.28:10022',
             changeOrigin:true,
             pathRewrite:{
                 '^/ums' : '/ums/' 

@@ -7,15 +7,16 @@ import getters from './getters';
 Vue.use(Vuex);
 
 const state = {
-    userInfo:{},//
-    rolelist:[],
-    rolelist1:[],
-    depart:[]
+  userInfo: {}, //
+  rolelist: [],
+  rolelist1: [],
+  depart: [],
+  account_depId:111
 };
 
 export default new Vuex.Store({
-	state,
-	getters,
-	actions,
-	mutations,
+  state,
+  getters,
+  actions,
+  mutations,
 });

@@ -23,290 +23,328 @@
 </template>
 
 <script>
-import { errorDeal,windowJump,setStore,getStore } from '../config/utils/uutils';
-import api from '../config/api/login.js';
-import mutations from '../store/mutations';
-import { SET_USERINFO } from '../store/mutation-types';
-import { mapMutations,mapActions,mapGetters } from 'vuex';
-export default {
-  props: ['login'],
-  data(){
-    return {
-      title:'登录-码号商城',
-      loginType:1,//1，码号商城登录；2、后台管理
-      count:0,
-      form:{
-        phone:'',
-        authCode:''
+  import {
+    errorDeal,
+    windowJump,
+    setStore,
+    getStore
+  } from '../config/utils/uutils';
+  import api from '../config/api/login.js';
+  import mutations from '../store/mutations';
+  import {
+    SET_USERINFO
+  } from '../store/mutation-types';
+  import {
+    mapMutations,
+    mapActions,
+    mapGetters
+  } from 'vuex';
+  export default {
+    props: ['login'],
+    data() {
+      return {
+        title: '登录-码号商城',
+        loginType: 1, //1，码号商城登录；2、后台管理
+        count: 0,
+        form: {
+          phone: '',
+          authCode: ''
+        }
       }
-    }
-  },
-  head () {
-    return {
-      title: this.title,
-      meta: [
-        { hid: 'description', name: 'description', content: '登录-码号商城' }
-      ]
-    }
-  },
-  mounted:function(){},
-  beforeDestroy:function(){
-     this.initForm();
-  },
-  methods:{
-    ...mapMutations([
+    },
+    head() {
+      return {
+        title: this.title,
+        meta: [{
+          hid: 'description',
+          name: 'description',
+          content: '登录-码号商城'
+        }]
+      }
+    },
+    mounted: function () {},
+    beforeDestroy: function () {
+    this.initForm();
+    },
+    methods: {
+      ...mapMutations([
         "SET_USERINFO"
-    ]),
-    ...mapActions([
+      ]),
+      ...mapActions([
         "getRolesInfo"
-    ]),
-    shiftLoginType(type){
-        this.loginType=type;
+      ]),
+      shiftLoginType(type) {
+        this.loginType = type;
         this.initForm();
-    },
-    initForm(){
+      },
+      initForm() {
         clearInterval(window.Timer);
-        this.form={
-            phone:'',
-            authCode:''
+        this.form = {
+          phone: '',
+          authCode: ''
         };
-        this.count=0;
-    },
-    identifyBtnClick(){
-        const vm=this;
-        if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
-            errorDeal('手机号码格式错误');
-            return false;
-        }
-        api.getIdentifyCode({phone:vm.form.phone})
-        .then(res=>{
-            vm.countDown(120);
-        })
-        .catch(error=>{});
-    },
-    actionLogin(){
-        const vm=this;
-        let errorText='';
-        if(!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)){
-            errorText='手机号码格式错误';
-        }else if(!vm.form.authCode){
-            errorText='请输入验证码';
-        }
-        if(errorText){
-            errorDeal(errorText);
-            return false;
-        }    
-        api.actionMagLogin({phone:vm.form.phone,authCode:vm.form.authCode})
-        .then(res=>{
-            res.data.phone=vm.form.phone;
-            // Object.assign(res.data,{departName:''});
-            res.data.departName=''
-            this.SET_USERINFO(res.data);
-            windowJump("#/home");
-        }).then(()=>{
-            api.actionGetDepartmentId({})
-            .then((data)=>{
-                window.localStorage.setItem("departId",data.data.departId)
-            })
-        }).
-        then(()=>{
-            let id = getStore('YFD_NMS_INFO').userId;
-            vm.getRolesInfo(id)
-            .then(()=>{
-               
-            })
-            .catch(e=>errorDeal(e))
-        }).catch(error=>{
-            errorDeal(error);
-        });
-    },
-    toLogin:function(e){
-      e.keyCode==13&&this.actionLogin();
-    },
-    countDown(count){
-      const vm=this;
-      vm.count=count;
-      window.Timer=setInterval(()=>{
-        let t=vm.count;
-        if(!t){
-          clearInterval(window.Timer);
+        this.count = 0;
+      },
+      identifyBtnClick() {
+        const vm = this;
+        if (!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)) {
+          errorDeal('手机号码格式错误');
           return false;
         }
-        t--;
-        vm.count=t;
-      },1000);
+        api.getIdentifyCode({
+            phone: vm.form.phone
+          })
+          .then(res => {
+            vm.countDown(120);
+          })
+          .catch(error => {});
+      },
+      actionLogin() {
+        const vm = this;
+        let errorText = '';
+        if (!vm.form.phone.match(/^1(3|4|5|7|8|9)\d{9}$/)) {
+          errorText = '手机号码格式错误';
+        } else if (!vm.form.authCode) {
+          errorText = '请输入验证码';
+        }
+        if (errorText) {
+          errorDeal(errorText);
+          return false;
+        }
+        api.actionMagLogin({
+            phone: vm.form.phone,
+            authCode: vm.form.authCode
+          })
+          .then(res => {
+            res.data.phone = vm.form.phone;
+            // Object.assign(res.data,{departName:''});
+            res.data.departName = ''
+            this.SET_USERINFO(res.data);
+            windowJump("#/home");
+          }).then(() => {
+            api.actionGetDepartmentId({})
+              .then((data) => {
+                window.localStorage.setItem("departId", data.data.departId)
+              })
+          }).
+        then(() => {
+          let id = getStore('YFD_NMS_INFO').userId;
+          vm.getRolesInfo(id)
+            .then(() => {
+
+            })
+            .catch(e => errorDeal(e))
+        }).catch(error => {
+          errorDeal(error);
+        });
+      },
+      toLogin: function (e) {
+        e.keyCode == 13 && this.actionLogin();
+      },
+      countDown(count) {
+        const vm = this;
+        vm.count = count;
+        window.Timer = setInterval(() => {
+          let t = vm.count;
+          if (!t) {
+            clearInterval(window.Timer);
+            return false;
+          }
+          t--;
+          vm.count = t;
+        }, 1000);
+      }
     }
   }
-}
 </script>
-
 <style rel="stylesheet/scss" lang="scss" scoped>
-div.top{
+  div.top {
     background-color: #fff;
-}
-.u-icon-user{
-  background-image:url('../assets/images/user.png');
-}
-.u-icon-reg{
-  background-image:url('../assets/images/reg.png');
-}
-.g-login{
-  display: flex;
-  flex-direction:column;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left:0;
-  right:0;
-  bottom:0;
-  >.top{
-    height: 0.8rem;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size:contain;
-    background-image:url('../assets/images/bg_login_top.jpg');
-    >img{
-      width: 1.4rem;
-      margin:0.15rem 0 0 0.7rem;
-    }
   }
-  >.login-box{
+
+  .u-icon-user {
+    background-image: url('../assets/images/user.png');
+  }
+
+  .u-icon-reg {
+    background-image: url('../assets/images/reg.png');
+  }
+
+  .g-login {
     display: flex;
-    flex-grow:1;
-    background-color:#2D44A1;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size:contain;
-    background-image:url('../assets/images/bg_login_all.png');
-    >.inner{
-      width: 3.3rem;
-      margin:auto;
-      background-color:#fff;
-      text-align:center;
-      position: relative;
-      top: -0.1rem;
-      height: 3rem;
-      padding-top:.5rem;
-      >.shift{
-        display: flex;
-        margin-bottom:0.5rem;
-        
-        >.btn{
-          flex:1;
-          text-align:center;
-          position: relative;
-          font-size:0.15rem;
-          background-color:#DDDDDD;
-          padding:0.1rem 0;
-          cursor: pointer;
-        }
-        >.active{
-          color:#2F7AC1;
-          background-color:#fff;
-          font-weight:bold;
-          >i{
-            position: absolute;
-            display: inline-block;
-            
-            border-top:0.55rem solid transparent;
-            
-            
-            top: -0.15rem;
-            z-index:999;
-          }
-        }
-        >.active:before{
-          content:'';
-          position: absolute;
-          width: 1.55rem;
-          height: 0.2rem;
-          background-color:#fff;
-          top: -0.15rem;
-          
-        }
-        >.left.active{
-          >i{
-            border-left:0.3rem solid #fff;
-            border-right:0.3rem solid transparent;
-            right:-0.5rem;
-          }
-        }
-        >.left.active:before{
-          left: 0;
-        }
-        >.right.active{
-          >i{
-            border-right:0.3rem solid #fff;
-            border-left:0.3rem solid transparent;
-            left:-0.5rem;
-          }
-        }
-        >.right.active:before{
-          right: 0;
-        }
+    flex-direction: column;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    >.top {
+      height: 0.8rem;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url('../assets/images/bg_login_top.jpg');
+
+      >img {
+        width: 1.4rem;
+        margin: 0.15rem 0 0 0.7rem;
       }
-      >.row{
-        margin-bottom:0.15rem;
-        
-        >.left{
-          display: inline-block;
-          vertical-align:middle;
-          width: 0.25rem;
-          height: 0.25rem;
-          margin-right:0.1rem;
-        }
-        input{
-          width: 2.3rem;
-          text-indent:0.15rem;
-          height: 0.4rem;
-          line-height:0.4rem;
-          border:1px solid transparent;
-          border-color:#bfcbd9;
-          border-radius:3px;
-          &:hover{
-            border-color:#20A0FF;
+    }
+
+    >.login-box {
+      display: flex;
+      flex-grow: 1;
+      background-color: #2D44A1;
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: contain;
+      background-image: url('../assets/images/bg_login_all.png');
+
+      >.inner {
+        width: 3.3rem;
+        margin: auto;
+        background-color: #fff;
+        text-align: center;
+        position: relative;
+        top: -0.1rem;
+        height: 3rem;
+        padding-top: .5rem;
+
+        >.shift {
+          display: flex;
+          margin-bottom: 0.5rem;
+
+          >.btn {
+            flex: 1;
+            text-align: center;
+            position: relative;
+            font-size: 0.15rem;
+            background-color: #DDDDDD;
+            padding: 0.1rem 0;
+            cursor: pointer;
+          }
+
+          >.active {
+            color: #2F7AC1;
+            background-color: #fff;
+            font-weight: bold;
+
+            >i {
+              position: absolute;
+              display: inline-block;
+
+              border-top: 0.55rem solid transparent;
+
+
+              top: -0.15rem;
+              z-index: 999;
+            }
+          }
+
+          >.active:before {
+            content: '';
+            position: absolute;
+            width: 1.55rem;
+            height: 0.2rem;
+            background-color: #fff;
+            top: -0.15rem;
+
+          }
+
+          >.left.active {
+            >i {
+              border-left: 0.3rem solid #fff;
+              border-right: 0.3rem solid transparent;
+              right: -0.5rem;
+            }
+          }
+
+          >.left.active:before {
+            left: 0;
+          }
+
+          >.right.active {
+            >i {
+              border-right: 0.3rem solid #fff;
+              border-left: 0.3rem solid transparent;
+              left: -0.5rem;
+            }
+          }
+
+          >.right.active:before {
+            right: 0;
           }
         }
 
-      }
-      >.vercode{
-        position: relative;
-        >.btn, .count{
-          cursor: pointer;
-          position: absolute;
-          top: 2px;
-          right:0.35rem;
-          width: 0.9rem;
-          height: 0.35rem;
-          line-height:0.37rem;
-          border-radius:3px;
+        >.row {
+          margin-bottom: 0.15rem;
+
+          >.left {
+            display: inline-block;
+            vertical-align: middle;
+            width: 0.25rem;
+            height: 0.25rem;
+            margin-right: 0.1rem;
+          }
+
+          input {
+            width: 2.3rem;
+            text-indent: 0.15rem;
+            height: 0.4rem;
+            line-height: 0.4rem;
+            border: 1px solid transparent;
+            border-color: #bfcbd9;
+            border-radius: 3px;
+
+            &:hover {
+              border-color: #20A0FF;
+            }
+          }
+
+        }
+
+        >.vercode {
+          position: relative;
+
+          >.btn,
+          .count {
+            cursor: pointer;
+            position: absolute;
+            top: 2px;
+            right: 0.35rem;
+            width: 0.9rem;
+            height: 0.35rem;
+            line-height: 0.37rem;
+            border-radius: 3px;
+            color: #fff;
+            background-color: #ffc333;
+            font-size: 0.12rem;
+            overflow: hiddden;
+          }
+
+          >.count {
+            cursor: auto;
+            background-color: #ddd;
+            color: #666;
+          }
+        }
+
+        button {
+          background-color: #4db3ff;
+          border: 1px solid transparent;
+          border-radius: 3px;
           color: #fff;
-          background-color:#ffc333;
-          font-size:0.12rem;
-          overflow:hiddden;
+          width: 2.65rem;
+          height: 0.4rem;
+          line-height: 0.4rem;
+          margin: 0.2rem 0 0.5rem 0;
+          font-size: 0.14rem;
+          cursor: pointer
         }
-        >.count{
-          cursor: auto;
-          background-color:#ddd;
-          color: #666;
-        }
-      }
-      button{
-        background-color:#4db3ff;
-        border:1px solid transparent;
-        border-radius:3px;
-        color: #fff;
-        width:2.65rem;
-        height: 0.4rem;
-        line-height:0.4rem;
-        margin:0.2rem 0 0.5rem 0;
-        font-size:0.14rem;
-        cursor: pointer
       }
     }
   }
-}
 </style>
-
-

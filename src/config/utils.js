@@ -10,8 +10,8 @@ export const errorDeal=(res,cb)=>{
         btn:['确定'],
         shadeClose:false,
         yes:function(){
-            store.commit("SIGN_OUT");
-            layer.closeAll();
+          store.commit("SIGN_OUT");
+          layer.closeAll();
         }
     })) : res.hasOwnProperty("msg")?(layer.open({
             content:res.msg||res.statusText||res,
@@ -19,7 +19,7 @@ export const errorDeal=(res,cb)=>{
             time: 4,
             msgSkin:'error',
     })) : layer.open({
-            content:"未知错误",
+            content:res.code + "系统异常",
             skin: 'msg',
             time: 4,
             msgSkin:'error',
