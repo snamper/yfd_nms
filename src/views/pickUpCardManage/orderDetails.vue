@@ -28,6 +28,9 @@
                         <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
                             <p class="lh30"><span class="letterSpacing1">下单备注&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.remark||'--'}}</span></p>
                         </el-col>
+                        <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
+                            <p class="lh30"><span class="letterSpacing1">收货地址&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.address||'--'}}</span></p>
+                        </el-col>
                     </el-col>
                 </el-row>
             </div>

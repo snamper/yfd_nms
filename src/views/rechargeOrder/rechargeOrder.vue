@@ -85,7 +85,6 @@
                             <td>充值号码</td>
                             <td>操作人</td>
                             <td>公司名称</td>
-                            <td>代理商订单号</td>
                             <td>A端订单号</td>
                             <td>充值金额（元）</td>
                             <td>终端类型</td>
@@ -99,7 +98,6 @@
                             <td>{{v.phone||"--"}}</td>
                             <td>{{v.userName||"--"}}</br>({{v.userPhone||'--'}})</td>
                             <td>{{v.departName||"--"}}</td>
-                            <td>{{v.customerOrderId||"--"}}</td>
                             <td>{{v.transactionId||"--"}}</td>
                             <td>{{v.faceValue/100}}</td>
                             <td>{{translate(3,v.terminalType)}}</td>
