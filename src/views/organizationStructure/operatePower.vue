@@ -158,6 +158,7 @@ export default{
                     "roleName": vm.powerName,
                     "privilege":powerId.join(","),
                 };
+                debugger;
                 addRole(json)
                 .then((data)=>{
                     if(data.code==200){

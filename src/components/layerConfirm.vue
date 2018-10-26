@@ -595,17 +595,17 @@
                 msgSkin: "success"
               })
               let json = {
-                  "startTime": new Date(vm.$parent.$parent.startTime).getTime(),
-                  "endTime": new Date(vm.$parent.$parent.endTime).getTime(),
-                  "searchType": '1',
-                  "departName": '',
-                  "managerName": '',
-                  "departState": '1,2,3,4',
-                  "phone": vm.$parent.lists.phone,
-                  "pageSize": 15,
-                  "pageNum": 1
-                },
-                url = '/ums/w/user/departSearch';
+                "startTime": new Date(vm.$parent.$parent.startTime).getTime(),
+                "endTime": new Date(vm.$parent.$parent.endTime).getTime(),
+                "searchType": '1',
+                "departName": '',
+                "managerName": '',
+                "departState": '1,2,3,4',
+                "phone": vm.$parent.lists.phone,
+                "pageSize": 15,
+                "pageNum": 1
+              },
+              url = '/ums/w/user/departSearch';
               requestMethod(json, url)
                 .then((data) => {
                   if (data.code == 200) {

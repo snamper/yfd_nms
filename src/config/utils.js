@@ -19,7 +19,7 @@ export const errorDeal=(res,cb)=>{
             time: 4,
             msgSkin:'error',
     })) : layer.open({
-            content:res.code + "系统异常",
+            content:"系统异常",
             skin: 'msg',
             time: 4,
             msgSkin:'error',
