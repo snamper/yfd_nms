@@ -47,6 +47,13 @@ body {
   font-size: 0.13rem;
 }
 
+button {
+  color: #fff;
+  padding: 6px 50px;
+  border-radius: 4px;
+  border: none;
+  outline: none;
+}
 #app {
   position: absolute;
   top: 0;
@@ -57,65 +64,41 @@ body {
 
 
 /*公共基础*/
-.f-tar{
-    text-align: right;
-}
-.f-tas{
-  text-align: center;
-}
-.clr:after {
-  content: '';
-  display: table;
-  clear: both;
-}
+.f-pl-10{padding-left: 10px; }
+.f-ta-c{text-align: center!important; }
+.f-ta-r{text-align: right; }
+.f-ta-l{text-align: left; }
+.fr { float: right; }
+.fl { float: left; }
+.clr:after { content: ''; display: table; clear: both; }
+.f-bg-green{background: #00AA01; }
+.f-bg-grey{background: #9c9c9c; }
+/**字体颜色大小**/
+.greyFont{color:#9c9c9c}
+.red { color: #E13722; }
+.blue { color: #20A0FF }
+.green { color: #008800; }
+.yellow { color: #F78A24; }
+.grey { color: #A5A5A5; }
+.purple { color: #4b3887; }
+.black { color: #000; }
+.deepBlue{ color:#5D6193 }
 
-.fl {
-  float: left;
-}
+.f-s-12{font-size:12px !important;}
+.f-s-14{font-size:12px;color:#666}
+.f-s-16{font-size:16px !important;}
+.f-s-18{font-size:18px !important;}
+.f-s-20{font-size:20px !important;}
+.f-fs14{font-size: 14px !important;}
+.f-fs16{font-size: 16px !important;}
+.f-fw{font-weight: bold}
+.f-display-f{display:flex}
+.f-display-ib{display: inline-block}
+.f-td-underline{text-decoration: underline}
+.f-ls-1{letter-spacing: 1px}
+.t-td-lt{text-decoration:line-through}
+.f-lh-30{line-height: 30px;}
 
-.fr {
-  float: right;
-}
-
-.tac{
-    text-align: center;
-}
-.tar{
-    text-align: right;
-}
-.tal{
-    text-align: left;
-}
-.red {
-  color: #E13722;
-}
-
-.blue {
-  color: #20A0FF
-}
-
-.green {
-  color: #13ce66;
-}
-
-.yellow {
-  color: #ffc333;
-}
-
-.grey {
-  color: #A5A5A5;
-}
-
-.purple {
-  color: #4b3887;
-}
-
-.black {
-  color: #000;
-}
-.deepBlue{
-    color:#5D6193
-}
 [class*=" u-icon"],
 [class^="u-icon-"] {
   display: inline-block;
@@ -150,7 +133,7 @@ body {
   border-radius: 5px;
 }
 /*边角*/
-.f-scroll-lt::-webkit-scrollbar-corner {}
+/* .f-scroll-lt::-webkit-scrollbar-corner {} */
 /*定义右下角拖动块的样式*/
 .f-scroll-lt::-webkit-scrollbar-resizer {
   background-color: rgba(0, 0, 0, 0.3);

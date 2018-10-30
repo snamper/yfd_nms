@@ -4,12 +4,12 @@
         <div v-if="!off.details" class="pickCardOrder">
             <div class="dls greyFont">
                 <el-row>
-                    <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
+                    <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
                 </el-row>
                 <el-row>
                     <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
+                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
                                 <label><span class="radioYes"><input  type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">订单号码：</span></label>                            
                             </el-col>
                             <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
@@ -21,13 +21,13 @@
                 <el-row>
                     <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
+                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
                                 <label><span class="radioYes"><input  type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">产品名称：</span></label>                            
                             </el-col>
                             <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
                                 <el-input v-model="pname" size="small" maxlength=10 placeholder="请输入查询的产品名称"></el-input>
                             </el-col> 
-                            &nbsp;( <el-checkbox-group v-model="cardType" class="displayInline">
+                            &nbsp;( <el-checkbox-group v-model="cardType" class="f-display-ib">
                             <el-checkbox label="1">整号段</el-checkbox>
                             <el-checkbox label="2">靓号包</el-checkbox>
                             <el-checkbox label="3">普号包</el-checkbox>
@@ -37,7 +37,7 @@
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
                             <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">操作时间：</span></label>                            
                         </el-col>
                         <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
@@ -68,7 +68,7 @@
                 </el-row>
                 <el-row>
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="20" :lg="16" :xl="16">
                             <el-radio v-model="orderState"  label="0">全部</el-radio> 
                             <el-radio v-model="orderState"  label="1">未发货</el-radio>
@@ -77,7 +77,7 @@
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">操作人：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人手机号"></el-input>
                         </el-col>
@@ -86,7 +86,7 @@
                 </el-row>
                 <el-row>
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">支付方式：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">支付方式：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="20" :xl="18">
                             <el-radio v-model="payMent"  label="0">全部</el-radio>
                             <el-radio v-model="payMent"  label="2">微信</el-radio>
@@ -97,7 +97,7 @@
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">商户名称：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">商户名称：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="dealerName" size="small" maxlength=20 placeholder="请输入查询的商户名称"></el-input>
                         </el-col>
@@ -106,26 +106,26 @@
                 </el-row>
                 <el-row>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">用户号码：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">用户号码：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="userPhone" size="small" maxlength=11 placeholder="请输入查询的用户手机号码"></el-input>
                         </el-col>
                         <el-col :span="2"></el-col> 
                     </el-col>
                 </el-row>
-                <!-- <el-row> <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light"> <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">售卖方式：</div></el-col> <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16"> <el-radio v-model="splitCheck"  label="1,2">全部</el-radio> <el-radio v-model="splitCheck"  label="2">拆包</el-radio> <el-radio v-model="splitCheck"  label="1">不可拆包</el-radio> </el-col> </div></el-col> </el-row> -->
+                <!-- <el-row> <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light"> <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">售卖方式：</div></el-col> <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16"> <el-radio v-model="splitCheck"  label="1,2">全部</el-radio> <el-radio v-model="splitCheck"  label="2">拆包</el-radio> <el-radio v-model="splitCheck"  label="1">不可拆包</el-radio> </el-col> </div></el-col> </el-row> -->
                 <el-row style="text-align:center" class="marginTop">
-                    <button class="searchBtn" @click="search()">搜索</button>
+                    <button class="m-btn-orange" @click="search()">搜索</button>
                 </el-row>
             </div>
             <div v-if="searchResult">
                 <div>
-                    <div class="detailsListDiv">
-                        <table class="searchTab" style="width:100%;height:100%;">
+                    <div class="m-details">
+                        <table class="m-searchTab" style="width:100%;height:100%;">
                             <tr>
                                 <td colspan="15">
                                     <div class="listHeader">
-                                        <label style="text-align:left;padding-left:5px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
+                                        <label style="text-align:left;padding-left:5px;">订单列表<span class="f-fw greyFont">({{form.page||'0'}})</span></label>
                                         <label style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" @click="downLoad" class="btnDownload">导出</button></label>
                                     </div>
                                 </td>
@@ -190,11 +190,11 @@
                                 </td>
                                 <td>{{v.operatorName||'--'}}<br>{{v.operatorPhone||'--'}}</td>
                                 <td>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
-                                    <el-button v-if="v.paymentState == 1&&v.orderState == 1&&v.paymentType==4" class="small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
-                                    <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
+                                    <el-button v-if="v.paymentState == 1&&v.orderState == 1&&v.paymentType==4" class="m-small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
+                                    <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
                                 </td>
                             </tr>
                             <tr v-if="searchResult.length<=0">
@@ -204,7 +204,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="listTitleFoot" v-if="searchResult.length>0">
+                    <div class="m-listTitleFoot" v-if="searchResult.length>0">
                         <el-row>
                             <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                                 <div class="grid-content bg-purple">
@@ -439,25 +439,25 @@ export default {
         },checkOrderStatus(v){
             var orderState = "";
             if(v.paymentState == 1 && v.orderState == 1){
-                return orderState = {'title':'待付款','style':'c-red'};
+                return orderState = {'title':'待付款','style':'red'};
             }
             if(v.paymentState == 1 && v.orderState == 3){
-                return orderState = {'title':'手动关闭','style':'c-red'};
+                return orderState = {'title':'手动关闭','style':'red'};
             }
             if(v.paymentState == 1 && v.orderState == 4){
-                return orderState = {'title':'自动关闭','style':'c-red'};
+                return orderState = {'title':'自动关闭','style':'red'};
             }
             if(v.paymentState == 2 && v.returnFlag == 1 ){
-                return orderState = {'title':'已退卡','style':'c-red'};
+                return orderState = {'title':'已退卡','style':'red'};
             }
             if(v.deliveryState == 1){
-                return orderState = {'title':'待发货','style':'c-blue'};
+                return orderState = {'title':'待发货','style':'blue'};
             }
             if(v.deliveryState == 2){
-                return orderState = {'title':'已发货','style':'c-blue'};
+                return orderState = {'title':'已发货','style':'blue'};
             }
             if(v.orderState == 2 ){
-                return orderState = {'title':'已完成','style':'c-green'};
+                return orderState = {'title':'已完成','style':'green'};
             }
             
             // return orderState;
@@ -503,15 +503,14 @@ export default {
 };
 </script>
 <style>
-    @import url('../../assets/css/resetTimePickStyle.css');
-    .pickCardOrder .tac div input{border: 0 none;}
+    .pickCardOrder .f-ta-c div input{border: 0 none;}
     .pickCardOrder .box{width: 140px;height: 26px;background-color: #808000;clear: both;}
     .pickCardOrder .box span{display: inline-block;height: 26px;}
     .pickCardOrder .span1{width: 100px;position: relative;background: red}
     .pickCardOrder .span2{width: 40px;position: relative;background: green}
     .pickCardOrder .input{ text-align: center;height: 26px;width:100px;position: absolute;top: 0;left: 0;border: 1px solid #ccc;outline: none}
     .pickCardOrder .button{height: 26px;width: 40px;font: normal 14px/14px "微软雅黑";background: #5daf34;color: #fff;outline: none}
-    .pickCardOrder .searchTab tr td:nth-child(1){width: 60px;padding-left: 15px;}
+    .pickCardOrder .m-searchTab tr td:nth-child(1){width: 60px;padding-left: 15px;}
     .pickCardOrder .iconMore{margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
     .pickCardOrder .iconMore1{-moz-transform:rotate(90deg);-webkit-transform:rotate(90deg);transform:rotate(90deg);margin-bottom: 1px; display: inline-block; width: 0.14rem; height: 0.14rem; background: url('../../assets/images/more.png') no-repeat center; background-size:contain; vertical-align: middle; cursor: pointer; }
     .pickCardOrder .listSpan{display: inline-block;margin-top: 2px;}
@@ -519,6 +518,6 @@ export default {
     .listHeader{display: flex}
     .listHeader label{flex: 1;line-height: 40px}
     .btnDownload{margin-top: 9px;outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 4px 10px;margin-right: 10px;color: #fff}
-    table.searchTab tr{height: 40px;}
+    table.m-searchTab tr{height: 40px;}
 </style>
 

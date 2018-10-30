@@ -1,66 +1,143 @@
 <template>
   <section class="m-withDrawal">
-    <div class="m-details-page">
-      <p class="m-head-title">
-        <label><a>佣金账户提现</a></label>
-        <label><a @click="back()">返回列表</a></label>
-      </p>
-    </div>
-    <div class="m-withDrawalCon">
-      <div class="m-withDrawalAccount">
-        <label class="greyFont">提现账户：</label>
-        <div :class="{'active':off.huafen}" @click="chooseType(1)">
-          <p>话分佣金</p>
-          <p><span class="f-s-12 greyFont">可提现金额 </span><span class="fcblue f-s-20">{{list.cspWithdraw/100}}元</span></p>
-          <span></span>
-          <a></a>
-        </div>
-        <div :class="{'active':off.kaika}" @click="chooseType(2)">
-          <p>开卡激励</p>
-          <p><span class="f-s-12 greyFont">可提现金额 </span><span class="fcblue f-s-20">{{list.ictWithdraw/100}}元</span></p>
-          <span></span>
-          <a></a>
-        </div>
+    <div v-if="false" class="m-search">
+      <div class="greyFont">
+        <el-row>
+          <el-col :span="24">
+            <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="grid-content bg-purple-light">
+              <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">商户ID：</div>
+              </el-col>
+              <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+                <el-input v-model="depId" size="small" placeholder="请输入查询的商户ID" :maxlength="10"></el-input>
+              </el-col>
+            </div>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="grid-content bg-purple-light">
+              <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">联系人ID：</div>
+              </el-col>
+              <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+                <el-input v-model="userId" size="small" placeholder="请输入查询的联系人ID" :maxlength="11"></el-input>
+              </el-col>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row style="text-align:center" class="marginTop">
+          <button class="m-btn-orange" @click="search()">搜索</button>
+        </el-row>
       </div>
-      <div class="m-withDrawalMoney">
-        <p><span class="greyFont">提现金额：</span>
-          <input type="text" v-model="withdrawalMoney" placeholder="请输入提现金额">
-          <a class="fcblue f-s-12" style="cursor: pointer" @click="allWithDrawal">全部提现</a>
+      <div v-if="searchlist" class="m-search-list">
+        <div class="m-listTitleFoot">
+          <el-row><h3>搜索结果</h3></el-row>
+        </div>
+        <div class="m-details">
+          <table class="m-searchTab" style="width:100%;height:100%;">
+            <tr>
+              <td>商户名称</td>
+              <td colspan="3"></td>
+              <td>归属渠道</td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td>商户ID</td>
+              <td colspan="3"></td>
+              <td>账户余额</td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td>联系人姓名</td>
+              <td colspan="3"></td>
+              <td>佣金账户累计提现</td>
+              <td colspan="3"></td>
+            </tr>
+            <tr>
+              <td>联系人ID</td>
+              <td colspan="3"></td>
+              <td>佣金账户可提现</td>
+              <td colspan="3"></td>
+            </tr>
+          </table>
+        </div>
+        <el-row style="text-align:center;margin-top:20px;">
+          <button class="m-btn-green" @click="withdrawal()">提现</button>
+        </el-row>
+      </div>
+    </div>
+    <div class="m-details">
+      <div class="m-details-page">
+        <p class="m-head-title">
+          <label><a>佣金账户提现</a></label>
+          <label><a @click="back()">返回列表</a></label>
         </p>
       </div>
-      <div class="m-collectionAccount">
-        <label class="greyFont">到账账户：</label>
-        <div class="m-accountname">
-          <p>
-            <el-radio v-if="list.account" v-model="radio" label="1">业务账户:{{list.account}}</el-radio>
-          </p>
-          <p>
-            <el-radio v-if="list.aliAccount" v-model="radio" label="2">支付宝账号:{{list.aliAccount}}</el-radio>
+      <div class="m-withDrawalCon">
+        <div class="m-withDrawalAccount">
+          <label class="greyFont">提现账户：</label>
+          <div :class="{'active':off.huafen}" @click="chooseType(1)">
+            <p>话分佣金</p>
+            <p><span class="f-s-12 greyFont">可提现金额 </span><span class="blue f-s-20">{{list.cspWithdraw/100}}元</span></p>
+            <span></span>
+            <a></a>
+          </div>
+          <div :class="{'active':off.kaika}" @click="chooseType(2)">
+            <p>开卡激励</p>
+            <p><span class="f-s-12 greyFont">可提现金额 </span><span class="blue f-s-20">{{list.ictWithdraw/100}}元</span></p>
+            <span></span>
+            <a></a>
+          </div>
+        </div>
+        <div class="m-withDrawalMoney">
+          <p><span class="greyFont">提现金额：</span>
+            <input type="text" v-model="withdrawalMoney" placeholder="请输入提现金额">
+            <a class="blue f-s-12" style="cursor: pointer" @click="allWithDrawal">全部提现</a>
           </p>
         </div>
+        <div class="m-collectionAccount">
+          <label class="greyFont">到账账户：</label>
+          <div class="m-accountname">
+            <p>
+              <el-radio v-if="list.account" v-model="radio" label="1">业务账户:{{list.account}}</el-radio>
+            </p>
+            <p>
+              <el-radio v-if="false" v-model="radio" label="2">支付宝账号:{{list.aliAccount}}</el-radio>
+            </p>
+          </div>
+        </div>
+        <p><button @click="collection()">提交</button></p>
       </div>
-      <p><button @click="collection()">提交</button></p>
     </div>
     <layerConfirm v-if="off.layer" :layerType="layerType" :layerData="layerData"></layerConfirm>
   </section>
 </template>
 <script>
-  import { errorDeal } from '../../config/utils.js';
-  import layerConfirm from '../../components/layerConfirm.vue';
-  import { getCmsWithdrawal }  from '../../config/service.js';
+  import { getCmsWithdrawal, commission }  from '../../config/service.js';
+  import { errorDeal,getStore } from '../../config/utils.js';
   import { mapState } from 'vuex';
+  import layerConfirm from '../../components/layerConfirm.vue';
   export default {
-    props:{list:Object},
+    props:['list'],
     data() {
       return {
-        radio: "",
+        radio: "1",
         withdrawalMoney: "",
         layerType: "",
         layerData:{},
+        depId:"",
+        userId:"",
+        withdrawalData:"",
+        searchlist:"",
         off: {
           huafen: false,
           kaika: true,
-          layer: false
+          layer: false,
+          details:false
         }
       }
     },
@@ -68,6 +145,19 @@
       layerConfirm
     },
     methods: {
+      search(){
+        let vm=this;
+        vm.searchlist=true;
+      },
+      // withdrawal(){
+      //   let vm = this;
+      //   let info = getStore("YFD_NMS_INFO");
+      //   vm.off.details = true;
+      //   commission()
+      //   .then((data)=>{
+      //     vm.withdrawalData=data.data;
+      //   }).catch(e=>errorDeal(e))
+      // },
       chooseType(v) {
         let vm = this;
         vm.off.huafen = false;
@@ -81,9 +171,9 @@
       allWithDrawal() {
         let vm = this;
         if (vm.off.huafen) {
-          vm.withdrawalMoney = parseInt(vm.list.cspWithdraw)/100;
+          vm.withdrawalMoney = parseInt(vm.withdrawalData.cspWithdraw)/100;
         } else if (vm.off.kaika) {
-          vm.withdrawalMoney = parseInt(vm.list.ictWithdraw)/100;
+          vm.withdrawalMoney = parseInt(vm.withdrawalData.ictWithdraw)/100;
         } else {
           return false;
         }
@@ -101,7 +191,7 @@
         }
         if (vm.off.huafen) {
           vm.$set(vm.layerData,'src',1) 
-          if(vm.withdrawalMoney*100>vm.list.cspWithdraw){
+          if(vm.withdrawalMoney*100>vm.withdrawalData.cspWithdraw){
             layer.open({
               content: '提款金额不能大于余额',
               skin: 'msg',
@@ -112,7 +202,7 @@
           }
         } else if (vm.off.kaika) {
           vm.$set(vm.layerData,'src',2)
-          if(vm.withdrawalMoney*100>vm.list.ictWithdraw){
+          if(vm.withdrawalMoney*100>vm.withdrawalData.ictWithdraw){
             layer.open({
               content: '提款金额不能大于余额',
               skin: 'msg', 
@@ -135,10 +225,10 @@
         }else{
           if(vm.radio==1){
             vm.$set(vm.layerData,'accountType',1)
-            vm.$set(vm.layerData,'account',vm.list.account)          
+            vm.$set(vm.layerData,'account',vm.withdrawalData.account)          
           }else if(vm.radio==2){
             vm.$set(vm.layerData,'accountType',2)
-            vm.$set(vm.layerData,'account',vm.list.aliAccount)          
+            vm.$set(vm.layerData,'account',vm.withdrawalData.aliAccount)          
           }
         }
         vm.$set(vm.layerData,'money',vm.withdrawalMoney*100);
@@ -147,24 +237,9 @@
       },
       back() {
         let vm = this.$parent;
-        vm.off.withDrawal = false;
-        if(vm.pageType=='cmsWithdrawal'){
-          getCmsWithdrawal(vm.searchJson)
-          .then((data) => {
-            vm.searchList = data.data.list;
-            vm.total = data.data.total;
-            vm.currentPage = 1;
-          }).catch(e => errorDeal(e))
-        }else if(vm.pageType=='cms'){
-          getCmsBalance(vm.searchJson)
-          .then((data) => {
-            vm.searchList = data.data.list;
-            vm.total = data.data.total;
-            vm.currentPage = 1;
-          }).catch(e => errorDeal(e))
-        }else{
-          return false
-        } 
+        vm.off.list = true;
+        vm.off.withdrawal = false;
+        vm.search(vm.currentPage);
       }
     }
   }
@@ -202,7 +277,19 @@
     color: #43AAD4;
     cursor: pointer;
   }
-
+  .m-searchTab tr:not(:last-child){
+    border-bottom: 1px solid #d1d1d1;
+  }
+  .m-searchTab tr td:nth-child(odd){
+    background: #E9E9E9;
+    width: 15%;
+    padding-right: 10px;
+    text-align: right;
+  }
+  .m-searchTab tr td:nth-child(even){
+    background: #fff;
+    width: 35%;
+  }
   .m-withDrawalCon {
     position: absolute;
     width: 600px;

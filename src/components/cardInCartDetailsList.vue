@@ -18,20 +18,20 @@
   <section>
     <div class="allDetails">
       <div class="headTitle f-s-16">
-        <span class="fl">订单详情</span><span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span>
+        <span class="fl">订单详情</span><span><a href="javascript:void(0)" class="fr blue" @click="goBack()">返回列表</a></span>
       </div>
     </div>
     <div class="liang" v-if="listSwitch.liang">
-      <div class="listTitleFoot">
-        <h3><span>靓号详情</span><span class="deepGreyFont"> ({{dataListLiang.total||'0'}})</span></h3>
+      <div class="m-listTitleFoot">
+        <h3><span>靓号详情</span><span class="greyFont"> ({{dataListLiang.total||'0'}})</span></h3>
       </div>
-      <div class="detailsListDiv">
-        <table class="searchTab" style="width:100%;height:100%;">
+      <div class="m-details">
+        <table class="m-searchTab" style="width:100%;height:100%;">
           <tr v-for="(v,i) of dataListLiang" :key="i">
             <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td>
           </tr>
           <tr v-if="!dataListLiang.length">
-            <td class="tac deepGreyFont f-s-14">此号包下暂无靓号详情</td>
+            <td class="f-ta-c greyFont f-s-14">此号包下暂无靓号详情</td>
           </tr>
         </table>
       </div>
@@ -46,16 +46,16 @@
       </el-col>
     </el-row>
     <div class="pu" v-if="listSwitch.pu">
-      <div class="listTitleFoot">
-        <h3><span>普号详情</span><span class="deepGreyFont"> ({{dataListPu.total||'0'}})</span></h3>
+      <div class="m-listTitleFoot">
+        <h3><span>普号详情</span><span class="greyFont"> ({{dataListPu.total||'0'}})</span></h3>
       </div>
-      <div class="detailsListDiv">
-        <table class="searchTab" style="width:100%;height:100%;">
+      <div class="m-details">
+        <table class="m-searchTab" style="width:100%;height:100%;">
           <tr v-for="(v,i) of dataListPu" :key="i">
             <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
           </tr>
           <tr v-if="!dataListPu.length">
-            <td class="tac deepGreyFont f-s-14">此号包下暂无普号详情</td>
+            <td class="f-ta-c greyFont f-s-14">此号包下暂无普号详情</td>
           </tr>
         </table>
       </div>

@@ -171,7 +171,7 @@ a.IconOff{font-size:16px;color:black;cursor: pointer}
                 </tr>
                 <tr v-if="detailsData.recordResult==2">
                     <td>失败原因：
-                        <span class="c-red"></span>
+                        <span class="red"></span>
                         <span>{{'--'}}</span>
                     </td>
                 </tr>

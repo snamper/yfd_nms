@@ -1,6 +1,6 @@
 <style scoped>
-    .listTitleFoot{width: 96%;margin: 10px 38px;}
-    .listTitleFoot label{display:block;width: 50%;}
+    .m-listTitleFoot{width: 96%;margin: 10px 38px;}
+    .m-listTitleFoot label{display:block;width: 50%;}
     .m-company-detail table{width: 100%;border-collapse: collapse;border: 1px solid #e4e4e4}
     .m-company-detail table tr{height: 50px;}
     .m-company-detail table tr:nth-child(even){background: #fff}
@@ -21,15 +21,15 @@
     <div>
         <div class="yfd f-s-16">
             <el-container>
-                <el-header class="headTitleNav">
+                <el-header class="m-headBar">
                     <el-row>
-                        <el-col :span="12"><div class="grid-content bg-purple">部门名称&nbsp;:&nbsp;<a class="c-blue" href="javascript:void(0)">{{lists.departName}}</a></div></el-col>
-                        <el-col :span="12"><div class="grid-content bg-purple-light fr " style="padding-right:40px"><a href="javascript:void(0)" class="fcaqua" @click="goBack()">返回列表</a></div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple">部门名称&nbsp;:&nbsp;<a class="blue" href="javascript:void(0)">{{lists.departName}}</a></div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple-light fr " style="padding-right:40px"><a href="javascript:void(0)" class="blue" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
             </el-container>
         </div>
-        <div class="listTitleFoot" style="margin:0 38px;">
+        <div class="m-listTitleFoot" style="margin:0 38px;">
             <el-row>
                 <el-col :span="20"><div class="grid-content bg-purple"><h3>公司详情</h3></div></el-col>
             </el-row>        

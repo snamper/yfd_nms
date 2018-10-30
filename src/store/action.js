@@ -23,7 +23,7 @@ export default {
     let res = await getDealerList();
     res && commit(GET_DEPART, res);
   },
-  async setAccountDepId({commit},id) {
+  async setaccountDepId({commit},id) {
     commit(SET_ACCOUNT_DEPID,id);
   }
 }

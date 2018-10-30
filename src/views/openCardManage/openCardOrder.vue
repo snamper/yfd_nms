@@ -3,12 +3,12 @@
         <div v-if="!off.details" class="openCardOrder">
             <div class="dls greyFont">
                 <el-row>
-                    <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle blackFont">搜索条件</div></el-col>
+                    <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
                 </el-row>
                 <el-row>
                     <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
+                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
                                 <label><span class="radioYes"><input  type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">订单号码：</span></label>                            
                             </el-col>
                             <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
@@ -20,7 +20,7 @@
                 <el-row>
                     <el-col>
                         <div class="grid-content bg-purple-light">
-                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
+                            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
                                 <label><span class="radioYes"><input  type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">开卡号码：</span></label>                            
                             </el-col>
                             <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
@@ -31,7 +31,7 @@
                 </el-row>
                 <el-row>
                     <el-col>
-                        <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-tar">
+                        <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
                             <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">操作时间：</span></label>                            
                         </el-col>
                         <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
@@ -62,7 +62,7 @@
                 </el-row>
                 <el-row>
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">开卡结果：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">开卡结果：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="20" :lg="16" :xl="16">
                             <el-radio v-model="openRes"  label="1,2,3">全部</el-radio> 
                             <el-radio v-model="openRes"  label="1">处理中</el-radio>
@@ -71,7 +71,7 @@
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">操作人：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">操作人：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的操作人姓名"></el-input>
                         </el-col>
@@ -80,7 +80,7 @@
                 </el-row>
                 <el-row>
                     <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">开卡方式：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">开卡方式：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-radio v-model="openType"  label="1,2,3">全部</el-radio>
                             <el-radio v-model="openType"  label="1,2">APP</el-radio>
@@ -88,7 +88,7 @@
                         </el-col>
                     </div></el-col>
                     <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
-                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">商户名称：</div></el-col>
+                        <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">商户名称：</div></el-col>
                         <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
                             <el-input v-model="dealerName" size="small" maxlength=20 placeholder="请输入查询的商户名称"></el-input>
                         </el-col>
@@ -96,17 +96,17 @@
                     </el-col>
                 </el-row>
                 <el-row style="text-align:center" class="marginTop">
-                    <button class="searchBtn" @click="search()">搜索</button>
+                    <button class="m-btn-orange" @click="search()">搜索</button>
                 </el-row>
             </div>
             <div v-if="searchResult">
                 <div>
-                    <div class="detailsListDiv">
-                        <table class="searchTab" style="width:100%;height:100%;">
+                    <div class="m-details">
+                        <table class="m-searchTab" style="width:100%;height:100%;">
                             <tr>
                                 <td colspan="9">
                                     <div class="listHeader">
-                                        <label style="text-align:left;padding-left:20px;">订单列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></label>
+                                        <label style="text-align:left;padding-left:20px;">订单列表<span class="f-fw greyFont">({{form.page||'0'}})</span></label>
                                         <b style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" class="btnDownload" @click="downLoad" >导出</button></b>
                                     </div>
                                 </td>
@@ -130,7 +130,7 @@
                                 <td>{{v.operatorName||'--'}}</td>
                                 <td>{{getDateTime(v.createTime)[6]}}</td>
                                 <td>
-                                    <span :class="v.openCardResult==2?'c-green':v.openCardResult==3?'c-red':''">{{translateData(6,v.openCardResult)}}</span>
+                                    <span :class="v.openCardResult==2?'green':v.openCardResult==3?'red':''">{{translateData(6,v.openCardResult)}}</span>
                                 </td>
                                 <td>{{translateData(5,v.terminalType)}}</td>
                                 <td> {{v.idcardName||'--'}} </td>
@@ -140,7 +140,7 @@
                             </tr>
                         </table>
                     </div>
-                    <div class="listTitleFoot" v-if="searchResult.length>0">
+                    <div class="m-listTitleFoot" v-if="searchResult.length>0">
                         <el-row>
                             <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                                 <div class="grid-content bg-purple">

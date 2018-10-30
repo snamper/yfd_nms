@@ -10,17 +10,17 @@
       <div class="dls greyFont">
         <el-row>
           <el-col :span="24">
-            <div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div>
+            <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">选择时间：</div>
               </el-col>
               <el-col :xs="20" :sm="18" :md="18" :lg="18" :xl="18">
-                <div class="displayInline">
+                <div class="f-display-ib">
                   <el-date-picker v-model="startTime" size="small" type="datetime" :clearable=false :editable=false
                     :picker-options="pickerOptionsS" placeholder="选择开始时间">
                     </el-date-picker><el-date-picker v-model="endTime" size="small" type="datetime" :clearable=false :editable=false
@@ -33,7 +33,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">操作人：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">操作人：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="16" :lg="18" :xl="18">
                 <el-input v-model="opId" size="small" placeholder="请输入查询的操作人姓名" :maxlength="30"></el-input>
@@ -45,11 +45,11 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">操作类型：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">操作类型：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
                 <el-checkbox v-model="checkListAll" @change="BtnCheckAllCardType">全部</el-checkbox>
-                <el-checkbox-group v-model="opType" class="displayInline">
+                <el-checkbox-group v-model="opType" class="f-display-ib">
                   <el-checkbox label="1">佣金提现</el-checkbox>
                   <el-checkbox label="2">佣金转账</el-checkbox>
                   <el-checkbox label="3">激励提现</el-checkbox>
@@ -62,7 +62,7 @@
             <div class="grid-content bg-purple-light">
               <div class="grid-content bg-purple-light">
                 <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                  <div class="grid-content bg-purple-dark textR inputTitle">充值状态：</div>
+                  <div class="grid-content bg-purple-dark f-ta-r inputTitle">充值状态：</div>
                 </el-col>
                 <el-col :xs="16" :sm="16" :md="14" :lg="16" :xl="16">
                   <el-radio v-model="orderState" label="1,2">全部</el-radio>
@@ -75,7 +75,7 @@
           </el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-          <button class="searchBtn" @click="search()">搜索</button>
+          <button class="m-btn-orange" @click="search()">搜索</button>
         </el-row>
       </div>
       <!-- 查询结果列表 -->
@@ -83,10 +83,9 @@
         <div>
           <div class="m-list-title">
             <label>订单列表：( {{total}} )</label>
-            <label><button @click="withDrawal()">提现</button></label>
           </div>
-          <div class="detailsListDiv">
-            <table class="searchTab" style="width:100%;height:100%;">
+          <div class="m-details">
+            <table class="m-searchTab" style="width:100%;height:100%;">
               <tr>
                 <td>序号</td>
                 <td>订单号码</td>
@@ -105,13 +104,13 @@
                 <td>{{translate(4,v.operateType)}}</td>
                 <td>{{translateData('fenToYuan',v.balance)}}</td>
                 <td>{{translateData('fenToYuan',v.cost)}}</td>
-                <td :class="v.state==1?'fcgreen':v.state==2?'fcred':'--'">{{v.state==1?'成功':v.state==2?'失败':'--'}}</td>
+                <td :class="v.state==1?'green':v.state==2?'red':'--'">{{v.state==1?'成功':v.state==2?'失败':'--'}}</td>
               </tr>
             </table>
           </div>
         </div>
       </div>
-      <div class="listTitleFoot" v-if="searchList">
+      <div class="m-listTitleFoot" v-if="searchList">
         <el-row>
           <el-col :span="12">
             <div class="grid-content bg-purple">
@@ -125,14 +124,12 @@
         </el-row>
       </div>
     </div>
-    <withDrawal v-if="off.withDrawal" :list="cmsData"></withDrawal>
   </section>
 </template>
 <script>
   import { getTimeFunction, errorDeal, translateData, getDateTime,getStore } from "../../config/utils";
   import { getRechargeOrders,getCmsWithdrawal,commission } from "../../config/service.js";
   import { mapState } from 'vuex';
-  import withDrawal from './withDrawal.vue';
   export default {
     data() {
       return {
@@ -195,7 +192,6 @@
       }
     },
     components: {
-      withDrawal
     },
     created: function () {
       getTimeFunction(this);
@@ -215,15 +211,7 @@
       }
     },
     methods: {
-      withDrawal() {
-        let vm = this;
-        let info = getStore("YFD_NMS_INFO");
-        vm.off.withDrawal = true;
-        commission()
-        .then((data)=>{
-          vm.cmsData=data.data;
-        }).catch(e=>errorDeal(e))
-      },
+
       search(p) {
         let vm = this,
           data = {

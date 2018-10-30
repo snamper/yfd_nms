@@ -1,6 +1,6 @@
 <style scoped>
-    .listTitleFoot{width: 96%;margin: 10px 38px;}
-    .listTitleFoot label{display:block;width: 50%;}
+    .m-listTitleFoot{width: 96%;margin: 10px 38px;}
+    .m-listTitleFoot label{display:block;width: 50%;}
     .detailsUlDiv{width: 90%;height: 90%;margin-left:40px;}
     .detailsUlDiv ul{border-left: 1px solid rgb(228, 228, 228);border-right: 1px solid rgb(228, 228, 228);border-top: 1px solid rgb(228, 228, 228)}
     .detailsUlDiv ul li {padding: 6px 18px;border-bottom: 1px solid rgb(228, 228, 228)}
@@ -20,19 +20,19 @@
     <div>
         <div class="yfd">
             <!-- <el-container>
-                <el-header class="headTitleNav">
+                <el-header class="m-headBar">
                     <el-row>
-                        <el-col :span="12"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<a class="c-blue" href="javascript:void(0)"  @click="goBack()">{{forms.departName}}</a></div></el-col>
-                        <el-col :span="12"><div class="grid-content bg-purple-light fr " style="padding-right:40px"><a href="javascript:void(0)" class="fcaqua" @click="goBack()">返回列表</a></div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<a class="blue" href="javascript:void(0)"  @click="goBack()">{{forms.departName}}</a></div></el-col>
+                        <el-col :span="12"><div class="grid-content bg-purple-light fr " style="padding-right:40px"><a href="javascript:void(0)" class="blue" @click="goBack()">返回列表</a></div></el-col>
                     </el-row>
                 </el-header>         
             </el-container> -->
         <p class="m-head-title">
-            <label>公司名称 : &nbsp;<a class="c-blue" href="javascript:void(0)"  @click="goBack()">{{forms.departName}}</a></label>
+            <label>公司名称 : &nbsp;<a class="blue" href="javascript:void(0)"  @click="goBack()">{{forms.departName}}</a></label>
             <label><a @click="goBack()">返回列表</a></label>
         </p>
         </div>
-        <div class="listTitleFoot" style="margin:0 38px;">
+        <div class="m-listTitleFoot" style="margin:0 38px;">
             <el-row>
                 <el-col :span="20"><div class="grid-content bg-purple"><h3 style="padding-left:20px;">员工详情</h3></div></el-col>
             </el-row> 
@@ -68,7 +68,7 @@
                             </span>
                         </div></el-col>
                         <!-- <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
-                            <el-checkbox-group class="displayInline" v-model="role">
+                            <el-checkbox-group class="f-display-ib" v-model="role">
                                 <el-checkbox v-if="userRoleSwitch==1" label=1>管理员</el-checkbox>
                                 <el-checkbox v-if="userRoleSwitch==1" label=2>销售</el-checkbox>
                                 <el-checkbox v-if="userRoleSwitch==1" label=6>提卡客服</el-checkbox>
@@ -131,9 +131,9 @@
                     <el-row>
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple fr">当前状态&nbsp;&nbsp;:&nbsp;&nbsp;</div></el-col>
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19"><div class="grid-content bg-purple-light">
-                            <span v-if="forms.userState==1" class="fcgreen">正常</span>
-                            <span v-else-if="forms.userState==2" class="fcred">黑名单</span>
-                            <span v-else-if="forms.userState==3" class="fcgrey">注销</span>
+                            <span v-if="forms.userState==1" class="green">正常</span>
+                            <span v-else-if="forms.userState==2" class="red">黑名单</span>
+                            <span v-else-if="forms.userState==3" class="grey">注销</span>
                             <span v-else>--</span>
                         </div></el-col>
                     </el-row>
@@ -208,7 +208,7 @@
                     </el-row>
                 </li>
             </ul>
-            <div class="mt8 modifyStaffInfo" >
+            <div style="margin-top:8px" class="modifyStaffInfo" >
                 <el-row v-if="off.noModify" >
                 <el-col style="text-align:center" :span="24"><div class="grid-content bg-purple"><button class="change" @click="checkBtn" v-if="user.userRole!=2&&user.userRole!=3">修改</button></div></el-col>
                 </el-row>

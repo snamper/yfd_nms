@@ -5,45 +5,45 @@
 <template>
     <section>
         <div class="allDetails" v-if="listSwitch.allDetails">
-            <div class="listTitleFoot">
-                <h3><span v-if="!pickCardSwitch">号包详情</span><span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span></h3>
+            <div class="m-listTitleFoot">
+                <h3><span v-if="!pickCardSwitch">号包详情</span><span><a href="javascript:void(0)" class="fr blue" @click="goBack()">返回列表</a></span></h3>
             </div>
-            <div v-if="!pickCardSwitch" class="detailsListDiv">
-                <table class="searchTab numberInfo" style="width:100%;height:100%;">
+            <div v-if="!pickCardSwitch" class="m-details">
+                <table class="m-searchTab numberInfo" style="width:100%;height:100%;">
                     <tr>
                         <td>号包名称 ：</td>
-                        <td class="deepGreyFont f-s-14">{{dataList.productName||'--'}}</td>
+                        <td class="greyFont f-s-14">{{dataList.productName||'--'}}</td>
                         <td>运&nbsp;&nbsp;营&nbsp;&nbsp;商 ： </td>
                         <td>
-                            <span class="deepGreyFont f-s-14"> {{translateData(1,dataList.isp)}} </span> 
+                            <span class="greyFont f-s-14"> {{translateData(1,dataList.isp)}} </span> 
                         </td>
                     </tr>
                     <tr>
                         <td>号包类型 ： </td>
                         <td>
-                            <span class="deepGreyFont f-s-14"> {{translateData(2,dataList.productType)}} </span>  
+                            <span class="greyFont f-s-14"> {{translateData(2,dataList.productType)}} </span>  
                         </td>
                         <td>当前状态 ： <!-- 1：未上架，2：手动上架，3：手动下架，4：系统下架，5：已出售, 6: 购物车中", --> </td>
                         <td>
-                            <span class="deepGreyFont f-s-14"> {{translateData(3,dataList.productState)}} </span>
+                            <span class="greyFont f-s-14"> {{translateData(3,dataList.productState)}} </span>
                         </td>
                     </tr>
                     <tr>
                         <td>码号数量 ： </td>
                         <td>
-                            <span class="deepGreyFont f-s-14" v-if="!pickCardSwitch">
+                            <span class="greyFont f-s-14" v-if="!pickCardSwitch">
                                 <span v-if="dataList.productType==1">普号数（{{dataListPu.total||'0'}}）+靓号数（{{dataListLiang.total||'0'}}）</span>
                                 <span v-if="dataList.productType==2">靓号数（{{dataListLiang.total||'0'}}）</span>
                                 <span v-if="dataList.productType==3">普号数（{{dataListPu.total||'0'}}）</span>
                             </span>
-                            <span class="deepGreyFont f-s-14" v-if="pickCardSwitch">
+                            <span class="greyFont f-s-14" v-if="pickCardSwitch">
                                 <span v-if="listSwitch.liang">{{dataListLiang.total}}</span>
                                 <span v-if="listSwitch.pu">{{dataListPu.total}}</span>
                             </span>
                         </td>
                         <td>修改时间 ： </td>
                         <td>
-                            <span class="deepGreyFont f-s-14">
+                            <span class="greyFont f-s-14">
                                 {{getDateTime(dataList.modifyTime)[6]}}
                             </span>
                         </td>
@@ -52,11 +52,11 @@
                     <tr>
                         <td>归属品牌 ： </td>
                         <td>
-                            <span class="deepGreyFont f-s-14"> {{translateData(4,dataList.brand)}} </span>
+                            <span class="greyFont f-s-14"> {{translateData(4,dataList.brand)}} </span>
                         </td>
                         <td>操&nbsp;&nbsp;作&nbsp;&nbsp;人 ： </td>
                         <td>
-                            <span class="deepGreyFont f-s-14">
+                            <span class="greyFont f-s-14">
                                 {{dataList.operatorName||'--'}}
                             </span>
                         </td>
@@ -65,11 +65,11 @@
             </div>
         </div>
         <div class="liang" v-if="listSwitch.liang">
-            <div class="listTitleFoot">
-                <h3><span>靓号详情</span><span class="deepGreyFont"> ({{dataListLiang.total||'0'}})</span></h3>
+            <div class="m-listTitleFoot">
+                <h3><span>靓号详情</span><span class="greyFont"> ({{dataListLiang.total||'0'}})</span></h3>
             </div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
+            <div class="m-details">
+                <table class="m-searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListLiang" :key="i">
                         <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td>
                         <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">
@@ -91,7 +91,7 @@
                         </td> -->
                     </tr>
                     <tr v-if="!dataListLiang.length">
-                        <td class="tac deepGreyFont f-s-14">此号包下暂无靓号详情</td>
+                        <td class="f-ta-c greyFont f-s-14">此号包下暂无靓号详情</td>
                     </tr>
                 </table>
                 <!-- <el-col>
@@ -121,11 +121,11 @@
             </el-row>
         </div>
         <div class="pu" v-if="listSwitch.pu">
-            <div class="listTitleFoot">
-                <h3><span>号包详情</span><span class="deepGreyFont"> ({{dataListPu.total||'0'}})</span></h3>
+            <div class="m-listTitleFoot">
+                <h3><span>号包详情</span><span class="greyFont"> ({{dataListPu.total||'0'}})</span></h3>
             </div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
+            <div class="m-details">
+                <table class="m-searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListPu" :key="i">
                         <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
                         <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">
@@ -147,7 +147,7 @@
                         </td> -->
                     </tr>
                     <tr v-if="!dataListPu.length">
-                        <td class="tac deepGreyFont f-s-14">此号包下暂无普号详情</td>
+                        <td class="f-ta-c greyFont f-s-14">此号包下暂无普号详情</td>
                     </tr>
                 </table>
             </div> 

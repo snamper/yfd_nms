@@ -1,20 +1,19 @@
 .w70{width: 70px!important;}
 .u-button-upFiles{
-    
-    display: none;
+  display: none;
 }
 .u-button-upFiles:active{
-    box-shadow: 0 0 4px #17a3e9;
+  box-shadow: 0 0 4px #17a3e9;
 }
 .u-label-upFiles{
-    margin-left: 20px;
-    padding: 2px 10px;
-    border: 1px solid #3399cc;
-    background-color: #3399cc;
-    color: #fff;
-    border-radius: 4px;
-    outline: none;
-    width: 70px;
+  margin-left: 20px;
+  padding: 2px 10px;
+  border: 1px solid #3399cc;
+  background-color: #3399cc;
+  color: #fff;
+  border-radius: 4px;
+  outline: none;
+  width: 70px;
 }
 div.messageBox{
     padding: .2rem;
@@ -101,7 +100,7 @@ img.upF{
     height:20px;
     vertical-align: middle;
 }
-.listTitleFoot{width: 96%;margin: 10px 18px;}
+.m-listTitleFoot{width: 96%;margin: 10px 18px;}
 span.timeBig{
     font-size: 18px;
     color: black;

@@ -3,17 +3,17 @@
       <div v-if="off.searchStaff">
       <div class="ygcx greyFont">
       <el-row>
-        <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
+        <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
         </el-row>
         <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">联系人：</div></el-col>
                 <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">手机号码：</div></el-col>
                 <el-col :xs="19" :sm="12" :md="12" :lg="16" :xl="16">
                      <el-input v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
@@ -21,7 +21,7 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div></el-col>
                 <el-col :xs="19" :sm="18" :md="12" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2,3,4">全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
@@ -31,22 +31,24 @@
             </div></el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-            <button class="searchBtn" @click="search()">搜索</button>
+            <button class="m-btn-orange" @click="search()">搜索</button>
         </el-row>
     </div>
     <div v-if="detailsList">
         <div>
-            <div class="listTitleFoot">
+            <div class="m-listTitleFoot">
                 <el-row>
-                    <p><h3>员工列表<span class="fontWeight greyFont">({{form.page||'0'}})</span></h3></p>                    
+                    <p><h3>员工列表<span class="f-fw greyFont">({{form.page||'0'}})</span></h3></p>                    
                 </el-row>        
             </div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
+            <div class="m-details">
+                <table class="m-searchTab" style="width:100%;height:100%;">
                     <tr>
                         <td>序号</td>
                         <td>&nbsp;</td>
-                        <td class="nameIcon">用户姓名</td>
+                        <td style="text-align:left">
+                          <p style="float:left;margin-left:36%">用户姓名</p>
+                        </td>
                         <td>手机号码</td>
                         <td>创建时间</td>
                         <td>角色</td>
@@ -58,11 +60,11 @@
                             {{((pa-1)*15+(i+1))}}
                         </td>
                         <td>&nbsp;</td>
-                        <td class="nameIcon">
+                        <td style="text-align:left">
                             <p style="float:left;margin-left:36%">
                                 <span>
                                     <span v-for="(v,i) in v.userRole" :key="i">
-                                        <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
+                                        <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="m-adminIcon">
                                     </span>
                                     {{v.username}}
                                 </span>
@@ -85,7 +87,7 @@
                             </span>
                         </td>
                         <td >
-                           <span :class="v.userState==1?'fcgreen':v.userState==2?'fcred':v.userState==3||v.userState==4?'fcgrey':'--'">{{translateData('userState',v.userState)}}</span>
+                           <span :class="v.userState==1?'green':v.userState==2?'red':v.userState==3||v.userState==4?'grey':'--'">{{translateData('userState',v.userState)}}</span>
 
                         </td>
                         <td >
@@ -98,13 +100,13 @@
                         </td>
                     </tr>
                     <tr v-if="detailsList.length<=0">
-                        <td class="tac" colspan="8">
+                        <td class="f-ta-c" colspan="8">
                             暂无数据                                                        
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="listTitleFoot" v-if="detailsList.length>0">
+            <div class="m-listTitleFoot" v-if="detailsList.length>0">
                 <el-row>
                 <el-col :span="12"><div class="grid-content bg-purple">
                     <el-pagination

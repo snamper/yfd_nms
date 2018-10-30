@@ -114,7 +114,7 @@
                 <div class="borderBottomBox"></div>
             </div>
             <div class="noticeHistory" v-if="searchList.length>0">
-                <h3>历史公告<span class="fontWeight greyFont">({{form.page}})</span></h3>
+                <h3>历史公告<span class="f-fw greyFont">({{form.page}})</span></h3>
                 <table style="width:100%;height:100%">
                     <tr v-for="(v,i) of searchList" :key="i">
                         <td>
@@ -123,17 +123,17 @@
                         <td>
                             <div class="msgTime"><span class="timeBig">{{getDateTime(v.createTime)[2]}}日</span> {{getDateTime(v.createTime)[1]}}月 {{getDateTime(v.createTime)[0]}}年&nbsp;&nbsp;{{getDateTime(v.createTime)[5]}}<span class="fr">有效期 ：{{getDateTime(v.expTime)[0]}}年{{getDateTime(v.expTime)[1]}}月{{getDateTime(v.expTime)[2]}}日</span></div>
                             <div class="msgInfo">
-                                <p v-if="v.content"><img class="icon" src="../../assets/images/icon/book.svg" alt="" /><span class="c-green"><span v-if="v.type=='600'">(系统消息)</span><span v-if="v.type=='200'">(政策消息)</span><span v-if="v.type=='500'">(优惠消息)</span><span v-if="v.type=='400'">(新货上架)</span></span><span v-if="v.content!=''">{{v.content}}</span></p>
-                                <p v-if="v.redirectUrl"><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="c-blue textDec">{{v.redirectUrl}}</a></p>
+                                <p v-if="v.content"><img class="icon" src="../../assets/images/icon/book.svg" alt="" /><span class="green"><span v-if="v.type=='600'">(系统消息)</span><span v-if="v.type=='200'">(政策消息)</span><span v-if="v.type=='500'">(优惠消息)</span><span v-if="v.type=='400'">(新货上架)</span></span><span v-if="v.content!=''">{{v.content}}</span></p>
+                                <p v-if="v.redirectUrl"><img class="icon" src="../../assets/images/icon/link1.svg" alt="" /><a v-if="v.redirectUrl!=''" :href=v.redirectUrl target="_blank" class="blue f-td-underline">{{v.redirectUrl}}</a></p>
                                 <p>
                                     <label  v-if="v.annex.length>0">
                                         <img class="icon" src="../../assets/images/icon/link.svg" alt="" />
-                                        附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" :href="v.annex[0].fileUrl" target=_blank class="c-yellow textDec">{{v.annex[0].fileName}}</a>                                    
+                                        附件&nbsp;:&nbsp;<a v-if="v.annex.length>0" :href="v.annex[0].fileUrl" target=_blank class="yellow f-td-underline">{{v.annex[0].fileName}}</a>                                    
                                     </label>
                                     <span class="fr">
-                                        发送对象 : <a v-if="v.receiverType==1" class="blueFont" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
-                                        <a v-if="v.receiverType==2" class="blueFont" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>
-                                        <a v-if="v.receiverType==3" class="blueFont" href="javascript:void(0)" @click="checkSendUser(1,v)">手动输入</a>
+                                        发送对象 : <a v-if="v.receiverType==1" class="blue" href="javascript:void(0)" @click="checkSendUser(1,v)">全部</a>
+                                        <a v-if="v.receiverType==2" class="blue" href="javascript:void(0)" @click="checkSendUser(1,v)">店长</a>
+                                        <a v-if="v.receiverType==3" class="blue" href="javascript:void(0)" @click="checkSendUser(1,v)">手动输入</a>
                                     </span> 
                                 </p>
                             </div>
@@ -158,14 +158,14 @@
             </div>
         </div>
         <div v-if="addMsg==false">
-            <div class="listTitleFoot">
+            <div class="m-listTitleFoot">
                 <el-row>
-                    <el-col :span="24"><div class="grid-content bg-purple">员工列表<span v-if="form.page>0" class="fontWeight greyFont"> ({{userTotal}})</span><a href="javascript:void(0)" class="fr" style="line-height:45px" @click="goBack"><img style="width:30px;height:30px;vertical-align:middle" src="../../assets/images/backup.png" alt=""></a></div></el-col>
+                    <el-col :span="24"><div class="grid-content bg-purple">员工列表<span v-if="form.page>0" class="f-fw greyFont"> ({{userTotal}})</span><a href="javascript:void(0)" class="fr" style="line-height:45px" @click="goBack"><img style="width:30px;height:30px;vertical-align:middle" src="../../assets/images/backup.png" alt=""></a></div></el-col>
                 </el-row>        
             </div>
             <div v-if="usersInfoArray.length>0">    
-                <div class="detailsListDiv">
-                    <table class="searchTab" style="width:100%;height:100%;">
+                <div class="m-details">
+                    <table class="m-searchTab" style="width:100%;height:100%;">
                         <tr>
                             <td>序号</td>
                             <td>接收人</td>
@@ -188,7 +188,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="listTitleFoot">
+                <div class="m-listTitleFoot">
                     <el-row>
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
@@ -201,7 +201,7 @@
                     </el-row>
                 </div>
             </div>
-            <div v-if="usersInfoArray.length==0" class="searchResultInfoNone">
+            <div v-if="usersInfoArray.length==0" style="font-weight:bold;font-size:16px;text-align:center;margin-top:30px;">
             查询结果为空!
             </div>
         </div>

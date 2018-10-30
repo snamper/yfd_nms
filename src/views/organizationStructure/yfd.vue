@@ -4,18 +4,18 @@
       <div v-if="off.searchStaff">
       <div class="ygcx greyFont">
         <el-row>
-            <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
+            <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
         </el-row>
         <el-row>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">联系人：</div></el-col>
                 <el-col :xs="16" :sm="14" :md="14" :lg="16" :xl="16">
                      <el-input v-model="name" :maxlength="10" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
                 <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4"></el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div></el-col>
+                <el-col :xs="5" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">手机号码：</div></el-col>
                 <el-col :xs="16" :sm="14" :md="14" :lg="16" :xl="16">
                      <el-input type="tel" v-model="phone" :maxlength="11" size="small" placeholder="请输入查询的手机号码"></el-input>
                 </el-col>
@@ -25,7 +25,7 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="5" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="5" :sm="3" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div></el-col>
                 <el-col :xs="16" :sm="16" :md="14" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2,3,4" >全部</el-radio>
                     <el-radio v-model="radio"  label="1" >正常</el-radio>
@@ -38,7 +38,7 @@
             </div></el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-            <button class="searchBtn" @click="search()">搜索</button>
+            <button class="m-btn-orange" @click="search()">搜索</button>
         </el-row>
     </div>
     <el-row>
@@ -63,7 +63,7 @@
             </div>
             <div class="m-addStaff-btn">
                 <div class="m-addStaff-btn-in">
-                    <button @click="AddList()" >新增一条</button>
+                    <button @click="AddList()">新增一条</button>
                     <button @click="AddStaff()">确定添加</button>
                 </div>
             </div>
@@ -72,13 +72,13 @@
     <!-- <div v-if="off.searchList"> -->
     <div v-if="detailsList">
         <div >    
-            <div class="listTitleFoot">
+            <div class="m-listTitleFoot">
                 <el-row>
-                    <el-col style="height:35px;" :span="20"><div class="grid-content bg-purple"><h3>员工列表<span class="fontWeight greyFont"> ({{form.page||'0'}})</span></h3></div></el-col>
+                    <el-col style="height:35px;" :span="20"><div class="grid-content bg-purple"><h3>员工列表<span class="f-fw greyFont"> ({{form.page||'0'}})</span></h3></div></el-col>
                 </el-row>        
             </div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
+            <div class="m-details">
+                <table class="m-searchTab" style="width:100%;height:100%;">
                     <tr style="font-size:14px">
                         <td></td>
                         <td>序号</td>
@@ -98,7 +98,7 @@
                         <td>
                             <p style="float:left;margin-left:36%">
                                 <span v-for="(v,i) in v.userRole" :key="i">
-                                    <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
+                                    <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="m-adminIcon">
                                 </span>
                                 {{v.username}}
                             </p>
@@ -120,7 +120,7 @@
                             </span>
                         </td>
                         <td>
-                            <span :class="v.userState==1?'fcgreen':v.userState==2?'fcred':v.userState==3||v.userState==4?'fcgrey':'--'">{{translateData('userState',v.userState)}}</span>
+                            <span :class="v.userState==1?'green':v.userState==2?'red':v.userState==3||v.userState==4?'grey':'--'">{{translateData('userState',v.userState)}}</span>
                         </td>
                         <td>
                             <span v-if="v.userOrigin==1">手动加入</span>
@@ -137,18 +137,18 @@
                         </td>
                     </tr>
                     <tr v-if="detailsList.length==0">
-                        <td class="tac" colspan="9">
+                        <td class="f-ta-c" colspan="9">
                             暂无数据                            
                         </td>
                     </tr>
                     <tr v-if="detailsList.length>0">
-                        <td colspan="9" class="pl20">
+                        <td colspan="9" class="f-pl-10">
                         <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)" @click="doFilter('on')"> 取消全选 </a></span>
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="listTitleFoot" v-if="detailsList.length>0">
+            <div class="m-listTitleFoot" v-if="detailsList.length>0">
                 <el-row>
                 <el-col :span="12"><div class="grid-content bg-purple">
                     <el-pagination
@@ -440,7 +440,7 @@ export default{
     .m-addStaff b span{display: inline-block;width: 65px;text-align: justify;text-align-last: justify}
     .m-addStaff b span.u-icon-del{width: 20px}
     .m-addStaff b input{border: 1px solid #E8E8E8;height: 30px;border-radius: 4px;width: 80%;padding-left: 2%}
-    .m-addStaff-btn button{width: 70px;height: 25px;border-radius: 4px;outline:none;color: #fff;font-size: 14px}
+    .m-addStaff-btn button{padding: 2px 10px;border-radius: 4px;outline:none;color: #fff;font-size: 14px}
     .m-addStaff-btn button:nth-child(1){background: #00AA01;border: 1px solid #00AA01}
     .m-addStaff-btn button:nth-child(2){background: #193163;border: 1px solid #193163}
     .m-addStaff-btn button:active{box-shadow: 0 0 5px grey}
@@ -496,7 +496,7 @@ export default{
         }
     }
     div.addStaffDiv button{border-radius:4px;padding:3px 10px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;} 
-    div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;border: 1px solid rgb(212, 212, 212);border-top:1px solid rgb(189, 189, 189);outline: none; background: -webkit-radial-gradient(ellipse ,rgb(218, 218, 218,1), rgb(218,218,218,0)); background: -o-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: -moz-radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0)); background: radial-gradient(ellipse ,rgb(218,218,218,1), rgb(218,218,218,0));}
+    div.operate button{ padding: 4px 10px;margin-left: 10px;border-radius: 4px;outline: none;color: #000}
     div.operate button:active{box-shadow: 0 0 5px grey}
     div.borderTopModifyStaffState{margin-left: 1%;width: 98%;border-top: 2px solid rgb(202, 202, 202)}
     div.modifyStaffStateDiv .buttonModifyYes{border-radius:4px;padding:5px 20px;background: #00AA01;border:1px solid #00AA01;outline: none;color:#fff;}

@@ -101,12 +101,26 @@ const stock = resolve => {
     });
 };
 //账号管理
+const account = resolve => {
+  load(true);
+  require.ensure(["@/views/accountManage/"], () => {
+      resolve(require("@/views/accountManage/"));
+      load();
+  });
+};
 const accountManage = resolve => {
     load(true);
     require.ensure(["@/views/accountManage/accountManage.vue"], () => {
         resolve(require("@/views/accountManage/accountManage.vue"));
         load();
     });
+};
+const accountWithdrawal = resolve => {
+  load(true);
+  require.ensure(["@/views/accountManage/withdrawal.vue"], () => {
+      resolve(require("@/views/accountManage/withdrawal.vue"));
+      load();
+  });
 };
 //操作日志
 const Logs_mhglrz = resolve => {
@@ -212,7 +226,15 @@ const router = new Router({
             },{
                 path:"accountManage",
                 name:"accountManage",
-                component:accountManage
+                redirect:"accountManage/manage",
+                component:account,
+                children:[{
+                  path:"manage",
+                  component:accountManage,
+                },{
+                  path:"withdrawal",
+                  component:accountWithdrawal,
+                }]
             },{
                 path: "operationLog",
                 redirect: "operationLog/cardmanage",
@@ -231,13 +253,11 @@ const router = new Router({
                     name: "loginlog",
                     component: Logs_dlrz
                 }]
-            }
-                , {
+            }, {
                 path: "browsingHistory",
                 name: "browsingHistory",
                 component: BrowseRecords,
-            }
-                , {
+            }, {
                 path: "notice",
                 name: "notice",
                 component: Notice,

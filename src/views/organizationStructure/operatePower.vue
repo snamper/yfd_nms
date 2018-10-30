@@ -1,7 +1,7 @@
 <template>
     <section>
         <section>
-            <div class="f-fs16 m-title1 f-displayFlex">
+            <div class="m-title f-fs16 f-display-f">
                 <p style="flex:1">
                     <span v-if="ctype=='change'">修改角色</span>
                     <span v-else-if="ctype=='add'">增加角色</span>
@@ -158,7 +158,6 @@ export default{
                     "roleName": vm.powerName,
                     "privilege":powerId.join(","),
                 };
-                debugger;
                 addRole(json)
                 .then((data)=>{
                     if(data.code==200){

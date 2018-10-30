@@ -1,8 +1,8 @@
 <template>
     <section>
         <section v-if="off.searchlist">
-            <div class="f-fs16 m-title1 f-displayFlex">
-                <p style="flex:1"><span>角色列表</span></p><p style="flex:1;text-align:right"><button @click="add">添加角色</button></p>
+            <div class="f-fs16 m-title1 f-display-f">
+                <p style="flex:1"><span>角色列表</span></p><p style="flex:1;text-align:right"><button class="m-btn-green"  @click="add">添加角色</button></p>
             </div>
             <div class="m-searchlist">
                 <table>
@@ -121,7 +121,8 @@ export default{
 }
 </script>
 <style scoped>
-    .m-title1 button{width: 90px;height: 25px;border-radius: 4px;outline: none;border: 1px solid #00AA01;background: #00AA01;color: #fff}
+    .m-title1{padding: 20px 40px;}
+    /* .m-title1 button{width: 90px;height: 25px;border-radius: 4px;outline: none;border: 1px solid #00AA01;background: #00AA01;color: #fff} */
     .m-searchlist{width: 98%;margin: 0 auto}
     .m-searchlist table{width: 100%;text-align: center;border-collapse: collapse;border: 1px solid #eee;}
     .m-searchlist table tr{height: 40px;}

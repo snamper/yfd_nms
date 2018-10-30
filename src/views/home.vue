@@ -25,28 +25,28 @@
       <table cellspacing="0">
         <tbody>
           <tr>
-            <td class="fontWeight f-s-16">
+            <td class="f-fw f-s-16">
               <a class="m-navside-show" @click="headMenu"><i class="u-icon-menu"></i></a>
               <span v-if="crumb[0].name" class="f-inline-block m-crumb">
-                <a class="fcb">{{crumb[0].name}}</a>
+                <a class="black">{{crumb[0].name}}</a>
                 <i v-if="crumb[1].name" class="el-icon-arrow-right"></i>
                 <a v-if="!crumb[1].href">{{crumb[1].name}}</a>
-                <router-link class="fcaqua" v-if="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
+                <router-link class="blue" v-if="crumb[1].href" :to="crumb[1].href">{{crumb[1].name}}</router-link>
                 <span v-if="crumb[2].name">
                   <i class="el-icon-arrow-right"></i>
-                  <a class="fcaqua">{{crumb[2].name}}</a>
+                  <a class="blue">{{crumb[2].name}}</a>
                 </span>
               </span>
             </td>
-            <td class="f-tar">
+            <td class="f-ta-r">
               <div class="m-info-user"><i></i><span style="color:black">{{user.username}}</span></div>
               <div class="m-menu-user">
                 <a @click="userMenu"><i class="u-icon-menu2"></i></a>
-                <ul class="m-user-dropdown f-tas" :class="{active:off.userMenu}">
+                <ul class="m-user-dropdown f-ta-c" :class="{active:off.userMenu}">
                   <li>
                     <a class="user clr">
                       <div class="logo fl"></div>
-                      <div class="info f-tal">
+                      <div class="info f-ta-l">
                         <div class="author" style="color:black">{{user.username}}</div>
                       </div>
                     </a>
@@ -123,6 +123,14 @@
                 <span :class="crumb[0].name=='账户管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
             </router-link>
+            <!-- <ul class="g-side-subul nav2">
+              <li>
+                <router-link to="/home/accountManage/manage"><b></b>账户管理</router-link>
+              </li>
+              <li>
+                <router-link to="/home/accountManage/withdrawal"><b></b>提现</router-link>
+              </li>
+            </ul> -->
           </li>
         </ul>
         <ul v-if="isShow" class="g-side-ul">

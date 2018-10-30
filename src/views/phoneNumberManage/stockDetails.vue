@@ -11,7 +11,7 @@
                     <p><span>当前状态 :</span> {{translateData(3,faceValueDetails.productState)}}</p>
                     <p><span>总数：</span>{{faceValueDetails.productTotal}}</p> )
                 </label>
-                <span><a href="javascript:void(0)" class="fr fcaqua" @click="goBack()">返回列表</a></span>
+                <span><a href="javascript:void(0)" class="fr blue" @click="goBack()">返回列表</a></span>
             </div>
         </div>
         <div class="faceValue">
@@ -38,17 +38,17 @@
                                             <td>{{i/100}}</td>
                                             <td>{{i2}}</td>
                                             <td>
-                                                <a :class="{'c-yellow':off.isShow1==v2}" @click="getNumberList(1,{t:1,c:'productTotal',i:i/100},v2,i2)" href="javascript:void(0)">
+                                                <a :class="{'yellow':off.isShow1==v2}" @click="getNumberList(1,{t:1,c:'productTotal',i:i/100},v2,i2)" href="javascript:void(0)">
                                                     {{v2.productTotal}}
                                                 </a>
                                             </td>
                                             <td>
-                                                <a :class="{'c-yellow':off.isShow2==v2}" @click="getNumberList(1,{t:1,c:'cuteTotal',i:i/100},v2,i2)" href="javascript:void(0)">
+                                                <a :class="{'yellow':off.isShow2==v2}" @click="getNumberList(1,{t:1,c:'cuteTotal',i:i/100},v2,i2)" href="javascript:void(0)">
                                                     {{v2.cuteTotal}}
                                                 </a>
                                             </td>
                                             <td>
-                                                <a :class="{'c-yellow':off.isShow3===v2}" @click="getNumberList(1,{t:1,c:'numberWithFour',i:i/100},v2,i2)" href="javascript:void(0)">
+                                                <a :class="{'yellow':off.isShow3===v2}" @click="getNumberList(1,{t:1,c:'numberWithFour',i:i/100},v2,i2)" href="javascript:void(0)">
                                                     {{v2.numberWithFour}}
                                                 </a>
                                             </td>
@@ -71,9 +71,9 @@
                 </tr>
                 <tr v-for="(v,i) in thousandDetails">
                     <td>{{i}}</td>
-                    <td><a :class="{'c-yellow':off.isShow4===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal',i:i},v)">{{v.productTotal}}</a></td>
-                    <td><a :class="{'c-yellow':off.isShow5===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal',i:i},v)">{{v.cuteTotal}}</a></td>
-                    <td><a :class="{'c-yellow':off.isShow6===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour',i:i},v)">{{v.numberWithFour}}</a></td>
+                    <td><a :class="{'yellow':off.isShow4===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'productTotal',i:i},v)">{{v.productTotal}}</a></td>
+                    <td><a :class="{'yellow':off.isShow5===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'cuteTotal',i:i},v)">{{v.cuteTotal}}</a></td>
+                    <td><a :class="{'yellow':off.isShow6===v}" href="javascript:void(0)" @click="getNumberList(1,{t:2,c:'numberWithFour',i:i},v)">{{v.numberWithFour}}</a></td>
                     <td>{{v.ratio}}</td>
                 </tr>
             </table>
@@ -98,7 +98,7 @@
                     <td>{{v.packageDesc}}</td>
                 </tr>
             </table>
-            <div class="listTitleFoot">
+            <div class="m-listTitleFoot">
                 <el-row>
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination
@@ -297,7 +297,7 @@ export default{
     .faceValue>.m-searchTable>tr:nth-child(1),.thousand .m-searchTable>tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}    
     .faceValue>.m-searchTable>tr>td:nth-child(1),.thousand>.m-searchTable>tr>td:nth-child(1){background: #EEF1F6;border-left: 1px solid #e2e2e2}
     .faceValue>.m-searchTable>tr>td a,.thousand .m-searchTable>tr>td a,.m-searchTable4>tr>td a{color:#66A1DF;text-decoration: underline}
-    .faceValue>.m-searchTable>tr>td a.c-yellow,.thousand .m-searchTable>tr>td a.c-yellow,.m-searchTable4>tr>td a.c-yellow{color: #F78A24;text-decoration: underline}
+    .faceValue>.m-searchTable>tr>td ayellow,.thousand .m-searchTable>tr>td ayellow,.m-searchTable4>tr>td ayellow{color: #F78A24;text-decoration: underline}
     .faceValue>.m-searchTable>tr>td:last-child,.thousand .m-searchTable>tr>td:last-child{border-right: 1px solid #e2e2e2}
     .faceValue>.m-searchTable>tr:nth-child(1),.thousand .m-searchTable>tr:nth-child(1){background: #EEF1F6;border: 1px solid #e2e2e2}
     .faceValue>.m-searchTable>tr>td,.thousand .m-searchTable>tr>td{height: 38px;text-align: center}

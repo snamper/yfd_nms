@@ -4,13 +4,13 @@
     <!-- 查询模块 -->
     <div class="dls greyFont">
         <el-row>
-            <el-col :span="24"><div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div></el-col>
+            <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
         </el-row>
         <el-row>
             <el-col :span="24"><div class="grid-content bg-purple">
-                <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark textR inputTitle">选择时间：</div></el-col>
+                <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2"><div class="grid-content bg-purple-dark f-ta-r inputTitle">选择时间：</div></el-col>
                 <el-col :xs="18" :sm="18" :md="20" :lg="18" :xl="18">
-                    <div class="displayInline">
+                    <div class="f-display-ib">
                         <el-date-picker
                         v-model="startTime"
                         size="small"
@@ -36,7 +36,7 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人：</div></el-col>
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">联系人：</div></el-col>
                 <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
                      <el-input v-model="name"  :maxlength="20" size="small" placeholder="请输入查询的联系人姓名"></el-input>
                 </el-col>
@@ -44,7 +44,7 @@
                 </el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">联系人号码：</div></el-col>
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">联系人号码：</div></el-col>
                 <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
                      <el-input v-model="phone" :maxlength="11" size="small"  placeholder="请输入联系人号码"></el-input>
                 </el-col>
@@ -54,7 +54,7 @@
         </el-row>
         <el-row class="marginTop">
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">公司名称：</div></el-col>
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">公司名称：</div></el-col>
                 <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
                      <el-input v-model="cname" :maxlength="30" size="small" placeholder="请输入查询的公司名称"></el-input>
                 </el-col>
@@ -62,7 +62,7 @@
                 </el-col> 
             </div></el-col>
             <el-col :xs="24" :sm="12" :md="12" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div></el-col>
+                <el-col :xs="4" :sm="6" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div></el-col>
                 <el-col :xs="18" :sm="16" :md="16" :lg="16" :xl="16">
                     <el-radio v-model="radio"  label="1,2,3,4">全部</el-radio>
                     <el-radio v-model="radio"  label="1">正常</el-radio>
@@ -76,33 +76,33 @@
             </div></el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-            <button  class="searchBtn" @click="search()">搜索</button>
+            <button  class="m-btn-orange" @click="search()">搜索</button>
         </el-row>
     </div>  
     <!-- 查询结果模块 -->
     <div v-if="searchList">
         <div><!--v-if="searchList.length>0"-->
-            <div class="listTitleFoot">
-                <p><h3>代理商列表<span class="fontWeight greyFont">({{total||'0'}})</span></h3></p>
+            <div class="m-listTitleFoot">
+                <p><h3>代理商列表<span class="f-fw greyFont">({{total||'0'}})</span></h3></p>
             </div>
-            <div class="detailsListDiv">
-                <table class="searchTab" style="width:100%;height:100%;">
+            <div class="m-details">
+                <table class="m-searchTab" style="width:100%;height:100%;">
                     <tr>
                         <td colspan="10">
                             <el-row>
-                                <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple">
+                                <el-col :span="7" class="f-ta-l f-pl-10"><div class="grid-content bg-purple">
                                     <span class="greyFont">最后同步成功时间 ：</span><span>{{ getDateTime(syncLastTime)[6]||"--" }}</span>
                                 </div></el-col>
-                                <el-col :span="7" class="tal pl20"><div class="grid-content bg-purple-light">
+                                <el-col :span="7" class="f-ta-l f-pl-10"><div class="grid-content bg-purple-light">
                                     <span class="greyFont">下次同步成功时间 ：</span><span>{{getDateTime(nextSyncTime)[6]||'--'}}</span>
                                 </div></el-col>
-                                <el-col :span="6" class="tal pl20"><div class="grid-content bg-purple">
+                                <el-col :span="6" class="f-ta-l f-pl-10"><div class="grid-content bg-purple">
                                     <span class="greyFont">同步间隔时间 ：<label v-if="timeCell">{{timeCell}}小时</label>
                                         <label v-else>--</label>    
                                     </span>
                                     <button class="setBtn" @click="openSet()">设置</button>
                                 </div></el-col>
-                                <el-col :span="4" class="tar"><div class="grid-content bg-purple-light">
+                                <el-col :span="4" class="f-ta-r"><div class="grid-content bg-purple-light">
                                     <button class="syncBtn" type="success" @click="sync()">手动同步</button>
                                 </div></el-col>
                             </el-row>
@@ -142,7 +142,7 @@
                             {{v.phone}}
                         </td>
                         <td>
-                           <span :class="v.departState==1?'fcgreen':v.departState==2?'fcred':v.departState==3||v.departState==4?'fcgrey':'--'">{{translateData('userState',v.departState)}}</span>
+                           <span :class="v.departState==1?'green':v.departState==2?'red':v.departState==3||v.departState==4?'grey':'--'">{{translateData('userState',v.departState)}}</span>
                         </td>
                         <td>
                             <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName}}</a>
@@ -161,13 +161,13 @@
                         </td>
                     </tr>
                     <tr v-if="searchList.length==0">
-                        <td class="tac" colspan="8">
+                        <td class="f-ta-c" colspan="8">
                             暂无数据                            
                         </td>
                     </tr>
                 </table>
             </div>
-            <div class="listTitleFoot" v-if="searchList.length!=0">
+            <div class="m-listTitleFoot" v-if="searchList.length!=0">
                 <el-row>
                     <el-col :span="12"><div class="grid-content bg-purple">
                         <el-pagination

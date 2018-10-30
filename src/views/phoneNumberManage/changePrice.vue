@@ -18,14 +18,14 @@
       <div class="dls greyFont">
         <el-row>
           <el-col :span="24">
-            <div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div>
+            <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">号包名称：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">号包名称：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
                 <el-input v-model="sectionId" size="small" placeholder="请输入号包名称" :maxlength="15"></el-input>
@@ -34,7 +34,7 @@
           </el-col>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-              <div class="grid-content bg-purple-dark textR inputTitle">号包类型：</div>
+              <div class="grid-content bg-purple-dark f-ta-r inputTitle">号包类型：</div>
             </el-col>
             <el-checkbox v-model="checkListAll" @change="BtnCheckAllCardType">全部</el-checkbox>
             <el-checkbox-group v-model="checkList">
@@ -45,21 +45,21 @@
           </el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-          <button class="searchBtn" @click="search()">搜索</button>
+          <button class="m-btn-orange" @click="search()">搜索</button>
         </el-row>
       </div>
       <!-- 查询结果列表 -->
       <div v-if="searchList">
         <div>
-          <div class="listTitleFoot">
+          <div class="m-listTitleFoot">
             <el-row>
               <p>
-                <h3>号包列表<span class="fontWeight greyFont">({{total||'0'}})</span></h3>
+                <h3>号包列表<span class="f-fw greyFont">({{total||'0'}})</span></h3>
               </p>
             </el-row>
           </div>
-          <div class="detailsListDiv">
-            <table class="searchTab" style="width:100%;height:100%;">
+          <div class="m-details">
+            <table class="m-searchTab" style="width:100%;height:100%;">
               <tr>
                 <td>序号</td>
                 <td>号包名称</td>
@@ -95,7 +95,7 @@
               </tr>
             </table>
           </div>
-          <div class="listTitleFoot" v-if="searchList.length>0">
+          <div class="m-listTitleFoot" v-if="searchList.length>0">
             <el-row>
               <el-col :span="12">
                 <div class="grid-content bg-purple">

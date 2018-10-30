@@ -212,7 +212,7 @@
             <td>
               <span class="f-fs14">删除角色可能会导致数据出现错误</span><br>
               <p style="height:5px"></p>
-              <span class="f-s-18 c-red">是否删除？</span>
+              <span class="f-s-18 red">是否删除？</span>
             </td>
           </tr>
           <tr class="tdBtn">
@@ -227,7 +227,7 @@
             <td>
               <span class="f-fs14">修改角色可能会导致数据出现错误</span><br>
               <p style="height:5px"></p>
-              <span class="f-s-18 c-red">是否修改？</span>
+              <span class="f-s-18 red">是否修改？</span>
             </td>
           </tr>
           <tr class="tdBtn">
@@ -242,7 +242,7 @@
             <td>
               <span class="f-fs14">修改归属渠道可能会导致数据出现错误</span><br>
               <p style="height:5px"></p>
-              <span class="f-s-18 c-red">是否修改？</span>
+              <span class="f-s-18 red">是否修改？</span>
             </td>
           </tr>
           <tr class="tdBtn">
@@ -637,12 +637,12 @@
               msgSkin: "success"
             })
           }
-          vm.$parent.off.layer = false;
           let info = getStore("YFD_NMS_INFO");
-          vm.$parent.off.withDrawal = true;
+          vm.$parent.off.layer = false;
+          vm.$parent.off.withdrawal = true;
           commission()
           .then((data)=>{
-            vm.$parent.$parent.cmsData=data.data;
+            vm.$parent.list=data.data;
             vm.$parent.withdrawalMoney="";
           }).catch(e=>errorDeal(e))
         }).catch(e=>errorDeal(e))

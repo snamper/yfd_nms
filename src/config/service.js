@@ -81,10 +81,10 @@ export const departChangeHistory=(data)=>fetch("/ums/w/depart/getDealerInfoChang
 export const getRechargeOrders=(data)=>fetch("/rfs/w/phone/getMngOrders",data,"POST")
 
 /*获取归属渠道列表*/
-export const getAccountDealer=(data,load)=>fetch("/ums/w/account/dealer",data,"POST",load)
+export const getaccountDealer=(data,load)=>fetch("/ums/w/account/dealer",data,"POST",load)
 
 /*账户列表*/
-export const getAccounts=(data,load)=>fetch("/ums/w/account/accounts",data,"POST",load)
+export const getaccounts=(data,load)=>fetch("/ums/w/account/accounts",data,"POST",load)
 
 /*账户余额明细*/
 export const getBalance=(data,load)=>fetch("/ums/w/account/balance-detail",data,"POST",load)

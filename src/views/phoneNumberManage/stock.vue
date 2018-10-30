@@ -5,14 +5,14 @@
       <div class="dls greyFont">
         <el-row>
           <el-col :span="24">
-            <div class="grid-content bg-purple-dark searchTitleStyle black">搜索条件</div>
+            <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">号段：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">号段：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
                 <el-input v-model="productName" size="small" placeholder="请输入查询的七位号段" :maxlength="7"></el-input>
@@ -22,7 +22,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">归属地：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">归属地：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
                 <el-select size="small" style="width:100%" v-model="value" placeholder="请选择">
@@ -38,7 +38,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">面值：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">面值：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
                 <el-radio v-model="cardType" label="0,1000,2000,3000,5000,10000">全部</el-radio>
@@ -54,7 +54,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">套餐：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">套餐：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
                 <el-input v-model="setMenu" size="small" placeholder="请输入查询的套餐名称" :maxlength="30"></el-input>
@@ -66,7 +66,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2">
-                <div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="20" :xl="20">
                 <el-radio v-model="productStatus" label="1,2,3,4">全部</el-radio>
@@ -80,7 +80,7 @@
           <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2">
-                <div class="grid-content bg-purple-dark textR inputTitle">运营商：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">运营商：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="20" :xl="20">
                 <el-radio v-model="isp" label="1,2,3">全部</el-radio>
@@ -95,7 +95,7 @@
           <el-col :span="24">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2">
-                <div class="grid-content bg-purple-dark textR inputTitle">品牌：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">品牌：</div>
               </el-col>
               <el-col :xs="19" :sm="21" :md="21" :lg="20" :xl="18">
                 <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="20">
@@ -122,7 +122,7 @@
           </el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-          <button class="searchBtn" @click="search()">搜索</button>
+          <button class="m-btn-orange" @click="search()">搜索</button>
         </el-row>
       </div>
       <!-- 查询结果列表 -->
@@ -203,7 +203,7 @@
             </td>
           </tr>
         </table>
-        <div class="listTitleFoot" v-if="datalist.length>0">
+        <div class="m-listTitleFoot" v-if="datalist.length>0">
           <el-row>
             <el-col :span="12">
               <div class="grid-content bg-purple">

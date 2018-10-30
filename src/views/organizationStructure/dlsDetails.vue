@@ -3,33 +3,33 @@
     <div v-if="off.searchStaff">
       <div class="yfd f-s-16">
         <el-container>
-          <el-header class="headTitleNav">
+          <el-header class="m-headBar">
             <el-row>
               <el-col :xs="18" :sm="18" :md="18" :lg="10" :xl="10">
-                <div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<span class="fcdb">{{company}}</span></div>
+                <div class="grid-content bg-purple">公司名称&nbsp;:&nbsp;<span class="blue">{{company}}</span></div>
               </el-col>
               <el-col :xs="6" :sm="4" :md="4" :lg="6" :xl="6" class="hidden-md-and-down">
-                <div class="grid-content bg-purple-light greyFont">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerName}}</span></div>
+                <div class="grid-content bg-purple-light greyFont">联系人&nbsp;&nbsp;:&nbsp;&nbsp;<span class="black">{{managerName}}</span></div>
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="6" :xl="6" class="hidden-md-and-down">
-                <div class="grid-content bg-purple greyFont">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span class="fcb">{{managerPhone}}</span></div>
+                <div class="grid-content bg-purple greyFont">手机号码&nbsp;&nbsp;:&nbsp;&nbsp;<span class="black">{{managerPhone}}</span></div>
               </el-col>
               <el-col :xs="6" :sm="6" :md="6" :lg="2" :xl="2">
-                <div class="grid-content bg-purple-light fr"><a class="fcaqua" href="javascript:void(0)" @click="goBack()">返回列表</a></div>
+                <div class="grid-content bg-purple-light fr"><a class="blue" href="javascript:void(0)" @click="goBack()">返回列表</a></div>
               </el-col>
             </el-row>
           </el-header>
         </el-container>
         <el-row>
           <el-col :span="24">
-            <div class="grid-content bg-purple-dark searchTitleStyle">搜索条件</div>
+            <div class="grid-content bg-purple-dark m-search-title">搜索条件</div>
           </el-col>
         </el-row>
         <el-row>
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light greyFont">
               <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">联系人：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">联系人：</div>
               </el-col>
               <el-col :xs="19" :sm="20" :md="18" :lg="18" :xl="18" :span="20">
                 <el-input v-model="name" size="small" placeholder="请输入查询的联系人姓名"></el-input>
@@ -39,7 +39,7 @@
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light greyFont">
               <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">手机号码：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">手机号码：</div>
               </el-col>
               <el-col :xs="19" :sm="20" :md="18" :lg="18" :xl="18" :span="20">
                 <el-input v-model="phone" size="small" placeholder="请输入查询的手机号码"></el-input>
@@ -51,7 +51,7 @@
           <el-col :xs="24" :sm="24" :md="12" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light greyFont">
               <el-col :xs="5" :sm="3" :md="4" :lg="4" :xl="4" :span="4">
-                <div class="grid-content bg-purple-dark textR inputTitle">当前状态：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div>
               </el-col>
               <el-col :xs="19" :sm="21" :md="20" :lg="20" :xl="20" :span="20">
                 <el-radio v-model="radio" label="1,2,3,4">全部</el-radio>
@@ -65,7 +65,7 @@
           </el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-          <button class="searchBtn" type="danger" @click="search()">搜索</button>
+          <button class="m-btn-orange" type="danger" @click="search()">搜索</button>
         </el-row>
       </div>
       <el-row>
@@ -98,15 +98,15 @@
         </div>
       </div>
       <!-- 代理商员工查询结果 -->
-      <div class="listTitleFoot">
+      <div class="m-listTitleFoot">
         <el-row>
           <p>
-            <h3>员工列表<span class="fontWeight greyFont">({{lists.length||'0'}})</span></h3>
+            <h3>员工列表<span class="f-fw greyFont">({{lists.length||'0'}})</span></h3>
           </p>
         </el-row>
       </div>
-      <div class="detailsListDiv">
-        <table class="searchTab" style="width:100%;height:100%;">
+      <div class="m-details">
+        <table class="m-searchTab" style="width:100%;height:100%;">
           <tr>
             <td></td>
             <td>序号</td>
@@ -127,7 +127,7 @@
             <td>
               <p style="float:left;margin-left:36%">
                 <span v-for="(v,i) in v.userRole" :key="i">
-                  <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="adminIcon">
+                  <img v-if="v==3" src="../../assets/images/icon/admin.svg" class="m-adminIcon">
                 </span>
                 {{v.username}}
               </p>
@@ -149,7 +149,7 @@
               </span>
             </td>
             <td>
-              <span :class="v.userState==1?'fcgreen':v.userState==2?'fcred':v.userState==3||v.userState==4?'fcgrey':'--'">{{translateData('userState',v.userState)}}</span>
+              <span :class="v.userState==1?'green':v.userState==2?'red':v.userState==3||v.userState==4?'grey':'--'">{{translateData('userState',v.userState)}}</span>
             </td>
             <td>
               <span v-if="v.lastLoginTime">
@@ -161,19 +161,19 @@
             </td>
           </tr>
           <tr v-if="lists.length==0">
-            <td class="tac" colspan="8">
+            <td class="f-ta-c" colspan="8">
               暂无数据
             </td>
           </tr>
           <tr v-if="lists.length>0">
-            <td colspan="8" class="pl20">
+            <td colspan="8" class="f-pl-10">
               <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)"
                   @click="doFilter('on')"> 取消全选 </a></span>
             </td>
           </tr>
         </table>
       </div>
-      <div class="listTitleFoot" v-if="lists.length>0">
+      <div class="m-listTitleFoot" v-if="lists.length>0">
         <el-row>
           <el-col :span="12">
             <div class="grid-content bg-purple">
@@ -192,13 +192,13 @@
       <!-- 代理商员工操作模块 -->
       <!-- <div v-if="off.modify" class="modifyStaffStateDiv">
             <div class="borderTopModifyStaffState"></div>
-            <div class="listTitleFoot" style="height:20px;">
+            <div class="m-listTitleFoot" style="height:20px;">
                 <p style="text-align:right;font-size:14px" class="redFont" >将已选择内容批量{{typeTitle}}</p>
             </div>
-            <div class="listTitleFoot">
+            <div class="m-listTitleFoot">
                 <el-input class="tar" v-model="reason" size="small" maxlength=20 placeholder="请输入原因，字数限制20个字符，必填"></el-input>
             </div> 
-            <div class="listTitleFoot">
+            <div class="m-listTitleFoot">
                 <p style="float:right">
                     <button class="buttonModifyYes"  @click="btnYes()">确定</button>
                 </p>
@@ -699,14 +699,9 @@
   div.operate button {
     padding: 4px 10px;
     margin-left: 10px;
-    border-radius: 8px;
-    border: 1px solid rgb(212, 212, 212);
-    border-top: 1px solid rgb(189, 189, 189);
+    border-radius: 4px;
+    color: #000;
     outline: none;
-    background: -webkit-radial-gradient(ellipse, rgb(218, 218, 218, 1), rgb(218, 218, 218, 0));
-    background: -o-radial-gradient(ellipse, rgb(218, 218, 218, 1), rgb(218, 218, 218, 0));
-    background: -moz-radial-gradient(ellipse, rgb(218, 218, 218, 1), rgb(218, 218, 218, 0));
-    background: radial-gradient(ellipse, rgb(218, 218, 218, 1), rgb(218, 218, 218, 0));
   }
 
   div.operate button:active {
