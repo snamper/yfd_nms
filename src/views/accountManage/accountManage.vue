@@ -116,14 +116,14 @@
     <balance v-if="off.balance" :list="detailsinfo"></balance>
     <commissionpage v-if="off.commission" :list="detailsinfo"></commissionpage>
     <commissionWithdrawal v-if="off.commissionWithdrawal" :list="detailsinfo"></commissionWithdrawal>
-    <withdrawal v-if="off.withdrawal" :list="detailsinfo"></withdrawal>
+    <withdrawalpage v-if="off.withdrawal" :list="detailsinfo"></withdrawalpage>
   </section>
 </template>
 <script>
   import balance from './balance.vue';
   import commissionpage from './commission.vue';
   import commissionWithdrawal from './commissionWithdrawal.vue';
-  import withdrawal from './withdrawal.vue';
+  import withdrawalpage from './withdrawal.vue';
   import { getaccountDealer,getaccounts,commission } from '../../config/service.js';
   import { errorDeal,translateData,getStore } from '../../config/utils';
   import { mapState, mapMutations, mapActions } from 'vuex';
@@ -154,7 +154,7 @@
       balance,
       commissionpage,
       commissionWithdrawal,
-      withdrawal
+      withdrawalpage
     },
     created:function(){
       let vm=this;
