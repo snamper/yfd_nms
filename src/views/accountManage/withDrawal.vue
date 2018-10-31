@@ -131,7 +131,6 @@
         layerData:{},
         depId:"",
         userId:"",
-        withdrawalData:"",
         searchlist:"",
         off: {
           huafen: false,
@@ -171,9 +170,9 @@
       allWithDrawal() {
         let vm = this;
         if (vm.off.huafen) {
-          vm.withdrawalMoney = parseInt(vm.withdrawalData.cspWithdraw)/100;
+          vm.withdrawalMoney = parseInt(vm.list.cspWithdraw)/100;
         } else if (vm.off.kaika) {
-          vm.withdrawalMoney = parseInt(vm.withdrawalData.ictWithdraw)/100;
+          vm.withdrawalMoney = parseInt(vm.list.ictWithdraw)/100;
         } else {
           return false;
         }
@@ -191,7 +190,7 @@
         }
         if (vm.off.huafen) {
           vm.$set(vm.layerData,'src',1) 
-          if(vm.withdrawalMoney*100>vm.withdrawalData.cspWithdraw){
+          if(vm.withdrawalMoney*100>vm.list.cspWithdraw){
             layer.open({
               content: '提款金额不能大于余额',
               skin: 'msg',
@@ -202,7 +201,7 @@
           }
         } else if (vm.off.kaika) {
           vm.$set(vm.layerData,'src',2)
-          if(vm.withdrawalMoney*100>vm.withdrawalData.ictWithdraw){
+          if(vm.withdrawalMoney*100>vm.list.ictWithdraw){
             layer.open({
               content: '提款金额不能大于余额',
               skin: 'msg', 
@@ -225,10 +224,10 @@
         }else{
           if(vm.radio==1){
             vm.$set(vm.layerData,'accountType',1)
-            vm.$set(vm.layerData,'account',vm.withdrawalData.account)          
+            vm.$set(vm.layerData,'account',vm.list.account)          
           }else if(vm.radio==2){
             vm.$set(vm.layerData,'accountType',2)
-            vm.$set(vm.layerData,'account',vm.withdrawalData.aliAccount)          
+            vm.$set(vm.layerData,'account',vm.list.aliAccount)          
           }
         }
         vm.$set(vm.layerData,'money',vm.withdrawalMoney*100);
@@ -291,10 +290,10 @@
     width: 35%;
   }
   .m-withDrawalCon {
-    position: absolute;
+    position: relative;
     width: 600px;
     height: 600px;
-    top: 0;
+    top: 50px;
     left: 0;
     right: 0;
     bottom: 0;
