@@ -1,0 +1,1 @@
+webpackJsonp([23],{iXwo:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var r={name:"account",data:function(){return{}}},u=function(){var e=this,n=e.$createElement;return(e._self._c||n)("router-view")},a=[],c={render:u,staticRenderFns:a},l=c,o=t("Z0/y"),i=o(r,l,!1,null,null,null);n.default=i.exports}});

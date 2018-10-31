@@ -1,0 +1,1 @@
+webpackJsonp([20],{pDAC:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var r={name:"opLog",data:function(){return{}}},u=function(){var e=this,n=e.$createElement;return(e._self._c||n)("router-view")},l=[],a={render:u,staticRenderFns:l},o=a,c=t("Z0/y"),s=c(r,o,!1,null,null,null);n.default=s.exports}});

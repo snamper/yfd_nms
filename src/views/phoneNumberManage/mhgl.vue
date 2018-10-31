@@ -458,7 +458,11 @@
         for (let i in vm.checkedCities) {
           checked.push(cityOptions.indexOf(vm.checkedCities[i]) + 1);
         }
+        if(vm.checkAll==true){
+          checked.unshift(0);
+        }
         checked = checked.join(",");
+        
         data = {
           "brand": checked,
           "isp": vm.radio,

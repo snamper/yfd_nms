@@ -1,0 +1,1 @@
+webpackJsonp([17],{Vh9s:function(e,n,t){"use strict";Object.defineProperty(n,"__esModule",{value:!0});var r={name:"org",data:function(){return{}}},u=function(){var e=this,n=e.$createElement;return(e._self._c||n)("router-view")},l=[],a={render:u,staticRenderFns:l},s=a,c=t("Z0/y"),o=c(r,s,!1,null,null,null);n.default=o.exports}});
