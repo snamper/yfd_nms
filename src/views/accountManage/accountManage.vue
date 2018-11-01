@@ -90,7 +90,7 @@
               <td><a @click="details(1,v)">{{translateData('fenToYuan',v.balance)}}</a></td>
               <td><a @click="details(2,v)">{{translateData('fenToYuan',v.commissionBalance)}}</a></td>
               <td><a @click="details(3,v)">{{translateData('fenToYuan',v.withdrawTotal)}}</a></td>
-              <td><a @click="withdrawal(v.username)" class="m-junplink">提现</a></td>
+              <td><a @click="withdrawal(v.departId)" class="m-junplink">提现</a></td>
             </tr>
           </table>
         </div>
@@ -201,7 +201,8 @@
         vm.off.commission = false;
         vm.off.commissionWithdrawal = false;
         vm.off.withdrawal = true;
-        commission()
+        vm.setaccountDepId(v);
+        commission({departId:v})
         .then((data)=>{
           vm.detailsinfo=data.data;
         }).catch(e=>errorDeal(e))

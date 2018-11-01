@@ -640,7 +640,7 @@
           let info = getStore("YFD_NMS_INFO");
           vm.$parent.off.layer = false;
           vm.$parent.off.withdrawal = true;
-          commission()
+          commission({departId:vm.account_depId})
           .then((data)=>{
             vm.$parent.list=data.data;
             vm.$parent.withdrawalMoney="";
