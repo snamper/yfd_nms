@@ -139,6 +139,7 @@
 <script>
   import {getTimeFunction,errorDeal,translateData,getDateTime} from "../../config/utils";
   import {getBalance} from "../../config/service.js";
+  import { mapState } from 'vuex';
   export default {
     props: {list:Object},
     data() {
@@ -195,6 +196,11 @@
         },
       }
     },
+    computed:{
+      ...mapState([
+        "account_depId"
+      ])
+    },
     created: function () {
       getTimeFunction(this);
     },
@@ -226,7 +232,8 @@
             "operateType": vm.opType.join(','),
             "state": vm.orderState,
             "pageNum": p||1,
-            "pageSize": vm.pageSize
+            "pageSize": vm.pageSize,
+            "departId": vm.account_depId
           };
         getBalance(data)
           .then((data) => {

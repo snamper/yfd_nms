@@ -208,7 +208,8 @@
             "userName":vm.opId,
             "operateType":vm.opType,
             "pageNum": p||1,
-            "pageSize": vm.pageSize
+            "pageSize": vm.pageSize,
+            "departId": vm.account_depId
           };
         vm.searchJson=data;
         getCmsBalance(data)

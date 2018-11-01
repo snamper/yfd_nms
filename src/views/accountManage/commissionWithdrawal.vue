@@ -221,7 +221,8 @@
             "operateType":vm.opType.join(","),
             "state":vm.orderState,
             "pageNum": p||1,
-            "pageSize": vm.pageSize
+            "pageSize": vm.pageSize,
+            "departId": vm.account_depId
           };
           vm.searchJson = data;
         getCmsWithdrawal(data)
