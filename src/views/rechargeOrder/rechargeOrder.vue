@@ -65,7 +65,7 @@
                 </div></el-col>
             </el-row>
             <el-row style="text-align:center" class="marginTop">
-                <button class="m-btn-orange" @click="search()">搜索</button>
+                <button class="m-btn-orange m-btn-search" @click="search()">搜索</button>
             </el-row>
         </div> 
         <!-- 查询结果列表 -->
@@ -105,6 +105,11 @@
                             <td>
                                 <span :class="v.state==1?'blue':v.state==2?'green':v.state==3?'red':'--'">{{translate(2,v.state)}}</span>
                             </td>
+                        </tr>
+                        <tr v-if="searchList.length<=0">
+                          <td style="text-align:center" colspan="14">
+                            暂无数据                                                        
+                          </td>
                         </tr>
                     </table>
                 </div>       

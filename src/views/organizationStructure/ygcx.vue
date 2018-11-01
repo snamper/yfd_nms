@@ -31,7 +31,7 @@
             </div></el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-            <button class="m-btn-orange" @click="search()">搜索</button>
+            <button class="m-btn-orange m-btn-search" @click="search()">搜索</button>
         </el-row>
     </div>
     <div v-if="detailsList">

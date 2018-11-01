@@ -2,7 +2,7 @@
     <section>
         <section v-if="off.searchlist">
             <div class="f-fs16 m-title1 f-display-f">
-                <p style="flex:1"><span>角色列表</span></p><p style="flex:1;text-align:right"><button class="m-btn-green"  @click="add">添加角色</button></p>
+                <p style="flex:1"><span>角色列表</span></p><p style="flex:1;text-align:right"><button class="m-btn-green m-btn-small"  @click="add">添加角色</button></p>
             </div>
             <div class="m-searchlist">
                 <table>
