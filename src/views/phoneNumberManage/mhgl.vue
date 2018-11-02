@@ -195,7 +195,6 @@
                       </td>
                       <td>{{translateData(2,v.productType)}}</td>
                       <td>
-
                         <button v-if="splitButton(v,i,1)==1&&v.productState!=5" class="m-button-split2" @click="splitNumber(v,1,i)">拆包</button>
                         <button v-if="splitButton(v,i,1)==1&&v.productState==5">未拆包</button>
                         <button v-if="splitButton(v,i,2)==2" class="m-button-split1"><span>拆包</span></button>
