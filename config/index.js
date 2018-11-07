@@ -15,7 +15,7 @@ module.exports = {
             // target:'http://192.168.10.162:10022',
             changeOrigin:true,
             pathRewrite:{
-                '^/nus/':'/nus/'
+                '^/nus/':'/nus'
             }
         },
         '/uus/':{
@@ -23,7 +23,7 @@ module.exports = {
             // target:'http://192.168.10.162:10022',
             changeOrigin:true,
             pathRewrite:{
-                '^/uus':'/uus/'
+                '^/uus':'/uus'
             }
         },
         '/ums/':{
@@ -31,7 +31,7 @@ module.exports = {
             target:'http://192.168.10.37:10022',
             changeOrigin:true,
             pathRewrite:{
-                '^/ums' : '/ums/' 
+                '^/ums' : '/ums' 
             }
         },
         '/nms/':{

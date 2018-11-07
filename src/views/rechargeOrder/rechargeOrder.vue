@@ -133,109 +133,128 @@
     </section>
 </template>
 <script>
-import { getTimeFunction, errorDeal, translateData, getDateTime } from "../../config/utils";
+import {
+  getTimeFunction,
+  errorDeal,
+  translateData,
+  getDateTime
+} from "../../config/utils";
 import { getRechargeOrders } from "../../config/service.js";
-export default{
-	data(){
-		return{
-            searchList:false
-            ,total:0
-            ,orderState:"1,2,3"
-            ,orderId:""
-            ,phone:""
-            ,startTime:""
-            ,endTime:""
-            ,total:""
-            ,currentPage:"",
-            opName:"",
-            pickerOptionsS: {
-                disabledDate(time) {
-                    let curDate= new Date().getTime();
-                    let curYear=new Date(curDate).getFullYear();
-                    let curMonth=new Date(curDate).getMonth()+1,
-                        minMonth=curMonth-5,
-                        minYear=curYear;
-                        if(minMonth<0){
-                            minMonth+=12;
-                            minYear=curYear-1;
-                        }
-                    let curDay=new Date(curDate).getDate()+1; 
-                    let nextMonth=curMonth+1;               
-                    let cur=minYear+"/"+minMonth+"/1";
-                    let next=curYear+"/"+nextMonth+"/1";
-                    let nextYesterday=new Date(next)-1000*3600*24;
-                        cur=new Date(cur).getTime();
-                    return time.getTime() > nextYesterday || time.getTime() < cur;
-                }
-            },
-            pickerOptionsE: {
-                disabledDate(time) {
-                    let curDate = new Date().getTime();
-                    let curYear=new Date(curDate).getFullYear();
-                    let curMonth=new Date(curDate).getMonth()+1,
-                        minMonth=curMonth-5,
-                        minYear=curYear;
-                        if(minMonth<0){
-                            minMonth+=12;
-                            minYear=curYear-1;
-                        }
-                    let curDay=new Date(curDate).getDate()+1; 
-                    let nextMonth=curMonth+1;               
-                    let cur=minYear+"/"+minMonth+"/1";
-                    let next=curYear+"/"+nextMonth+"/1";
-                    let nextYesterday=new Date(next)-1000*3600*24;
-                        cur=new Date(cur).getTime();
-                    return time.getTime() > nextYesterday || time.getTime() < cur;
-                }
-            }, 
+export default {
+  data() {
+    return {
+      searchList: false,
+      total: 0,
+      orderState: "1,2,3",
+      orderId: "",
+      phone: "",
+      startTime: "",
+      endTime: "",
+      total: "",
+      currentPage: "",
+      opName: "",
+      pickerOptionsS: {
+        disabledDate(time) {
+          let curDate = new Date().getTime();
+          let curYear = new Date(curDate).getFullYear();
+          let curMonth = new Date(curDate).getMonth() + 1,
+            minMonth = curMonth - 5,
+            minYear = curYear;
+          if (minMonth < 0) {
+            minMonth += 12;
+            minYear = curYear - 1;
+          }
+          let curDay = new Date(curDate).getDate() + 1;
+          let nextMonth = curMonth + 1;
+          let cur = minYear + "/" + minMonth + "/1";
+          let next = curYear + "/" + nextMonth + "/1";
+          let nextYesterday = new Date(next) - 1000 * 3600 * 24;
+          cur = new Date(cur).getTime();
+          return time.getTime() > nextYesterday || time.getTime() < cur;
         }
-    },
-	components:{
-       
-    },
-    created:function(){
-        getTimeFunction(this);
-    },
-	methods:{
-        search(p){
-            let vm=this,
-            data={
-                "pageSize": 15,
-                "pageNum": p||1,
-                "sysOrderId":vm.orderId,
-                "startTime":new Date(vm.startTime).getTime(),
-                "endTime":new Date(vm.endTime).getTime(),
-                "state":vm.orderState,
-                "rechargePhone":vm.phone,
-                "userName":vm.opName
-            };
-            getRechargeOrders(data)
-            .then((data)=>{
-                vm.searchList=data.data.list;
-                vm.total=data.data.total;
-                vm.currentPage=p||1;
-            }).catch(e=>errorDeal(e))
-        },translateData(v,i){
-            return translateData(v,i)
-        },translate(type,v){
-            switch(type){
-                case 1:
-                    return v==1?"支付宝":v==2?"微信":v==3?"账户":v==4?"线下支付":v==5?"支付宝第三方":v==6?"微信第三方":"--";
-                    break;
-                case 2:
-                    return v==1?"充值中":v==2?"成功":v==3?"失败":"--";
-                    break;
-                case 3:
-                    return v==1?"IOS":v==2?"Android":v==3?"WEB":"--";
-                    break;
-                case 4:
-                    return v==1?"未支付":v==2?"已支付":"--";
-                    break;
-            }
-        },getDateTime(v){
-            return getDateTime(v)
+      },
+      pickerOptionsE: {
+        disabledDate(time) {
+          let curDate = new Date().getTime();
+          let curYear = new Date(curDate).getFullYear();
+          let curMonth = new Date(curDate).getMonth() + 1,
+            minMonth = curMonth - 5,
+            minYear = curYear;
+          if (minMonth < 0) {
+            minMonth += 12;
+            minYear = curYear - 1;
+          }
+          let curDay = new Date(curDate).getDate() + 1;
+          let nextMonth = curMonth + 1;
+          let cur = minYear + "/" + minMonth + "/1";
+          let next = curYear + "/" + nextMonth + "/1";
+          let nextYesterday = new Date(next) - 1000 * 3600 * 24;
+          cur = new Date(cur).getTime();
+          return time.getTime() > nextYesterday || time.getTime() < cur;
         }
+      }
+    };
+  },
+  components: {},
+  created: function() {
+    getTimeFunction(this);
+  },
+  methods: {
+    search(p) {
+      let vm = this,
+        data = {
+          pageSize: 15,
+          pageNum: p || 1,
+          sysOrderId: vm.orderId,
+          startTime: new Date(vm.startTime).getTime(),
+          endTime: new Date(vm.endTime).getTime(),
+          state: vm.orderState,
+          rechargePhone: vm.phone,
+          userName: vm.opName
+        };
+      getRechargeOrders(data)
+        .then(data => {
+          vm.searchList = data.data.list;
+          vm.total = data.data.total;
+          vm.currentPage = p || 1;
+        })
+        .catch(e => errorDeal(e));
+    },
+    translateData(v, i) {
+      return translateData(v, i);
+    },
+    translate(type, v) {
+      switch (type) {
+        case 1:
+          return v == 1
+            ? "支付宝"
+            : v == 2
+              ? "微信"
+              : v == 3
+                ? "账户"
+                : v == 4
+                  ? "线下支付"
+                  : v == 5
+                    ? "支付宝第三方"
+                    : v == 6
+                      ? "微信第三方"
+                      : "--";
+          break;
+        case 2:
+          return v == 1 ? "充值中" : v == 2 ? "成功" : v == 3 ? "失败" : "--";
+          break;
+        case 3:
+          return v == 1 ? "IOS" : v == 2 ? "Android" : v == 3 ? "WEB" : "--";
+          break;
+        case 4:
+          return v == 1 ? "未支付" : v == 2 ? "已支付" : "--";
+          break;
+      }
+    },
+    getDateTime(v) {
+      return getDateTime(v);
     }
-}
+  }
+};
 </script>
 

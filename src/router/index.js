@@ -176,6 +176,14 @@ const rechargeOrder = resolve => {
         load();
     });
 };
+//收货地址管理
+const address = resolve => {
+    load(true);
+    require.ensure(["@/views/addressManage/addressManage.vue"], () => {
+        resolve(require("@/views/addressManage/addressManage.vue"));
+        load();
+    });
+};
 const router = new Router({
     routes: [
         {path: "/login",component: Login},
@@ -273,6 +281,10 @@ const router = new Router({
                 path: "recharge",
                 name: "recharge",
                 component: rechargeOrder,
+            },{
+                path: "address",
+                name: "address",
+                component: address
             }]
         }
     ]

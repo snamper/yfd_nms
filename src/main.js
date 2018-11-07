@@ -4,13 +4,18 @@
   *@date 2018-03-15
 * */
 import Vue from 'vue';
+import App from './App.vue';
 import store from './store';
 import router from './router';
 import ElementUI from 'element-ui';
-import App from './App.vue';
 import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css';
 import './config/globalOptions.js'
+
+import 'vue-area-linkage/dist/index.css'; // v2 or higher
+import VueAreaLinkage from 'vue-area-linkage';
+
+Vue.use(VueAreaLinkage)
 
 Vue.use(ElementUI);
 require("./assets/css/style.css");

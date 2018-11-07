@@ -264,6 +264,19 @@
           </tr>
         </tbody>
       </table>
+      <table v-if="layerType=='deleteAddress'">
+        <tbody>
+          <tr style="height:140px;">
+            <td>
+              <span class="f-fs14">是否删除该收货地址</span><br>
+            </td>
+          </tr>
+          <tr class="tdBtn">
+            <span @click="close()">取消</span>
+            <span @click="btnYes('deleteAddress',layerData)">确认</span>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 </template>
@@ -279,7 +292,8 @@
    updateDealerInfo, 
    requestMethod,
    transfer,
-   commission } from "../config/service.js";
+   commission,
+   deleteAddress } from "../config/service.js";
   import { errorDeal, getStore, trimFunc } from '../config/utils';
   import { mapState } from 'vuex';
   export default {
@@ -350,6 +364,8 @@
           vm.modifyDepart(v)
         } else if (e == "Withdrawal") {
           vm.withdrawal(v)
+        } else if(e == "deleteAddress"){
+          vm.deleteAddress(v)
         }
       },
       close(i) {
@@ -645,6 +661,24 @@
             vm.$parent.list=data.data;
             vm.$parent.withdrawalMoney="";
           }).catch(e=>errorDeal(e))
+        }).catch(e=>errorDeal(e))
+      },
+      deleteAddress(v){
+        let vm=this;
+        deleteAddress(v)
+        .then((data)=>{
+          if(data.code==200){
+            layer.open({
+              content: '删除成功',
+              skin: 'msg',
+              time: 2,
+              msgSkin: 'success',
+            });
+          }
+          vm.$parent.off.layer=false;
+          vm.$parent.layerType=false;
+          vm.$parent.layerData=false;
+          vm.$parent.search();
         }).catch(e=>errorDeal(e))
       },
       trimFunc(v) {

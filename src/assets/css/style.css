@@ -52,6 +52,7 @@ button {
   border-radius: 4px;
   border: none;
   outline: none;
+  cursor: pointer;
 }
 #app {
   position: absolute;
@@ -63,40 +64,41 @@ button {
 
 
 /*公共基础*/
-.f-pl-10{padding-left: 10px; }
-.f-ta-c{text-align: center!important; }
-.f-ta-r{text-align: right; }
-.f-ta-l{text-align: left; }
-.fr { float: right; }
-.fl { float: left; }
-.clr:after { content: ''; display: table; clear: both; }
-.f-bg-green{background: #00AA01; }
-.f-bg-grey{background: #9c9c9c; }
+.fl { float: left;}
+.fr { float: right;}
+.f-pl-10{padding-left: 10px;}
+.f-ta-r{text-align: right;}
+.f-ta-l{text-align: left;}
+.f-ta-c{text-align: center!important;}
+.f-bg-green{background: #00AA01;}
+.f-bg-grey{background: #9c9c9c;}
+.f-bg-blue{background: #20a0ff;}
+.clr:after{ content: ''; display: table; clear: both;}
 /**字体颜色大小**/
-.greyFont{color:#9c9c9c}
-.red { color: #E13722; }
-.blue { color: #20A0FF }
-.green { color: #008800; }
-.yellow { color: #F78A24; }
-.grey { color: #A5A5A5; }
-.purple { color: #4b3887; }
-.black { color: #000; }
-.deepBlue{ color:#5D6193 }
+.black{ color: #000 !important;}
+.red{ color: #E13722 !important;}
+.grey{ color: #A5A5A5 !important;}
+.blue{ color: #20A0FF !important;}
+.green{ color: #008800 !important;}
+.greyFont{color:#9c9c9c !important;}
+.yellow{ color: #F78A24 !important;}
+.purple{ color: #4b3887 !important;}
+.deepBlue{ color:#5D6193 !important;}
 
 .f-s-12{font-size:12px !important;}
-.f-s-14{font-size:12px;color:#666}
 .f-s-16{font-size:16px !important;}
 .f-s-18{font-size:18px !important;}
 .f-s-20{font-size:20px !important;}
 .f-fs14{font-size: 14px !important;}
 .f-fs16{font-size: 16px !important;}
+.f-s-14{font-size:12px !important;color:#666}
 .f-fw{font-weight: bold}
 .f-display-f{display:flex}
-.f-display-ib{display: inline-block}
-.f-td-underline{text-decoration: underline}
-.f-ls-1{letter-spacing: 1px}
-.t-td-lt{text-decoration:line-through}
 .f-lh-30{line-height: 30px;}
+.f-ls-1{letter-spacing: 1px}
+.f-display-ib{display: inline-block}
+.t-td-lt{text-decoration:line-through}
+.f-td-underline{text-decoration: underline}
 
 [class*=" u-icon"],
 [class^="u-icon-"] {

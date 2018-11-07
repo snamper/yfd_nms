@@ -15,7 +15,7 @@
                 <div class="grid-content bg-purple-dark f-ta-r inputTitle">号段：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-                <el-input v-model="productName" size="small" placeholder="请输入查询的七位号段" :maxlength="7"></el-input>
+                <el-input v-model="productName" size="small" placeholder="请输入查询的号段" :maxlength="8"></el-input>
               </el-col>
             </div>
           </el-col>

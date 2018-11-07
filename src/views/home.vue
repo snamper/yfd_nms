@@ -1,23 +1,22 @@
 <style>
-  @import "../assets/css/home.css";
+@import "../assets/css/home.css";
+span.iconFoldOpen {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: url("../assets/images/icon/more_unfold.svg") no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
 
-  span.iconFoldOpen {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background: url("../assets/images/icon/more_unfold.svg") no-repeat;
-    background-position: center center;
-    background-size: contain
-  }
-
-  span.iconFoldClose {
-    display: inline-block;
-    width: 18px;
-    height: 18px;
-    background: url("../assets/images/icon/more.svg") no-repeat;
-    background-position: center center;
-    background-size: contain
-  }
+span.iconFoldClose {
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  background: url("../assets/images/icon/more.svg") no-repeat;
+  background-position: center center;
+  background-size: contain;
+}
 </style>
 <template>
   <div class="f-scroll-lt" id="home" :class={active:off.headMenu} ref="psec">
@@ -220,6 +219,18 @@
             </router-link>
           </li>
         </ul>
+        <ul class="g-side-ul">
+          <li :class="{active:crumb[0].name=='收货地址管理'}">
+            <b></b>
+            <router-link to="/home/address">
+              <div>
+                <i class="u-icon-dizhi"></i>
+                <span>收货地址管理</span>
+                <span :class="crumb[0].name=='收货地址管理'?'iconFoldOpen':'iconFoldClose'"></span>
+              </div>
+            </router-link>
+          </li>
+        </ul>
       </nav>
     </aside>
     <section class="g-main" id="main">
@@ -230,221 +241,240 @@
   </div>
 </template>
 <script>
-  import {
-    mapState,
-    mapMutations,
-    mapActions
-  } from 'vuex';
-  import {
-    getStore,
-    errorDeal
-  } from '../config/utils';
-  import {
-    signOut
-  } from '../config/service';
-  export default {
-    data() {
-      return {
-        user: {
-          "username": "admin"
+import { mapState, mapMutations, mapActions } from "vuex";
+import { getStore, errorDeal } from "../config/utils";
+import { signOut } from "../config/service";
+export default {
+  data() {
+    return {
+      user: {
+        username: "admin"
+      },
+      off: {
+        headMenu: true, //导航栏开关
+        window: 0, //浏览器窗口宽度
+        userMenu: 0 //用户菜单开关
+      },
+      userInfo: {
+        isadmin: ""
+      },
+      isShow: false,
+      crumb: [
+        {
+          name: ""
         },
-        off: {
-          headMenu: true, //导航栏开关
-          window: 0, //浏览器窗口宽度
-          userMenu: 0, //用户菜单开关
+        {
+          name: ""
         },
-        userInfo: {
-          isadmin: ''
-        },
-        isShow: false,
-        crumb: [{
-          'name': ''
-        }, {
-          'name': ''
-        }, {
-          'name': ''
-        }], //面包屑
+        {
+          name: ""
+        }
+      ] //面包屑
+    };
+  },
+  created: function() {
+    let vm = this,
+      Info = getStore("YFD_NMS_INFO");
+    vm.user = Info;
+    let r = Info.userRole.split(",");
+    r.some(function(value, index, r) {
+      return value == 6 || value == 7;
+    })
+      ? ((vm.isShow = false), (window.location.href = "#/home/card/cardManage"))
+      : (vm.isShow = true);
+  },
+  watch: {
+    $route: "routeChange"
+  },
+  mounted: function() {
+    this.init();
+  },
+  methods: {
+    ...mapState(["rolelist"]),
+    ...mapMutations(["SIGN_OUT", "SET_USERINFO", "GET_ROLE"]),
+    async init() {
+      //页面初始化
+      const vm = this;
+      vm.routeChange(); //头部面包屑导航
+      window.onresize = () => vm.debounce(300, vm.windowChange());
+      let userInfo = getStore("YFD_NMS_INFO");
+      vm.userInfo = userInfo;
+      vm.SET_USERINFO(userInfo);
+      document.attachEvent
+        ? doucument.body.attachEvent("onclick", function(event) {
+            vm.off.userMenu = false;
+            window.event.cacenlBubble = false;
+          })
+        : document.body.addEventListener(
+            "click",
+            function(event) {
+              vm.off.userMenu = false;
+              event.stopPropagation();
+            },
+            false
+          );
+    },
+    headMenu: function() {
+      //侧边导航show or hide
+      this.off.headMenu
+        ? (this.off.headMenu = false)
+        : (this.off.headMenu = true);
+    },
+    routeChange: function() {
+      //路由变化
+      this.windowChange();
+      var path = this.$route.path,
+        crumb = [
+          {
+            name: ""
+          },
+          {
+            name: ""
+          },
+          {
+            name: ""
+          }
+        ],
+        mainDom = document.getElementById("main");
+      if (path.indexOf("/home/organization") > -1) {
+        crumb[0] = {
+          name: "架构管理",
+          href: "/home/organization"
+        };
+        if (path.indexOf("home/organization/yfd") > -1) {
+          crumb[1] = {
+            name: "亚飞达管理",
+            href: "yfd"
+          };
+        } else if (path.indexOf("home/organization/agent") > -1) {
+          crumb[1] = {
+            name: "代理商管理",
+            href: "agent"
+          };
+        } else if (path.indexOf("home/organization/staff") > -1) {
+          crumb[1] = {
+            name: "员工管理",
+            href: "staff"
+          };
+        } else if (path.indexOf("home/organization/powerDeploy") > -1) {
+          crumb[1] = {
+            name: "权限配置",
+            href: "powerDeploy"
+          };
+        }
       }
+      if (path.indexOf("/home/card") > -1) {
+        crumb[0] = {
+          name: "码号管理",
+          href: "/home/card"
+        };
+      }
+      if (path.indexOf("/home/accountManage") > -1) {
+        crumb[0] = {
+          name: "账户管理",
+          href: "/home/accountManage"
+        };
+      }
+      if (path.indexOf("/home/operationLog") > -1) {
+        crumb[0] = {
+          name: "操作日志",
+          href: "/home/operationLog"
+        };
+        if (path.indexOf("home/operationLog/cardmanage") > -1) {
+          crumb[1] = {
+            name: "码号管理日志",
+            href: "cardmanage"
+          };
+        } else if (path.indexOf("home/operationLog/synclog") > -1) {
+          crumb[1] = {
+            name: "同步日志",
+            href: "synclog"
+          };
+        } else if (path.indexOf("home/operationLog/loginlog") > -1) {
+          crumb[1] = {
+            name: "登录日志",
+            href: "loginlog"
+          };
+        }
+      }
+      if (path.indexOf("/home/browsingHistory") > -1) {
+        crumb[0] = {
+          name: "浏览记录",
+          href: "/home/browsingHistory"
+        };
+      }
+      if (path.indexOf("/home/notice") > -1) {
+        crumb[0] = {
+          name: "公告管理",
+          href: "/home/notice"
+        };
+      }
+      if (path.indexOf("/home/pickCard") > -1) {
+        crumb[0] = {
+          name: "提卡订单管理",
+          href: "/home/pickCard"
+        };
+      }
+      if (path.indexOf("/home/openCard") > -1) {
+        crumb[0] = {
+          name: "开卡订单管理",
+          href: "/home/openCard"
+        };
+      }
+      if (path.indexOf("/home/recharge") > -1) {
+        crumb[0] = {
+          name: "充值订单管理",
+          href: "/home/recharge"
+        };
+      }
+      if (path.indexOf("/home/address") > -1) {
+        crumb[0] = {
+          name: "收货地址管理",
+          href: "/home/address"
+        };
+      }
+      this.crumb = crumb;
+      mainDom.style.overflowY = "hidden";
+      var timer = setTimeout(() => (mainDom.style.overflowY = ""), 500);
     },
-    created: function () {
-      let vm = this,
-        Info = getStore("YFD_NMS_INFO");
-      vm.user = Info;
-      let r = Info.userRole.split(',');
-      r.some(function (value, index, r) {
-        return value == 6 || value == 7;
-      }) ? (vm.isShow = false, window.location.href = "#/home/card/cardManage") : vm.isShow = true;
+    userMenu: function(e) {
+      //用户菜单show or hide
+      this.off.userMenu
+        ? (this.off.userMenu = false)
+        : (this.off.userMenu = true);
+      e.stopPropagation();
     },
-    watch: {
-      '$route': 'routeChange',
-    },
-    mounted: function () {
-      this.init();
-    },
-    methods: {
-      ...mapState([
-        "rolelist"
-      ]),
-      ...mapMutations([
-        "SIGN_OUT",
-        "SET_USERINFO",
-        "GET_ROLE"
-      ]),
-      async init() { //页面初始化
-        const vm = this;
-        vm.routeChange(); //头部面包屑导航
-        window.onresize = () => vm.debounce(300, vm.windowChange());
-        let userInfo = getStore("YFD_NMS_INFO");
-        vm.userInfo = userInfo;
-        vm.SET_USERINFO(userInfo);
-        document.attachEvent ? doucument.body.attachEvent("onclick", function (event) {
-          vm.off.userMenu = false;
-          window.event.cacenlBubble = false;
-        }) : document.body.addEventListener("click", function (event) {
-          vm.off.userMenu = false;
-          event.stopPropagation();
-        }, false);
-      },
-      headMenu: function () { //侧边导航show or hide
-        this.off.headMenu ? this.off.headMenu = false : this.off.headMenu = true;
-      },
-      routeChange: function () { //路由变化
-        this.windowChange();
-        var path = this.$route.path,
-          crumb = [{
-            "name": ""
-          }, {
-            "name": ""
-          }, {
-            "name": ""
-          }],
-          mainDom = document.getElementById("main");
-        if (path.indexOf("/home/organization") > -1) {
-          crumb[0] = {
-            "name": "架构管理",
-            "href": "/home/organization"
-          }
-          if (path.indexOf("home/organization/yfd") > -1) {
-            crumb[1] = {
-              "name": "亚飞达管理",
-              "href": "yfd"
-            }
-          } else if (path.indexOf("home/organization/agent") > -1) {
-            crumb[1] = {
-              "name": "代理商管理",
-              "href": "agent"
-            }
-          } else if (path.indexOf("home/organization/staff") > -1) {
-            crumb[1] = {
-              "name": "员工管理",
-              "href": "staff"
-            }
-          } else if (path.indexOf("home/organization/powerDeploy") > -1) {
-            crumb[1] = {
-              "name": "权限配置",
-              "href": "powerDeploy"
-            }
-          }
-        }
-        if (path.indexOf("/home/card") > -1) {
-          crumb[0] = {
-            "name": "码号管理",
-            "href": "/home/card"
-          }
-        }
-        if (path.indexOf("/home/accountManage") > -1) {
-          crumb[0] = {
-            "name": "账户管理",
-            "href": "/home/accountManage"
-          }
-        }
-        if (path.indexOf("/home/operationLog") > -1) {
-          crumb[0] = {
-            "name": "操作日志",
-            "href": "/home/operationLog"
-          }
-          if (path.indexOf("home/operationLog/cardmanage") > -1) {
-            crumb[1] = {
-              "name": "码号管理日志",
-              "href": "cardmanage"
-            }
-          } else if (path.indexOf("home/operationLog/synclog") > -1) {
-            crumb[1] = {
-              "name": "同步日志",
-              "href": "synclog"
-            }
-          } else if (path.indexOf("home/operationLog/loginlog") > -1) {
-            crumb[1] = {
-              "name": "登录日志",
-              "href": "loginlog"
-            }
-          }
-        }
-        if (path.indexOf("/home/browsingHistory") > -1) {
-          crumb[0] = {
-            "name": "浏览记录",
-            "href": "/home/browsingHistory"
-          }
-        }
-        if (path.indexOf("/home/notice") > -1) {
-          crumb[0] = {
-            "name": "公告管理",
-            "href": "/home/notice"
-          }
-        }
-        if (path.indexOf("/home/pickCard") > -1) {
-          crumb[0] = {
-            "name": "提卡订单管理",
-            "href": "/home/pickCard"
-          }
-        }
-        if (path.indexOf("/home/openCard") > -1) {
-          crumb[0] = {
-            "name": "开卡订单管理",
-            "href": "/home/openCard"
-          }
-        }
-        if (path.indexOf("/home/recharge") > -1) {
-          crumb[0] = {
-            "name": "充值订单管理",
-            "href": "/home/recharge"
-          }
-        }
-        this.crumb = crumb;
-        mainDom.style.overflowY = 'hidden';
-        var timer = setTimeout(() => mainDom.style.overflowY = '', 500);
-      },
-      userMenu: function (e) { //用户菜单show or hide
-        this.off.userMenu ? this.off.userMenu = false : this.off.userMenu = true;
-        e.stopPropagation();
-      },
-      windowChange: function () { //窗口改变
-        const vm = this;
-        let w = window.innerWidth;
-        let href = window.location.href;
+    windowChange: function() {
+      //窗口改变
+      const vm = this;
+      let w = window.innerWidth;
+      let href = window.location.href;
 
-        if (href.indexOf('dashboard') > -1 || w <= 960) {
-          vm.off.headMenu = false;
-        }
-        vm.off.window = w;
-      },
-      debounce: function (time, action) { //节流函数
-        let last;
-        return function () {
-          let ctx = this,
-            args = arguments
-          clearTimeout(last)
-          last = setTimeout(function () {
-            action.apply(ctx, args)
-          }, time)
-        }
-      },
-      clickSignOut: function () {
-        var vm = this;
-        signOut().then(function (res) {
+      if (href.indexOf("dashboard") > -1 || w <= 960) {
+        vm.off.headMenu = false;
+      }
+      vm.off.window = w;
+    },
+    debounce: function(time, action) {
+      //节流函数
+      let last;
+      return function() {
+        let ctx = this,
+          args = arguments;
+        clearTimeout(last);
+        last = setTimeout(function() {
+          action.apply(ctx, args);
+        }, time);
+      };
+    },
+    clickSignOut: function() {
+      var vm = this;
+      signOut()
+        .then(function(res) {
           vm.SIGN_OUT();
-        }).catch(e => errorDeal(e));
-      },
+        })
+        .catch(e => errorDeal(e));
     }
   }
+};
 </script>

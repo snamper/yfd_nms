@@ -101,6 +101,25 @@ export const commission=(data,load)=>fetch("/ums/w/account/commission",data,"POS
 /*佣金账户提现*/
 export const transfer=(data,load)=>fetch("/ums/w/account/transfer",data,"POST",load)
 
+/*新增收货地址*/
+export const addAddress=(data,load)=>fetch("/ums/w/address/add",data,"POST",load)
+
+/*列表查询*/
+export const searchAddress=(data,load)=>fetch("/ums/w/address/addresses",data,"POST",load)
+
+/*新增收货地址*/
+export const changeDefault=(data,load)=>fetch("/ums/w/address/change-default",data,"POST",load)
+
+/*删除收货地址*/
+export const deleteAddress=(data,load)=>fetch("/ums/w/address/delete",data,"POST",load)
+
+/*更改收货地址*/
+export const updateAddress=(data,load)=>fetch("/ums/w/address/mng-update",data,"POST",load)
+
+/*查询用户信息*/
+export const searchUser=(data,load)=>fetch("/ums/w/address/user",data,"POST",load)
+
+
 
 
 

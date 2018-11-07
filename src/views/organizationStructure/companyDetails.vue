@@ -86,7 +86,7 @@
                 </tr>
                 <tr>
                     <td>最后与客户沟通时间 : </td>
-                    <td>{{lists.lastTime||'--'}}</td>
+                    <td>{{getDateTime(lists.lastTime)[6]||'--'}}</td>
                 </tr>
                 <tr>
                     <td>售卡区域 : </td>

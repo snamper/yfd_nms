@@ -42,7 +42,7 @@
             <tbody v-if="true">
                 <tr>
                     <td class="m-input-phone">
-                        <p style="width:100%;padding:0 10px"><input v-model="numberSection" :maxlength="7" placeholder="请输入一个七位数的号段" style="width:100%" type="text"></p>
+                        <p style="width:100%;padding:0 10px"><input v-model="numberSection" :maxlength="8" placeholder="请输入查询的号段" style="width:100%" type="text"></p>
                     </td>
                 </tr>
                 <tr class="tdBtn" colspan="2">
@@ -128,7 +128,7 @@ export default{
                     }}
                 ).catch(e=>errorDeal(e));
             }else if(v===2){
-                if(vm.numberSection.length!=7||isNaN(vm.numberSection)){
+                if(vm.numberSection.length!=7||vm.numberSection.length!=8||isNaN(vm.numberSection)){
                     layer.open({
                         content: "请输入正确的号段",
                         skin: "msg",

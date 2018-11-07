@@ -81,7 +81,7 @@
               <td>佣金账户累计提现（元）</td>
               <td>操作</td>
             </tr>
-            <tr v-for="(v,i) of searchList">
+            <tr v-for="(v,i) of searchList" :key="i">
               <td>{{(currentPage-1)*15+(i+1)}}</td>
               <td>{{v.departName||'--'}}</td>
               <td>{{v.username||'--'}}</td>
