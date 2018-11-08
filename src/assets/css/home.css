@@ -355,6 +355,11 @@ b.countIcon{
     width: .17rem;
     height: .17rem;
 }
+.u-icon-address{
+  background-image: url(../assets/images/icon_address.png);
+  width: .17rem;
+  height: .17rem;
+}
 
 .u-icon-menu {
   background-image: url(../assets/images/icon_location.png);

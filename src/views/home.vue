@@ -224,7 +224,7 @@ span.iconFoldClose {
             <b></b>
             <router-link to="/home/address">
               <div>
-                <i class="u-icon-dizhi"></i>
+                <i class="u-icon-address"></i>
                 <span>收货地址管理</span>
                 <span :class="crumb[0].name=='收货地址管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>

@@ -27,7 +27,7 @@
         <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
           <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">电话号码：</div></el-col>
           <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-            <el-input @input="querySearchAsync" v-model="phone" size="small"  placeholder="请输入查询的11位电话号码" :maxlength="11"></el-input>
+            <el-input @input="finputphone" v-model="phone" size="small"  placeholder="请输入查询的11位电话号码" :maxlength="11"></el-input>
           </el-col>
         </div></el-col>
       </el-row>
@@ -132,7 +132,16 @@ export default {
         this.$refs['ruleForm'].clearValidate('address1');
         callback()
       }
-    }
+    };
+    var validatePhone = (rule, value, callback)=>{
+      var testPhone=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+      if (!testPhone.test(this.ruleForm.addphone)) {
+        callback(new Error('手机号码不合法'));
+      } else {
+        // this.$refs['ruleForm'].clearValidate('addphone');
+        callback()
+      }
+    };
     return {
       dialogFormVisible: false,
       searchlist: "",
@@ -163,7 +172,7 @@ export default {
         address1: [{ validator: validateAddress, trigger: 'blur' }],
         addtextarea:[{ required: true, message: '请输入详细地址', trigger: 'blur' }],
         addname:[{ required: true, message: '请输入收货人姓名', trigger: 'blur' }],
-        addphone:[{ required: true, message: '请输入收货人电话号码', trigger: 'blur' }]
+        addphone:[{ required: true, message: '请输入收货人电话号码', trigger: 'blur' },{ validator: validatePhone, trigger: 'blur' }]
       }
     };
   },
@@ -171,13 +180,24 @@ export default {
   watch:{ addsetDefault(){let vm=this;vm.addsetDefault==true?vm.setDefault=1:vm.addsetDefault==false?vm.setDefault=0:`javascript:void(0)`} },
   methods: {
     search(p) {
-      if(this.receiverUserId==""){
+      if(this.departId==""&&this.phone==""){
         layer.open({
-          content: '请输入查询的信息',
+          content: '请入要查询的商户信息',
           skin: 'msg',
           time: 2,
           msgSkin: 'error',
         });
+        this.searchlist="";
+        return false;
+      }
+      if(this.receiverUserId==""){
+        layer.open({
+          content: '代理商名称或手机号码输入有误',
+          skin: 'msg',
+          time: 2,
+          msgSkin: 'error',
+        });
+        this.searchlist="";
         return false;
       }
       let vm = this,
@@ -260,7 +280,6 @@ export default {
               vm.resetForm();
               vm.dialogFormVisible = false;
             }).catch(e=>errorDeal(e,vm.dialogFormVisible = false));
-            
           }else if(vm.formType==2){
             delete json.receiverUserId;
             json.id = vm.searchJsonId;
@@ -295,8 +314,12 @@ export default {
       vm.ruleForm.addcity = data.city.value;
       vm.ruleForm.addarea = data.area.value;
     },
+    validatePhone(){
+
+    },
     resetForm(){
       let vm=this;
+      vm.ruleForm={}
       // vm.ruleForm.addsetDefault=false;
       // vm.ruleForm.addtextarea="";
       // vm.ruleForm.addname="";
@@ -304,12 +327,31 @@ export default {
       // vm.ruleForm.addprovince="";
       // vm.ruleForm.addcity="";
       // vm.ruleForm.addarea="";
-      vm.ruleForm={}
     },
     closedialog(){
       let vm=this;
       vm.dialogFormVisible=false
       vm.resetForm();
+    },
+    finputphone(){
+      let vm=this;
+      vm.receiverUserId ="";
+      if(vm.phone.length==11){
+        let vm = this, json = { phone: vm.phone, username: vm.departId };
+        searchUser(json,()=>{})
+        .then((data)=>{
+          if(data.data.list.length==0){
+            layer.open({
+              content: '未查询到相关用户信息',
+              skin: 'msg',
+              time: 2,
+              msgSkin: 'error',
+            });
+            return false;
+          }
+          vm.receiverUserId = data.data.list[0].userId;
+        })
+      }
     },
     querySearchAsync(queryString, cb) {
       let vm = this, json = { phone: vm.phone, username: vm.departId }, restaurants, results;
