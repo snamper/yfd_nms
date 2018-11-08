@@ -75,12 +75,12 @@
           </table>
       </div>       
       </div>
-      <div class="m-dialog" v-if="dialogFormVisible">
+      <div class="m-dialog" ref="ruleForm" v-if="dialogFormVisible">
         <div class="m-newAddress">
           <p class="m-dialog-title">创建地址<span class="m-icon-close" @click="closedialog()"></span></p>
           <div class="m-dialog-content">
             <span>新增收货地址</span>
-            <el-form ref="ruleForm" :rules="rules" :model="ruleForm" label-width="80px">
+            <el-form  :rules="rules" :model="ruleForm" label-width="80px">
               <el-form-item label="地址信息" prop="addaddress">
                 <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
               </el-form-item>
@@ -280,13 +280,13 @@ export default {
       }
     },
     saveForm(v, i) {
-      debugger;
       if (this.addprovince == "" || this.addcity == "" || this.addarea == "") {
         this.addaddress = false;
       } else {
         this.addaddress = true;
       }
       this.$nextTick(() => {
+        
         this.$refs["ruleForm"].validate(valid => {
           if (valid) {
             console.log("submit!");
