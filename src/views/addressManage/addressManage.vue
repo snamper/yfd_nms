@@ -121,95 +121,117 @@ import {
   updateAddress,
   searchUser
 } from "../../config/service.js";
-import layerConfirm from '../../components/layerConfirm';
+import layerConfirm from "../../components/layerConfirm";
 import { errorDeal } from "../../config/utils.js";
 export default {
   data() {
-    var validateAddress = (rule, value, callback)=>{
+    var validateAddress = (rule, value, callback) => {
       if (this.addaddress == false) {
-        callback(new Error('请选择省市区'));
+        callback(new Error("请选择省市区"));
       } else {
-        this.$refs['ruleForm'].clearValidate('addaddress');
-        callback()
+        this.$refs["ruleForm"].clearValidate("addaddress");
+        callback();
       }
     };
-    var validatePhone = (rule, value, callback)=>{
-      var testPhone=/^[1][3,4,5,6,7,8,9][0-9]{9}$/;
+    var validatePhone = (rule, value, callback) => {
+      var testPhone = /^[1][3,4,5,6,7,8,9][0-9]{9}$/;
       if (!testPhone.test(this.ruleForm.addphone)) {
-        callback(new Error('手机号码不合法'));
+        callback(new Error("手机号码不合法"));
       } else {
         // this.$refs['ruleForm'].clearValidate('addphone');
-        callback()
+        callback();
       }
     };
     return {
       dialogFormVisible: false,
       searchlist: "",
-      pageSize:15,
+      pageSize: 15,
       departId: "",
       phone: "",
       currentPage: 0,
       timeout: null,
       receiverUserId: "",
-      layerType:"",
-      layerData:"",
-      formType:1,
-      addsetDefault:false,
-      setDefault:0,
+      layerType: "",
+      layerData: "",
+      formType: 1,
+      addsetDefault: false,
+      setDefault: 0,
       restaurants: [],
       searchJson: "",
-      select:"",
+      select: "",
       // address1: false,
-      off:{ layer:false },
+      off: { layer: false },
       addprovince: "",
       addcity: "",
       addarea: "",
-      ruleForm:{
+      ruleForm: {
         addtextarea: "",
         addname: "",
         addphone: "",
-        addaddress:"",
+        addaddress: ""
       },
       rules: {
-        addaddress: [{required: true,  validator: validateAddress, trigger: 'blur' }],
-        addtextarea:[{ required: true, message: '请输入详细地址', trigger: 'blur' }],
-        addname:[{ required: true, message: '请输入收货人姓名', trigger: 'blur' }],
-        addphone:[{ required: true, message: '请输入收货人电话号码', trigger: 'blur' },{ validator: validatePhone, trigger: 'blur' }]
+        addaddress: [
+          { required: true, validator: validateAddress, trigger: "blur" }
+        ],
+        addtextarea: [
+          { required: true, message: "请输入详细地址", trigger: "blur" }
+        ],
+        addname: [
+          { required: true, message: "请输入收货人姓名", trigger: "blur" }
+        ],
+        addphone: [
+          { required: true, message: "请输入收货人电话号码", trigger: "blur" },
+          { validator: validatePhone, trigger: "blur" }
+        ]
       }
     };
   },
-  components: { VDistpicker,layerConfirm },
-  watch:{ addsetDefault(){let vm=this;vm.addsetDefault==true?vm.setDefault=1:vm.addsetDefault==false?vm.setDefault=0:`javascript:void(0)`} },
+  components: { VDistpicker, layerConfirm },
+  watch: {
+    addsetDefault() {
+      let vm = this;
+      vm.addsetDefault == true
+        ? (vm.setDefault = 1)
+        : vm.addsetDefault == false
+          ? (vm.setDefault = 0)
+          : `javascript:void(0)`;
+    }
+  },
   methods: {
     search(p) {
-      if(this.departId==""&&this.phone==""){
+      if (this.departId == "" && this.phone == "") {
         layer.open({
-          content: '请入要查询的商户信息',
-          skin: 'msg',
+          content: "请入要查询的商户信息",
+          skin: "msg",
           time: 2,
-          msgSkin: 'error',
+          msgSkin: "error"
         });
-        this.searchlist="";
+        this.searchlist = "";
         return false;
       }
-      if(this.receiverUserId==""){
+      if (this.receiverUserId == "") {
         layer.open({
-          content: '代理商名称或手机号码输入有误',
-          skin: 'msg',
+          content: "代理商名称或手机号码输入有误",
+          skin: "msg",
           time: 2,
-          msgSkin: 'error',
+          msgSkin: "error"
         });
-        this.searchlist="";
+        this.searchlist = "";
         return false;
       }
       let vm = this,
-        json = { receiverUserId: vm.receiverUserId, pageSize: vm.pageSize, pageNum: p || 1 };
-        vm.searchJson = json;
-        searchAddress(vm.searchJson)
+        json = {
+          receiverUserId: vm.receiverUserId,
+          pageSize: vm.pageSize,
+          pageNum: p || 1
+        };
+      vm.searchJson = json;
+      searchAddress(vm.searchJson)
         .then(data => {
           vm.searchlist = data.data.list;
           vm.total = data.data.total;
-          vm.currentPage=p||1;
+          vm.currentPage = p || 1;
         })
         .catch(e => errorDeal(e));
     },
@@ -218,105 +240,114 @@ export default {
       if (v == 1) {
         let json = { id: i };
         changeDefault(json)
-        .then((data)=>{
-          if(data.code==200){
+          .then(data => {
+            if (data.code == 200) {
               layer.open({
-                content: '修改默认收货地址成功',
-                skin: 'msg',
+                content: "修改默认收货地址成功",
+                skin: "msg",
                 time: 2,
-                msgSkin: 'success',
+                msgSkin: "success"
               });
             }
             vm.search();
-        }).catch(e=>errorDeal(e));
+          })
+          .catch(e => errorDeal(e));
       } else if (v == 2) {
         vm.off.layer = true;
-        vm.layerType = "deleteAddress"
-        vm.layerData = {id:i};
+        vm.layerType = "deleteAddress";
+        vm.layerData = { id: i };
       } else if (v == 3) {
         vm.dialogFormVisible = true;
         vm.ruleForm.addphone = i.phone;
         vm.ruleForm.addname = i.username;
         vm.ruleForm.addtextarea = i.detailAddress;
         vm.searchJsonId = i.id;
-        vm.formType=2;
-        if(i.defaultFlag==1){
-          vm.addsetDefault=true
-        }else{
-          vm.addsetDefault=false
+        vm.formType = 2;
+        if (i.defaultFlag == 1) {
+          vm.addsetDefault = true;
+        } else {
+          vm.addsetDefault = false;
         }
-        vm.select = Object.assign({},{ province: i.province, city: i.city, area: i.county});
-        vm.addprovince =i.province;
-        vm.addarea =i.county;
-        vm.addcity =i.city;
+        vm.select = Object.assign(
+          {},
+          { province: i.province, city: i.city, area: i.county }
+        );
+        vm.addprovince = i.province;
+        vm.addarea = i.county;
+        vm.addcity = i.city;
       } else {
         return false;
       }
     },
-    saveForm(v,i){
-      if(this.addprovince == ""||this.addcity == ""||this.addarea == ""){
-        this.addaddress=false
-      }else{
-        this.addaddress=true
+    saveForm(v, i) {
+      debugger;
+      if (this.addprovince == "" || this.addcity == "" || this.addarea == "") {
+        this.addaddress = false;
+      } else {
+        this.addaddress = true;
       }
-      this.$refs['ruleForm'].validate((valid) => {
-        if (valid) {
-          console.log('submit!');
-          let vm=this;
-          let json = {
-            receiverUserId: vm.receiverUserId,
-            province: vm.addprovince,
-            city: vm.addcity,
-            county: vm.addarea,
-            detailAddress: vm.ruleForm.addtextarea,
-            phone: vm.ruleForm.addphone,
-            username: vm.ruleForm.addname,
-            defaultFlag: vm.setDefault,
-            street: "",
-          };
-          if(vm.formType==1){
-            addAddress(json)
-            .then(data => {
-              if(data.code==200){
-                layer.open({
-                  content: '添加成功',
-                  skin: 'msg',
-                  time: 2,
-                  msgSkin: 'success',
-                });
-              }
-              vm.search();
-              vm.resetForm();
-              vm.dialogFormVisible = false;
-            }).catch(e=>errorDeal(e,vm.dialogFormVisible = false));
-          }else if(vm.formType==2){
-            delete json.receiverUserId;
-            json.id = vm.searchJsonId;
-            updateAddress(json)
-            .then(data => {
-              if(data.code==200){
-                layer.open({
-                  content: '修改成功',
-                  skin: 'msg',
-                  time: 2,
-                  msgSkin: 'success',
-                });
-              }
-              vm.search();
-              vm.resetForm();
-              vm.dialogFormVisible = false;
-            }).catch(e=>errorDeal(e,vm.dialogFormVisible = false));
+      this.$nextTick(() => {
+        this.$refs["ruleForm"].validate(valid => {
+          if (valid) {
+            console.log("submit!");
+            let vm = this;
+            let json = {
+              receiverUserId: vm.receiverUserId,
+              province: vm.addprovince,
+              city: vm.addcity,
+              county: vm.addarea,
+              detailAddress: vm.ruleForm.addtextarea,
+              phone: vm.ruleForm.addphone,
+              username: vm.ruleForm.addname,
+              defaultFlag: vm.setDefault,
+              street: ""
+            };
+            if (vm.formType == 1) {
+              addAddress(json)
+                .then(data => {
+                  if (data.code == 200) {
+                    layer.open({
+                      content: "添加成功",
+                      skin: "msg",
+                      time: 2,
+                      msgSkin: "success"
+                    });
+                  }
+                  vm.search();
+                  vm.resetForm();
+                  vm.dialogFormVisible = false;
+                })
+                .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
+            } else if (vm.formType == 2) {
+              delete json.receiverUserId;
+              json.id = vm.searchJsonId;
+              updateAddress(json)
+                .then(data => {
+                  if (data.code == 200) {
+                    layer.open({
+                      content: "修改成功",
+                      skin: "msg",
+                      time: 2,
+                      msgSkin: "success"
+                    });
+                  }
+                  vm.search();
+                  vm.resetForm();
+                  vm.dialogFormVisible = false;
+                })
+                .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
+            }
+          } else {
+            console.log("error submit!");
+            return false;
           }
-        } else {
-          console.log('error submit!');
-          return false;
-        }
+        });
       });
     },
-    faddAddress(){
-      let vm=this;
-      vm.dialogFormVisible=true;
-      vm.formType=1;
+    faddAddress() {
+      let vm = this;
+      vm.dialogFormVisible = true;
+      vm.formType = 1;
     },
     onSelected(data) {
       let vm = this;
@@ -324,46 +355,51 @@ export default {
       vm.addcity = data.city.value;
       vm.addarea = data.area.value;
     },
-    resetForm(){
-      let vm=this;
+    resetForm() {
+      let vm = this;
       vm.addprovince = "";
       vm.addcity = "";
       vm.addarea = "";
-      vm.ruleForm={};
-      vm.select={};
+      vm.ruleForm = {};
+      vm.select = {};
     },
-    closedialog(){
-      let vm=this;
-      vm.dialogFormVisible=false
+    closedialog() {
+      let vm = this;
+      vm.dialogFormVisible = false;
       vm.resetForm();
     },
-    finputphone(){
-      let vm=this;
-      vm.receiverUserId ="";
-      if(vm.phone.length==11){
-        let vm = this, json = { phone: vm.phone, username: vm.departId };
-        searchUser(json,()=>{})
-        .then((data)=>{
-          if(data.data.list.length==0){
+    finputphone() {
+      let vm = this;
+      vm.receiverUserId = "";
+      if (vm.phone.length == 11) {
+        let vm = this,
+          json = { phone: vm.phone, username: vm.departId };
+        searchUser(json, () => {}).then(data => {
+          if (data.data.list.length == 0) {
             layer.open({
-              content: '未查询到相关用户信息',
-              skin: 'msg',
+              content: "未查询到相关用户信息",
+              skin: "msg",
               time: 2,
-              msgSkin: 'error',
+              msgSkin: "error"
             });
             return false;
           }
           vm.receiverUserId = data.data.list[0].userId;
-        })
+        });
       }
     },
     querySearchAsync(queryString, cb) {
-      let vm = this, json = { phone: vm.phone, username: vm.departId }, restaurants, results;
-      searchUser(json,()=>{})
+      let vm = this,
+        json = { phone: vm.phone, username: vm.departId },
+        restaurants,
+        results;
+      searchUser(json, () => {})
         .then(data => {
           vm.restaurants = data.data.list;
           restaurants = vm.restaurants;
-          results = queryString ? restaurants.filter(vm.createStateFilter(queryString)) : restaurants;
+          results = queryString
+            ? restaurants.filter(vm.createStateFilter(queryString))
+            : restaurants;
           cb(results);
         })
         .catch(e => errorDeal(e));
@@ -378,7 +414,7 @@ export default {
     handleSelect(item) {
       let vm = this;
       vm.receiverUserId = item.userId;
-    },
+    }
   }
 };
 </script>
