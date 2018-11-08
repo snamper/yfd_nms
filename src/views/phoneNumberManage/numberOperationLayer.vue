@@ -128,7 +128,7 @@ export default{
                     }}
                 ).catch(e=>errorDeal(e));
             }else if(v===2){
-                if(vm.numberSection.length!=7||vm.numberSection.length!=8||isNaN(vm.numberSection)){
+                if(isNaN(vm.numberSection)){
                     layer.open({
                         content: "请输入正确的号段",
                         skin: "msg",
