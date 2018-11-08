@@ -89,6 +89,7 @@
                   size="small"
                   type="textarea"
                   :rows="2"
+                  max-length="50"
                   placeholder="请输入详细地址信息，如道路,门牌号"
                   v-model="ruleForm.addtextarea">
                 </el-input>
