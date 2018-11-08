@@ -80,7 +80,7 @@
           <p class="m-dialog-title">创建地址<span class="m-icon-close" @click="closedialog()"></span></p>
           <div class="m-dialog-content">
             <span>新增收货地址</span>
-            <el-form id="ruleForm" ref="ruleForm"  :rules="rules" :model="ruleForm" label-width="80px">
+            <el-form ref="ruleForm" :rules="rules" :model="ruleForm" label-width="80px">
               <el-form-item label="地址信息" prop="addaddress">
                 <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
               </el-form-item>
@@ -129,7 +129,9 @@ export default {
       if (this.addaddress == false) {
         callback(new Error("请选择省市区"));
       } else {
-        this.$refs["ruleForm"].clearValidate("addaddress");
+        this.$nextTick(
+          this.$refs["ruleForm"].clearValidate("addaddress")
+        )
         callback();
       }
     };
@@ -285,61 +287,63 @@ export default {
       } else {
         this.addaddress = true;
       }
-      document.getElementById("ruleForm").validate(valid => {
-        if (valid) {
-          console.log("submit!");
-          let vm = this;
-          let json = {
-            receiverUserId: vm.receiverUserId,
-            province: vm.addprovince,
-            city: vm.addcity,
-            county: vm.addarea,
-            detailAddress: vm.ruleForm.addtextarea,
-            phone: vm.ruleForm.addphone,
-            username: vm.ruleForm.addname,
-            defaultFlag: vm.setDefault,
-            street: ""
-          };
-          if (vm.formType == 1) {
-            addAddress(json)
-              .then(data => {
-                if (data.code == 200) {
-                  layer.open({
-                    content: "添加成功",
-                    skin: "msg",
-                    time: 2,
-                    msgSkin: "success"
-                  });
-                }
-                vm.search();
-                vm.resetForm();
-                vm.dialogFormVisible = false;
-              })
-              .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
-          } else if (vm.formType == 2) {
-            delete json.receiverUserId;
-            json.id = vm.searchJsonId;
-            updateAddress(json)
-              .then(data => {
-                if (data.code == 200) {
-                  layer.open({
-                    content: "修改成功",
-                    skin: "msg",
-                    time: 2,
-                    msgSkin: "success"
-                  });
-                }
-                vm.search();
-                vm.resetForm();
-                vm.dialogFormVisible = false;
-              })
-              .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
+      this.$nextTick(
+        this.$refs["ruleForm"].validate(valid => {
+          if (valid) {
+            console.log("submit!");
+            let vm = this;
+            let json = {
+              receiverUserId: vm.receiverUserId,
+              province: vm.addprovince,
+              city: vm.addcity,
+              county: vm.addarea,
+              detailAddress: vm.ruleForm.addtextarea,
+              phone: vm.ruleForm.addphone,
+              username: vm.ruleForm.addname,
+              defaultFlag: vm.setDefault,
+              street: ""
+            };
+            if (vm.formType == 1) {
+              addAddress(json)
+                .then(data => {
+                  if (data.code == 200) {
+                    layer.open({
+                      content: "添加成功",
+                      skin: "msg",
+                      time: 2,
+                      msgSkin: "success"
+                    });
+                  }
+                  vm.search();
+                  vm.resetForm();
+                  vm.dialogFormVisible = false;
+                })
+                .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
+            } else if (vm.formType == 2) {
+              delete json.receiverUserId;
+              json.id = vm.searchJsonId;
+              updateAddress(json)
+                .then(data => {
+                  if (data.code == 200) {
+                    layer.open({
+                      content: "修改成功",
+                      skin: "msg",
+                      time: 2,
+                      msgSkin: "success"
+                    });
+                  }
+                  vm.search();
+                  vm.resetForm();
+                  vm.dialogFormVisible = false;
+                })
+                .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
+            }
+          } else {
+            console.log("error submit!");
+            return false;
           }
-        } else {
-          console.log("error submit!");
-          return false;
-        }
-      });
+        })
+      );
     },
     faddAddress() {
       let vm = this;
