@@ -75,12 +75,12 @@
           </table>
       </div>       
       </div>
-      <div class="m-dialog"  v-if="dialogFormVisible">
+      <div class="m-dialog" v-if="dialogFormVisible">
         <div class="m-newAddress">
           <p class="m-dialog-title">创建地址<span class="m-icon-close" @click="closedialog()"></span></p>
           <div class="m-dialog-content">
             <span>新增收货地址</span>
-            <el-form id="ruleForm" ref="ruleForm" :rules="rules" :model="ruleForm" label-width="80px">
+            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
               <el-form-item label="地址信息" prop="addaddress">
                 <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
               </el-form-item>
@@ -102,8 +102,8 @@
               <el-form-item label="">
                 <el-checkbox v-model="addsetDefault">设置为默认收货地址</el-checkbox>
               </el-form-item>
-              <p style="text-align:center" ><button @click="saveForm(1,'ruleForm')" style="padding:5px;" class="f-bg-blue">保存</button></p>
             </el-form>
+            <p style="text-align:center"><button @click="saveForm(1,'ruleForm')" style="padding:5px;" class="f-bg-blue">保存</button></p>
           </div>
         </div>
       </div>
@@ -284,7 +284,8 @@ export default {
         this.addaddress = true;
       }
       this.$nextTick(()=>{
-        this.$refs["ruleForm"].validate(valid => {
+        console.log(this.$refs[i])
+        this.$refs[i].validate(valid => {
           if (valid) {
             console.log("submit!");
             let vm = this;
