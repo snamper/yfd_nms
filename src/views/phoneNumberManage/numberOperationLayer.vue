@@ -137,7 +137,7 @@ export default{
                     });
                     return false;
                 }
-                checkNumberSection(vm.numberSection,()=>{return false});
+                // checkNumberSection(vm.numberSection,()=>{return false});
                 vm.$parent.layerType1="";
                 vm.$parent.off.layer1=true;
                 vm.off.numberSection=true;
