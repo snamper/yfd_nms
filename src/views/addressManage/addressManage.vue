@@ -81,8 +81,8 @@
           <div class="m-dialog-content">
             <span>新增收货地址</span>
             <el-form ref="ruleForm" :rules="rules" :model="ruleForm" label-width="80px">
-              <el-form-item label="地址信息" prop="address1">
-                <v-distpicker @selected="onSelected"></v-distpicker>
+              <el-form-item label="地址信息" prop="addaddress">
+                <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
               </el-form-item>
               <el-form-item label="详细地址" prop="addtextarea">
                 <el-input
@@ -126,10 +126,10 @@ import { errorDeal } from "../../config/utils.js";
 export default {
   data() {
     var validateAddress = (rule, value, callback)=>{
-      if (this.address1 == false) {
+      if (this.addaddress == false) {
         callback(new Error('请选择省市区'));
       } else {
-        this.$refs['ruleForm'].clearValidate('address1');
+        this.$refs['ruleForm'].clearValidate('addaddress');
         callback()
       }
     };
@@ -158,18 +158,20 @@ export default {
       setDefault:0,
       restaurants: [],
       searchJson: "",
-      address1: false,
+      select:"",
+      // address1: false,
       off:{ layer:false },
+      addprovince: "",
+      addcity: "",
+      addarea: "",
       ruleForm:{
         addtextarea: "",
         addname: "",
         addphone: "",
-        addprovince: "",
-        addcity: "",
-        addarea: "",
+        addaddress:"",
       },
       rules: {
-        address1: [{ validator: validateAddress, trigger: 'blur' }],
+        addaddress: [{required: true,  validator: validateAddress, trigger: 'blur' }],
         addtextarea:[{ required: true, message: '请输入详细地址', trigger: 'blur' }],
         addname:[{ required: true, message: '请输入收货人姓名', trigger: 'blur' }],
         addphone:[{ required: true, message: '请输入收货人电话号码', trigger: 'blur' },{ validator: validatePhone, trigger: 'blur' }]
@@ -233,37 +235,44 @@ export default {
         vm.layerData = {id:i};
       } else if (v == 3) {
         vm.dialogFormVisible = true;
-        vm.ruleForm.addprovince = "";
-        vm.ruleForm.addcity = "";
-        vm.ruleForm.addarea = "";
         vm.ruleForm.addphone = i.phone;
         vm.ruleForm.addname = i.username;
         vm.ruleForm.addtextarea = i.detailAddress;
         vm.searchJsonId = i.id;
         vm.formType=2;
+        if(i.defaultFlag==1){
+          vm.addsetDefault=true
+        }else{
+          vm.addsetDefault=false
+        }
+        vm.select = Object.assign({},{ province: i.province, city: i.city, area: i.county});
+        vm.addprovince =i.province;
+        vm.addarea =i.county;
+        vm.addcity =i.city;
       } else {
         return false;
       }
     },
     saveForm(v,i){
-      if(this.ruleForm.addprovince == ""||this.ruleForm.addcity == ""||this.ruleForm.addarea == ""){
-        this.address1=false
+      if(this.addprovince == ""||this.addcity == ""||this.addarea == ""){
+        this.addaddress=false
       }else{
-        this.address1=true
+        this.addaddress=true
       }
       this.$refs['ruleForm'].validate((valid) => {
         if (valid) {
+          console.log('submit!');
           let vm=this;
           let json = {
-            city: vm.ruleForm.addcity,
-            county: vm.ruleForm.addarea,
-            defaultFlag: vm.setDefault,
+            receiverUserId: vm.receiverUserId,
+            province: vm.addprovince,
+            city: vm.addcity,
+            county: vm.addarea,
             detailAddress: vm.ruleForm.addtextarea,
             phone: vm.ruleForm.addphone,
-            province: vm.ruleForm.addprovince,
-            receiverUserId: vm.receiverUserId,
+            username: vm.ruleForm.addname,
+            defaultFlag: vm.setDefault,
             street: "",
-            username: vm.ruleForm.addname
           };
           if(vm.formType==1){
             addAddress(json)
@@ -287,7 +296,7 @@ export default {
             .then(data => {
               if(data.code==200){
                 layer.open({
-                  content: '添加成功',
+                  content: '修改成功',
                   skin: 'msg',
                   time: 2,
                   msgSkin: 'success',
@@ -299,6 +308,7 @@ export default {
             }).catch(e=>errorDeal(e,vm.dialogFormVisible = false));
           }
         } else {
+          console.log('error submit!');
           return false;
         }
       });
@@ -310,23 +320,17 @@ export default {
     },
     onSelected(data) {
       let vm = this;
-      vm.ruleForm.addprovince = data.province.value;
-      vm.ruleForm.addcity = data.city.value;
-      vm.ruleForm.addarea = data.area.value;
-    },
-    validatePhone(){
-
+      vm.addprovince = data.province.value;
+      vm.addcity = data.city.value;
+      vm.addarea = data.area.value;
     },
     resetForm(){
       let vm=this;
-      vm.ruleForm={}
-      // vm.ruleForm.addsetDefault=false;
-      // vm.ruleForm.addtextarea="";
-      // vm.ruleForm.addname="";
-      // vm.ruleForm.addphone="";
-      // vm.ruleForm.addprovince="";
-      // vm.ruleForm.addcity="";
-      // vm.ruleForm.addarea="";
+      vm.addprovince = "";
+      vm.addcity = "";
+      vm.addarea = "";
+      vm.ruleForm={};
+      vm.select={};
     },
     closedialog(){
       let vm=this;
