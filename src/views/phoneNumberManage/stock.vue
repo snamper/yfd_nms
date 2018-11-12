@@ -97,8 +97,8 @@
               <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2">
                 <div class="grid-content bg-purple-dark f-ta-r inputTitle">品牌：</div>
               </el-col>
-              <el-col :xs="19" :sm="21" :md="21" :lg="20" :xl="18">
-                <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="20">
+              <el-col :xs="20" :sm="21" :md="21" :lg="22" :xl="22">
+                <el-col :xs="24" :sm="24" :md="24" :lg="24" :xl="24">
                   <el-checkbox text-color="#48576a" style="display:inline;" :indeterminate="isIndeterminate" v-model="checkAll"
                     @change="handleCheckAllChange">全选</el-checkbox>
                   <el-checkbox-group style="display:inline" v-model="checkedCities" @change="handleCheckedCitiesChange">
