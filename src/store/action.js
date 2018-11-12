@@ -8,18 +8,11 @@ import {
   SET_ACCOUNT_DEPID
 } from './mutation-types';
 export default {
-  async getRolesInfo({
-    id,
-    commit,
-    state
-  }) {
+  async getRolesInfo({ id, commit, state }) {
     let res = await getRoles(id);
     res && commit(GET_ROLE, res);
   },
-  async getDepart({
-    commit,
-    state
-  }) {
+  async getDepart({ commit, state }) {
     let res = await getDealerList();
     res && commit(GET_DEPART, res);
   },

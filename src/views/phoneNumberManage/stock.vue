@@ -115,6 +115,8 @@
                     <el-checkbox v-for="city in cities11" :label="city" :key="city">{{city}}</el-checkbox>
                     <el-checkbox v-for="city in cities12" :label="city" :key="city">{{city}}</el-checkbox>
                     <el-checkbox v-for="city in cities13" :label="city" :key="city">{{city}}</el-checkbox>
+                    <el-checkbox v-for="city in cities14" :label="city" :key="city">{{city}}</el-checkbox>
+                    <el-checkbox v-for="city in cities15" :label="city" :key="city">{{city}}</el-checkbox>
                   </el-checkbox-group>
                 </el-col>
               </el-col>
@@ -236,7 +238,7 @@
     getNumberStorageThousand
   } from "../../config/service.js";
   import stockDetails from './stockDetails.vue';
-  const cityOptions = ['远特', '蜗牛', '迪信通', '极信', '小米', '海航', '乐语', '苏宁互联', '国美', '联想', '蓝猫移动', '长城', '中邮'],
+  const cityOptions = ['远特', '蜗牛', '迪信通', '极信', '小米', '海航', '乐语', '苏宁互联', '国美', '联想', '蓝猫移动', '长城', '中邮','鹏博士','天音'],
     cityOptions1 = ['远特'],
     cityOptions2 = ['蜗牛'],
     cityOptions3 = ['迪信通'],
@@ -249,7 +251,9 @@
     cityOptions10 = ['联想'],
     cityOptions11 = ['蓝猫移动'],
     cityOptions12 = ['长城'],
-    cityOptions13 = ['中邮'];
+    cityOptions13 = ['中邮'],
+    cityOptions14 = ['鹏博士'],
+    cityOptions15 = ['天音'];
   export default {
     data() {
       return {
@@ -268,7 +272,7 @@
         downloadData: "",
         searchDetails: {},
         datalist: "",
-        checkedCities: ['远特', '蜗牛', '迪信通', '极信', '小米', '海航', '乐语', '苏宁互联', '国美', '联想', '蓝猫移动', '长城', '中邮'], //虚商品牌
+        checkedCities: ['远特', '蜗牛', '迪信通', '极信', '小米', '海航', '乐语', '苏宁互联', '国美', '联想', '蓝猫移动', '长城', '中邮','鹏博士','天音'], //虚商品牌
         cities: cityOptions, //选中的虚商
         cities1: cityOptions1,
         cities2: cityOptions2,
@@ -283,6 +287,8 @@
         cities11: cityOptions11,
         cities12: cityOptions12,
         cities13: cityOptions13,
+        cities14: cityOptions14,
+        cities15: cityOptions15,
         /*地区选择*/
         options: [{
           areaCn: "安庆",

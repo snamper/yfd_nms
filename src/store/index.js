@@ -11,7 +11,7 @@ const state = {
   rolelist: [],
   rolelist1: [],
   depart: [],
-  account_depId:111
+  account_depId:""
 };
 
 export default new Vuex.Store({

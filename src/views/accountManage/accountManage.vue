@@ -126,7 +126,7 @@
   import withdrawalpage from './withdrawal.vue';
   import { getaccountDealer,getaccounts,commission } from '../../config/service.js';
   import { errorDeal,translateData,getStore } from '../../config/utils';
-  import { mapState, mapMutations, mapActions } from 'vuex';
+  import { mapActions } from 'vuex';
   export default {
     data() {
       return {
