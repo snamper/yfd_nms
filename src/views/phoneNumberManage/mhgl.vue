@@ -77,7 +77,7 @@
                 <div class="grid-content bg-purple-dark f-ta-r inputTitle">运营商：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="20" :xl="20">
-                <el-radio v-model="radio" label="1,2,3">全部</el-radio>
+                <el-radio v-model="radio" label="0,1,2,3">全部</el-radio>
                 <el-radio v-model="radio" label="1">移动</el-radio>
                 <el-radio v-model="radio" label="2">联通</el-radio>
                 <el-radio v-model="radio" label="3">电信</el-radio>
@@ -373,7 +373,7 @@
         nowStatus: "1,2,3,4,5,6", //号包状态
         nowStatusHidden: "", //当前状态开关
         phone: "", //查询的手机号码
-        radio: "1,2,3", //运营商
+        radio: "0,1,2,3", //运营商
         name: "", //联系人姓名
         pageNumDetails: "", //子页面号包详情
         pageNumLiang: "", //靓号详情

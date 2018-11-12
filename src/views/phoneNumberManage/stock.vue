@@ -83,7 +83,7 @@
                 <div class="grid-content bg-purple-dark f-ta-r inputTitle">运营商：</div>
               </el-col>
               <el-col :xs="19" :sm="19" :md="19" :lg="20" :xl="20">
-                <el-radio v-model="isp" label="1,2,3">全部</el-radio>
+                <el-radio v-model="isp" label="0,1,2,3">全部</el-radio>
                 <el-radio v-model="isp" label="1">移动</el-radio>
                 <el-radio v-model="isp" label="2">联通</el-radio>
                 <el-radio v-model="isp" label="3">电信</el-radio>
@@ -145,7 +145,7 @@
             <td>带4比例</td>
             <td>操作</td>
           </tr>
-          <tr v-for="(v,i) in datalist">
+          <tr v-for="(v,i) in datalist" :key="i">
             <td colspan="12">
               <table style="width:100%" class="m-searchlist-table2">
                 <tr>
@@ -169,10 +169,10 @@
                   <td colspan="6" :rowspan="v.faceValueMap.length" style="border-right:1px solid #e4e4e4"></td>
                   <td colspan="6" :rowspan="v.faceValueMap.length">
                     <table class="m-searchlist-table3" style="width:100%">
-                      <tr v-for="(v1,i1) in v.faceValueMap" style="border-top:1px solid #E6E6E6">
+                      <tr v-for="(v1,i1) in v.faceValueMap" :key="i1" style="border-top:1px solid #E6E6E6">
                         <td colspan="5">
-                          <table class="m-searchlist-table3" v-for="(v2,i2) in v1" style="width:100%">
-                            <tr class="border" v-for="(v3,i2) in v2">
+                          <table class="m-searchlist-table3" v-for="(v2,i2) in v1" :key="i2" style="width:100%">
+                            <tr class="border" v-for="(v3,i2) in v2" :key="i2">
                               <td>{{i1/100}}</td>
                               <td>{{i2}}</td>
                               <td>{{v3.productTotal}}</td>
@@ -266,7 +266,7 @@
         cardType: "0,1000,2000,3000,5000,10000", //卡面值
         productStatus: "1,2,3,4", //号包状态
         setMenu: "", //查询的套餐名称
-        isp: "1,2,3", //运营商
+        isp: "0,1,2,3", //运营商
         faceValueDetails: "",
         thousandDetails: "",
         downloadData: "",
@@ -325,6 +325,9 @@
         vm.off.tableDetails = [];
         for (let i in vm.checkedCities) {
           checked.push(cityOptions.indexOf(vm.checkedCities[i]) + 1);
+        }
+        if(vm.checkAll==true){
+          checked.unshift(0);
         }
         checked = checked.join(",");
         let cvalue = '';
