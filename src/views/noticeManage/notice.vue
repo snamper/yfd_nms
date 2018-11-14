@@ -1,5 +1,5 @@
 <style scoped>
-   @import "../../assets/css/notice.css";
+@import "../../assets/css/notice.css";
 </style>
 <template>
     <section>
@@ -209,321 +209,336 @@
     </section>
 </template>
 <script>
-import { ImgToBase64 } from "../../config/utils/ImgToBase64"
-import { Loading } from 'element-ui';
-import {requestMethod} from "../../config/service.js"; 
-import { errorDeal,getDateTime } from '../../config/utils';
+import { ImgToBase64 } from "../../config/utils/ImgToBase64";
+import { Loading } from "element-ui";
+import { requestMethod } from "../../config/service.js";
+import { errorDeal, getDateTime } from "../../config/utils";
 import layerConfirm from "../../components/layerConfirm";
 import imgBiger from "../../components/ImgBiger";
-import successIcon from "../../assets/images/icon/success-circle.svg"
-import errorIcon from "../../assets/images/icon/ava_error.svg"
+import successIcon from "../../assets/images/icon/success-circle.svg";
+import errorIcon from "../../assets/images/icon/ava_error.svg";
 export default {
-    data(){
-        return{
-            showImg:false,
-            imgSrc: '',
-            imgBase64:"",
-            pa:1,
-            cancelInfo:"",
-            layerT:"notice",
-            usersInfoArray:"",
-            usersTotal:"",
-            addMsg:true,
-            upLoad:"",
-            valuesrc:"",
-            radio:"1",//发送对象
-            input:"",//手动输入发送对象
-            textarea3:"",//
-            inputLink:"",//链接地址
-            value1:"",//日期
-            formInline:{region:"600"},//消息类型
-            imgFile:"",
-            fileList:[],
-            isCancel:false,//删除公告
-            checkSendUserData:"",
-            imgFileName:"",
-            off:{
-                layer:false,
-                isConfirm:false,
-                imgIcon:false
-            },
-            form:{
-                page:0,
-                page2:0
-            },
-            searchList:"",
+  data() {
+    return {
+      showImg: false,
+      imgSrc: "",
+      imgBase64: "",
+      pa: 1,
+      cancelInfo: "",
+      layerT: "notice",
+      usersInfoArray: "",
+      usersTotal: "",
+      addMsg: true,
+      upLoad: "",
+      valuesrc: "",
+      radio: "1", //发送对象
+      input: "", //手动输入发送对象
+      textarea3: "", //
+      inputLink: "", //链接地址
+      value1: "", //日期
+      formInline: { region: "600" }, //消息类型
+      imgFile: "",
+      fileList: [],
+      isCancel: false, //删除公告
+      checkSendUserData: "",
+      imgFileName: "",
+      off: {
+        layer: false,
+        isConfirm: false,
+        imgIcon: false
+      },
+      form: {
+        page: 0,
+        page2: 0
+      },
+      searchList: "",
 
-            showImg:false,
-    　　　　 imgSrc: ''
+      showImg: false,
+      imgSrc: ""
+    };
+  },
+  components: {
+    "layer-confirm": layerConfirm,
+    "big-img": imgBiger
+  },
+  created: function() {
+    let vm = this;
+    vm.search(1);
+    let d = new Date().getTime();
+    d += 30 * 24 * 60 * 60 * 1000;
+    vm.value1 = new Date(d).getTime();
+  },
+  computed: {},
+  methods: {
+    reSet() {
+      let vm = this;
+      vm.radio = "1";
+      vm.textarea3 = "";
+      vm.inputLink = "";
+      vm.formInline.region = "600";
+      vm.value1 = "";
+      vm.input = "";
+      vm.imgFileName = "";
+      vm.imgFile="";
+      vm.off.imgIcon = false;
+      vm.$refs.file.value = "";
+      let d = new Date().getTime();
+      d += 30 * 24 * 60 * 60 * 1000;
+      vm.value1 = new Date(d).getTime();
+    },
+    upload() {
+      let vm = this,
+        sendData = {
+          appicationId: "",
+          body: {
+            annex: [],
+            category: "",
+            channel: "",
+            content: vm.textarea3,
+            redirectUrl: vm.inputLink,
+            title: "",
+            type: vm.formInline.region
+          },
+          expTime: new Date(vm.value1).getTime() || "",
+          msgType: "",
+          recipientType: vm.radio,
+          recipients: "",
+          sender: ""
+        };
+      if (vm.radio == 3 && vm.input == "") {
+        layer.open({
+          content: "请输入要发送对象的手机号码",
+          skin: "msg",
+          time: 2,
+          msgSkin: "error"
+        });
+        return false;
+      } else {
+        let arr = vm.input.split(",");
+        sendData.recipients = arr;
+      }
+      if (vm.textarea3 == "") {
+        layer.open({
+          content: "请输入消息内容,不超过140字",
+          skin: "msg",
+          time: 2,
+          msgSkin: "error"
+        });
+        return false;
+      }
+      if (vm.formInline.region == "") {
+        layer.open({
+          content: "请选择消息类型",
+          skin: "msg",
+          time: 2,
+          msgSkin: "error"
+        });
+        return false;
+      }
+      if (vm.value1 == "") {
+        layer.open({
+          content: "请选择日期",
+          skin: "msg",
+          time: 2,
+          msgSkin: "error"
+        });
+        return false;
+      }
+      if (vm.imgFile != "") {
+        sendData.body.annex.push(vm.imgFile);
+      }
+      requestMethod(sendData, "/mns/w/msg/add")
+        .then(data => {
+          if (data.code == 200) {
+            this.search(vm.pa);
+            layer.open({
+              content: "发送成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            });
+            this.reSet();
+          } else {
+            errorDeal(data);
+          }
+        })
+        .catch(e => errorDeal(e));
+    },
+    handleBeforeUpload(e) {
+      //上传图片
+      let file = this.$refs.file.files[0];
+      let vm = this;
+      ImgToBase64(file, 1000, function(base64) {
+        let data = { image: base64 },
+          url = "/mns/w/msg/imgUpload";
+        requestMethod(data, url)
+          .then(resdata => {
+            vm.valuesrc = successIcon;
+            vm.off.imgIcon = true;
+            vm.upLoad = false;
+            vm.imgFile = resdata.data;
+            vm.imgFileName = file.name;
+            if (resdata.code == 200) {
+              layer.open({
+                content: "图片上传成功",
+                skin: "msg",
+                time: 3,
+                msgSkin: "success"
+              });
+            } else {
+              vm.valuesrc = errorIcon;
+              vm.off.imgIcon = true;
+              vm.upLoad = false;
+              layer.open({
+                content: "图片上传失败,请联系管理员",
+                skin: "msg",
+                time: 3,
+                msgSkin: "error"
+              });
+            }
+          })
+          .catch(e => errorDeal(e));
+      });
+    },
+    doFilter(type) {
+      //全选/取消
+      let vm = this;
+      if (type == "all") {
+        for (let i = 0; i < vm.searchList.length; i++) {
+          this.$set(vm.searchList[i], "ischecked", true);
         }
-    },  
-    components:{
-        "layer-confirm":layerConfirm,
-        'big-img':imgBiger
-    },
-    created:function(){
-        let vm=this;
-        vm.search(1);
-        let d=new Date().getTime();
-        d+=30*24*60*60*1000;
-        vm.value1=new Date(d).getTime()
-    },
-    computed:{
-
-    },
-    methods: {
-        reSet(){
-            let vm=this;
-            vm.radio="1";
-            vm.textarea3="";
-            vm.inputLink="";
-            vm.formInline.region="600";
-            vm.value1="";
-            vm.input="";
-            vm.imgFileName="";
-            vm.off.imgIcon=false;
-            vm.$refs.file.value="";
-            let d=new Date().getTime();
-            d+=30*24*60*60*1000;
-            vm.value1=new Date(d).getTime();
-        },
-        upload(){
-            let vm=this, sendData= {
-                "appicationId": "",
-                "body": {
-                    "annex": [],
-                    "category": "",
-                    "channel": "",
-                    "content": vm.textarea3,
-                    "redirectUrl": vm.inputLink,
-                    "title": "",
-                    "type":vm.formInline.region,
-                },
-                "expTime": new Date(vm.value1).getTime()||"",
-                "msgType":"",
-                "recipientType":vm.radio,
-                "recipients": "",
-                "sender": "",
-            }
-            if(vm.radio==3&&vm.input==""){
-                layer.open({
-                    content:"请输入要发送对象的手机号码",
-                    skin:"msg",
-                    time:2,
-                    msgSkin:"error"
-                })
-                return false
-            }else{
-                let arr=vm.input.split(",");
-                sendData.recipients=arr;
-            }
-            if(vm.textarea3==""){
-                layer.open({
-                    content:"请输入消息内容,不超过140字",
-                    skin:"msg",
-                    time:2,
-                    msgSkin:"error"
-                })
-                return false
-            }
-            // if(vm.inputLink==""){
-            //     layer.open({
-            //         content:"请输入链接地址",
-            //         skin:"msg",
-            //         time:2,
-            //         msgSkin:"error"
-            //     })
-            //     return false
-            // }
-            if(vm.formInline.region==""){
-                layer.open({
-                    content:"请选择消息类型",
-                    skin:"msg",
-                    time:2,
-                    msgSkin:"error"
-                })
-                return false
-            }
-            if(vm.value1==""){
-                layer.open({
-                    content:"请选择日期",
-                    skin:"msg",
-                    time:2,
-                    msgSkin:"error"
-                })
-                return false
-            }
-            if(vm.imgFile!=""){
-                sendData.body.annex.push(vm.imgFile);
-            }
-            requestMethod(sendData,"/mns/w/msg/add")
-            .then((data)=>{
-                if(data.code==200){
-                    this.search(vm.pa);
-                    layer.open({
-                        content:"发送成功",
-                        skin:"msg",
-                        time:2,
-                        msgSkin:"success"
-                    })
-                    this.reSet();
-                }else{
-                errorDeal(data)
-                }
-            }).catch(e=>errorDeal(e));
-        },
-        handleBeforeUpload(e){//上传图片
-            let file=this.$refs.file.files[0];
-            let vm=this;
-            ImgToBase64(file,1000,function(base64){
-                let data={"image":base64},url="/mns/w/msg/imgUpload";
-                requestMethod(data,url)
-                .then((resdata)=>{
-                        vm.valuesrc=successIcon;
-                        vm.off.imgIcon=true;
-                        vm.upLoad=false;
-                        vm.imgFile=resdata.data;
-                        vm.imgFileName=file.name;
-                    if(resdata.code==200){
-                        layer.open({
-                            content:'图片上传成功',
-                            skin: 'msg',
-                            time: 3,
-                            msgSkin:'success',
-                        })
-                    }else{
-                        vm.valuesrc=errorIcon;
-                        vm.off.imgIcon=true;                      
-                        vm.upLoad=false;
-                        layer.open({
-                            content:'图片上传失败,请联系管理员',
-                            skin: 'msg',
-                            time: 3,
-                            msgSkin:'error',
-                        })
-                    }
-                }).catch(e=>errorDeal(e));
-            })
-        },
-        doFilter(type){//全选/取消
-            let vm=this;
-            if(type=="all"){
-                for(let i=0;i<vm.searchList.length;i++){
-                    this.$set(vm.searchList[i],'ischecked',true)
-                }
-            }else if(type=="none"){
-                for(let i=0;i<vm.searchList.length;i++){
-                    this.$set(vm.searchList[i],'ischecked',false)
-                }
-            }
-        },cancelMsg(){
-            let vm=this,
-            data={msgIds:[]};
-            vm.off.layer=false;
-            vm.off.isConfirm=false;
-            vm.isCancel=false;
-            for(let i=0;i<vm.searchList.length;i++){
-                if(vm.searchList[i].ischecked==true){
-                    data.msgIds.push(vm.searchList[i].msgId);
-                    vm.isCancel=true;
-                }
-            }
-            vm.cancelInfo=data;
-            if(vm.isCancel==false){
-                layer.open({
-                    content:'请选择要删除的公告消息',
-                    skin: 'msg',
-                    time: 3,
-                    msgSkin:'error',
-                })
-                return false;
-            }else if(vm.isCancel==true){
-                vm.off.layer=true;
-            }
-        },search(index){
-            let vm=this;
-            vm.pa=index||1;
-            requestMethod({pageSize:15,pageNum:index},"/mns/w/msg/searchBulletin")
-            .then((data)=>{
-                if(data.code==200){
-                    vm.form.page=data.data.total;
-                    vm.searchList=data.data.bulletins;
-                    this.doFilter("none");
-                }else{
-                    errorDeal(data.code);
-                }
-                
-            }).catch(e=>errorDeal(e));
-        },checkSendUser(p,v){//查看公告发送对象信息
-            let vm=this;
-            vm.pa=p||1;
-            if(v!=undefined){
-            let data={"msgId":v.msgId,"recipientType":v.receiverType,pageSize:20};
-            vm.checkSendUserData=data;
-            }
-            vm.checkSendUserData.pageNum=p||1
-            requestMethod(vm.checkSendUserData,"/mns/w/msg/searchReceivers")
-            .then((data)=>{
-            if(data.code==200){
-                vm.addMsg=false;
-                vm.form.page2=data.data.total;
-                vm.userTotal=data.data.total;
-                vm.usersInfoArray=data.data.users;
-            }else{
-                layer.open({
-                    content:data.msg,
-                    skin: 'msg',
-                    time: 3,
-                    msgSkin:'error',
-                })
-            }
-            }).catch(e=>errorDeal(e));
-        },getDateTime(v){
-            return getDateTime(v);
-        },
-        goBack(){
-            this.addMsg=true;
-        },viewImg(){
-            this.showImg = false;
-        },imgBigFunction(e){
-            let vm=this,imgSrc=e.annex[0].base64String;
-            for(let i in vm.$refs.imgBigFunction){
-                if(vm.$refs.imgBigFunction[i].src==imgSrc){
-                    this.$refs.imgBigFunction[i].click();
-                }
-            }
-        },upFiles() {
-            let vm=this;
-            //支持chrome IE10
-            if (window.FileReader) {
-                var file = this.$refs.txt.files[0];
-                var reader = new FileReader();
-                reader.addEventListener("loadend", function() {
-                    vm.input=this.result;
-                    vm.radio="3";
-                });
-                reader.readAsText(file);
-            } 
-            //支持IE 7 8 9 10
-            else if (typeof window.ActiveXObject != 'undefined'){
-                var xmlDoc; 
-                xmlDoc = new ActiveXObject("Microsoft.XMLDOM"); 
-                xmlDoc.async = false; 
-                xmlDoc.load(this.$refs.txt.value); 
-                vm.input=xmlDoc.xml; 
-            } 
-            //支持FF
-            else if (document.implementation && document.implementation.createDocument) { 
-                var xmlDoc; 
-                xmlDoc = document.implementation.createDocument("", "", null); 
-                xmlDoc.async = false; 
-                xmlDoc.load(this.$refs.txt.value); 
-                vm.input=xmlDoc.xml;
-            } else { 
-                alert('error'); 
-            } 
-
+      } else if (type == "none") {
+        for (let i = 0; i < vm.searchList.length; i++) {
+          this.$set(vm.searchList[i], "ischecked", false);
         }
+      }
+    },
+    cancelMsg() {
+      let vm = this,
+        data = { msgIds: [] };
+      vm.off.layer = false;
+      vm.off.isConfirm = false;
+      vm.isCancel = false;
+      for (let i = 0; i < vm.searchList.length; i++) {
+        if (vm.searchList[i].ischecked == true) {
+          data.msgIds.push(vm.searchList[i].msgId);
+          vm.isCancel = true;
+        }
+      }
+      vm.cancelInfo = data;
+      if (vm.isCancel == false) {
+        layer.open({
+          content: "请选择要删除的公告消息",
+          skin: "msg",
+          time: 3,
+          msgSkin: "error"
+        });
+        return false;
+      } else if (vm.isCancel == true) {
+        vm.off.layer = true;
+      }
+    },
+    search(index) {
+      let vm = this;
+      vm.pa = index || 1;
+      requestMethod(
+        { pageSize: 15, pageNum: index },
+        "/mns/w/msg/searchBulletin"
+      )
+        .then(data => {
+          if (data.code == 200) {
+            vm.form.page = data.data.total;
+            vm.searchList = data.data.bulletins;
+            this.doFilter("none");
+          } else {
+            errorDeal(data.code);
+          }
+        })
+        .catch(e => errorDeal(e));
+    },
+    checkSendUser(p, v) {
+      //查看公告发送对象信息
+      let vm = this;
+      vm.pa = p || 1;
+      if (v != undefined) {
+        let data = {
+          msgId: v.msgId,
+          recipientType: v.receiverType,
+          pageSize: 20
+        };
+        vm.checkSendUserData = data;
+      }
+      vm.checkSendUserData.pageNum = p || 1;
+      requestMethod(vm.checkSendUserData, "/mns/w/msg/searchReceivers")
+        .then(data => {
+          if (data.code == 200) {
+            vm.addMsg = false;
+            vm.form.page2 = data.data.total;
+            vm.userTotal = data.data.total;
+            vm.usersInfoArray = data.data.users;
+          } else {
+            layer.open({
+              content: data.msg,
+              skin: "msg",
+              time: 3,
+              msgSkin: "error"
+            });
+          }
+        })
+        .catch(e => errorDeal(e));
+    },
+    getDateTime(v) {
+      return getDateTime(v);
+    },
+    goBack() {
+      this.addMsg = true;
+    },
+    viewImg() {
+      this.showImg = false;
+    },
+    imgBigFunction(e) {
+      let vm = this,
+        imgSrc = e.annex[0].base64String;
+      for (let i in vm.$refs.imgBigFunction) {
+        if (vm.$refs.imgBigFunction[i].src == imgSrc) {
+          this.$refs.imgBigFunction[i].click();
+        }
+      }
+    },
+    upFiles() {
+      let vm = this;
+      //支持chrome IE10
+      if (window.FileReader) {
+        var file = this.$refs.txt.files[0];
+        var reader = new FileReader();
+        reader.addEventListener("loadend", function() {
+          vm.input = this.result;
+          vm.radio = "3";
+        });
+        reader.readAsText(file);
+      }
+      //支持IE 7 8 9 10
+      else if (typeof window.ActiveXObject != "undefined") {
+        var xmlDoc;
+        xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
+        xmlDoc.async = false;
+        xmlDoc.load(this.$refs.txt.value);
+        vm.input = xmlDoc.xml;
+      }
+      //支持FF
+      else if (
+        document.implementation &&
+        document.implementation.createDocument
+      ) {
+        var xmlDoc;
+        xmlDoc = document.implementation.createDocument("", "", null);
+        xmlDoc.async = false;
+        xmlDoc.load(this.$refs.txt.value);
+        vm.input = xmlDoc.xml;
+      } else {
+        alert("error");
+      }
     }
-}
+  }
+};
 </script>
