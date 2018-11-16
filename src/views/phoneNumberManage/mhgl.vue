@@ -197,9 +197,9 @@
                       <td>{{translateData(2,v.productType)}}</td>
                       <td>{{v.splitFlag==2?'拆分包':v.splitFlag==1?'非拆分包':'--'}}</td>
                       <td>
-                        <button v-if="splitButton(v,i,1)==1&&v.productState!=5" class="m-button-split2" @click="splitNumber(v,1,i)">拆包</button>
+                        <button v-if="splitButton(v,i,1)==1&&v.productState!=5" class="m-button-split2" @click="splitNumber(v,1,2)">拆包</button>
                         <button v-if="splitButton(v,i,1)==1&&v.productState==5">未拆包</button>
-                        <button v-if="splitButton(v,i,2)==2" class="m-button-split1" @click="splitNumber(v,1,i)"><span>取消</span></button>
+                        <button v-if="splitButton(v,i,2)==2" class="m-button-split1" @click="splitNumber(v,1,1)"><span>取消</span></button>
                       </td>
                       <td>
                         <a v-if="v.productType==2" @click="openList(v,1,i)">
@@ -236,9 +236,10 @@
                                   <td>{{v1.ruleDesc}}({{v1.total}})</td>
                                   <td>{{v1.splitFlag==2?'拆分包':v1.splitFlag==1?'非拆分包':'--'}}</td>
                                   <td>
-                                    <button class="m-button-split2" v-if="v.splitFlag==2&&v1.splitFlag==1"
-                                      @click="splitNumber({v:v,v1:v1},2,''+i+i1)">拆包</button>
-                                    <button class="m-button-split1" v-if="v.splitFlag==2&&v1.splitFlag==2" @click="splitNumber({v:v,v1:v1},2,''+i+i1)"><span>取消</span></button>
+                                    <button class="m-button-split2" v-if="v.splitFlag==2&&v1.splitFlag==1&&v1.state!=5"
+                                      @click="splitNumber({v:v,v1:v1},2,2)">拆包</button>
+                                    <button class="m-button-split1" v-if="v.splitFlag==2&&v1.splitFlag==2&&v1.state!=5" 
+                                      @click="splitNumber({v:v,v1:v1},2,1)"><span>取消</span></button>
                                   </td>
                                   <td></td>
                                   <td>{{(v1.price/100).toFixed(2)}}</td>
@@ -739,7 +740,7 @@ export default {
         //大包拆包按钮
         let json = {
           productId: v.productId,
-          split: v.splitFlag
+          split: i
         };
         requestUpdateSplit(json)
           .then(data => {
@@ -760,7 +761,7 @@ export default {
         let json = {
           sectionId: v.v.sectionId,
           ruleType: v.v1.ruleType,
-          split: v.v1.splitFlag
+          split: i
         };
         updateCuteSplitFlag(json)
           .then(data => {
