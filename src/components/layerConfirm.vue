@@ -605,7 +605,7 @@
           .then((data) => {
             if (data.code == 200) {
               layer.open({
-                content: "修改角色权限成功",
+                content: "修改归属渠道成功",
                 skin: "msg",
                 time: 2,
                 msgSkin: "success"
@@ -626,8 +626,6 @@
                 .then((data) => {
                   if (data.code == 200) {
                     vm.$parent.lists = data.data.departs[0];
-                  } else {
-
                   }
                 }).catch(e => errorDeal(e));
             }

@@ -19,8 +19,10 @@
 .m-btn-orange:active{box-shadow: 0 0 5px #FF8702;}
 .m-btn-green{border: 1px solid #00AA00;background: #00AA00;color: #fff;}
 .m-btn-green:active{box-shadow:  0 0 5px #00AA00;}
+.m-btn-red{border: 1px solid #c14752;background: #c14752;color: #fff;}
+.m-btn-green:active{box-shadow:  0 0 5px #c14752;}
 .m-btn-search{padding: 6px 50px;}
-.m-btn-small{padding: 6px 10px;}
+.m-btn-small{padding: 2px 8px;}
 .m-link-a{color: #43aad4;text-decoration: underline}
 .m-list-title{height: 40px;padding: 0 20px;display: flex}
 .m-list-title label{flex: 1}

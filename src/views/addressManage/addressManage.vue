@@ -2,34 +2,36 @@
   <section ref="sec" style="width:100%;height:100%">
     <div class="dls greyFont">
       <el-row>
-        <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
+        <el-col :span="24">
+          <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
+        </el-col>
       </el-row>
       <el-row>
-        <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-          <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">代理商名称：</div></el-col>
-          <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-            <!-- <el-select size="small" style="width:100%" clearable v-model="departId" placeholder="请选择查询的代理商名称">
+        <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+          <div class="grid-content bg-purple-light">
+            <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
+              <div class="grid-content bg-purple-dark f-ta-r inputTitle">代理商名称：</div>
+            </el-col>
+            <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+              <!-- <el-select size="small" style="width:100%" clearable v-model="departId" placeholder="请选择查询的代理商名称">
               <el-option v-for="item in options" :key="item.dealerId" :label="item.dealerIdName" :value="item.dealerId"
                 size="small">
               </el-option>
             </el-select> -->
-            <el-autocomplete
-              v-model="departId"
-              style="width:100%"
-              size="small"
-              value-key="username"
-              :fetch-suggestions="querySearchAsync"
-              placeholder="请选择查询的代理商名称"
-              @select="handleSelect"
-            ></el-autocomplete>
-          </el-col>
-        </div></el-col>
-        <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12"><div class="grid-content bg-purple-light">
-          <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">电话号码：</div></el-col>
-          <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-            <el-input @input="finputphone" v-model="phone" size="small"  placeholder="请输入查询的11位电话号码" :maxlength="11"></el-input>
-          </el-col>
-        </div></el-col>
+              <el-autocomplete v-model="departId" style="width:100%" size="small" value-key="username" :fetch-suggestions="querySearchAsync" placeholder="请选择查询的代理商名称" @select="handleSelect"></el-autocomplete>
+            </el-col>
+          </div>
+        </el-col>
+        <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+          <div class="grid-content bg-purple-light">
+            <el-col :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
+              <div class="grid-content bg-purple-dark f-ta-r inputTitle">电话号码：</div>
+            </el-col>
+            <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
+              <el-input @input="finputphone" v-model="phone" size="small" placeholder="请输入查询的11位电话号码" :maxlength="11"></el-input>
+            </el-col>
+          </div>
+        </el-col>
       </el-row>
       <el-row style="text-align:center" class="marginTop">
         <button class="m-btn-orange m-btn-search" @click="search()">搜索</button>
@@ -41,75 +43,68 @@
           <h3>
             <span>地址列表</span><span class="f-fw greyFont">({{total||'0'}})</span>
             <button @click="faddAddress()" style="padding:5px;float:right" class="f-bg-green">新增地址</button>
-          </h3>                    
-        </el-row>        
+          </h3>
+        </el-row>
       </div>
       <div class="m-details">
-          <table class="m-searchTab" style="width:100%;height:100%;">
-            <tr>
-              <td>序号</td>
-              <td>收货人姓名</td>
-              <td>所在地区</td>
-              <td>详细地址</td>
-              <td>电话号码</td>
-              <td>操作</td>
-            </tr>
-            <tr v-for="(v,i) of searchlist" :key="i">
-                <td>{{((currentPage-1)*15+(i+1))}}</td>
-                <td>{{v.username}}</td>
-                <td>{{v.province+v.city+v.county}}</td>
-                <td>{{v.detailAddress}}</td>
-                <td>{{v.phone}}</td>
-                <td>
-                  <a v-if="v.defaultFlag==1" class="green">默认地址</a>
-                  <a v-else @click="operate(1,v.id)" class="blue">设为默认</a>
-                  <a style="margin-left:20px;" @click="operate(2,v.id)" class="red">删除</a>
-                  <a style="margin-left:20px;" @click="operate(3,v)" class="blue">编辑</a>
-                </td>
-            </tr>
-            <tr v-if="searchlist.length<=0">
-              <td style="text-align:center" colspan="6">
-                该商户暂时没有收货地址，现在<a @click="dialogFormVisible = true" class="green">添加收货地址</a>                                                  
-              </td>
-            </tr>
-          </table>
-      </div>       
+        <table class="m-searchTab" style="width:100%;height:100%;">
+          <tr>
+            <td>序号</td>
+            <td>收货人姓名</td>
+            <td>所在地区</td>
+            <td>详细地址</td>
+            <td>电话号码</td>
+            <td>操作</td>
+          </tr>
+          <tr v-for="(v,i) of searchlist" :key="i">
+            <td>{{((currentPage-1)*15+(i+1))}}</td>
+            <td>{{v.username}}</td>
+            <td>{{v.province+v.city+v.county}}</td>
+            <td>{{v.detailAddress}}</td>
+            <td>{{v.phone}}</td>
+            <td>
+              <a v-if="v.defaultFlag==1" class="green">默认地址</a>
+              <a v-else @click="operate(1,v.id)" class="blue">设为默认</a>
+              <a style="margin-left:20px;" @click="operate(2,v.id)" class="red">删除</a>
+              <a style="margin-left:20px;" @click="operate(3,v)" class="blue">编辑</a>
+            </td>
+          </tr>
+          <tr v-if="searchlist.length<=0">
+            <td style="text-align:center" colspan="6">
+              该商户暂时没有收货地址，现在<a @click="dialogFormVisible = true" class="green">添加收货地址</a>
+            </td>
+          </tr>
+        </table>
       </div>
-      <div class="m-dialog" v-if="dialogFormVisible">
-        <div class="m-newAddress">
-          <p class="m-dialog-title">创建地址<span class="m-icon-close" @click="closedialog()"></span></p>
-          <div class="m-dialog-content">
-            <span>新增收货地址</span>
-            <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
-              <el-form-item label="地址信息" prop="addaddress">
-                <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
-              </el-form-item>
-              <el-form-item label="详细地址" prop="addtextarea">
-                <el-input
-                  size="small"
-                  type="textarea"
-                  :rows="2"
-                  max-length="50
-                  "
-                  placeholder="请输入详细地址信息，如道路,门牌号"
-                  v-model="ruleForm.addtextarea">
-                </el-input>
-              </el-form-item>
-              <el-form-item label="收货人" prop="addname">
-                <el-input size="small" v-model="ruleForm.addname"></el-input>
-              </el-form-item>
-              <el-form-item label="手机号码" prop="addphone">
-                <el-input size="small" :maxlength="11"  v-model="ruleForm.addphone"></el-input>
-              </el-form-item>
-              <el-form-item label="">
-                <el-checkbox v-model="addsetDefault">设置为默认收货地址</el-checkbox>
-              </el-form-item>
-            </el-form>
-            <p style="text-align:center"><button @click="saveForm(1,'ruleForm')" style="padding:5px;" class="f-bg-blue">保存</button></p>
-          </div>
+    </div>
+    <div class="m-dialog" v-if="dialogFormVisible">
+      <div class="m-newAddress">
+        <p class="m-dialog-title">创建地址<span class="m-icon-close" @click="closedialog()"></span></p>
+        <div class="m-dialog-content">
+          <span>新增收货地址</span>
+          <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px">
+            <el-form-item label="地址信息" prop="addaddress">
+              <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
+            </el-form-item>
+            <el-form-item label="详细地址" prop="addtextarea">
+              <el-input size="small" type="textarea" :rows="2" max-length="50" placeholder="请输入详细地址信息，如道路,门牌号" v-model="ruleForm.addtextarea">
+              </el-input>
+            </el-form-item>
+            <el-form-item label="收货人" prop="addname">
+              <el-input size="small" v-model="ruleForm.addname"></el-input>
+            </el-form-item>
+            <el-form-item label="手机号码" prop="addphone">
+              <el-input size="small" :maxlength="11" v-model="ruleForm.addphone"></el-input>
+            </el-form-item>
+            <el-form-item label="">
+              <el-checkbox v-model="addsetDefault">设置为默认收货地址</el-checkbox>
+            </el-form-item>
+          </el-form>
+          <p style="text-align:center"><button @click="saveForm(1,'ruleForm')" style="padding:5px;" class="f-bg-blue">保存</button></p>
         </div>
       </div>
-      <layerConfirm v-if="off.layer" :layerType="layerType" :layerData="layerData"></layerConfirm>
+    </div>
+    <layerConfirm v-if="off.layer" :layerType="layerType" :layerData="layerData"></layerConfirm>
   </section>
 </template>
 
@@ -172,16 +167,32 @@ export default {
       },
       rules: {
         addaddress: [
-          { required: true, validator: validateAddress, trigger: "blur" }
+          {
+            required: true,
+            validator: validateAddress,
+            trigger: "blur"
+          }
         ],
         addtextarea: [
-          { required: true, message: "请输入详细地址", trigger: "blur" }
+          {
+            required: true,
+            message: "请输入详细地址",
+            trigger: "blur"
+          }
         ],
         addname: [
-          { required: true, message: "请输入收货人姓名", trigger: "blur" }
+          {
+            required: true,
+            message: "请输入收货人姓名",
+            trigger: "blur"
+          }
         ],
         addphone: [
-          { required: true, message: "请输入收货人电话号码", trigger: "blur" },
+          {
+            required: true,
+            message: "请输入收货人电话号码",
+            trigger: "blur"
+          },
           { validator: validatePhone, trigger: "blur" }
         ]
       }
@@ -285,8 +296,7 @@ export default {
       } else {
         this.addaddress = true;
       }
-      this.$nextTick(()=>{
-        console.log(this.$refs[i])
+      this.$nextTick(() => {
         this.$refs[i].validate(valid => {
           if (valid) {
             console.log("submit!");
@@ -338,11 +348,10 @@ export default {
                 .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
             }
           } else {
-            console.log("error submit!");
             return false;
           }
-        })
-      })
+        });
+      });
     },
     faddAddress() {
       let vm = this;

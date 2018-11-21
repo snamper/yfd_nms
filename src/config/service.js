@@ -119,6 +119,15 @@ export const updateAddress=(data,load)=>fetch("/ums/w/address/mng-update",data,"
 /*查询用户信息*/
 export const searchUser=(data,load)=>fetch("/ums/w/address/user",data,"POST",load)
 
+/*添加代理商*/
+export const addDepart=(data,load)=>fetch("/ums/w/depart/add",data,"POST",load)
+
+/*更新代理商*/
+export const updateDepart=(data,load)=>fetch("/ums/w/depart/update",data,"POST",load)
+
+
+
+
 
 
 

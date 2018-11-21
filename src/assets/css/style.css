@@ -54,6 +54,7 @@ button {
   outline: none;
   cursor: pointer;
 }
+
 #app {
   position: absolute;
   top: 0;

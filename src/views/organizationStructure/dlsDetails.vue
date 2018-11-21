@@ -99,11 +99,7 @@
       </div>
       <!-- 代理商员工查询结果 -->
       <div class="m-listTitleFoot">
-        <el-row>
-          <p>
-            <h3>员工列表<span class="f-fw greyFont">({{lists.length||'0'}})</span></h3>
-          </p>
-        </el-row>
+        <el-row><h3>员工列表<span class="f-fw greyFont">({{lists.length||'0'}})</span></h3></el-row>
       </div>
       <div class="m-details">
         <table class="m-searchTab" style="width:100%;height:100%;">
@@ -116,6 +112,7 @@
             <td>角色</td>
             <td>当前状态</td>
             <td>最后登录时间</td>
+            <td>操作</td>
           </tr>
           <tr v-for="(v,i) of lists" :key="i">
             <td>
@@ -159,14 +156,17 @@
                 --
               </span>
             </td>
+            <td>
+              <button @click="setContact(v.userId)" class="m-btn-small m-btn-green">设为联系人</button>
+            </td>
           </tr>
           <tr v-if="lists.length==0">
-            <td class="f-ta-c" colspan="8">
+            <td class="f-ta-c" colspan="9">
               暂无数据
             </td>
           </tr>
           <tr v-if="lists.length>0">
-            <td colspan="8" class="f-pl-10">
+            <td colspan="9" class="f-pl-10">
               <span class="fl">选择 : <a href="javascript:void(0)" @click="doFilter('all')">全选 </a>-<a href="javascript:void(0)"
                   @click="doFilter('on')"> 取消全选 </a></span>
             </td>
@@ -212,7 +212,8 @@
 </template>
 <script>
   import {
-    requestMethod
+    requestMethod,
+    updateDepart
   } from "../../config/service";
   import {
     getDateTime,
@@ -302,18 +303,82 @@
       ])
     },
     methods: {
-      goBack() { //返回上级
+      search(p) { //查询
         let vm = this;
-        vm.$parent.off.dlsDetails = false;
-        vm.$parent.off.notDlsDetails = true;
-        this.$parent.search(vm.$parent.pa);
+        if (this.phone != '') {
+          checkMobile(this.phone, function () {
+            return false
+          });
+        }
+        let data = {},
+          url = '/ums/w/user/getDepartDetail'
+        data = {
+          'searchDepartId': vm.$parent.searchDepartId,
+          userState: vm.radio,
+          username: vm.name,
+          phone: vm.phone,
+          pageNum: p || 1,
+          pageSize: "10"
+        };
+        requestMethod(data, url)
+          .then((data) => {
+            if (data.code == 200) {
+              if (data.data.users.length > 0) {
+                vm.$parent.off.notDlsDetails = false;
+                vm.$parent.off.dlsDetails = true;
+                vm.$parent.detailsList = data.data.users;
+                vm.$parent.headUserName = data.data.users[0].username;
+                vm.$parent.headPhone = data.data.users[0].phone;
+              } else {
+                vm.$parent.off.notDlsDetails = false;
+                vm.$parent.off.dlsDetails = true;
+                vm.$parent.detailsList = [];
+                vm.$parent.detailsList.username = '';
+                vm.$parent.detailsList.phone = '';
+              }
+            } else {
+              errorDeal(data);
+            }
+          }).then(() => {
+            for (let v = 0; v < vm.$parent.detailsList.length; v++) {
+              vm.$set(vm.$parent.detailsList[v], 'ischecked', false);
+            }
+            vm.off.modify = false;
+          }).catch(e => errorDeal(e));
       },
-      AddList() { //添加员工状态操作
-        this.list.push({
-          username: '',
-          phone: '',
-          role: []
-        })
+      getStaffDetails(p) { //员工详情
+        let data = {},
+          url = '/ums/w/user/getUserDetail',
+          vm = this
+        vm.searchStaffInfo = p;
+        data = {
+          "searchUserId": p.userId,
+          "sessionType": "2"
+        }
+        vm.searchDetailsYfdData = data;
+        requestMethod(data, url)
+          .then((data) => {
+            vm.off.searchStaff = false;
+            vm.off.staffDetails = true;
+            vm.searchRes = data.data;
+            if (data.code == 200) {}
+          }).catch(e => errorDeal(e));
+      },
+      setContact(v){
+        let vm=this,json={
+          "departId": vm.$parent.searchDepartId,
+          "departUserId": v};
+          updateDepart(json)
+          .then((data)=>{
+            if(data.code==200){
+              layer.open({
+                content: '修改部门联系人成功',
+                skin: 'msg',
+                time: 2,
+                msgSkin: 'success',
+              });
+            }
+          }).catch(e=>errorDeal(e))
       },
       AddStaffDiv() { //添加员工模块开关
         if (this.$parent.departState == '3' || this.$parent.departState == '4') {
@@ -329,9 +394,7 @@
       },
       AddStaff() { //添加员工按钮
         let vm = this,
-          data = {
-            "newUsers": []
-          };
+          data = {"newUsers": []};
         for (let i = 0; i < this.list.length; i++) {
           if (this.list[i].username != "" && this.list[i].phone != "" && this.list[i].value != '') {
             checkMobile(this.list[i].phone, () => {
@@ -458,67 +521,6 @@
             }
           }).catch(e => errorDeal(e));
       },
-      search(p) { //查询
-        let vm = this;
-        if (this.phone != '') {
-          checkMobile(this.phone, function () {
-            return false
-          });
-        }
-        let data = {},
-          url = '/ums/w/user/getDepartDetail'
-        data = {
-          'searchDepartId': vm.$parent.searchDepartId,
-          userState: vm.radio,
-          username: vm.name,
-          phone: vm.phone,
-          pageNum: p || 1,
-          pageSize: "10"
-        };
-        requestMethod(data, url)
-          .then((data) => {
-            if (data.code == 200) {
-              if (data.data.users.length > 0) {
-                vm.$parent.off.notDlsDetails = false;
-                vm.$parent.off.dlsDetails = true;
-                vm.$parent.detailsList = data.data.users;
-                vm.$parent.headUserName = data.data.users[0].username;
-                vm.$parent.headPhone = data.data.users[0].phone;
-              } else {
-                vm.$parent.off.notDlsDetails = false;
-                vm.$parent.off.dlsDetails = true;
-                vm.$parent.detailsList = [];
-                vm.$parent.detailsList.username = '';
-                vm.$parent.detailsList.phone = '';
-              }
-            } else {
-              errorDeal(data);
-            }
-          }).then(() => {
-            for (let v = 0; v < vm.$parent.detailsList.length; v++) {
-              vm.$set(vm.$parent.detailsList[v], 'ischecked', false);
-            }
-            vm.off.modify = false;
-          }).catch(e => errorDeal(e));
-      },
-      getStaffDetails(p) { //员工详情
-        let data = {},
-          url = '/ums/w/user/getUserDetail',
-          vm = this
-        vm.searchStaffInfo = p;
-        data = {
-          "searchUserId": p.userId,
-          "sessionType": "2"
-        }
-        vm.searchDetailsYfdData = data;
-        requestMethod(data, url)
-          .then((data) => {
-            vm.off.searchStaff = false;
-            vm.off.staffDetails = true;
-            vm.searchRes = data.data;
-            if (data.code == 200) {}
-          }).catch(e => errorDeal(e));
-      },
       btnYes() {
         let data = {
             'operateUserIds': []
@@ -533,8 +535,12 @@
         vm.layerType = "operation";
         vm.operationJson = data;
       },
-      getDateTime(v) {
-        return getDateTime(v);
+      AddList() { //添加员工状态操作
+        this.list.push({
+          username: '',
+          phone: '',
+          role: []
+        })
       },
       deleteLine(v) {
         let vm = this;
@@ -543,6 +549,16 @@
         }
         vm.list.splice(v, 1);
       },
+      goBack() { //返回上级
+        let vm = this;
+        vm.$parent.off.dlsDetails = false;
+        vm.$parent.off.notDlsDetails = true;
+        this.$parent.search(vm.$parent.pa);
+      },
+      getDateTime(v) {
+        return getDateTime(v);
+      },
+
       translateData(v, i) {
         return translateData(v, i)
       },
