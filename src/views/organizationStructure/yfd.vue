@@ -198,6 +198,7 @@ export default{
             typeTitle:"",
             operationJson:"",
             doUrl:"",
+            isuserOrigin:"",
 			off:{
                 showSearch:"",
                 searchList:false,
@@ -355,6 +356,7 @@ export default{
             let data={},url='/ums/w/user/getUserDetail',vm=this;
             data={"searchUserId":p.userId,"sessionType":"2"}
             vm.searchDetailsYfdData=data;
+            vm.isuserOrigin = p.userOrigin;
             requestMethod(data,url)
             .then((data)=>{
                 if(data.code==200){
