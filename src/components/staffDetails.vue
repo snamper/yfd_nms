@@ -26,7 +26,8 @@
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <p v-if="off.noModify">{{forms.username}}</p>
-                                <input class="modifyInput" v-if="off.modify" type="text" v-model="forms.username">
+                                <p v-if="off.modify&&$parent.isuserOrigin==2">{{forms.username}}</p>
+                                <input class="modifyInput" v-if="off.modify&&$parent.isuserOrigin!=2" type="text" v-model="forms.username">
                             </div>
                         </el-col>
                     </el-row>
@@ -40,7 +41,8 @@
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <p v-if="off.noModify">{{forms.phone}}</p>
-                                <input class="modifyInput" :maxlength="11" v-if="off.modify" type="text" v-model="forms.phone">
+                                <p v-if="off.noModify&&$parent.isuserOrigin==2">{{forms.phone}}</p>
+                                <input class="modifyInput" :maxlength="11" v-if="off.modify&&$parent.isuserOrigin!=2" type="text" v-model="forms.phone">
                             </div>
                         </el-col>
                     </el-row>
@@ -50,7 +52,6 @@
                         <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2">
                             <div class="grid-content bg-purple fr">角色&nbsp;&nbsp;:&nbsp;&nbsp;</div>
                         </el-col>
-
                         <el-col v-if="!off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <span v-for="(v,i) in forms.userRole.split(',')" :key="i">
@@ -65,6 +66,16 @@
                                     </el-option>
                                 </el-select>
                             </div>
+                        </el-col>
+                    </el-row>
+                </li>
+                <li>
+                    <el-row>
+                        <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2">
+                            <div class="grid-content bg-purple fr">来源&nbsp;&nbsp;:&nbsp;&nbsp;</div>
+                        </el-col>
+                        <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
+                            {{$parent.isuserOrigin==1?'手动添加':$parent.isuserOrigin==2?'系统同步':'--'}}
                         </el-col>
                     </el-row>
                 </li>
@@ -213,6 +224,7 @@
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light" v-if="forms.phoneType">{{forms.phoneType}}</div>
                             <div class="grid-content bg-purple-light" v-if="!forms.phoneType">--</div>
+                             {{$parent.isuserOrigin}}{{forms.userRole}}
                         </el-col>
                     </el-row>
                 </li>
@@ -220,7 +232,9 @@
             <div style="margin-top:8px" class="modifyStaffInfo">
                 <el-row v-if="off.noModify">
                     <el-col style="text-align:center" :span="24">
-                        <div class="grid-content bg-purple"><button class="change" @click="checkBtn" v-if="user.userRole!=2&&user.userRole!=3">修改</button></div>
+                        <div class="grid-content bg-purple">
+                            <button class="change" @click="checkBtn" v-if="$parent.isuserOrigin==1||($parent.isuserOrigin==2&&forms.userRole!=3)">修改</button>
+                        </div>
                     </el-col>
                 </el-row>
                 <el-row v-if="off.modify">
@@ -233,7 +247,13 @@
     </div>
 </template>
 <script>
-import { getDateTime, getStore, errorDeal, translateData, translateRole } from "../config/utils";
+import {
+  getDateTime,
+  getStore,
+  errorDeal,
+  translateData,
+  translateRole
+} from "../config/utils";
 import { requestMethod } from "../config/service.js";
 import { mapState } from "vuex";
 export default {
@@ -293,15 +313,15 @@ export default {
       this.$parent.search(vm.$parent.pa);
     },
     checkBtn() {
-    //   if (this.forms.userRole.split(",").indexOf("3") > -1) {
-    //     layer.open({
-    //       content: "不允许修改店长信息",
-    //       skin: "msg",
-    //       time: 2,
-    //       msgSkin: "error"
-    //     });
-    //     return false;
-    //   }
+      //   if (this.forms.userRole.split(",").indexOf("3") > -1) {
+      //     layer.open({
+      //       content: "不允许修改店长信息",
+      //       skin: "msg",
+      //       time: 2,
+      //       msgSkin: "error"
+      //     });
+      //     return false;
+      //   }
       let vm = this;
       if (vm.forms.userRole.split(",").length == 1) {
         vm.value1 = vm.forms.userRole.split(",")[0];

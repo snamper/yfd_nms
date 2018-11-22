@@ -76,8 +76,8 @@
                     <td>售卡区域 : </td>
                     <td>{{lists.soldProvince||'--'}}，{{lists.soldCity||'--'}}，{{lists.soldCounty||'--'}}</td>
                 </tr>
-                <tr v-if="false">
-                    <td>客户地址 : </td>
+                <tr>
+                    <td>售卡地址 : </td>
                     <td>{{lists.address||'--'}}</td>
                 </tr>
             </table>
@@ -125,7 +125,7 @@
                         <el-form-item label="售卡区域" prop="addaddress">
                             <v-distpicker :disabled="off.alterAddress" @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
                         </el-form-item>
-                        <el-form-item label="地址信息" prop="addSealRegion">
+                        <el-form-item v-if="false" label="售卡地址" prop="addSealRegion">
                             <el-input size="small" v-model="addForm.addSealRegion"></el-input>
                         </el-form-item>
                         <el-form-item label="门店地址" prop="addFront">
@@ -204,6 +204,7 @@ export default {
       vm.addForm.addDepName = lists.departName;
       vm.addForm.addDepId = lists.departId;
       vm.addForm.addFront = lists.storefront;
+      vm.addForm.addSealRegion = lists.address;
       vm.select.province=lists.soldProvince;
       vm.select = Object.assign({},{ province: lists.soldProvince, city: lists.soldCity, area: lists.soldCounty });
     },

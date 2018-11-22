@@ -173,7 +173,7 @@
                 </span>
               </td>
               <td>{{v.address||'--'}}</td>
-              <td>{{v.userOrigin==1?'手动加入':v.userOrigin==2?'系统同步':'--'}}</td>
+              <td>{{v.userOrigin==1?'手动添加':v.userOrigin==2?'系统同步':'--'}}</td>
               <td>
                 <a href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
               </td>
