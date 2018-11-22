@@ -293,15 +293,15 @@ export default {
       this.$parent.search(vm.$parent.pa);
     },
     checkBtn() {
-      if (this.forms.userRole.split(",").indexOf("3") > -1) {
-        layer.open({
-          content: "不允许修改店长信息",
-          skin: "msg",
-          time: 2,
-          msgSkin: "error"
-        });
-        return false;
-      }
+    //   if (this.forms.userRole.split(",").indexOf("3") > -1) {
+    //     layer.open({
+    //       content: "不允许修改店长信息",
+    //       skin: "msg",
+    //       time: 2,
+    //       msgSkin: "error"
+    //     });
+    //     return false;
+    //   }
       let vm = this;
       if (vm.forms.userRole.split(",").length == 1) {
         vm.value1 = vm.forms.userRole.split(",")[0];

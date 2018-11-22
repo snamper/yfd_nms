@@ -96,7 +96,7 @@
         <div class="m-details">
           <table class="m-searchTab" style="width:100%;height:100%;">
             <tr>
-              <td colspan="10">
+              <td colspan="11">
                 <el-row>
                   <el-col :span="7" class="f-ta-l f-pl-10">
                     <div class="grid-content bg-purple">
@@ -134,6 +134,7 @@
               <td>所属渠道</td>
               <td>创建时间</td>
               <td>客户地址</td>
+              <td>来源</td>
               <td>员工详情</td>
             </tr>
             <tr v-if="searchList.length>0" v-for="(v,i) of searchList" :key="i" :class="{'greyFont':v.departState==3}">
@@ -172,12 +173,13 @@
                 </span>
               </td>
               <td>{{v.address||'--'}}</td>
+              <td>{{v.userOrigin==1?'手动加入':v.userOrigin==2?'系统同步':'--'}}</td>
               <td>
                 <a href="javascript:void(0)" @click="getDetails(v)">查看详情</a>
               </td>
             </tr>
             <tr v-if="searchList.length==0">
-              <td class="f-ta-c" colspan="10">
+              <td class="f-ta-c" colspan="11">
                 暂无数据
               </td>
             </tr>
@@ -206,7 +208,7 @@
         <p class="m-dialog-title">创建代理商<span class="m-icon-close" @click="closedialog()"></span></p>
         <div class="m-dialog-content">
           <el-form :model="addForm" :rules="rules" ref="addForm" label-width="80px">
-            <el-form-item v-if="false" label="归属渠道" prop="addDepId">
+            <el-form-item label="归属渠道" prop="addDepId">
               <el-select   style="width:400px;" size="mini" v-model="addForm.addDepId" placeholder="请选择归属渠道">
                 <el-option
                 v-for="item in depart"
@@ -216,17 +218,35 @@
                 </el-option>
               </el-select>
             </el-form-item>
-            <el-form-item label="部门ID" prop="addDepId">
+            <!-- <el-form-item label="部门ID" prop="addDepId">
               <el-input size="small" v-model="addForm.addDepId"></el-input>
-            </el-form-item>
+            </el-form-item> -->
             <el-form-item label="部门名称" prop="addDepName">
               <el-input size="small" v-model="addForm.addDepName"></el-input>
             </el-form-item>
-            <el-form-item label="售卡区域" prop="addSealRegion">
-              <el-input size="small" v-model="addForm.addSealRegion"></el-input>
+            <el-form-item label="联系人" prop="addDepContacts">
+              <el-input size="small" v-model="addForm.addDepContacts"></el-input>
             </el-form-item>
-            <el-form-item label="地址信息" prop="addaddress">
-              <v-distpicker @selected="onSelected" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
+            <el-form-item label="联系电话" prop="addDepPhone">
+              <el-input size="small" maxlength="11" v-model="addForm.addDepPhone"></el-input>
+            </el-form-item>
+            <el-form-item label="收货地址" prop="addaddress">
+              <v-distpicker @selected="onSelected" :province="select1.province" :city="select1.city" :area="select1.area"></v-distpicker>
+            </el-form-item>
+            <el-form-item label="收货街道" prop="addaddressStr">
+              <el-input size="small" v-model="addForm.addaddressStr"></el-input>
+            </el-form-item>
+            <el-form-item label="详细地址" prop="detailAddress">
+              <el-input size="small" v-model="addForm.detailAddress"></el-input>
+            </el-form-item>
+            <!-- <el-form-item label="售卡地址" prop="addSealRegion">
+              <el-input size="small" v-model="addForm.addSealRegion"></el-input>
+            </el-form-item> -->
+            <el-form-item label="售卡地址" prop="addaddress">
+              <v-distpicker @selected="onSelected1" :province="select.province" :city="select.city" :area="select.area"></v-distpicker>
+            </el-form-item>
+            <el-form-item label="售卡区域" prop="addsealArea">
+              <el-input size="small" v-model="addForm.addsealArea"></el-input>
             </el-form-item>
             <el-form-item label="门店地址" prop="addFront">
               <el-input size="small" :maxlength="11" v-model="addForm.addFront"></el-input>
@@ -272,19 +292,30 @@ export default {
       departState: "", //部门状态
       companyDetails: "",
       select: "",
+      select1: "",
       searchList: "",
       searchJson:"",
       addForm: {
         addDepId: "",
         addDepName: "",
-        addSealRegion: "",
-        addFront: "",
+        addDepContacts:"",
+        addDepPhone:"",
+        addaddressStr:"",
+        detailAddress:"",
+        addsealArea:"",
+        addFront:"",
         soldProvince:"",
         soldCity:"",
-        soldCounty:""
+        soldCounty:"",
+        province:"",
+        city:"",
+        county:""
       },
       rules: {
-        addDepName: [ { required: true, message: "部门名称为必填内容", trigger: "blur" } ]
+        addDepName: [ { required: true, message: "部门名称为必填内容", trigger: "blur" } ],
+        addDepContacts: [ { required: true, message: "部门联系人为必填内容", trigger: "blur" } ],
+        addDepPhone: [ { required: true, message: "部门联系人电话为必填内容", trigger: "blur" } ],
+        detailAddress: [ { required: true, message: "收货人详细地址为必填内容", trigger: "blur" } ],
       },
       off: {
         layer: false,
@@ -298,42 +329,42 @@ export default {
       },
       pickerOptionsS: {
         disabledDate(time) {
-          let curDate = new Date().getTime();
-          let curYear = new Date(curDate).getFullYear();
-          let curMonth = new Date(curDate).getMonth() + 1,
-            minMonth = curMonth - 5,
-            minYear = curYear;
-          if (minMonth < 0) {
-            minMonth += 12;
-            minYear = curYear - 1;
-          }
-          let curDay = new Date(curDate).getDate() + 1;
-          let nextMonth = curMonth + 1;
-          let cur = minYear + "/" + minMonth + "/1";
-          let next = curYear + "/" + nextMonth + "/1";
-          let nextYesterday = new Date(next) - 1000 * 3600 * 24;
-          cur = new Date(cur).getTime();
-          return time.getTime() > nextYesterday || time.getTime() < cur;
+          // let curDate = new Date().getTime();
+          // let curYear = new Date(curDate).getFullYear();
+          // let curMonth = new Date(curDate).getMonth() + 1,
+          //   minMonth = curMonth - 5,
+          //   minYear = curYear;
+          // if (minMonth < 0) {
+          //   minMonth += 12;
+          //   minYear = curYear - 1;
+          // }
+          // let curDay = new Date(curDate).getDate() + 1;
+          // let nextMonth = curMonth + 1;
+          // let cur = minYear + "/" + minMonth + "/1";
+          // let next = curYear + "/" + nextMonth + "/1";
+          // let nextYesterday = new Date(next) - 1000 * 3600 * 24;
+          // cur = new Date(cur).getTime();
+          // return time.getTime() > nextYesterday || time.getTime() < cur;
         }
       },
       pickerOptionsE: {
         disabledDate(time) {
-          let curDate = new Date().getTime();
-          let curYear = new Date(curDate).getFullYear();
-          let curMonth = new Date(curDate).getMonth() + 1,
-            minMonth = curMonth - 5,
-            minYear = curYear;
-          if (minMonth < 0) {
-            minMonth += 12;
-            minYear = curYear - 1;
-          }
-          let curDay = new Date(curDate).getDate() + 1;
-          let nextMonth = curMonth + 1;
-          let cur = minYear + "/" + minMonth + "/1";
-          let next = curYear + "/" + nextMonth + "/1";
-          let nextYesterday = new Date(next) - 1000 * 3600 * 24;
-          cur = new Date(cur).getTime();
-          return time.getTime() > nextYesterday || time.getTime() < cur;
+          // let curDate = new Date().getTime();
+          // let curYear = new Date(curDate).getFullYear();
+          // let curMonth = new Date(curDate).getMonth() + 1,
+          //   minMonth = curMonth - 5,
+          //   minYear = curYear;
+          // if (minMonth < 0) {
+          //   minMonth += 12;
+          //   minYear = curYear - 1;
+          // }
+          // let curDay = new Date(curDate).getDate() + 1;
+          // let nextMonth = curMonth + 1;
+          // let cur = minYear + "/" + minMonth + "/1";
+          // let next = curYear + "/" + nextMonth + "/1";
+          // let nextYesterday = new Date(next) - 1000 * 3600 * 24;
+          // cur = new Date(cur).getTime();
+          // return time.getTime() > nextYesterday || time.getTime() < cur;
         }
       },
     };
@@ -421,21 +452,31 @@ export default {
     saveForm(v, i) {
       this.$refs[i].validate(valid => {
         if (valid) {
-          let vm = this,json;
-          // if(vm.addForm.addDepId){
-          //   depid=vm.addForm.addDepId.split('【')[1].split('】')[0]
-          // }else{
-          //   depid=""
-          // }
+          let vm = this,depid,depName,json;
+          if(vm.addForm.addDepId){
+            depid=vm.addForm.addDepId.split('【')[1].split('】')[0]
+            depName=vm.addForm.addDepId.split('【')[0]
+          }else{
+            depid=""
+          }
           json = {
-            "dealerId":vm.addForm.addDepId,
-            "departName":vm.addForm.addDepName,
-            "region": vm.addForm.addSealRegion,
-            "storefront": vm.addForm.addFront,
+            "city":  vm.addForm.city,
+            "county": vm.addForm.county,
+            "dealerId": depid,
+            "dealerName" : depName,
+            "departName": vm.addForm.addDepName,
+            "detailAddress": vm.addForm.detailAddress,
+            "phone": vm.addForm.addDepPhone,
+            "province": vm.addForm.province,
+            "region": vm.addForm.addsealArea,
             "soldCity": vm.addForm.soldCity,
             "soldCounty": vm.addForm.soldCounty,
             "soldProvince": vm.addForm.soldProvince,
+            "storefront": vm.addForm.addFront,
+            "street": vm.addForm.addaddressStr,
+            "username": vm.addForm.addDepContacts,
           };
+          debugger;
           addDepart(json)
           .then(data => {
             if (data.code == 200) {
@@ -544,11 +585,17 @@ export default {
         })
         .catch(e => errorDeal(e));
     },
-    onSelected(data) {
+    onSelected1(data) {
       let vm = this;
       vm.addForm.soldProvince = data.province.value;
       vm.addForm.soldCity = data.city.value;
       vm.addForm.soldCounty = data.area.value;
+      
+    },onSelected(data) {
+      let vm = this;
+      vm.addForm.province = data.province.value;
+      vm.addForm.city = data.city.value;
+      vm.addForm.county = data.area.value;
     },
     closedialog() {
       let vm = this;
@@ -612,8 +659,9 @@ export default {
 .m-newAddress {
   border: 10px solid #b4b4b4;
   width: 700px;
-  height: 450px;
+  /* height: 450px; */
   background: #fff;
+  position: fixed;
 }
 .m-newAddress .m-dialog-title {
   background: #e0e0e0;
@@ -644,6 +692,9 @@ export default {
   font-size: 14px;
   border-radius: 4px;
   height: 30px;
+}
+.el-form-item {
+  margin-bottom: 20px;
 }
 </style>
 

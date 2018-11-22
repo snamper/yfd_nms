@@ -53,7 +53,7 @@
                     <td>归属渠道 : </td>
                     <td v-if="!change">{{lists.dealerIdName||'--'}}【{{lists.dealerId||'--'}}】
                         <a href="javascript:void(0)" @click="details">查看渠道变更记录</a>
-                        <button class="m-btn-green m-btn-small" @click="fchange(lists)">修改渠道</button>
+                        <button v-if="lists.userOrigin!=2" class="m-btn-green m-btn-small" @click="fchange(lists)">修改渠道</button>
                     </td>
                     <td v-if="change">
                         <p style="height:100%;position:relative">
@@ -96,7 +96,7 @@
                 </ul>
             </div>
         </div>
-        <div style="margin-top:8px" class="modifyStaffInfo">
+        <div v-if="lists.userOrigin!=2" style="margin-top:8px" class="modifyStaffInfo">
             <el-row v-if="off.modify">
                 <el-col style="text-align:center" :span="24">
                     <div class="grid-content bg-purple"><button class="m-btn-green m-btn" @click="alter">修改</button></div>
