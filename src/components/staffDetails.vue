@@ -41,8 +41,7 @@
                         <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
                             <div class="grid-content bg-purple-light">
                                 <p v-if="off.noModify">{{forms.phone}}</p>
-                                <p v-if="!off.noModify&&$parent.isuserOrigin==2">{{forms.phone}}</p>
-                                <input class="modifyInput" :maxlength="11" v-if="off.modify&&$parent.isuserOrigin!=2" type="text" v-model="forms.phone">
+                                <input class="modifyInput" :maxlength="11" v-if="off.modify" type="text" v-model="forms.phone">
                             </div>
                         </el-col>
                     </el-row>

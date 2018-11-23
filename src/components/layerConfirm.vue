@@ -625,7 +625,7 @@
               requestMethod(json, url)
                 .then((data) => {
                   if (data.code == 200) {
-                    vm.$parent.lists = data.data.departs[0];
+                    vm.$parent.$parent.companyDetails = data.data.departs[0];
                   }
                 }).catch(e => errorDeal(e));
             }

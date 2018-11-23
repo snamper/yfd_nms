@@ -282,6 +282,11 @@ export default {
     dlsStaff: staffDetails,
     layerConfrim: layerConfrim
   },
+  computed:{
+    lists(){
+      console.log(1111);
+    }
+  },
   created: function() {
     let vm = this,
       Info = getStore("YFD_NMS_INFO");

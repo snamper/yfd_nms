@@ -51,14 +51,20 @@
                 </tr>
                 <tr>
                     <td>归属渠道 : </td>
-                    <td v-if="!change">{{lists.dealerIdName||'--'}}【{{lists.dealerId||'--'}}】
+                    <td v-if="!change">{{lists.dealerIdName||'--'}}
                         <a href="javascript:void(0)" @click="details">查看渠道变更记录</a>
                         <button v-if="lists.userOrigin!=2" class="m-btn-green m-btn-small" @click="fchange(lists)">修改渠道</button>
                     </td>
                     <td v-if="change">
                         <p style="height:100%;position:relative">
-                            <el-select style="width:400px;" size="mini" v-model="value1" placeholder="请选择修改的渠道">
-                                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="`${item.dealerIdName}`+`【${item.dealerId}】`"></el-option>
+                            <el-select style="width:400px;" size="mini" v-model="newDealers" placeholder="请选择修改的渠道">
+                                <el-option v-for="item in options" 
+                                    :key="item.dealerId"
+                                    :label="item.dealerIdName"
+                                    :value="`${item.dealerId},${item.dealerIdName}`">
+                                    <span style="float: left">{{ item.dealerIdName }}</span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.phone }}</span>
+                                </el-option>
                             </el-select>
                             <button class="m-btn-green m-btn-group" @click="fdetermine">确定</button>
                         </p>
@@ -154,6 +160,7 @@ export default {
       change: false,
       layerType: "",
       value1: "",
+      newDealers:"",
       options: [{ dealerId: "代理商ID", dealerIdName: "代理商名称" }],
       changeDepartInfo: {},
       select: {},
@@ -181,7 +188,7 @@ export default {
     VDistpicker
   },
   computed: {
-    ...mapState(["depart"])
+    ...mapState(["depart"]),
   },
   created: function() {
     let vm = this;
@@ -200,7 +207,6 @@ export default {
     alter() {
       let vm = this,lists=vm.lists;
       vm.off.dialog=true;
-    //   vm.addForm.addDepId = lists.dealerIdName + "【" + lists.dealerId + "】";
       vm.addForm.addDepName = lists.departName;
       vm.addForm.addDepId = lists.departId;
       vm.addForm.addFront = lists.storefront;
@@ -264,7 +270,7 @@ export default {
     fchange(v) {
       let vm = this;
       vm.change = true;
-      vm.value1 = v.dealerIdName + "【" + v.dealerId + "】";
+      vm.newDealers = v.dealerIdName;
     },
     fdetermine() {
       let vm = this;
@@ -272,8 +278,8 @@ export default {
       vm.layerType = "modifyDepart";
       vm.changeDepartInfo = {
         departId: vm.lists.departId,
-        dealerId: vm.value1.split("【")[1].split("】")[0],
-        dealerIdName: vm.value1.split("【")[0]
+        dealerId: vm.newDealers.split(',')[0],
+        dealerIdName: vm.newDealers.split(',')[1]
       };
     },
     onSelected(data) {
