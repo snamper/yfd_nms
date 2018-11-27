@@ -15,7 +15,6 @@
                             type="datetime"
                             :clearable=false                                        
                             :editable=false                    
-                            :picker-options="pickerOptionsS"
                             placeholder="选择开始时间">
                             </el-date-picker><el-date-picker
                             v-model="endTime"
@@ -23,7 +22,6 @@
                             type="datetime"
                             :clearable=false                                        
                             :editable=false                    
-                            :picker-options="pickerOptionsE"
                             placeholder="选择结束时间">
                             </el-date-picker>
                         </div>

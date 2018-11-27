@@ -231,6 +231,18 @@ span.iconFoldClose {
             </router-link>
           </li>
         </ul>
+        <ul class="g-side-ul">
+          <li :class="{active:crumb[0].name=='代理商申请管理'}">
+            <b></b>
+            <router-link to="/home/agentApply">
+              <div>
+                <i class="u-icon-address"></i>
+                <span>代理商申请管理</span>
+                <span :class="crumb[0].name=='代理商申请管理'?'iconFoldOpen':'iconFoldClose'"></span>
+              </div>
+            </router-link>
+          </li>
+        </ul>
       </nav>
     </aside>
     <section class="g-main" id="main">
@@ -431,6 +443,12 @@ export default {
         crumb[0] = {
           name: "收货地址管理",
           href: "/home/address"
+        };
+      }
+      if (path.indexOf("/home/agentApply") > -1) {
+        crumb[0] = {
+          name: "代理商申请管理",
+          href: "/home/agentApply"
         };
       }
       this.crumb = crumb;

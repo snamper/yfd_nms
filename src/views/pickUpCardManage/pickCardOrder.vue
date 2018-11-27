@@ -11,8 +11,7 @@
           <el-col>
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
-                <label><span class="radioYes"><input type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span
-                    class="text greyFont">订单号码：</span></label>
+                <label><span class="radioYes"><input type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">订单号码：</span></label>
               </el-col>
               <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
                 <el-input v-model="orderId" size="small" maxlength=25 placeholder="请输入查询的订单号码"></el-input>
@@ -24,8 +23,7 @@
           <el-col>
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
-                <label><span class="radioYes"><input type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span
-                    class="text greyFont">产品名称：</span></label>
+                <label><span class="radioYes"><input type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">产品名称：</span></label>
               </el-col>
               <el-col :xs="18" :sm="16" :md="9" :lg="8" :xl="8">
                 <el-input v-model="pname" size="small" maxlength=10 placeholder="请输入查询的产品名称"></el-input>
@@ -41,22 +39,12 @@
         <el-row>
           <el-col>
             <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
-              <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span
-                  class="text greyFont">操作时间：</span></label>
+              <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">操作时间：</span></label>
             </el-col>
             <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
               <div class="block">
-                <el-date-picker 
-                  v-model="startTime" 
-                  size="small" 
-                  type="date" 
-                  :clearable=false 
-                  :editable=false 
-                  @change="changeTimeS"
-                  style="border-radius:4px 0 4px 0" 
-                  placeholder="选择开始时间">
-                </el-date-picker><el-date-picker v-model="endTime" size="small" type="date" :clearable=false :editable=false @change="changeTimeE"
-                  placeholder="选择结束时间">
+                <el-date-picker v-model="startTime" size="small" type="date" :clearable=false :editable=false style="border-radius:4px 0 4px 0" placeholder="选择开始时间">
+                </el-date-picker><el-date-picker v-model="endTime" size="small" type="date" :clearable=false :editable=false placeholder="选择结束时间">
                 </el-date-picker>
                 ( <el-radio v-model="timeType" label="1">创建时间</el-radio>
                 <el-radio v-model="timeType" label="2">修改时间</el-radio> )
@@ -139,8 +127,7 @@
                 <td colspan="15">
                   <div class="listHeader">
                     <label style="text-align:left;padding-left:5px;">订单列表<span class="f-fw greyFont">({{form.page||'0'}})</span></label>
-                    <label style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" @click="downLoad"
-                        class="btnDownload">导出</button></label>
+                    <label style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" @click="downLoad" class="btnDownload">导出</button></label>
                   </div>
                 </td>
               </tr>
@@ -176,8 +163,7 @@
                     <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
                   </p>
                   <p v-if="!v.isShow&&v.productList.length>0" class="abcd">
-                    <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)"
-                      class="iconMore"></i>
+                    <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                   </p>
                 </td>
                 <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
@@ -205,14 +191,10 @@
                 </td>
                 <td>{{v.operatorName||'--'}}<br>{{v.operatorPhone||'--'}}</td>
                 <td>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;"
-                    @click="deliverGoods(v)">发货</el-button>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn"
-                    style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn"
-                    style="margin:5px;" @click="confirm(v)">确认收货</el-button>
-                  <el-button v-if="v.paymentState == 1&&v.orderState == 1&&v.paymentType==4" class="m-small-btn" style="margin:5px;"
-                    @click="confirmPayMoney(v)">确认付款</el-button>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
+                  <el-button v-if="v.paymentState == 1&&v.orderState == 1&&v.paymentType==4" class="m-small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
                   <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
                 </td>
               </tr>
@@ -227,8 +209,7 @@
             <el-row>
               <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                 <div class="grid-content bg-purple">
-                  <el-pagination layout="prev, pager, next" :page-size="15" @current-change="search" :current-page.sync="currentPage"
-                    :total="form.page">
+                  <el-pagination layout="prev, pager, next" :page-size="15" @current-change="search" :current-page.sync="currentPage" :total="form.page">
                   </el-pagination>
                 </div>
               </el-col>
@@ -242,440 +223,411 @@
   </section>
 </template>
 <script>
-  import {
-    disableTimeRange6,
-    getTimeFunction,
-    errorDeal,
-    getDateTime,
-    trimFunc,
-    createDownload,
-    getStore,
-    cloneObj
-  } from "../../config/utils";
-  import {
-    requestPickupOrder
-  } from "../../config/service.js";
-  import {
-    disabledDate
-  } from "../../config/utilsTimeSelect";
-  import orderDetails from "./orderDetails";
-  import layerConfirm from "../../components/layerConfirm";
-  export default {
-    data() {
-      return {
-        currentPage: 0,
-        searchResult: "",
-        layerType: '', //弹窗类型
-        logistics: {}, //物流信息
-        productDetails: {}, //产品包详情
-        pa: 1, //页码           
-        orderId: "", //订单号码
-        pname: "", //产品名称
-        dealerName: "", //商户名称            
-        operator: "", //操作人
-        optime: '', //操作时间
-        timeType: "1", //操作时间类型
-        orderState: "0", //操作类型
-        cardType: ['1', '2', '3'], //产品类型
-        splitCheck: '1,2', //售卖方式
-        payMent: "0", //支付方式
-        startTime: '',
-        endTime: '',
-        downLoadJson: "",
-        userPhone: "",
-        off: {
-          details: false,
-          layer: false,
-        },
-        form: {
-          page: 0,
-          searchKind: 3,
-        },
-        pickerOptionsS: {
-          disabledDate(time) {
-            let curDate = new Date().getTime();
-            let curYear = new Date(curDate).getFullYear();
-            let curMonth = new Date(curDate).getMonth() + 1,
-              minMonth = curMonth - 5,
-              minYear = curYear;
-            if (minMonth < 0) {
-              minMonth += 12;
-              minYear = curYear - 1;
-            }
-            let curDay = new Date(curDate).getDate() + 1;
-            let nextMonth = curMonth + 1;
-            let cur = minYear + "/" + minMonth + "/1";
-            let next = curYear + "/" + nextMonth + "/1";
-            let nextYesterday = new Date(next) - 1000 * 3600 * 24;
-            cur = new Date(cur).getTime();
-            return time.getTime() > nextYesterday || time.getTime() < cur;
-          }
-        },
-        pickerOptionsE: {
-          disabledDate(time) {
-            let curDate = new Date().getTime();
-            let curYear = new Date(curDate).getFullYear();
-            let curMonth = new Date(curDate).getMonth() + 1,
-              minMonth = curMonth - 5,
-              minYear = curYear;
-            if (minMonth < 0) {
-              minMonth += 12;
-              minYear = curYear - 1;
-            }
-            let curDay = new Date(curDate).getDate() + 1;
-            let nextMonth = curMonth + 1;
-            let cur = minYear + "/" + minMonth + "/1";
-            let next = curYear + "/" + nextMonth + "/1";
-            let nextYesterday = new Date(next) - 1000 * 3600 * 24;
-            cur = new Date(cur).getTime();
-            return time.getTime() > nextYesterday || time.getTime() < cur;
-          }
-        },
-      };
-    },
-    created: function () {
-      getTimeFunction(this);
-    },
-    components: {
-      "order-details": orderDetails,
-      "layer-confirm": layerConfirm,
-    },
-    methods: {
-      search(index) { //查询
-        let vm = this,
-          data = {};
-        // vm.searchResult = "";
-        vm.currentPage = index || 1;
-        vm.pa = index || 1;
-        if (vm.form.searchKind == 1) {
-          if (vm.orderId == '') {
-            layer.open({
-              content: "请输入要查询的订单号码",
-              skin: 'msg',
-              time: 2,
-              msgSkin: 'error',
-            });
-            return false;
-          }
-        } else if (vm.form.searchKind == 2) {
-          if (vm.pname == '') {
-            layer.open({
-              content: "请输入要查询的产品名称",
-              skin: 'msg',
-              time: 2,
-              msgSkin: 'error',
-            });
-            return false;
-          }
+import {
+  disableTimeRange6,
+  getTimeFunction,
+  errorDeal,
+  getDateTime,
+  trimFunc,
+  createDownload,
+  getStore,
+  cloneObj
+} from "../../config/utils";
+import { requestPickupOrder } from "../../config/service.js";
+import { disabledDate } from "../../config/utilsTimeSelect";
+import orderDetails from "./orderDetails";
+import layerConfirm from "../../components/layerConfirm";
+export default {
+  data() {
+    return {
+      currentPage: 0,
+      searchResult: "",
+      layerType: "", //弹窗类型
+      logistics: {}, //物流信息
+      productDetails: {}, //产品包详情
+      pa: 1, //页码
+      orderId: "", //订单号码
+      pname: "", //产品名称
+      dealerName: "", //商户名称
+      operator: "", //操作人
+      optime: "", //操作时间
+      timeType: "1", //操作时间类型
+      orderState: "0", //操作类型
+      cardType: ["1", "2", "3"], //产品类型
+      splitCheck: "1,2", //售卖方式
+      payMent: "0", //支付方式
+      startTime: "",
+      endTime: "",
+      downLoadJson: "",
+      userPhone: "",
+      off: {
+        details: false,
+        layer: false
+      },
+      form: {
+        page: 0,
+        searchKind: 3
+      }
+    };
+  },
+  created: function() {
+    getTimeFunction(this);
+  },
+  components: {
+    "order-details": orderDetails,
+    "layer-confirm": layerConfirm
+  },
+  methods: {
+    search(index) {
+      let vm = this,
+        data = {};
+      vm.currentPage = index || 1;
+      vm.pa = index || 1;
+      if (vm.form.searchKind == 1) {
+        if (vm.orderId == "") {
+          layer.open({
+            content: "请输入要查询的订单号码",
+            skin: "msg",
+            time: 2,
+            msgSkin: "error"
+          });
+          return false;
+        }else{
+          data = {
+            searchType: vm.form.searchKind,
+            sysOrderId: vm.orderId,
+            productName: "",
+            productType: "",
+            timeType: "",
+            startTime: "",
+            endTime: "",
+            orderState: "",
+            depName: "",
+            operatorPhone: "",
+            paymentType: "",
+            pageNum: "",
+            pageSize: "",
+            userPhone: ""
+          };
         }
+      } else if (vm.form.searchKind == 2) {
+        if (vm.pname == "") {
+          layer.open({
+            content: "请输入要查询的产品名称",
+            skin: "msg",
+            time: 2,
+            msgSkin: "error"
+          });
+          return false;
+        }else{
+          data = {
+            searchType: vm.form.searchKind,
+            productName: vm.pname,
+            productType: vm.cardType.join(","),
+            sysOrderId: "",
+            timeType: "",
+            startTime: "",
+            endTime: "",
+            orderState: "",
+            depName: "",
+            operatorPhone: "",
+            paymentType: "",
+            pageNum: "",
+            pageSize: "",
+            userPhone: ""
+          };
+        }
+      }else{
         data = {
-          "searchType": vm.form.searchKind,
-          "sysOrderId": trimFunc(vm.orderId),
-          "productName": trimFunc(vm.pname),
-          "productType": vm.cardType.join(","),
-          "timeType": vm.timeType,
-          "startTime": new Date(vm.startTime).getTime(),
-          "endTime": new Date(vm.endTime).getTime(),
-          "orderState": vm.orderState,
-          "depName": trimFunc(vm.dealerName),
-          "operatorPhone": trimFunc(vm.operator),
-          "paymentType": vm.payMent,
-          "pageNum": index || 1,
-          "pageSize": 15,
-          "userPhone": vm.userPhone,
-        }
-        vm.downLoadJson = cloneObj(data);
-        requestPickupOrder(data)
-          .then((data) => {
-            if (data.code == 200) {
-              vm.form.page = data.data.total;
-              vm.searchResult = data.data.list;
-            } else {
-              vm.form.page = "";
-              vm.searchResult = "";
-              errorDeal(data);
-            }
-          }).catch(e => errorDeal(e, () => {
+          sysOrderId: "",
+          productName: "",
+          productType: "",
+          searchType: vm.form.searchKind,
+          timeType: vm.timeType,
+          startTime: new Date(vm.startTime).getTime(),
+          endTime: new Date(vm.endTime).getTime(),
+          orderState: vm.orderState,
+          depName: vm.dealerName,
+          operatorPhone: vm.operator,
+          paymentType: vm.payMent,
+          pageNum: index || 1,
+          pageSize: 15,
+          userPhone: vm.userPhone
+        };
+      }
+      vm.downLoadJson = cloneObj(data);
+      requestPickupOrder(data)
+        .then(data => {
+          if (data.code == 200) {
+            vm.form.page = data.data.total;
+            vm.searchResult = data.data.list;
+          } else {
             vm.form.page = "";
             vm.searchResult = "";
-          }))
-      },
-      downLoad() {
-        let vm = this,
-          parameter = "",
-          url = "/nms/w/order/exportPurchase?",
-          userInfo = getStore('YFD_NMS_INFO');
-        let json = Object.assign(vm.downLoadJson, userInfo);
-        delete json.pageNum;
-        delete json.pageSize;
-        Object.keys(json).map((key) => {
-          url += key + '=' + json[key] + '&';
-        })
-        url = url.substring(0, url.length - 1);
-        // window.location.href=url;
-        url = url.substring(0, url.length - 1);
-        var elemIF = document.createElement("iframe");
-        elemIF.src = url;
-        var ee = elemIF.contentWindow;
-        elemIF.style.display = "none";
-        document.body.appendChild(elemIF);
-      },
-      details(v) {
-        let vm = this;
-        vm.off.details = true;
-        vm.productDetails = v;
-      },
-      confirm(v) {
-        let vm = this,
-          data = {};
-        vm.layerType = "takeGoods";
-        vm.logistics = v;
-        vm.off.layer = true;
-      },
-      sealType(v) {
-        let vm = this;
-        if (v instanceof Array) {
-          if (v.length === 1) {
-            return v[0].splitFlag == 1 ? "整包" : v[0].splitFlag == 2 ? "拆包" : "--";
-          } else if (v.length > 1) {
-            return v.every((value, i, v) => {
-              return value.splitFlag == 1
-            }) ? "整包" : v.every((value, i, v) => {
-              return value.splitFlag == 2
-            }) ? "拆包" : "混合";
+            errorDeal(data);
           }
+        }).catch(e =>
+          errorDeal(e, () => {
+            vm.form.page = "";
+            vm.searchResult = "";
+          })
+        );
+    },
+    downLoad() {
+      let vm = this,
+        parameter = "",
+        url = "/nms/w/order/exportPurchase?",
+        userInfo = getStore("YFD_NMS_INFO");
+      let json = Object.assign(vm.downLoadJson, userInfo);
+      delete json.pageNum;
+      delete json.pageSize;
+      Object.keys(json).map(key => {
+        url += key + "=" + json[key] + "&";
+      });
+      url = url.substring(0, url.length - 1);
+      // window.location.href=url;
+      url = url.substring(0, url.length - 1);
+      var elemIF = document.createElement("iframe");
+      elemIF.src = url;
+      var ee = elemIF.contentWindow;
+      elemIF.style.display = "none";
+      document.body.appendChild(elemIF);
+    },
+    details(v) {
+      let vm = this;
+      vm.off.details = true;
+      vm.productDetails = v;
+    },
+    confirm(v) {
+      let vm = this,
+        data = {};
+      vm.layerType = "takeGoods";
+      vm.logistics = v;
+      vm.off.layer = true;
+    },
+    sealType(v) {
+      let vm = this;
+      if (v instanceof Array) {
+        if (v.length === 1) {
+          return v[0].splitFlag == 1
+            ? "整包"
+            : v[0].splitFlag == 2
+              ? "拆包"
+              : "--";
+        } else if (v.length > 1) {
+          return v.every((value, i, v) => {
+            return value.splitFlag == 1;
+          })
+            ? "整包"
+            : v.every((value, i, v) => {
+                return value.splitFlag == 2;
+              })
+              ? "拆包"
+              : "混合";
         }
-      },
-      deliverGoods(v) {
-        let vm = this;
-        vm.layerType = "sendGoods";
-        vm.logistics = v;
-        vm.off.layer = true;
-      },
-      changeLogisticsInfo(v) {
-        let vm = this;
-        vm.layerType = "logistics";
-        vm.logistics = v;
-        vm.off.layer = true;
-      },
-      confirmPayMoney(v) {
-        let vm = this;
-        vm.layerType = "payMent";
-        vm.logistics = v;
-        vm.off.layer = true;
-      },
-      returnGoods(v) {
-        let vm = this;
-        vm.layerType = "returnGoods";
-        vm.logistics = v;
-        vm.off.layer = true;
-      },
-      getMore(i) {
-        let vm = this;
-        this.$set(vm.searchResult[i], 'isShow', !vm.searchResult[i].isShow);
-      },
-      checkOrderStatus(v) {
-        var orderState = "";
-        if (v.paymentState == 1 && v.orderState == 1) {
-          return orderState = {
-            'title': '待付款',
-            'style': 'red'
-          };
-        }
-        if (v.paymentState == 1 && v.orderState == 3) {
-          return orderState = {
-            'title': '手动关闭',
-            'style': 'red'
-          };
-        }
-        if (v.paymentState == 1 && v.orderState == 4) {
-          return orderState = {
-            'title': '自动关闭',
-            'style': 'red'
-          };
-        }
-        if (v.paymentState == 2 && v.returnFlag == 1) {
-          return orderState = {
-            'title': '已退卡',
-            'style': 'red'
-          };
-        }
-        if (v.deliveryState == 1) {
-          return orderState = {
-            'title': '待发货',
-            'style': 'blue'
-          };
-        }
-        if (v.deliveryState == 2) {
-          return orderState = {
-            'title': '已发货',
-            'style': 'blue'
-          };
-        }
-        if (v.orderState == 2) {
-          return orderState = {
-            'title': '已完成',
-            'style': 'green'
-          };
-        }
-
-        // return orderState;
-      },
-      searchdelivery(n, v) {
-        let url = "https://www.kuaidi100.com/chaxun?com=" + n + "&nu=" + v;
-        window.open(url)
-      },
-      changeTimeS(e) {
-        let vm = this,
-          timeRange = disableTimeRange6(),
-          timeRangeS = timeRange.next,
-          timeRangeE = timeRange.nextYesterday,
-          timeCheck = new Date(e).getTime();
-        if (timeCheck < timeRangeS) {
-          vm.startTime = timeRangeS;
-        }
-        if (timeCheck > timeRangeE) {
-          vm.startTime = timeRangeE;
-        }
-        let dt = new Date(e);
-        getTimeFunction(this, [dt, 1])
-      },
-      changeTimeE(e) {
-        let vm = this,
-          timeRange = disableTimeRange6(),
-          timeRangeS = timeRange.next,
-          timeRangeE = timeRange.nextYesterday,
-          timeCheck = new Date(e).getTime();
-        if (timeCheck < timeRangeS) {
-          vm.endTime = timeRangeS;
-        }
-        if (timeCheck > timeRangeE) {
-          vm.endTime = timeRangeE;
-        }
-        getTimeFunction(this, [e, 2])
-      },
-      getDateTime(e) {
-        return getDateTime(e)
-      },
-      trimFunc(v) {
-        return trimFunc(v);
-      },
-      cloneObj(v) {
-        return cloneObj(v);
       }
+    },
+    deliverGoods(v) {
+      let vm = this;
+      vm.layerType = "sendGoods";
+      vm.logistics = v;
+      vm.off.layer = true;
+    },
+    changeLogisticsInfo(v) {
+      let vm = this;
+      vm.layerType = "logistics";
+      vm.logistics = v;
+      vm.off.layer = true;
+    },
+    confirmPayMoney(v) {
+      let vm = this;
+      vm.layerType = "payMent";
+      vm.logistics = v;
+      vm.off.layer = true;
+    },
+    returnGoods(v) {
+      let vm = this;
+      vm.layerType = "returnGoods";
+      vm.logistics = v;
+      vm.off.layer = true;
+    },
+    getMore(i) {
+      let vm = this;
+      this.$set(vm.searchResult[i], "isShow", !vm.searchResult[i].isShow);
+    },
+    checkOrderStatus(v) {
+      var orderState = "";
+      if (v.paymentState == 1 && v.orderState == 1) {
+        return (orderState = {
+          title: "待付款",
+          style: "red"
+        });
+      }
+      if (v.paymentState == 1 && v.orderState == 3) {
+        return (orderState = {
+          title: "手动关闭",
+          style: "red"
+        });
+      }
+      if (v.paymentState == 1 && v.orderState == 4) {
+        return (orderState = {
+          title: "自动关闭",
+          style: "red"
+        });
+      }
+      if (v.paymentState == 2 && v.returnFlag == 1) {
+        return (orderState = {
+          title: "已退卡",
+          style: "red"
+        });
+      }
+      if (v.deliveryState == 1) {
+        return (orderState = {
+          title: "待发货",
+          style: "blue"
+        });
+      }
+      if (v.deliveryState == 2) {
+        return (orderState = {
+          title: "已发货",
+          style: "blue"
+        });
+      }
+      if (v.orderState == 2) {
+        return (orderState = {
+          title: "已完成",
+          style: "green"
+        });
+      }
+
+      // return orderState;
+    },
+    searchdelivery(n, v) {
+      let url = "https://www.kuaidi100.com/chaxun?com=" + n + "&nu=" + v;
+      window.open(url);
+    },
+    getDateTime(e) {
+      return getDateTime(e);
+    },
+    trimFunc(v) {
+      return trimFunc(v);
+    },
+    cloneObj(v) {
+      return cloneObj(v);
     }
-  };
+  }
+};
 </script>
 <style>
-  .pickCardOrder .f-ta-c div input {
-    border: 0 none;
-  }
+.pickCardOrder .f-ta-c div input {
+  border: 0 none;
+}
 
-  .pickCardOrder .box {
-    width: 140px;
-    height: 26px;
-    background-color: #808000;
-    clear: both;
-  }
+.pickCardOrder .box {
+  width: 140px;
+  height: 26px;
+  background-color: #808000;
+  clear: both;
+}
 
-  .pickCardOrder .box span {
-    display: inline-block;
-    height: 26px;
-  }
+.pickCardOrder .box span {
+  display: inline-block;
+  height: 26px;
+}
 
-  .pickCardOrder .span1 {
-    width: 100px;
-    position: relative;
-    background: red
-  }
+.pickCardOrder .span1 {
+  width: 100px;
+  position: relative;
+  background: red;
+}
 
-  .pickCardOrder .span2 {
-    width: 40px;
-    position: relative;
-    background: green
-  }
+.pickCardOrder .span2 {
+  width: 40px;
+  position: relative;
+  background: green;
+}
 
-  .pickCardOrder .input {
-    text-align: center;
-    height: 26px;
-    width: 100px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    border: 1px solid #ccc;
-    outline: none
-  }
+.pickCardOrder .input {
+  text-align: center;
+  height: 26px;
+  width: 100px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 1px solid #ccc;
+  outline: none;
+}
 
-  .pickCardOrder .button {
-    height: 26px;
-    width: 40px;
-    font: normal 14px/14px "微软雅黑";
-    background: #5daf34;
-    color: #fff;
-    outline: none
-  }
+.pickCardOrder .button {
+  height: 26px;
+  width: 40px;
+  font: normal 14px/14px "微软雅黑";
+  background: #5daf34;
+  color: #fff;
+  outline: none;
+}
 
-  .pickCardOrder .m-searchTab tr td:nth-child(1) {
-    width: 60px;
-    padding-left: 15px;
-  }
+.pickCardOrder .m-searchTab tr td:nth-child(1) {
+  width: 60px;
+  padding-left: 15px;
+}
 
-  .pickCardOrder .iconMore {
-    margin-bottom: 1px;
-    display: inline-block;
-    width: 0.14rem;
-    height: 0.14rem;
-    background: url('../../assets/images/more.png') no-repeat center;
-    background-size: contain;
-    vertical-align: middle;
-    cursor: pointer;
-  }
+.pickCardOrder .iconMore {
+  margin-bottom: 1px;
+  display: inline-block;
+  width: 0.14rem;
+  height: 0.14rem;
+  background: url("../../assets/images/more.png") no-repeat center;
+  background-size: contain;
+  vertical-align: middle;
+  cursor: pointer;
+}
 
-  .pickCardOrder .iconMore1 {
-    -moz-transform: rotate(90deg);
-    -webkit-transform: rotate(90deg);
-    transform: rotate(90deg);
-    margin-bottom: 1px;
-    display: inline-block;
-    width: 0.14rem;
-    height: 0.14rem;
-    background: url('../../assets/images/more.png') no-repeat center;
-    background-size: contain;
-    vertical-align: middle;
-    cursor: pointer;
-  }
+.pickCardOrder .iconMore1 {
+  -moz-transform: rotate(90deg);
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+  margin-bottom: 1px;
+  display: inline-block;
+  width: 0.14rem;
+  height: 0.14rem;
+  background: url("../../assets/images/more.png") no-repeat center;
+  background-size: contain;
+  vertical-align: middle;
+  cursor: pointer;
+}
 
-  .pickCardOrder .listSpan {
-    display: inline-block;
-    margin-top: 2px;
-  }
+.pickCardOrder .listSpan {
+  display: inline-block;
+  margin-top: 2px;
+}
 
-  .pickCardOrder .el-date-editor.el-input,
-  .el-date-editor.el-input__inner {
-    width: 150px;
-  }
+.pickCardOrder .el-date-editor.el-input,
+.el-date-editor.el-input__inner {
+  width: 150px;
+}
 
-  .listHeader {
-    display: flex
-  }
+.listHeader {
+  display: flex;
+}
 
-  .listHeader label {
-    flex: 1;
-    line-height: 40px
-  }
+.listHeader label {
+  flex: 1;
+  line-height: 40px;
+}
 
-  .btnDownload {
-    margin-top: 9px;
-    outline: none;
-    border-radius: 4px;
-    background-color: #00AA01;
-    border: 1px solid #00AA01;
-    padding: 4px 10px;
-    margin-right: 10px;
-    color: #fff
-  }
+.btnDownload {
+  margin-top: 9px;
+  outline: none;
+  border-radius: 4px;
+  background-color: #00aa01;
+  border: 1px solid #00aa01;
+  padding: 4px 10px;
+  margin-right: 10px;
+  color: #fff;
+}
 
-  table.m-searchTab tr {
-    height: 40px;
-  }
+table.m-searchTab tr {
+  height: 40px;
+}
 </style>

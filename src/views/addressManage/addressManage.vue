@@ -429,22 +429,13 @@ export default {
 </script>
 
 <style type='text/css'>
-.m-dialog {
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
+
 .m-newAddress {
-  border: 10px solid #b4b4b4;
+  border: 5px solid #b4b4b4;
   width: 700px;
   height: 500px;
   background: #fff;
+  border-radius: 5px;
 }
 .m-newAddress .m-dialog-title {
   background: #e0e0e0;

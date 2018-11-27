@@ -261,11 +261,11 @@
 <script>
 import { getDateTime, getUnixTime, errorDeal, disableTimeRange6, checkMobile, getTimeFunction, translateData } from "../../config/utils";
 import { requestMethod, requestgetSyncTime, requestgetSyncInfo, requestsetSyncTime, addDepart } from "../../config/service.js";
-import VDistpicker from "v-distpicker";
+import { mapState,mapActions } from 'vuex';
 import companyDetails from "./companyDetails";
+import VDistpicker from "v-distpicker";
 import layerSync from "./layerSyncDls";
 import dlsDetails from "./dlsDetails";
-import { mapState,mapActions } from 'vuex';
 import { debug } from 'util';
 export default {
   name: "dls",

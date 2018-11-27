@@ -17,7 +17,7 @@
 }
 
 #home.active>.g-main {
-  margin-left: 1.8rem;
+  margin-left: 2rem;
 }
 
 #home.active+div>.layui-m-layermain,
@@ -56,14 +56,13 @@
 
 /*左侧模块*/
 .g-side {
-  width: 1.80rem;
+  width: 2rem;
   background-color: #193163;
   height: 100%;
   left: -1.8rem;
   z-index: 901
 }
 
-.g-side-nav {}
 
 .g-side-head {
   height: 1rem;
@@ -188,7 +187,7 @@ b.countIcon{
   vertical-align: middle;
 }
 .g-side-ul>li>a>div>span:first-of-type{
-    width: 106px;
+    width: 120px;
 }
 .g-side-ul>li>a>div>i {
   margin-left: 0.16rem;

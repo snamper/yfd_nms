@@ -184,6 +184,14 @@ const address = resolve => {
         load();
     });
 };
+//代理商申请管理
+const agentApply = resolve => {
+    load(true);
+    require.ensure(["@/views/agentApply/agentApply.vue"], () => {
+        resolve(require("@/views/agentApply/agentApply.vue"));
+        load();
+    });
+};
 const router = new Router({
     routes: [
         {path: "/login",component: Login},
@@ -285,6 +293,10 @@ const router = new Router({
                 path: "address",
                 name: "address",
                 component: address
+            },{
+                path: "agentApply",
+                name: "agentApply",
+                component: agentApply
             }]
         }
     ]

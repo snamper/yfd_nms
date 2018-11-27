@@ -125,6 +125,24 @@ export const addDepart=(data,load)=>fetch("/ums/w/depart/add",data,"POST",load)
 /*更新代理商*/
 export const updateDepart=(data,load)=>fetch("/ums/w/depart/update",data,"POST",load)
 
+/*代理商加盟列表申请*/
+export const applicationlist=(data,load)=>fetch("/ums/w/application/list",data,"POST",load)
+
+/*提交代理商信息*/
+export const submitAgentInfo=(data,load)=>fetch("/ums/w/application/submit",data,"POST",load)
+
+/*更新代理商信息*/
+export const updateAgentInfo=(data,load)=>fetch("/ums/w/application/update",data,"POST",load)
+
+/*审核申请*/
+export const applyReview=(data,load)=>fetch("/ums/w/application/review",data,"POST",load)
+
+
+
+
+
+
+
 
 
 

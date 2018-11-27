@@ -18,10 +18,10 @@ import VueAreaLinkage from 'vue-area-linkage';
 Vue.use(VueAreaLinkage)
 
 Vue.use(ElementUI);
+require("./assets/css/elementCustom.css");
 require("./assets/css/style.css");
 require("./assets/css/common.css");
 require("./assets/css/layer.css");
-require("./assets/css/elementCustom.css");
 require("./assets/js/layer.js");
 require("./config/service.js");
 
