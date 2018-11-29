@@ -267,6 +267,9 @@ export default {
       imageUrlhand:"",
       imageUrlfront:"",
       imageUrlback:"",
+      imagehand:"",
+      imagefront:"",
+      imageback:"",
       upinfo:{},
     };
   },
@@ -318,8 +321,8 @@ export default {
         "username": vm.mname,
         "phone": vm.mphone,
         "idNumber": vm.idCardNum,
-        "frontImg": vm.imageUrlfront,
-        "backImg": vm.imageUrlback,
+        "frontImg": vm.imagefront,
+        "backImg": vm.imageback,
         "id":vm.idNum,
         "handImg": "",
         "licenseImg": "",
@@ -327,9 +330,9 @@ export default {
         "companyName": ""
       }
       if(vm.cotype==1){
-        Object.assign(json,{"licenseImg":vm.imageUrlhand,"licenseNumber": vm.businesslicense,"companyName": vm.cname}) 
+        Object.assign(json,{"licenseImg":vm.imagehand,"licenseNumber": vm.businesslicense,"companyName": vm.cname}) 
       }else{
-        Object.assign(json,{"handImg":vm.imageUrlhand}) 
+        Object.assign(json,{"handImg":vm.imagehand}) 
       }
       updateAgentInfo(json)
       .then((data)=>{
@@ -392,6 +395,7 @@ export default {
       }).catch(e=>errorDeal(e))
     }, handleAvatarSuccess1(res, file) {
       this.imageUrlhand = URL.createObjectURL(file.raw);
+      this.imagehand = res.data.imagePath;
       if(res.code==200){
         this.$message('上传照片成功!');
       }else{
@@ -399,6 +403,7 @@ export default {
       }
     },handleAvatarSuccess2(res, file) {
       this.imageUrlfront = URL.createObjectURL(file.raw);
+      this.imagefront = res.data.imagePath;
       if(res.code==200){
         this.$message('上传照片成功!');
       }else{
@@ -406,6 +411,7 @@ export default {
       }
     },handleAvatarSuccess3(res, file) {
       this.imageUrlback = URL.createObjectURL(file.raw);
+      this.imageback = res.data.imagePath;
       if(res.code==200){
         this.$message('上传照片成功!');
       }else{
@@ -440,6 +446,9 @@ export default {
       vm.imageUrlhand="";
       vm.imageUrlfront="";
       vm.imageUrlback="";
+      vm.imagehand="";
+      vm.imagefront="";
+      vm.imageback="";
     }
   }
 };
