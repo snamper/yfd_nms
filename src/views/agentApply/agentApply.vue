@@ -147,10 +147,10 @@
                   <el-radio :label="2">个人</el-radio>
                 </el-radio-group>
               </el-form-item>
-              <el-form-item label="公司名称">
+              <el-form-item v-if="cotype==1" label="公司名称">
                 <el-input size="small" v-model="cname"></el-input>
               </el-form-item>
-              <el-form-item label="营业执照">
+              <el-form-item v-if="cotype==1" label="营业执照">
                 <el-input size="small" v-model="businesslicense"></el-input>
               </el-form-item>
               <el-form-item label="联系人">
@@ -163,7 +163,7 @@
                 <el-input size="small" :maxlength="50" v-model="idCardNum"></el-input>
               </el-form-item>
               <el-form-item label="照片">
-                <p class="grey">( 请上传清晰的身份证正面照片，背面照片以及手持照片 )</p>
+                <p class="grey f-s-12">( 请上传清晰的{{cotype==2?'身份证手持':cotype==1?'营业执照':'--'}}，身份证正面以及身份证背面照片 )</p>
                 <div class="upload-img">
                   <div class="up-img-left">
                     <el-upload
@@ -175,7 +175,7 @@
                       :on-success="handleAvatarSuccess1"
                       :before-upload="beforeAvatarUpload1">
                       <img v-if="imageUrlhand" :src="imageUrlhand" class="avatar">
-                      <i v-else class="avatar-uploader-icon">正面手持照</i>
+                      <i v-else class="avatar-uploader-icon">{{cotype==2?'正面手持照':cotype==1?'营业执照':'--'}}</i>
                     </el-upload>
                   </div>
                   <div class="up-img-right">
@@ -320,11 +320,16 @@ export default {
         "idNumber": vm.idCardNum,
         "frontImg": vm.imageUrlfront,
         "backImg": vm.imageUrlback,
-        "handImg": vm.imageUrlhand,
+        "id":vm.idNum,
+        "handImg": "",
         "licenseImg": "",
-        "licenseNumber": vm.businesslicense,
-        "companyName": vm.cname,
-        "id":vm.idNum
+        "licenseNumber": "",
+        "companyName": ""
+      }
+      if(vm.cotype==1){
+        Object.assign(json,{"licenseImg":vm.imageUrlhand,"licenseNumber": vm.businesslicense,"companyName": vm.cname}) 
+      }else{
+        Object.assign(json,{"handImg":vm.imageUrlhand}) 
       }
       updateAgentInfo(json)
       .then((data)=>{
@@ -342,9 +347,9 @@ export default {
     },toview(v){
       let vm=this;
       vm.off.picinfo=true;
-      vm.pichand = v.handImg||no_img;
-      vm.picfront = v.frontImg||no_img;
-      vm.picback = v.backImg||no_img;
+      vm.pichand = v.handImg||vm.no_img;
+      vm.picfront = v.frontImg||vm.no_img;
+      vm.picback = v.backImg||vm.no_img;
     },closeview(){
       let vm=this;
       vm.off.picinfo=false;
@@ -358,12 +363,13 @@ export default {
       vm.mphone = v.phone;
       vm.idCardNum = v.idNumber;
       vm.idNum = v.id;
-      this.imageUrlhand=v.handImg;
-      this.imageUrlfront=v.frontImg;
-      this.imageUrlback=v.backImg;
+      // this.imageUrlhand=v.handImg;
+      // this.imageUrlfront=v.frontImg;
+      // this.imageUrlback=v.backImg;
     },closemidify(){
       let vm=this;
       vm.off.dialog=false;
+      vm.resetImg();
     },review(v,i){
       let vm=this,json;
       json={
@@ -381,28 +387,29 @@ export default {
             msgSkin: "success"
           });
           vm.search(vm.currentPage,2);
+          vm.resetImg();
         }
       }).catch(e=>errorDeal(e))
     }, handleAvatarSuccess1(res, file) {
       this.imageUrlhand = URL.createObjectURL(file.raw);
       if(res.code==200){
-        this.$message('上传手持图片成功!');
+        this.$message('上传照片成功!');
       }else{
-        this.$message.error('上传手持图片失败!');
+        this.$message.error('上传照片失败!');
       }
     },handleAvatarSuccess2(res, file) {
       this.imageUrlfront = URL.createObjectURL(file.raw);
       if(res.code==200){
-        this.$message('上传证件照正面图片成功!');
+        this.$message('上传照片成功!');
       }else{
-        this.$message.error('上传证件照正面图片失败!');
+        this.$message.error('上传照片失败!');
       }
     },handleAvatarSuccess3(res, file) {
       this.imageUrlback = URL.createObjectURL(file.raw);
       if(res.code==200){
-        this.$message('上传证件照背面图片成功!');
+        this.$message('上传照片成功!');
       }else{
-        this.$message.error('上传证件照背面图片失败!');
+        this.$message.error('上传照片失败!');
       }
     },
     beforeAvatarUpload1(file) {
@@ -428,7 +435,12 @@ export default {
       return isJPG;
     },getDateTime(v) {
       return getDateTime(v);
-    },
+    },resetImg(){
+      let vm=this;
+      vm.imageUrlhand="";
+      vm.imageUrlfront="";
+      vm.imageUrlback="";
+    }
   }
 };
 </script>
@@ -442,6 +454,7 @@ export default {
 .m-picinfo{
   padding: 10px;
   display: flex;
+  width: 500px;
 }
 .m-newinfo{
   width: 500px;
@@ -453,11 +466,13 @@ export default {
   flex:1;
 }
 .pic-left>img{
-  width: 100%;
-  height: 100%;
+  width: 200px;
 }
 .pic-right{
   flex:1;
+}
+.pic-right>img{
+  width: 200px;
 }
 .el-form-item{
   margin-bottom: 10px;
