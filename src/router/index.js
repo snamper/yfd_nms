@@ -117,8 +117,8 @@ const accountInfo = resolve => {
 };
 const yjManage = resolve => {
   load(true);
-  require.ensure(["@/views/accountManage/yjmanage.vue"], () => {
-      resolve(require("@/views/accountManage/yjmanage.vue"));
+  require.ensure(["@/views/accountManage/yjManage.vue"], () => {
+      resolve(require("@/views/accountManage/yjManage.vue"));
       load();
   });
 };
