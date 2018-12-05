@@ -89,6 +89,18 @@ export const getaccounts=(data,load)=>fetch("/ums/w/account/accounts",data,"POST
 /*账户余额明细*/
 export const getBalance=(data,load)=>fetch("/ums/w/account/balance-detail",data,"POST",load)
 
+/*佣金累计返利金额详情*/
+export const cmsdetails=(data,load)=>fetch("/ums/w/account/cms-detail",data,"POST",load)
+
+/*佣金返利类目*/
+export const cmstype=(data,load)=>fetch("/ums/w/account/cms-types",data,"POST",load)
+
+/*佣金excel导出*/
+export const cmsDownload=(data,load)=>fetch("/ums/w/account/export",data,"GET",load)
+
+/*修改佣金未开票金额*/
+export const cmsupdate=(data,load)=>fetch("/ums/w/account/cms-update",data,"POST",load)
+
 /*佣金账户余额明细*/
 export const getCmsBalance=(data,load)=>fetch("/ums/w/account/cms-balance-detail",data,"POST",load)
 

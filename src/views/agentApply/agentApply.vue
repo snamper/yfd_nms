@@ -271,6 +271,7 @@ export default {
       imagefront:"",
       imageback:"",
       upinfo:{},
+      upuserId:{},
     };
   },
   created: function() {

@@ -56,16 +56,14 @@
           </el-col>
         </el-row>
         <el-row style="text-align:center" class="marginTop">
-          <button class="m-btn-orange m-btn-search" @click="search()">搜索</button>
+          <button class="m-btn-orange m-btn-search" @click="search(1,1)">搜索</button>
         </el-row>
       </div>
       <!-- 查询结果列表 -->
       <div v-if="searchList">
         <div class="m-listTitleFoot">
           <el-row>
-            <p>
-              <h3>账户列表<span class="f-fw greyFont">({{total||'0'}})</span></h3>
-            </p>
+            <h3>账户列表<span class="f-fw greyFont">({{total||'0'}})</span></h3>
           </el-row>
         </div>
         <div class="m-details">
@@ -77,9 +75,9 @@
               <td>手机号码</td>
               <td>归属渠道</td>
               <td>账户余额（元）</td>
-              <td>佣金账户余额（元）</td>
-              <td>佣金账户累计提现（元）</td>
-              <td>操作</td>
+              <td>佣金累计返利金额（元）</td>
+              <td>佣金已结算金额（元）</td>
+              <td>佣金未开票金额（元）</td>
             </tr>
             <tr v-for="(v,i) of searchList" :key="i">
               <td>{{(currentPage-1)*15+(i+1)}}</td>
@@ -88,9 +86,20 @@
               <td>{{v.phone||'--'}}</td>
               <td>{{v.dealerIdName||'--'}}</td>
               <td><a @click="details(1,v)">{{translateData('fenToYuan',v.balance)}}</a></td>
-              <td><a @click="details(2,v)">{{translateData('fenToYuan',v.commissionBalance)}}</a></td>
-              <td><a @click="details(3,v)">{{translateData('fenToYuan',v.withdrawTotal)}}</a></td>
-              <td><a @click="withdrawal(v.departId)" class="m-junplink">提现</a></td>
+              <td><a @click="details(2,v)">{{translateData('fenToYuan',v.commission)}}</a></td>
+              <td>{{translateData('fenToYuan',v.settled)}}</td>
+              <td>
+                <span class="m-wkp" v-if="i!=modifyi">
+                  {{translateData('fenToYuan',v.unbilled)}}</span>
+                <el-input
+                  size="mini" 
+                  style="width:50%"
+                  v-model="newMoney"
+                  v-if="off.modify1&&i==modifyi">
+                  <el-button slot="append" @click="modify(2,{departId:v.departId})">确定</el-button>
+                </el-input>
+                <a v-if="i!=modifyi" @click="modify(1,i,v.unbilled)" class="m-junplink">修改</a>
+              </td>
             </tr>
           </table>
         </div>
@@ -101,7 +110,7 @@
                 <el-pagination 
                   layout="prev, pager, next" 
                   :page-size="15" 
-                  @current-change="search" 
+                  @current-change="search(currentPage,1)" 
                   :current-page.sync="currentPage"
                   :total="total">
                 </el-pagination>
@@ -114,19 +123,15 @@
       </div>
     </div>
     <balance v-if="off.balance" :list="detailsinfo"></balance>
-    <commissionpage v-if="off.commission" :list="detailsinfo"></commissionpage>
-    <commissionWithdrawal v-if="off.commissionWithdrawal" :list="detailsinfo"></commissionWithdrawal>
-    <withdrawalpage v-if="off.withdrawal" :list="detailsinfo"></withdrawalpage>
+    <pcms v-if="off.cms" :list="cmsdata"></pcms>
   </section>
 </template>
 <script>
-  import balance from './balance.vue';
-  import commissionpage from './commission.vue';
-  import commissionWithdrawal from './commissionWithdrawal.vue';
-  import withdrawalpage from './withdrawal.vue';
-  import { getaccountDealer,getaccounts,commission } from '../../config/service.js';
-  import { errorDeal,translateData,getStore } from '../../config/utils';
+  import { getaccountDealer,getaccounts,commission,cmsupdate } from '../../config/service.js';
+  import { errorDeal,translateData } from '../../config/utils';
   import { mapActions } from 'vuex';
+  import balance from './balance.vue';
+  import pcms from './cms.vue';
   export default {
     data() {
       return {
@@ -137,25 +142,22 @@
         searchList: "",
         options: "",
         detailsinfo:"",
+        cmsdata:"",
         searchJson:"",
         currentPage: 0,
         pageSize:15,
         total: 0,
+        modifyi:0.1,
+        newMoney:"",
         off: {
+          cms: false,
           list: true,
+          modify1:false,
           balance: false,
-          commission: false,
-          commissionWithdrawal: false,
-          withdrawal:false
         }
       }
     },
-    components: {
-      balance,
-      commissionpage,
-      commissionWithdrawal,
-      withdrawalpage
-    },
+    components: { balance,pcms },
     created:function(){
       let vm=this;
       getaccountDealer({},true)
@@ -166,9 +168,11 @@
     methods: {
       ...mapActions([
         "setaccountDepId"
+        ,"setDepName"
       ]),
-      search(p) {
+      search(p,i) {
         let vm = this;
+        if(i==1){
           if (vm.phone!=""&&!(/^1[3456789]\d{9}$/.test(vm.phone))) {
             layer.open({
               content: '请输入正确的手机号码',
@@ -187,41 +191,60 @@
             "pageNum": p||1
           };
           vm.searchJson=json;
+        }
         getaccounts(vm.searchJson)
-          .then((data) => {
-            vm.searchList = data.data.list;
-            vm.total = data.data.total;
-            vm.currentPage = p || 1;
-          }).catch(e => errorDeal(e))
+        .then((data) => {
+          vm.searchList = data.data.list;
+          vm.total = data.data.total;
+          vm.currentPage = p || 1;
+          vm.off.modify1 = false;
+          vm.modifyi = 0.1;
+        }).catch(e => errorDeal(e))
       },
-      withdrawal(v) {
-        let vm = this;
-        vm.off.list = false;
-        vm.off.balance = false;
-        vm.off.commission = false;
-        vm.off.commissionWithdrawal = false;
-        vm.off.withdrawal = true;
-        vm.setaccountDepId(v);
-        commission({departId:v})
-        .then((data)=>{
-          vm.detailsinfo=data.data;
-        }).catch(e=>errorDeal(e))
+      modify(v,i,d){
+        let vm=this;
+        if(v==1){
+          vm.modifyi=i;
+          vm.off.modify1=true;
+          vm.newMoney = translateData('fenToYuan',d);
+        }else if(v==2){
+          let json;
+          if(isNaN(parseInt(vm.newMoney))){
+            this.$message.error('请输入正确的金额')
+            return false;
+          }
+          json=Object.assign(i,{'unbilled':vm.newMoney*100})
+          this.$confirm('修改佣金未开票金额？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            cmsupdate(json)
+            .then((res)=>{
+              this.$message({
+                type: 'success',
+                message: '更改成功'
+              });  
+              vm.search();
+            })
+          }).catch(() => {
+            vm.modifyi=0.1;
+          });
+        }
       },
       details(i,v) {
         let vm = this,
           json = {};
           vm._info=v;
         vm.setaccountDepId(v.departId);
+        vm.setDepName(v.departName);
+        vm.off.cms = false;
         vm.off.list = false;
         vm.off.balance = false;
-        vm.off.commission = false;
-        vm.off.commissionWithdrawal = false;
         if (i === 1) {
           vm.off.balance = true;
         } else if (i === 2) {
-          vm.off.commission = true;
-        } else if (i === 3) {
-          vm.off.commissionWithdrawal = true;
+          vm.off.cms = true;
         } else {
           return false
         }
@@ -229,9 +252,20 @@
       translateData(v,i){
         return translateData(v,i)
       }
+    },
+    directives: {
+      focus: {
+        // 指令的定义
+        inserted: function (el) {
+          el.focus()
+        }
+      }
     }
   }
 </script>
 <style scoped>
-
+.m-wkp{
+  display: inline-block;
+  width: 150px;
+}
 </style>

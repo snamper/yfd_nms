@@ -3,10 +3,6 @@
     z-index: 998
 }
 
-.layui-m-layer * {
-    /*-webkit-box-sizing:content-box;-moz-box-sizing:content-box;box-sizing:content-box*/
-}
-
 .layui-m-layermain,
 .layui-m-layershade {
     position: fixed;
@@ -17,7 +13,6 @@
 }
 
 .layui-m-layershade {
-    /* background-color: rgba(0, 0, 0,0.3); */
     pointer-events: auto
 }
 
@@ -39,7 +34,6 @@
     background-color: #fff;
     font-size: 14px;
     border-radius: 13px;
-    /*box-shadow: 0 0 8px rgba(0, 0, 0, .2);*/
     pointer-events: auto;
     -webkit-overflow-scrolling: touch;
     -webkit-animation-fill-mode: both;
@@ -194,7 +188,6 @@
 
 .layui-m-layer1 .layui-m-layerchild {
     border: none;
-    /*border-radius: 0*/
 }
 
 .layui-m-layer2 .layui-m-layerchild {
@@ -265,7 +258,6 @@
     line-height: 50px;
     font-size: 0;
     border-top: 1px solid #e1e1e1;
-    /*background-color: #F2F2F2*/
 }
 
 .layui-m-layerbtn span {
@@ -276,12 +268,10 @@
 }
 
 .layui-m-layerbtn span[yes] {
-    /*color: #40AFFE*/
     color:#007aff;
 }
 
 .layui-m-layerbtn span[no] {
-    /*border-right: 1px solid #D0D0D0;*/
     border-right: 1px solid #e1e1e1;
     border-radius: 0 0 0 5px
 }

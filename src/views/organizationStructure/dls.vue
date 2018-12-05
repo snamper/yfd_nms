@@ -15,8 +15,8 @@
               </el-col>
               <el-col :xs="18" :sm="18" :md="20" :lg="18" :xl="18">
                 <div class="f-display-ib">
-                  <el-date-picker v-model="startTime" size="small" type="datetime" :clearable=false :editable=false :picker-options="pickerOptionsS" placeholder="选择开始时间">
-                  </el-date-picker><el-date-picker v-model="endTime" size="small" type="datetime" :clearable=false :editable=false :picker-options="pickerOptionsE" placeholder="选择结束时间">
+                  <el-date-picker v-model="startTime" size="small" type="datetime" :clearable=false :editable=false  placeholder="选择开始时间">
+                  </el-date-picker><el-date-picker v-model="endTime" size="small" type="datetime" :clearable=false :editable=false placeholder="选择结束时间">
                   </el-date-picker>
                 </div>
                 &nbsp;&nbsp;( <el-radio v-model="timeType" label="1">修改时间</el-radio>
@@ -259,7 +259,7 @@
   </section>
 </template>
 <script>
-import { getDateTime, getUnixTime, errorDeal, disableTimeRange6, checkMobile, getTimeFunction, translateData } from "../../config/utils";
+import { getDateTime, errorDeal, checkMobile, getTimeFunction, translateData,getStore } from "../../config/utils";
 import { requestMethod, requestgetSyncTime, requestgetSyncInfo, requestsetSyncTime, addDepart } from "../../config/service.js";
 import { mapState,mapActions } from 'vuex';
 import companyDetails from "./companyDetails";
@@ -295,6 +295,7 @@ export default {
       select1: "",
       searchList: "",
       searchJson:"",
+      userInfo:"",
       addForm: {
         addDepId: "",
         addDepName: "",
@@ -326,47 +327,7 @@ export default {
       },
       form: {
         page: 0
-      },
-      pickerOptionsS: {
-        disabledDate(time) {
-          // let curDate = new Date().getTime();
-          // let curYear = new Date(curDate).getFullYear();
-          // let curMonth = new Date(curDate).getMonth() + 1,
-          //   minMonth = curMonth - 5,
-          //   minYear = curYear;
-          // if (minMonth < 0) {
-          //   minMonth += 12;
-          //   minYear = curYear - 1;
-          // }
-          // let curDay = new Date(curDate).getDate() + 1;
-          // let nextMonth = curMonth + 1;
-          // let cur = minYear + "/" + minMonth + "/1";
-          // let next = curYear + "/" + nextMonth + "/1";
-          // let nextYesterday = new Date(next) - 1000 * 3600 * 24;
-          // cur = new Date(cur).getTime();
-          // return time.getTime() > nextYesterday || time.getTime() < cur;
-        }
-      },
-      pickerOptionsE: {
-        disabledDate(time) {
-          // let curDate = new Date().getTime();
-          // let curYear = new Date(curDate).getFullYear();
-          // let curMonth = new Date(curDate).getMonth() + 1,
-          //   minMonth = curMonth - 5,
-          //   minYear = curYear;
-          // if (minMonth < 0) {
-          //   minMonth += 12;
-          //   minYear = curYear - 1;
-          // }
-          // let curDay = new Date(curDate).getDate() + 1;
-          // let nextMonth = curMonth + 1;
-          // let cur = minYear + "/" + minMonth + "/1";
-          // let next = curYear + "/" + nextMonth + "/1";
-          // let nextYesterday = new Date(next) - 1000 * 3600 * 24;
-          // cur = new Date(cur).getTime();
-          // return time.getTime() > nextYesterday || time.getTime() < cur;
-        }
-      },
+      }
     };
   },
   components: { layerSync, dlsDetails, companyDetails, VDistpicker },
@@ -395,12 +356,7 @@ export default {
       let vm = this,data;
       if(v==1){
         if (new Date(vm.startTime).getTime() > new Date(vm.endTime).getTime()) {
-          layer.open({
-            content: "开始时间必须小于结束时间",
-            skin: "msg",
-            time: 2,
-            msgSkin: "error"
-          });
+          this.$message.error('开始时间必须小于结束时间')
           vm.searchList = "";
           return false;
         }
@@ -476,16 +432,10 @@ export default {
             "street": vm.addForm.addaddressStr,
             "username": vm.addForm.addDepContacts,
           };
-          debugger;
           addDepart(json)
           .then(data => {
             if (data.code == 200) {
-              layer.open({
-                content: "添加成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              });
+              this.$message("添加成功")
             }
             if(vm.searchList){
               vm.search(1,0);
@@ -558,9 +508,32 @@ export default {
     },
     sync() {
       let vm = this;
-      vm.off.layer = true;
-      vm.off.sync = true;
-      vm.off.setSync = false;
+      // vm.off.layer = true;
+      // vm.off.sync = true;
+      // vm.off.setSync = false;
+      vm.userInfo = getStore("YFD_NMS_INFO");
+      this.$confirm("确定要执行手动同步？", "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+      .then(() => {
+        requestMethod({phone: vm.userInfo.phone}, "/uus/w/user/sync")
+          .then(res => {
+            if (res && res.code == 200) {
+              this.$message({
+                type: "success",
+                message: "操作成功"
+              });
+              this.search();
+            }
+          })
+          .catch(res => {
+            this.$message.error(res.msg || res.statusText || res);
+          });
+      }).catch(()=>{
+
+      });
     },
     getSyncTime() {
       let vm = this,
@@ -608,13 +581,6 @@ export default {
     },
     getDateTime(v) {
       return getDateTime(v);
-    },
-    resetTimer() {
-      this.btnDisabled = false;
-      this.show = true;
-      this.count = "获取验证码";
-      clearInterval(this.timer);
-      this.timer = null;
     },
     translateData(v, i) {
       return translateData(v, i);

@@ -11,4 +11,8 @@ export default {
     let account_depId = state.account_depId;
     return account_depId;
   },
+  account_depName:state=>{
+    let account_depName = state.account_depName;
+    return account_depName;
+  }
 };

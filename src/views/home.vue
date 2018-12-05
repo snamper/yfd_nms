@@ -113,23 +113,26 @@ span.iconFoldClose {
           </li>
         </ul>
         <ul v-if="true" class="g-side-ul">
-          <li :class="{active:crumb[0].name=='账户管理'}">
+          <li :class="{active:crumb[0].name=='账户/佣金管理'}">
             <b></b>
             <router-link to="/home/accountManage">
               <div>
                 <i class="u-icon-zhanghu"></i>
-                <span>账户管理</span>
+                <span>账户/佣金管理</span>
                 <span :class="crumb[0].name=='账户管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
             </router-link>
-            <!-- <ul class="g-side-subul nav2">
+            <ul v-if="false" class="g-side-subul nav2">
               <li>
-                <router-link to="/home/accountManage/manage"><b></b>账户管理</router-link>
+                <router-link to="/home/accountManage/info"><b></b>账户/佣金信息</router-link>
               </li>
               <li>
-                <router-link to="/home/accountManage/withdrawal"><b></b>提现</router-link>
+                <router-link to="/home/accountManage/commission"><b></b>佣金数据管理</router-link>
               </li>
-            </ul> -->
+              <li>
+                <router-link to="/home/accountManage/change"><b></b>数据修改管理</router-link>
+              </li>
+            </ul>
           </li>
         </ul>
         <ul v-if="isShow" class="g-side-ul">
@@ -236,7 +239,7 @@ span.iconFoldClose {
             <b></b>
             <router-link to="/home/agentApply">
               <div>
-                <i class="u-icon-address"></i>
+                <i class="u-icon-shenqing"></i>
                 <span>代理商申请管理</span>
                 <span :class="crumb[0].name=='代理商申请管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
@@ -383,7 +386,7 @@ export default {
       }
       if (path.indexOf("/home/accountManage") > -1) {
         crumb[0] = {
-          name: "账户管理",
+          name: "账户/佣金管理",
           href: "/home/accountManage"
         };
       }

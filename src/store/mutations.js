@@ -3,14 +3,13 @@ import {
   SET_USERINFO,
   GET_ROLE,
   GET_DEPART,
-  SET_ACCOUNT_DEPID
+  SET_ACCOUNT_DEPID,
+  SET_DEPNAME
 } from './mutation-types.js';
 
 import {
   setStore,
-  getStore,
   removeStore,
-  secondsFormat
 } from '../config/utils';
 
 export default {
@@ -37,5 +36,8 @@ export default {
   },
   [SET_ACCOUNT_DEPID](state,id){
     state.account_depId = id;
+  },
+  [SET_DEPNAME](state,name){
+    state.account_depName = name;
   }
 };

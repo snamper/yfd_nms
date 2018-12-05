@@ -108,20 +108,27 @@ const account = resolve => {
       load();
   });
 };
-const accountManage = resolve => {
+const accountInfo = resolve => {
     load(true);
     require.ensure(["@/views/accountManage/accountManage.vue"], () => {
         resolve(require("@/views/accountManage/accountManage.vue"));
         load();
     });
 };
-const accountWithdrawal = resolve => {
+const yjManage = resolve => {
   load(true);
-  require.ensure(["@/views/accountManage/withdrawal.vue"], () => {
-      resolve(require("@/views/accountManage/withdrawal.vue"));
+  require.ensure(["@/views/accountManage/yjmanage.vue"], () => {
+      resolve(require("@/views/accountManage/yjmanage.vue"));
       load();
   });
 };
+const dataChange = resolve => {
+    load(true);
+    require.ensure(["@/views/accountManage/dataChange.vue"], () => {
+        resolve(require("@/views/accountManage/dataChange.vue"));
+        load();
+    });
+  };
 //操作日志
 const Logs_mhglrz = resolve => {
     load(true);
@@ -242,15 +249,18 @@ const router = new Router({
             },{
                 path:"accountManage",
                 name:"accountManage",
-                redirect:"accountManage/manage",
+                redirect:"accountManage/info",
                 component:account,
                 children:[{
-                  path:"manage",
-                  component:accountManage,
+                  path:"info",
+                  component:accountInfo,
                 },{
-                  path:"withdrawal",
-                  component:accountWithdrawal,
-                }]
+                  path:"commission",
+                  component:yjManage,
+                },{
+                    path:"change",
+                    component:dataChange,
+                  }]
             },{
                 path: "operationLog",
                 redirect: "operationLog/cardmanage",

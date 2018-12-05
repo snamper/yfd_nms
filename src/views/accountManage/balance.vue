@@ -1,12 +1,20 @@
 <template>
   <section ref="sec">
-    <div class="m-details-page">
-      <p class="m-head-title">
-        <label>账户余额</label>
-        <label><a @click="back()">返回列表</a></label>
-      </p>
-    </div>
-    <div class="dls greyFont">
+    <el-container>
+      <el-header class="m-headBar">
+        <el-row>
+          <el-col :span="12">
+            <div class="grid-content bg-purple">账户余额</div>
+          </el-col>
+          <el-col :span="12">
+            <div class="grid-content bg-purple-light fr" style="padding-right:40px">
+              <a href="javascript:void(0)" class="blue" @click="back()">返回列表</a>
+            </div>
+          </el-col>
+        </el-row>
+      </el-header>
+    </el-container>
+    <div class="greyFont">
       <el-row>
         <el-col :span="24">
           <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
@@ -83,42 +91,38 @@
     </div>
     <!-- 查询结果列表 -->
     <div v-if="searchList">
-      <div>
-        <div class="m-listTitleFoot">
-          <el-row>
-            <p>
-              <h3>订单列表<span class="f-fw greyFont">({{total||'0'}})</span></h3>
-            </p>
-          </el-row>
-        </div>
-        <div class="m-details">
-          <table class="m-searchTab" style="width:100%;height:100%;">
-            <tr>
-              <td>序号</td>
-              <td>订单号码</td>
-              <td>操作时间</td>
-              <td>商户名称</td>
-              <td>操作人姓名</td>
-              <td>操作类型</td>
-              <td>账户余额（元）</td>
-              <td>操作金额（元）</td>
-              <td>开卡/代充号码</td>
-              <td>操作结果</td>
-            </tr>
-            <tr v-for="(v,i) in searchList" :key="i">
-              <td>{{(currentPage-1)*15+(i+1)}}</td>
-              <td>{{v.sysOrderId||'--'}}</td>
-              <td>{{getDateTime(v.createTime)[6]}}</td>
-              <td>{{v.departName||'--'}}</td>
-              <td>{{v.userName||'--'}}</td>
-              <td>{{translate(4,v.operateType)}}</td>
-              <td>{{translateData('fenToYuan',v.balance)}}</td>
-              <td>{{translateData('fenToYuan',v.cost)}}</td>
-              <td>{{v.phone}}</td>
-              <td :class="v.state==1?'green':v.state==2?'red':'--'">{{v.state==1?'成功':v.state==2?'失败':'--'}}</td>
-            </tr>
-          </table>
-        </div>
+      <div class="m-listTitleFoot">
+        <el-row>
+          <h3>订单列表<span class="f-fw greyFont">({{total||'0'}})</span></h3>
+        </el-row>
+      </div>
+      <div class="m-details">
+        <table class="m-searchTab" style="width:100%;height:100%;">
+          <tr>
+            <td>序号</td>
+            <td>订单号码</td>
+            <td>操作时间</td>
+            <td>商户名称</td>
+            <td>操作人姓名</td>
+            <td>操作类型</td>
+            <td>账户余额（元）</td>
+            <td>操作金额（元）</td>
+            <td>开卡/代充号码</td>
+            <td>操作结果</td>
+          </tr>
+          <tr v-for="(v,i) in searchList" :key="i">
+            <td>{{(currentPage-1)*15+(i+1)}}</td>
+            <td>{{v.sysOrderId||'--'}}</td>
+            <td>{{getDateTime(v.createTime)[6]}}</td>
+            <td>{{v.departName||'--'}}</td>
+            <td>{{v.userName||'--'}}</td>
+            <td>{{translate(4,v.operateType)}}</td>
+            <td>{{translateData('fenToYuan',v.balance)}}</td>
+            <td>{{translateData('fenToYuan',v.cost)}}</td>
+            <td>{{v.phone}}</td>
+            <td :class="v.state==1?'green':v.state==2?'red':'--'">{{v.state==1?'成功':v.state==2?'失败':'--'}}</td>
+          </tr>
+        </table>
       </div>
     </div>
     <div class="m-listTitleFoot" v-if="searchList">
@@ -137,8 +141,8 @@
   </section>
 </template>
 <script>
-  import {getTimeFunction,errorDeal,translateData,getDateTime} from "../../config/utils";
-  import {getBalance} from "../../config/service.js";
+  import { getTimeFunction,errorDeal,translateData,getDateTime } from "../../config/utils";
+  import { getBalance } from "../../config/service.js";
   import { mapState } from 'vuex';
   export default {
     props: {list:Object},
@@ -289,7 +293,7 @@
   }
 </script>
 <style scoped>
-  .m-head-title {
+  /* .m-head-title {
     height: 45px;
     border-bottom: 1px solid #ccc;
     width: 98%;
@@ -312,5 +316,5 @@
     line-height: 45px;
     color: #43AAD4;
     cursor: pointer;
-  }
+  } */
 </style>

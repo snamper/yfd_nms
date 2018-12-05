@@ -15,7 +15,6 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     NProgress.start();
   }
   type = type.toUpperCase();
-
   const closeLoadLayout = () => {
     typeof load === 'function' ? load() : layer.close(layerIndex);
   };
@@ -38,7 +37,6 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     Object.keys(data).forEach(key => {
       dataStr += key + '=' + data[key] + '&';
     });
-
     if (dataStr !== '') {
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
       url = url + '?' + dataStr;
@@ -52,14 +50,14 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
       mode: "cors",
       cache: "force-cache"
     };
-
     if (type == 'POST') {
       Object.defineProperty(requestConfig, 'body', {
         value: JSON.stringify(data)
       });
     }
     return new Promise((resolve, reject) => {
-      fetch(url, requestConfig)
+      if(typeof load !== 'function'||load()!='down'){
+        fetch(url, requestConfig)
         .then(response => {
           NProgress.done();
           closeLoadLayout();
@@ -77,6 +75,16 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
             reject({ code: data });
           }
         }).catch(error => errorDeal(error));
+      }else if(load()=='down'){
+        fetch(url,requestConfig).then(res => res.blob().then(blob => { 
+          var a = document.createElement('a'); 
+          var url = window.URL.createObjectURL(blob);   
+          var filename = res.headers.get('Content-Disposition'); 
+          a.href = url; 
+          a.download = filename; 
+          a.click(); 
+        window.URL.revokeObjectURL(url); }))
+      }
     })
   } else { //XHR对象
     return new Promise((resolve, reject) => {

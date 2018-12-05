@@ -29,6 +29,7 @@ export const errorDeal=(res,cb)=>{
  * iframe 文件下载
  */
 export const createDownload=(url,cb)=>{
+    debugger;
 	var body=document.getElementsByTagName("body")[0],
 	ifr=document.getElementById("downLoadForm"),
     form = document.createElement("form"),
@@ -232,19 +233,21 @@ export const translateData=(type,v,d)=> {
         break
         case 'phoneLevel':
            if(!isNaN(v)){
-            return v==-1?'普号':v+'级靓号';
+             return v==-1?'普号':v+'级靓号';
            }else{
-            return '--';
+             return '--';
            }
         case 'fenToYuan':
             if(!isNaN(v)&&v!=0){
-                return (v/100).toFixed(2)
+              return (v/100).toFixed(2)
             }else if(!isNaN(v)&&v==0){
-                return '0'
+              return '0';
             }else{
-                return '--'
+              return '--'
             }
-        
+        case 'yjType':
+            return v==1?'迪加激活返3元':v==2?'T+2月开来显返款1元':v==3?'连续3个月在网开来显返还1元':v==4?'开通来显返利1元3年期':v==5?'T+2月开来显返0.5元':v==6?'模组套餐返1元、0.5元'
+            :v==7?'代理话分':v==8?'合创话分':v==9?'数据费用4%话分':v==10?'远特充20返2元':v==11?'苏宁激活充值奖励':v==12?'苏宁来显奖励':'--';
     }
 }
 

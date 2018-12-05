@@ -359,6 +359,11 @@ b.countIcon{
   width: .17rem;
   height: .17rem;
 }
+.u-icon-shenqing{
+  background-image: url(../assets/images/icon_shenqing.png);
+  width: .17rem;
+  height: .17rem;
+}
 
 .u-icon-menu {
   background-image: url(../assets/images/icon_location.png);
