@@ -98,6 +98,9 @@ export const cmstype=(data,load)=>fetch("/ums/w/account/cms-types",data,"POST",l
 /*佣金excel导出*/
 export const cmsDownload=(data,load)=>fetch("/ums/w/account/export",data,"GET",load)
 
+/*佣金excel导出*/
+export const upRecords=(data,load)=>fetch("/ums/w/account/upload-records",data,"POST",load)
+
 /*修改佣金未开票金额*/
 export const cmsupdate=(data,load)=>fetch("/ums/w/account/cms-update",data,"POST",load)
 

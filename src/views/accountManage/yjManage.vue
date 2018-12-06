@@ -33,7 +33,7 @@
                   </el-upload>
                   <el-col>*上传佣金文件前，请选择相应的时间以确保上传文件的准确性</el-col>
               </el-col>
-              <el-row v-if="false">
+              <el-row>
                 <el-row>
                   <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
                 </el-row>
@@ -82,66 +82,47 @@
         </el-row>
       </div>
       <!-- 查询结果列表 -->
-      <div v-if="searchlist">
-        <div class="m-listTitleFoot">
-          <el-row>
-            <h3>账户列表<span class="f-fw greyFont">({{total||'0'}})</span></h3>
-          </el-row>
-        </div>
-        <div class="m-details">
-          <table class="m-searchTab" style="width:100%;height:100%;">
-            <tr>
-              <td>序号</td>
-              <td>公司名称</td>
-              <td>联系人</td>
-              <td>手机号码</td>
-              <td>归属渠道</td>
-              <td>账户余额（元）</td>
-              <td>佣金累计返利金额（元）</td>
-              <td>佣金已结算金额（元）</td>
-              <td>佣金未开票金额（元）</td>
-            </tr>
-            <tr v-for="(v,i) of searchList" :key="i">
-              <td>{{(currentPage-1)*15+(i+1)}}</td>
-              <td>{{v.departName||'--'}}</td>
-              <td>{{v.username||'--'}}</td>
-              <td>{{v.phone||'--'}}</td>
-              <td>{{v.dealerIdName||'--'}}</td>
-              <td><a @click="details(1,v)">{{translateData('fenToYuan',v.balance)}}</a></td>
-              <td><a @click="details(2,v)">{{translateData('fenToYuan',v.commission)}}</a></td>
-              <td>{{translateData('fenToYuan',v.settled)}}</td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
-        <div class="m-listTitleFoot" v-if="searchList.length!=0">
-          <el-row>
-            <el-col :span="12">
-              <div class="grid-content bg-purple">
-                <el-pagination 
-                  layout="prev, pager, next" 
-                  :page-size="15" 
-                  @current-change="search(currentPage,1)" 
-                  :current-page.sync="currentPage"
-                  :total="total">
-                </el-pagination>
-              </div>
-            </el-col>
-            <el-col :span="12">
-            </el-col>
-          </el-row>
-        </div>
+      <div v-if="searchlist" class="m-details">
+        <el-row>
+          <h3>上传记录<span class="f-fw greyFont">({{total||'0'}})</span></h3>
+        </el-row>
+        <table class="m-searchTab" style="width:100%;height:100%;">
+          <tr>
+            <td>序号</td>
+            <td>上传时间</td>
+            <td>操作人</td>
+            <td>操作人手机号码</td>
+            <td>文件名</td>
+          </tr>
+          <tr v-for="(v,i) of searchlist" :key="i">
+            <td>{{(currentPage-1)*15+(i+1)}}</td>
+            <td>{{getDateTime(v.createTime)[6]}}</td>
+            <td>{{v.username}}</td>
+            <td>{{v.phone}}</td>
+            <td>{{v.fileName}}</td>
+          </tr>
+        </table>
+        <el-pagination 
+          v-if="searchlist.length!=0"
+          layout="prev, pager, next" 
+          :page-size="15" 
+          @current-change="search(currentPage,1)" 
+          :current-page.sync="currentPage"
+          :total="total">
+        </el-pagination>
       </div>
     </div>
   </section>
 </template>
 <script>
-  import { } from '../../config/service.js';
-  import { getTimeFunction,getStore } from '../../config/utils';
+  import { upRecords } from '../../config/service.js';
+  import { getTimeFunction,getStore, errorDeal,getDateTime } from '../../config/utils';
   export default {
     data() {
       return {
         searchlist:"",
+        total:"",
+        currentPage:"",
         startTime:"",
         startTime2:"",
         endTime2:"",
@@ -162,13 +143,21 @@
       Object.assign(vm.upInfo,{userId:userId});
     },
     methods: {
-      search(){
+      search(p){
         let vm=this,json;
         json={
-          startTime:new Date(vm.startTime).getTime(),
-          endTime:new Date(vm.endTime).getTime(),
-          operator:vm.operator
+          "endTime": new Date(vm.endTime2).getTime(),
+          "pageNum": p||1,
+          "pageSize": 15,
+          "startTime": new Date(vm.startTime2).getTime(),
+          "username": vm.operator
         };
+        upRecords(json)
+        .then(res=>{
+          vm.searchlist = res.data.list;
+          vm.total = res.data.total;
+          vm.currentPage = p || 1;
+        }).catch(e=>errorDeal(e))
       },
       submitUpload() {
         Object.assign(this.upInfo,{startTime:new Date(this.startTime).getTime()});
@@ -180,6 +169,9 @@
         this.$message('上传文件成功');
       },handleError(){
         this.$message.error('上传文件失败');
+      },
+      getDateTime(t){
+        return getDateTime(t)
       }
     }
   }
