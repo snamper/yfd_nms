@@ -312,7 +312,9 @@ export const getTimeFunction=(t,d)=>{
         let Next=curYear+"/"+curMonth+"/"+curDay;
             Next=new Date(Next).getTime()+60*60*24*1000; 
         vm.endTime=new Date(Next).getTime()-1000;
+        vm.endTime2=new Date(Next).getTime()-1000;
         vm.startTime=new Date(cur).getTime();
+        vm.startTime2=new Date(cur).getTime();
     }else if(d[1]=='1'){
         curMonth = new Date(d[0]).getMonth()+1;
         curYear=new Date(d[0]).getFullYear();  

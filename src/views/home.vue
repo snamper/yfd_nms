@@ -122,14 +122,14 @@ span.iconFoldClose {
                 <span :class="crumb[0].name=='账户管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
             </router-link>
-            <ul v-if="false" class="g-side-subul nav2">
+            <ul class="g-side-subul nav2">
               <li>
                 <router-link to="/home/accountManage/info"><b></b>账户/佣金信息</router-link>
               </li>
               <li>
                 <router-link to="/home/accountManage/commission"><b></b>佣金数据管理</router-link>
               </li>
-              <li>
+              <li v-if="false">
                 <router-link to="/home/accountManage/change"><b></b>数据修改管理</router-link>
               </li>
             </ul>

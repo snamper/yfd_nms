@@ -34,3 +34,4 @@
 .m-dialog-title { background: #e0e0e0;padding: 10px; }
 .m-dialog-content { padding: 20px; }
 .m-icon-close { cursor: pointer; float: right; display: block; width: 18px; height: 18px; background: url("../../assets/images/icon_close.png") no-repeat center; background-size: contain; }
+.f-mt-10{margin-top: 10px}
