@@ -8,31 +8,34 @@
               <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2" >
                 <div class="grid-content bg-purple-dark f-ta-r inputTitle">上传文件&nbsp;:&nbsp;</div>
               </el-col>
-              <el-col class="m-data-picker" :xs="20" :sm="18" :md="18" :lg="18" :xl="18" >
-                  <el-date-picker
-                    style="border-radius:4px;width:200px;"
-                    v-model="startTime"
-                    type="month"
-                    size="small"
-                    placeholder="选择年月"></el-date-picker>
-                  <el-upload
-                    class="m-upload"
-                    ref="upload"
-                    name="files"
-                    action="ums/w/account/upload-excel"
-                    accept=".xlsx,.xls"
-                    :data="upInfo"
-                    :headers="headerInfo"
-                    :on-change="handleChange"
-                    :on-success="handleSuccess"
-                    :on-error="handleError"
-                    :file-list="fileList"
-                    :auto-upload="false">
-                    <el-button slot="trigger" size="small" type="success">选取文件</el-button>
-                    <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload">上传文件</el-button>
-                  </el-upload>
-                  <el-col>*上传佣金文件前，请选择相应的时间以确保上传文件的准确性</el-col>
-              </el-col>
+              <el-row>
+                <el-col class="m-data-picker" :xs="20" :sm="18" :md="18" :lg="18" :xl="18" >
+                    <el-date-picker
+                      style="border-radius:4px;width:200px;"
+                      v-model="startTime"
+                      type="month"
+                      size="small"
+                      placeholder="选择年月"></el-date-picker>
+                    <el-upload
+                      class="m-upload"
+                      ref="upload"
+                      name="files"
+                      action="ums/w/account/upload-excel"
+                      accept=".xlsx,.xls"
+                      :data="upInfo"
+                      :headers="headerInfo"
+                      :on-change="handleChange"
+                      :on-success="handleSuccess"
+                      :on-error="handleError"
+                      :file-list="fileList"
+                      :auto-upload="false">
+                      <el-button slot="trigger" size="small" type="success">选取文件</el-button>
+                      <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload">上传文件</el-button>
+                    </el-upload>
+                    <el-col>*上传佣金文件前，请选择相应的时间以确保上传文件的准确性</el-col>
+                </el-col>
+              </el-row>
+              
               <el-row>
                 <el-row>
                   <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
@@ -165,9 +168,11 @@
       },
       handleChange(file, fileList) {
         this.fileList = fileList.slice(-1);
-      },handleSuccess(){
+      },
+      handleSuccess(){
         this.$message('上传文件成功');
-      },handleError(){
+      },
+      handleError(){
         this.$message.error('上传文件失败');
       },
       getDateTime(t){
