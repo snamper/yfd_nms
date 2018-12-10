@@ -129,7 +129,7 @@ span.iconFoldClose {
               <li>
                 <router-link to="/home/accountManage/commission"><b></b>佣金数据管理</router-link>
               </li>
-              <li v-if="false">
+              <li>
                 <router-link to="/home/accountManage/change"><b></b>数据修改管理</router-link>
               </li>
             </ul>
