@@ -21,9 +21,20 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
   //--------------------------------------------------------------------
   let userInfo = getStore("YFD_NMS_INFO");
   if (userInfo) {
-    Object.assign(userInfo, data);
-    headerId = userInfo.userId;
-    data = userInfo;
+    if(load&&load()=='upload'){
+      let dataStr = ''; //数据拼接字符串
+      Object.keys(userInfo).forEach(key => {
+        dataStr += key + '=' + userInfo[key] + '&';
+      });
+      if (dataStr !== '') {
+        dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
+        url = url + '?' + dataStr;
+      }
+    }else{
+      Object.assign(userInfo, data);
+      headerId = userInfo.userId;
+      data = userInfo;
+    }
   } else {
     errorDeal({
       'code': 648
@@ -43,18 +54,37 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     }
   }
   if (window.fetch && method == 'fetch') { //FETCH
-    let requestConfig = {
-      credentials: 'include',
-      method: type,
-      headers: { 'Content-Type': 'application/json', 'mhscAuth': '3,0,' + headerId, },
-      mode: "cors",
-      cache: "force-cache"
-    };
+    let requestConfig;
     if (type == 'POST') {
-      Object.defineProperty(requestConfig, 'body', {
-        value: JSON.stringify(data)
-      });
+        if(load()=='upload'){
+          let fd = new FormData();
+          fd.append('files',data.file);
+          fd.append('userId',data.userId);
+          fd.append('startTime',data.startTime);
+          requestConfig = {
+            credentials: 'include',
+            method: type,
+            headers: {},
+            mode: "cors",
+            cache: "force-cache"
+          }
+          Object.defineProperty(requestConfig,'body',{
+            value:fd
+          });
+        }else{
+          requestConfig = {
+            credentials: 'include',
+            method: type,
+            headers: { 'Content-Type': 'application/json', 'mhscAuth': '3,0,' + headerId, },
+            mode: "cors",
+            cache: "force-cache"
+          };
+          Object.defineProperty(requestConfig, 'body', {
+            value: JSON.stringify(data)
+          });
+      }
     }
+
     return new Promise((resolve, reject) => {
       if(typeof load !== 'function'||load()!='down'){
         fetch(url, requestConfig)

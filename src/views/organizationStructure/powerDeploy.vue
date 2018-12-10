@@ -41,7 +41,7 @@
 import layerconfirm from '../../components/layerConfirm';
 import changePower from './operatePower';
 import { getRoles } from '../../config/service.js';
-import { errorDeal,getDateTime } from '../../config/utils';
+import { errorDeal,getDateTime,getStore } from '../../config/utils';
 export default{
     name:'powerDeploy',
     data (){
@@ -63,7 +63,8 @@ export default{
     },
     created:function(){
         let vm=this;
-        vm.fgetRole();
+
+        vm.fgetRole(id);
     },
     components:{
         layerconfirm,
@@ -71,8 +72,8 @@ export default{
     },
     methods:{
         fgetRole(){
-            let vm=this;
-            getRoles()
+            let vm=this,Info = getStore("YFD_NMS_INFO");
+            getRoles({userId:Info.userId})
             .then((data)=>{
                 if(data.data.hasOwnProperty('roles')){
                     vm.rolelist=data.data.roles;

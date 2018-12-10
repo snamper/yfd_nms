@@ -20,13 +20,12 @@
                       class="m-upload"
                       ref="upload"
                       name="files"
-                      action="ums/w/account/upload-excel"
+                      action="https://jsonplaceholder.typicode.com/posts/"
                       accept=".xlsx,.xls"
                       :data="upInfo"
                       :headers="headerInfo"
+                      :before-upload="beforeUpload"
                       :on-change="handleChange"
-                      :on-success="handleSuccess"
-                      :on-error="handleError"
                       :file-list="fileList"
                       :auto-upload="false">
                       <el-button slot="trigger" size="small" type="success">选取文件</el-button>
@@ -35,7 +34,6 @@
                     <el-col>*上传佣金文件前，请选择相应的时间以确保上传文件的准确性</el-col>
                 </el-col>
               </el-row>
-              
               <el-row>
                 <el-row>
                   <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
@@ -118,7 +116,7 @@
   </section>
 </template>
 <script>
-  import { upRecords } from '../../config/service.js';
+  import { upRecords,upExcel } from '../../config/service.js';
   import { getTimeFunction,getStore, errorDeal,getDateTime } from '../../config/utils';
   export default {
     data() {
@@ -162,18 +160,27 @@
           vm.currentPage = p || 1;
         }).catch(e=>errorDeal(e))
       },
-      submitUpload() {
-        Object.assign(this.upInfo,{startTime:new Date(this.startTime).getTime()});
+      beforeUpload(file){
+        let vm=this,json;
+        let info = getStore('YFD_NMS_INFO');
+        json = {
+          'file':file,'userId':info.userId,'startTime':new Date(this.startTime).getTime()
+        }
+        upExcel(json,()=>{return "upload"})
+        .then(function(res){
+          this.$refs.upload.clearFiles();
+          if(res&&res.code==200){
+            this.$message('上传文件成功');
+          }else{
+            this.$message.error('上传文件失败');
+          }
+        })
+      },
+      submitUpload(file) {
         this.$refs.upload.submit();
       },
       handleChange(file, fileList) {
         this.fileList = fileList.slice(-1);
-      },
-      handleSuccess(){
-        this.$message('上传文件成功');
-      },
-      handleError(){
-        this.$message.error('上传文件失败');
       },
       getDateTime(t){
         return getDateTime(t)

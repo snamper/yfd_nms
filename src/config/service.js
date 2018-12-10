@@ -101,6 +101,9 @@ export const cmsDownload=(data,load)=>fetch("/ums/w/account/export",data,"GET",l
 /*佣金excel导出*/
 export const upRecords=(data,load)=>fetch("/ums/w/account/upload-records",data,"POST",load)
 
+/*佣金excel上传*/
+export const upExcel=(data,load)=>fetch("/ums/w/account/upload-excel",data,"POST",load)
+
 /*修改佣金未开票金额*/
 export const cmsupdate=(data,load)=>fetch("/ums/w/account/cms-update",data,"POST",load)
 
