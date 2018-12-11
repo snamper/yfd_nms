@@ -163,7 +163,7 @@
       handleUpload(p){
         let vm=this,json;
         json = {
-          'file':p.file,'':p.data.userId,'startTime':new Date(this.startTime).getTime()
+          'file':p.file,'fileName':p.filename,'userId':p.data.userId,'startTime':new Date(this.startTime).getTime()
         }
         upExcel(json,()=>{return "upload"})
         .then(function(res){
@@ -173,7 +173,7 @@
           }else{
             this.$message.error('上传文件失败');
           }
-        })
+        }).catch(e=>errorDeal(e))
       },
       // beforeUpload(file){
       //   let vm=this,json;

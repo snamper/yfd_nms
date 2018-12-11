@@ -43,14 +43,16 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     return false;
   }
   //--------------------------------------------------------------------
-  if (type == 'GET') {
+  if (type == 'GET'||(load&&typeof load==='function'&&load()=='upload')) {
     let dataStr = ''; //数据拼接字符串
     Object.keys(data).forEach(key => {
-      dataStr += key + '=' + data[key] + '&';
+      if(key!='file'){
+        dataStr += key + '=' + data[key] + '&';
+      }
     });
     if (dataStr !== '') {
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
-      url = url + '?' + dataStr;
+      url = url + '&' + dataStr;
     }
   }
   if (window.fetch && method == 'fetch') { //FETCH
@@ -59,8 +61,6 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
         if(typeof load === 'function'&&load()=='upload'){
           let fd = new FormData();
           fd.append('files',data.file);
-          fd.append('userId',data.userId);
-          fd.append('startTime',data.startTime);
           requestConfig = {
             credentials: 'include',
             method: type,
