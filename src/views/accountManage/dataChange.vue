@@ -16,14 +16,14 @@
                       <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
                         <div class="block">
                           <el-date-picker
-                          v-model="startTime2"
+                          v-model="startTime"
                           size="small"
                           type="datetime"
                           :clearable=false                                        
                           :editable=false                    
                           placeholder="选择开始时间">
                           </el-date-picker><el-date-picker
-                          v-model="endTime2"
+                          v-model="endTime"
                           size="small"
                           type="datetime"
                           :clearable=false                                        
@@ -71,11 +71,11 @@
           <tr v-for="(v,i) of searchlist" :key="i">
             <td>{{(currentPage-1)*15+(i+1)}}</td>
             <td>{{getDateTime(v.createTime)[6]}}</td>
-            <td>{{v.username}}</td>
-            <td>{{v.phone}}</td>
-            <td>{{v.phone}}</td>
-            <td>{{v.fileName}}</td>
-            <td>{{v.fileName}}</td>
+            <td>{{v.operatorName}}</td>
+            <td>{{v.operatorPhone}}</td>
+            <td>{{v.departName}}</td>
+            <td>{{translateData('fenToYuan',v.afterUnbill-v.beforeUnbill)}}</td>
+            <td>{{translateData('fenToYuan',v.afterUnbill)}}</td>
           </tr>
         </table>
         <el-pagination 
@@ -91,16 +91,17 @@
   </section>
 </template>
 <script>
-  import { upRecords } from '../../config/service.js';
-  import { getTimeFunction,getStore, errorDeal,getDateTime } from '../../config/utils';
+  import { updateRecords } from '../../config/service.js';
+  import { getTimeFunction,errorDeal,getDateTime,translateData } from '../../config/utils';
   export default {
     data() {
       return {
-        searchlist:"",
         total:"",
-        currentPage:"",
-        startTime:"",
+        endTime:"",
         operator:"",
+        startTime:"",
+        searchlist:"",
+        currentPage:"",
       }
     },
     created: function() {
@@ -110,13 +111,13 @@
       search(p){
         let vm=this,json;
         json={
-          "endTime": new Date(vm.endTime2).getTime(),
-          "pageNum": p||1,
           "pageSize": 15,
+          "pageNum": p||1,
+          "username": vm.operator,
+          "endTime": new Date(vm.endTime2).getTime(),
           "startTime": new Date(vm.startTime2).getTime(),
-          "username": vm.operator
         };
-        upRecords(json)
+        updateRecords(json)
         .then(res=>{
           vm.searchlist = res.data.list;
           vm.total = res.data.total;
@@ -125,6 +126,8 @@
       },
       getDateTime(t){
         return getDateTime(t)
+      },translateData(v,i){
+        return translateData(v,i)
       }
     }
   }

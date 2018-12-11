@@ -63,8 +63,7 @@ export default{
     },
     created:function(){
         let vm=this;
-
-        vm.fgetRole(id);
+        vm.fgetRole();
     },
     components:{
         layerconfirm,
