@@ -21,7 +21,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
   //--------------------------------------------------------------------
   let userInfo = getStore("YFD_NMS_INFO");
   if (userInfo) {
-    if(load&&load()=='upload'){
+    if(load&&typeof load === 'function'&&load()=='upload'){
       let dataStr = ''; //数据拼接字符串
       Object.keys(userInfo).forEach(key => {
         dataStr += key + '=' + userInfo[key] + '&';
@@ -56,7 +56,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
   if (window.fetch && method == 'fetch') { //FETCH
     let requestConfig;
     if (type == 'POST') {
-        if(load()=='upload'){
+        if(typeof load === 'function'&&load()=='upload'){
           let fd = new FormData();
           fd.append('files',data.file);
           fd.append('userId',data.userId);
@@ -105,7 +105,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
             reject({ code: data });
           }
         }).catch(error => errorDeal(error));
-      }else if(load()=='down'){
+      }else if(load&&typeof load !== 'function'&&load()=='down'){
         fetch(url,requestConfig).then(res => res.blob().then(blob => { 
           var a = document.createElement('a'); 
           var url = window.URL.createObjectURL(blob);   

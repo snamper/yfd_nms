@@ -17,16 +17,16 @@
                       size="small"
                       placeholder="选择年月"></el-date-picker>
                     <el-upload
+                      action="customer"
                       class="m-upload"
                       ref="upload"
                       name="files"
-                      action="https://jsonplaceholder.typicode.com/posts/"
                       accept=".xlsx,.xls"
                       :data="upInfo"
-                      :headers="headerInfo"
-                      :before-upload="beforeUpload"
-                      :on-change="handleChange"
                       :file-list="fileList"
+                      :headers="headerInfo"
+                      :on-change="handleChange"
+                      :http-request="handleUpload"
                       :auto-upload="false">
                       <el-button slot="trigger" size="small" type="success">选取文件</el-button>
                       <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload">上传文件</el-button>
@@ -160,11 +160,10 @@
           vm.currentPage = p || 1;
         }).catch(e=>errorDeal(e))
       },
-      beforeUpload(file){
+      handleUpload(p){
         let vm=this,json;
-        let info = getStore('YFD_NMS_INFO');
         json = {
-          'file':file,'userId':info.userId,'startTime':new Date(this.startTime).getTime()
+          'file':p.file,'':p.data.userId,'startTime':new Date(this.startTime).getTime()
         }
         upExcel(json,()=>{return "upload"})
         .then(function(res){
@@ -176,6 +175,22 @@
           }
         })
       },
+      // beforeUpload(file){
+      //   let vm=this,json;
+      //   let info = getStore('YFD_NMS_INFO');
+      //   json = {
+      //     'file':file,'userId':info.userId,'startTime':new Date(this.startTime).getTime()
+      //   }
+      //   upExcel(json,()=>{return "upload"})
+      //   .then(function(res){
+      //     this.$refs.upload.clearFiles();
+      //     if(res&&res.code==200){
+      //       this.$message('上传文件成功');
+      //     }else{
+      //       this.$message.error('上传文件失败');
+      //     }
+      //   })
+      // },
       submitUpload(file) {
         this.$refs.upload.submit();
       },
