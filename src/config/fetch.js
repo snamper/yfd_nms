@@ -24,7 +24,11 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     if(load&&typeof load === 'function'&&load()=='upload'){
       let dataStr = ''; //数据拼接字符串
       Object.keys(userInfo).forEach(key => {
-        dataStr += key + '=' + userInfo[key] + '&';
+        if(key == 'token'){
+          dataStr += key + '=' + encodeURIComponent(userInfo[key]) + '&';
+        }else{
+          dataStr += key + '=' + userInfo[key] + '&';
+        }
       });
       if (dataStr !== '') {
         dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
@@ -47,7 +51,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     let dataStr = ''; //数据拼接字符串
     Object.keys(data).forEach(key => {
       if(key!='file'){
-        dataStr += key + '=' + data[key] + '&';
+        dataStr += key + '=' + data[key] + '&';        
       }
     });
     if (dataStr !== '') {
