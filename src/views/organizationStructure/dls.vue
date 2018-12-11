@@ -11,7 +11,9 @@
           <el-col :span="24">
             <div class="grid-content bg-purple">
               <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2">
-                <div class="grid-content bg-purple-dark f-ta-r inputTitle">选择时间：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">
+                  <el-checkbox style="display:inline" v-model="checked">选择时间：</el-checkbox>
+                </div>
               </el-col>
               <el-col :xs="18" :sm="18" :md="20" :lg="18" :xl="18">
                 <div class="f-display-ib">
@@ -296,6 +298,7 @@ export default {
       searchList: "",
       searchJson:"",
       userInfo:"",
+      checked:false,
       addForm: {
         addDepId: "",
         addDepName: "",
@@ -379,6 +382,10 @@ export default {
           pageSize: 15,
           pageNum: p || 1
         };
+        if(vm.checked==false){
+          data.startTime="",
+          data.endTime=""
+        }
         vm.url = "/ums/w/user/departSearch";
         vm.currentPage = p || 1;
         vm.searchJson=data;

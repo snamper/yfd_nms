@@ -70,7 +70,7 @@
           <td>{{v.departName||'--'}}</td>
           <td>{{v.dealerName||'--'}}</td>
           <td>{{v.amount||'--'}}</td>
-          <td>{{v.rebate||'--'}}</td>
+          <td>{{translateData('fenToYuan',v.rebate)}}</td>
         </tr>
       </table>
       <el-pagination

@@ -13,9 +13,9 @@ table tr td{ margin: 0;padding: 0;}
 .m-searchlist-table>tr:nth-child(odd){background: #FAFAFA}
 .m-searchlist-table>tr{border-bottom: 1px solid #e4e4e4}
 .m-searchlist-table>tr:nth-child(1){background: #EEF1F6}
-.m-searchlist-table>tr>td{width: 8%}
-.m-searchlist-table2>tr>td{width: 8%}
-.m-searchlist-table3>tr>td{width: 9%;}
+.m-searchlist-table>tr>td{width: 7.69%}
+.m-searchlist-table2>tr>td{width: 7.69%}
+.m-searchlist-table3>tr>td{width: 14%;}
 .m-searchlist-table3>tr>td:not(:first-child){color: #a0a0a0}
 .m-searchlist-table3{border-collapse: collapse}
 .m-searchlist-table>tr:nth-child(odd) .m-searchlist-table3>tr:nth-child(even){background: #FAFAFA}

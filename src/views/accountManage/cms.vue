@@ -123,7 +123,7 @@ export default {
   methods: {
     search(p) {
       let vm = this,json;
-      json={ departId: vm.account_depId, startTime: vm.startTime }
+      json={ departId: vm.account_depId, startTime:new Date(vm.startTime).getTime()}
       vm.searchJson = json;
       cmsdetails(vm.searchJson)
         .then(res => {
@@ -133,7 +133,7 @@ export default {
     },details(p,v,i){
       let vm=this,json;
       if(i==1){
-        json={departId: vm.account_depId, startTime: vm.startTime,type:v,pageNum:1,pageSize:15};
+        json={departId: vm.account_depId, startTime:new Date(vm.startTime).getTime(),type:v,pageNum:1,pageSize:15};
         vm.detailJson = json;
         vm.detailRebateType = v;
       }else if(i==2){

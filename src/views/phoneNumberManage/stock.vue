@@ -138,6 +138,7 @@
             <td>归属品牌</td>
             <td>运营商</td>
             <td>当前状态</td>
+            <td>修改时间</td>
             <td>面值</td>
             <td>套餐</td>
             <td>总数（个）</td>
@@ -146,7 +147,7 @@
             <td>操作</td>
           </tr>
           <tr v-for="(v,i) in datalist" :key="i">
-            <td colspan="12">
+            <td colspan="13">
               <table style="width:100%" class="m-searchlist-table2">
                 <tr>
                   <td>{{((currentPage-1)*15+(i+1))}}</td>
@@ -154,7 +155,8 @@
                   <td>{{v.area}}</td>
                   <td>{{translateData(4,v.brand)}}</td>
                   <td>{{translateData(1,v.isp)}}</td>
-                  <td style="border-right:1px solid #E4E4E4">{{translateData(3,v.productState)}}</td>
+                  <td>{{translateData(3,v.productState)}}</td>
+                  <td  style="border-right:1px solid #E4E4E4">{{getDateTime(v.modifyTime)[6]}}</td>
                   <td>--</td>
                   <td>--</td>
                   <td>{{v.productTotal}}</td>
@@ -166,11 +168,11 @@
                     </a></td>
                 </tr>
                 <tr v-if="off.tableDetails.indexOf(i)>-1">
-                  <td colspan="6" :rowspan="v.faceValueMap.length" style="border-right:1px solid #e4e4e4"></td>
+                  <td colspan="7" :rowspan="v.faceValueMap.length" style="border-right:1px solid #e4e4e4"></td>
                   <td colspan="6" :rowspan="v.faceValueMap.length">
                     <table class="m-searchlist-table3" style="width:100%">
                       <tr v-for="(v1,i1) in v.faceValueMap" :key="i1" style="border-top:1px solid #E6E6E6">
-                        <td colspan="5">
+                        <td colspan="6">
                           <table class="m-searchlist-table3" v-for="(v2,i2) in v1" :key="i2" style="width:100%">
                             <tr class="border" v-for="(v3,i2) in v2" :key="i2">
                               <td>{{i1/100}}</td>
