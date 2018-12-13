@@ -71,7 +71,10 @@
             <div class="m-details">
                 <table class="m-searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListLiang" :key="i">
-                        <td v-for="(v,i) of dataListLiang[i]" :key="i">{{v.phone}}</td>
+                        <td style="text-align:left;padding-left:10px;" v-for="(v,i) of dataListLiang[i]" :key="i">
+                            手机号:<span>{{v.phone}}</span><br>
+                            SIM号:<span>{{v.sim}}</span>
+                        </td>
                         <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">
                             <el-popover
                             placement="right"
@@ -127,7 +130,10 @@
             <div class="m-details">
                 <table class="m-searchTab" style="width:100%;height:100%;">
                     <tr v-for="(v,i) of dataListPu" :key="i">
-                        <td v-for="(v,i) of dataListPu[i]" :key="i">{{v.phone}}</td>
+                        <td style="text-align:left;padding-left:10px;" v-for="(v,i) of dataListPu[i]" :key="i">
+                            手机号:<span>{{v.phone}}</span><br>
+                            SIM号:<span>{{v.sim}}</span>
+                        </td>
                         <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">
                             <el-popover
                             placement="right"

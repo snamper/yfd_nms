@@ -370,11 +370,7 @@ export default {
       checkAll: true,
       isIndeterminate: false,
       total: "", //号包总数
-      listSwitch: {
-        allDetails: "",
-        liang: "",
-        pu: ""
-      }, //详情页面开关
+      listSwitch: { allDetails: "", liang: "", pu: "" }, //详情页面开关
       searchResData: {}, //号包详情查询结果
       searchLiang: [], //靓号详情查询结果
       searchPu: [], //谱号详情查询结果
@@ -562,11 +558,11 @@ export default {
               if (data.data.numbers instanceof Array) {
                 for ( var i = 0, len = data.data.numbers.length; i < len; i += 6 ) {
                   vm.searchLiang.push(data.data.numbers.slice(i, i + 6));
+
                 }
                 vm.searchLiang.total = data.data.total;
               }
-            })
-            .catch(e => {
+            }).catch(e => {
               layer.open({
                 content: e.msg || e,
                 skin: "msg",

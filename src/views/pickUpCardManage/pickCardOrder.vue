@@ -151,9 +151,7 @@
                 <td>{{((pa-1)*15+(i+1))}}</td>
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{v.createTime.split(' ')[0]}}</td>
-                <td>
-                  <span>{{v.depName||'--'}}</span><br><span>{{v.userPhone||'--'}}</span>
-                </td>
+                <td>{{v.userName||'--'}}</td>
                 <td>
                   <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
                 </td>
@@ -168,8 +166,7 @@
                 </td>
                 <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
                 <td>
-                  <span>{{v.agentName||'--'}}</span><br><span>{{v.agentPhone||'--'}}</span>
-
+                  <span>{{v.agentName||'--'}}</span>
                 </td>
                 <td><span>{{sealType(v.productList)}}</span></td>
                 <td>
@@ -189,7 +186,7 @@
                 <td>
                   <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a>
                 </td>
-                <td>{{v.operatorName||'--'}}<br>{{v.operatorPhone||'--'}}</td>
+                <td>{{v.operatorName||'--'}}</td>
                 <td>
                   <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
                   <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
@@ -305,8 +302,8 @@ export default {
             depName: "",
             operatorPhone: "",
             paymentType: "",
-            pageNum: "",
-            pageSize: "",
+            pageNum: index||1,
+            pageSize: 15,
             userPhone: ""
           };
         }
@@ -332,8 +329,8 @@ export default {
             depName: "",
             operatorPhone: "",
             paymentType: "",
-            pageNum: "",
-            pageSize: "",
+            pageNum: index||1,
+            pageSize: "15",
             userPhone: ""
           };
         }

@@ -63,7 +63,7 @@
                 <span>合计金额 : ￥</span>
                 <b class="yellow f-fs16">{{12345}}</b>
               </label>
-              <el-button style="margin-left:20px" type="success" size="mini" @click="download"> 导 出 </el-button>
+              <el-button v-if="searchList.list" style="margin-left:20px" type="success" size="mini" @click="download"> 导 出 </el-button>
             </div>
           </el-col>
         </el-row>
@@ -75,9 +75,9 @@
               <td>类目</td>
               <td>本月佣金累计返利（元）</td>
             </tr>
-            <tr v-for="(v,i) in searchList" :key="i" >
+            <tr v-for="(v,i) in searchList.list" :key="i" >
               <td>{{i+1}}</td>
-              <td>{{getDateTime(startTime)[3]}}</td>
+              <td>{{getDateTime(searchTime)[3]}}</td>
               <td>{{translateData('yjType',v.type)}}</td>
               <td>
                 <a class="link" @click="details(1,v.type,1)">{{translateData('fenToYuan',v.rebate)}}</a>
@@ -106,6 +106,7 @@ export default {
       detailRebateType:"",
       searchJson:"",
       detailJson:"",
+      searchTime:"",
       off:{
         rebate:false
       }
@@ -127,7 +128,8 @@ export default {
       vm.searchJson = json;
       cmsdetails(vm.searchJson)
         .then(res => {
-          vm.searchList = res.data.list;
+          vm.searchList = res.data;
+          vm.searchTime = new Date(vm.startTime).getTime();
         })
         .catch(e => errorDeal(e));
     },details(p,v,i){

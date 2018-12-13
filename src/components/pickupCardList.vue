@@ -1,37 +1,4 @@
-<style scoped>
-  table.numberInfo td:nth-child(odd) {
-    width: 200px;
-    text-align: right
-  }
 
-  table.numberInfo td:nth-child(even) {
-    text-align: left;
-    padding-left: 20px;
-  }
-
-  .headTitle {
-    height: 50px;
-    padding: 10px 20px
-  }
-
-  .m-number>span {
-    display: inline-block;
-    width: 100%;
-  }
-
-  .m-number-desc {
-    width: 70%;
-    min-width: 140px;
-    margin: 0 auto;
-    text-align: left
-  }
-
-  .m-number-desc span {
-    display: inline-block;
-    font-size: 12px;
-    color: #9c9c9c
-  }
-</style>
 <template>
   <section>
     <div class="allDetails">
@@ -51,7 +18,8 @@
                 <p style="word-wrap: break-word;white-space:normal; width:180px;font-size:12px;color:grey">{{v.remark||'--'}}</p>
                 <el-button slot="reference">
                   <p class="m-number-desc">
-                    <label>{{v.phone}}</label><br />
+                    <label>{{v.phone}}</label><br>
+                    <span>SIM号:{{v.sim}}</span><br>
                     <span>资费:{{v.voice||'--'}}</span>
                     <span>面额:{{v.faceValue/100}}</span>
                   </p>
@@ -165,3 +133,37 @@
     }
   }
 </script>
+<style scoped>
+  table.numberInfo td:nth-child(odd) {
+    width: 200px;
+    text-align: right
+  }
+
+  table.numberInfo td:nth-child(even) {
+    text-align: left;
+    padding-left: 20px;
+  }
+
+  .headTitle {
+    height: 50px;
+    padding: 10px 20px
+  }
+
+  .m-number>span {
+    display: inline-block;
+    width: 100%;
+  }
+
+  .m-number-desc {
+    width: 70%;
+    min-width: 140px;
+    margin: 0 auto;
+    text-align: left
+  }
+
+  .m-number-desc span {
+    display: inline-block;
+    font-size: 12px;
+    color: #9c9c9c
+  }
+</style>
