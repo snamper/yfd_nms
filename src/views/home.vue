@@ -106,13 +106,16 @@ span.iconFoldClose {
               <li>
                 <router-link to="/home/card/modifyPrice"><b></b>购物车价格修改</router-link>
               </li>
-              <li v-if="true">
+              <li>
                 <router-link to="/home/card/stock"><b></b>库存管理</router-link>
+              </li>
+              <li v-if="false">
+                <router-link to="/home/card/cardSource"><b></b>号码资源查询</router-link>
               </li>
             </ul>
           </li>
         </ul>
-        <ul v-if="true" class="g-side-ul">
+        <ul class="g-side-ul">
           <li :class="{active:crumb[0].name=='账户/佣金管理'}">
             <b></b>
             <router-link to="/home/accountManage">

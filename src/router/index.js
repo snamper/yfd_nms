@@ -45,29 +45,29 @@ const BrowseRecords = resolve => {
 //架构管理
 const Org_yfd = resolve => {
     load(true);
-    require.ensure(["@/views/organizationStructure/yfd.vue"], () => {
-        resolve(require("@/views/organizationStructure/yfd.vue"));
+    require.ensure(["@/views/organizationStructure/yafeidagl.vue"], () => {
+        resolve(require("@/views/organizationStructure/yafeidagl.vue"));
         load();
     });
 };
 const Org_dls = resolve => {
     load(true);
-    require.ensure(["@/views/organizationStructure/dls.vue"], () => {
-        resolve(require("@/views/organizationStructure/dls.vue"));
+    require.ensure(["@/views/organizationStructure/dailishanggl.vue"], () => {
+        resolve(require("@/views/organizationStructure/dailishanggl.vue"));
         load();
     });
 };
 const Org_ygcx = resolve => {
     load(true);
-    require.ensure(["@/views/organizationStructure/ygcx.vue"], () => {
-        resolve(require("@/views/organizationStructure/ygcx.vue"));
+    require.ensure(["@/views/organizationStructure/yuangonggl.vue"], () => {
+        resolve(require("@/views/organizationStructure/yuangonggl.vue"));
         load();
     });
 };
 const Org_powerDeploy = resolve => {
     load(true);
-    require.ensure(["@/views/organizationStructure/powerDeploy.vue"], () => {
-        resolve(require("@/views/organizationStructure/powerDeploy.vue"));
+    require.ensure(["@/views/organizationStructure/quanxianpz.vue"], () => {
+        resolve(require("@/views/organizationStructure/quanxianpz.vue"));
         load();
     });
 };
@@ -100,6 +100,13 @@ const stock = resolve => {
         load();
     });
 };
+const cardSource = resolve => {
+    load(true);
+    require.ensure(["@/views/phoneNumberManage/haomaziyuancx.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/haomaziyuancx.vue"));
+        load();
+    });
+};
 //账号管理
 const account = resolve => {
   load(true);
@@ -110,22 +117,22 @@ const account = resolve => {
 };
 const accountInfo = resolve => {
     load(true);
-    require.ensure(["@/views/accountManage/accountManage.vue"], () => {
-        resolve(require("@/views/accountManage/accountManage.vue"));
+    require.ensure(["@/views/accountManage/zhanghuyongjinxx.vue"], () => {
+        resolve(require("@/views/accountManage/zhanghuyongjinxx.vue"));
         load();
     });
 };
 const yjManage = resolve => {
   load(true);
-  require.ensure(["@/views/accountManage/yjManage.vue"], () => {
-      resolve(require("@/views/accountManage/yjManage.vue"));
+  require.ensure(["@/views/accountManage/yongjinshujugl.vue"], () => {
+      resolve(require("@/views/accountManage/yongjinshujugl.vue"));
       load();
   });
 };
 const dataChange = resolve => {
     load(true);
-    require.ensure(["@/views/accountManage/dataChange.vue"], () => {
-        resolve(require("@/views/accountManage/dataChange.vue"));
+    require.ensure(["@/views/accountManage/shujuxiugaigl.vue"], () => {
+        resolve(require("@/views/accountManage/shujuxiugaigl.vue"));
         load();
     });
   };
@@ -245,6 +252,10 @@ const router = new Router({
                     path:"stock",
                     name:"stock",
                     component:stock
+                },{
+                    path:"cardSource",
+                    name:"cardSource",
+                    component:cardSource
                 }]
             },{
                 path:"accountManage",

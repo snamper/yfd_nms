@@ -94,7 +94,7 @@
 import { getTimeFunction, translateData, getDateTime, errorDeal, createDownload,getStore } from "../../config/utils";
 import { cmsdetails,cmstype,cmsDownload } from "../../config/service.js";
 import { mapState } from "vuex";
-import Rebate from './cmsrebate';
+import Rebate from './flxq';
 export default {
   data() {
     return {
