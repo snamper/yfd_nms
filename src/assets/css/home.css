@@ -12,7 +12,7 @@
 }
 
 #home.active>.g-head {
-  left: 1.8rem;
+  left: 2rem;
   background: #f7fafd;
 }
 
@@ -45,7 +45,7 @@ html::-webkit-scrollbar-thumb
 
 #home.active+div>.layui-m-layermain,
 #home.active+div+div>.layui-m-layermain {
-  padding-left: 1.8rem;
+  padding-left: 2rem;
 }
 
 .g-head,
@@ -103,7 +103,7 @@ html::-webkit-scrollbar-thumb
   width: 2rem;
   background-color: #193163;
   height: 100%;
-  left: -1.8rem;
+  left: -2rem;
   z-index: 901
 }
 

@@ -151,7 +151,7 @@
                 <td>{{((pa-1)*15+(i+1))}}</td>
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{v.createTime.split(' ')[0]}}</td>
-                <td>{{v.userName||'--'}}</td>
+                <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
                 <td>
                   <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
                 </td>
