@@ -85,15 +85,15 @@
                     <td>序号</td>
                     <td>号码</td>
                     <td>号码等级</td>
-                    <td>SIM号</td>
+                    <!-- <td>SIM号</td> -->
                     <td>面值(元)</td>
                     <td>套餐名称</td>
                 </tr>
-                <tr v-for="(v,i) in numberlist">
+                <tr v-for="(v,i) in numberlist" :key="i">
                     <td>{{(currentPage-1)*15+i+1}}</td>
                     <td>{{v.phone}}</td>
                     <td>{{translateData('phoneLevel',v.phoneLevel)}}</td>
-                    <td>{{v.sim}}</td>
+                    <!-- <td>{{v.sim}}</td> -->
                     <td>{{translateData('fenToYuan',v.faceValue)}}</td>
                     <td>{{v.packageDesc}}</td>
                 </tr>

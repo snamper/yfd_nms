@@ -73,7 +73,7 @@
                     <tr v-for="(v,i) of dataListLiang" :key="i">
                         <td style="text-align:left;padding-left:10px;" v-for="(v,i) of dataListLiang[i]" :key="i">
                             手机号:<span>{{v.phone}}</span><br>
-                            SIM号:<span>{{v.sim}}</span>
+                            <!-- SIM号:<span>{{v.sim}}</span> -->
                         </td>
                         <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">
                             <el-popover
@@ -132,7 +132,7 @@
                     <tr v-for="(v,i) of dataListPu" :key="i">
                         <td style="text-align:left;padding-left:10px;" v-for="(v,i) of dataListPu[i]" :key="i">
                             手机号:<span>{{v.phone}}</span><br>
-                            SIM号:<span>{{v.sim}}</span>
+                            <!-- SIM号:<span>{{v.sim}}</span> -->
                         </td>
                         <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">
                             <el-popover
