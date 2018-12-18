@@ -1,41 +1,65 @@
 <template>
   <section>
-    <div v-if="off.notCardDetails">
+    <div>
       <div class="allDetails">
         <div class="headTitle f-s-16">
           <span class="fl">订单详情</span><span><a href="javascript:void(0)" class="fr blue" @click="goBack()">返回列表</a></span>
         </div>
-        <el-row type="flex" class="greyFont">
-          <el-col :span=24>
-            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2">
-              &nbsp;
-            </el-col>
-            <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
+        <div class="m-box-list f-s-12">
+          <el-row :span=24>
+            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+            <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
               <p class="f-lh-30"><span class="f-ls-1">订单号码&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.sysOrderId||'--'}}</span></p>
-              <p class="f-lh-30"><span class="f-ls-1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.totalStrikePrice/100).toFixed(2)||'--'}}
-                  元</span></p>
             </el-col>
-            <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
+            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+            <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
               <p class="f-lh-30"><span class="f-ls-1">生成时间&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.createTime||'--'}}</span></p>
+            </el-col>
+          </el-row>
+          <el-row :span="24">
+            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+            <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
+               <p class="f-lh-30"><span class="f-ls-1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.totalStrikePrice/100).toFixed(2)||'--'}}元</span></p>
+            </el-col>
+            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+            <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
               <p class="f-lh-30"><span class="f-ls-1">修改时间&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.modifyTime||'--'}}</span></p>
             </el-col>
-          </el-col>
-        </el-row>
-        <el-row class="greyFont">
-          <el-col :span=24>
-            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2">
-              &nbsp;
-            </el-col>
-            <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
+          </el-row>
+          <el-row :span=24>
+            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+            <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
               <p class="f-lh-30"><span class="f-ls-1">下单备注&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.remark||'--'}}</span></p>
             </el-col>
-            <el-col :xs="24" :sm="11" :md="11" :lg="11" :xl="11">
+            <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+            <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
               <p class="f-lh-30"><span class="f-ls-1">收货地址&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.address||'--'}}</span></p>
             </el-col>
-          </el-col>
-        </el-row>
+          </el-row>
+        </div>
+        <div style="margin-top:0" class="headTitle f-s-16">
+          <span class="fl">号包详情</span>
+        </div>
+        <div class="m-box-list f-s-12">
+          <el-row :span=24>
+            <div  v-for="(v,i) in detailsData.productList" :key="i">
+              <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+              <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
+                <p class="f-lh-30">
+                  <span class="f-ls-1 grey">号包名称 : </span>
+                  <span>{{v.productName||'--'}} ({{v.total||'--'}}个)</span>&nbsp;&nbsp;
+                  <span>{{translateData(4,v.brand)}}{{translateData(1,v.isp)}}</span>&nbsp;&nbsp;
+                  <span v-if="v.splitFlag==1">不可拆分</span>
+                  <span v-if="v.splitFlag==2">可拆分</span>&nbsp;&nbsp;
+                  <span class="yellow">￥{{Math.formatFloat(parseFloat(v.discountPrice/100),2)}}元</span>&nbsp;&nbsp;
+                  <a class="m-jumplink" @click="details('',v)">查看详情</a>
+                </p>
+              </el-col>
+            </div>
+          </el-row>
+        </div>
       </div>
-      <div class="zhenghaoduan" v-if="true">
+      <div class="zhenghaoduan" v-if="false">
         <div v-for="(v,i) in detailsData.productList" :key="i" class="tab-container f-ls-1">
           <table>
             <tr>
@@ -76,7 +100,7 @@
         </div>
       </div>
     </div>
-    <card-details :pickCardSwitch="off.pickCardDetailsSwitch" :dataInfo="numberTotal" v-if="off.cardDetails"
+    <card-details :pickCardSwitch="off.pickCardDetailsSwitch" :dataInfo="numberTotal"
       :listSwitch="listSwitch" :dataListLiang="searchLiang" :dataListPu="searchPu"></card-details>
   </section>
 </template>
@@ -128,7 +152,7 @@
             sysOrderId: i.sysOrderId,
             numberId: i.numberId,
             pageNum: p || 1,
-            pageSize: 90
+            pageSize: 48
           };
         vm.searchJson = json;
         requestgetOrderSplitNumbers(json)
@@ -141,7 +165,6 @@
                 vm.searchPu.push(data.data.numbers.slice(i, i + 6));
               }
               vm.searchPu.len = data.data.numbers.length;
-
               this.off.notCardDetails = false;
               this.off.cardDetails = true;
             } else {
@@ -196,5 +219,16 @@
     padding: 10px;
     width: 20%;
     color: grey
+  }
+  .m-box-list{
+     width:98%;
+     height: auto;
+     margin:0 auto;
+     border:1px solid #e0e0e0;
+     background:#fff;
+     border-radius: 4px;
+  }
+  .m-box-list div.el-row{
+    line-height: 30px;
   }
 </style>

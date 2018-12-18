@@ -1,11 +1,6 @@
 
 <template>
   <section>
-    <div class="allDetails">
-      <div class="headTitle f-s-16">
-        <span class="fl">订单详情</span><span><a href="javascript:void(0)" class="fr blue" @click="goBack()">返回列表</a></span>
-      </div>
-    </div>
     <div class="pu" v-if="listSwitch.pu">
       <div class="m-listTitleFoot">
         <h3><span>号包详情</span><span class="greyFont"> ({{dataInfo.p||'0'}})</span></h3>
@@ -35,7 +30,7 @@
       <el-row v-if="dataListPu.length">
         <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
           <div class="grid-content bg-purple" style="padding:10px 16px">
-            <el-pagination layout="prev, pager, next" :page-size="90" @current-change="details" :current-page.sync="currentPage"
+            <el-pagination layout="prev, pager, next" :page-size="48" @current-change="details" :current-page.sync="currentPage"
               :total="dataInfo.p">
             </el-pagination>
           </div>

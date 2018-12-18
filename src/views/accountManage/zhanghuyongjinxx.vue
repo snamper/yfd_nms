@@ -248,7 +248,6 @@
         let vm = this,
           json = {};
           vm._info=v;
-          debugger;
         vm.setaccountDepId(v.departId);
         vm.setDepName(v.departName);
         vm.off.cms = false;
