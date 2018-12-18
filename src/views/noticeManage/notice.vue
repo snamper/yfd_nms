@@ -162,18 +162,10 @@
               <td>公司名称</td>
             </tr>
             <tr v-for="(v,i) of usersInfoArray" :key="i" :class="{'greyFont':v.departState==3}">
-              <td>
-                {{((pa-1)*20+(i+1))}}
-              </td>
-              <td>
-                {{v.username}}
-              </td>
-              <td>
-                <span href="javascript:void(0)">{{v.phone}}</span>
-              </td>
-              <td>
-                {{v.departName}}
-              </td>
+              <td> {{((pa-1)*20+(i+1))}} </td>
+              <td> {{v.username}} </td>
+              <td> <span href="javascript:void(0)">{{v.phone}}</span> </td>
+              <td> {{v.departName}} </td>
             </tr>
           </table>
         </div>

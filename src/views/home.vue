@@ -386,12 +386,44 @@ export default {
           name: "码号管理",
           href: "/home/card"
         };
+        if (path.indexOf("/home/card/cardManage") > -1) {
+          crumb[1] = {
+            name: "码号管理",
+            href: "/home/card/cardManage"
+          };
+        }else if (path.indexOf("/home/card/modifyPrice") > -1) {
+          crumb[1] = {
+            name: "购物车价格修改",
+            href: "/home/card/modifyPrice"
+          };
+        }else if (path.indexOf("/home/card/stock") > -1) {
+          crumb[1] = {
+            name: "库存管理",
+            href: "/home/card/stock"
+          };
+        }
       }
       if (path.indexOf("/home/accountManage") > -1) {
         crumb[0] = {
           name: "账户/佣金管理",
           href: "/home/accountManage"
         };
+        if (path.indexOf("/home/accountManage/info") > -1) {
+          crumb[1] = {
+            name: "账户/佣金管理",
+            href: "/home/accountManage/info"
+          };
+        }else if (path.indexOf("/home/accountManage/commission") > -1) {
+          crumb[1] = {
+            name: "佣金数据管理",
+            href: "/home/accountManage/commission"
+          };
+        }else if (path.indexOf("/home/accountManage/change") > -1) {
+          crumb[1] = {
+            name: "数据修改管理",
+            href: "/home/accountManage/change"
+          };
+        }
       }
       if (path.indexOf("/home/operationLog") > -1) {
         crumb[0] = {

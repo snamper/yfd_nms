@@ -63,7 +63,12 @@
       <div v-if="searchList">
         <div class="m-listTitleFoot">
           <el-row>
-            <h3>账户列表<span class="f-fw greyFont">({{total||'0'}})</span></h3>
+            <el-col :span="12">
+              账户列表<span class="f-fw greyFont">({{total||'0'}})</span>
+            </el-col>
+            <el-col :span="12">
+              <el-button style="margin-left:20px;float:right" type="success" size="mini" @click="download"> 导 出 </el-button>
+            </el-col>
           </el-row>
         </div>
         <div class="m-details">
@@ -75,9 +80,9 @@
               <td>手机号码</td>
               <td>归属渠道</td>
               <td>账户余额（元）</td>
-              <td>佣金累计返利金额（元）</td>
-              <td>佣金已结算金额（元）</td>
-              <td>佣金未开票金额（元）</td>
+              <td v-if="off.roleShow">佣金累计返利金额（元）</td>
+              <td v-if="off.roleShow">佣金已结算金额（元）</td>
+              <td v-if="off.roleShow">佣金未开票金额（元）</td>
             </tr>
             <tr v-for="(v,i) of searchList" :key="i">
               <td>{{(currentPage-1)*15+(i+1)}}</td>
@@ -86,9 +91,9 @@
               <td>{{v.phone||'--'}}</td>
               <td>{{v.dealerIdName||'--'}}</td>
               <td><a @click="details(1,v)">{{translateData('fenToYuan',v.balance)}}</a></td>
-              <td><a @click="details(2,v)">{{translateData('fenToYuan',v.commission)}}</a></td>
-              <td>{{translateData('fenToYuan',v.settled)}}</td>
-              <td>
+              <td v-if="off.roleShow"><a @click="details(2,v)">{{translateData('fenToYuan',v.commission)}}</a></td>
+              <td v-if="off.roleShow">{{translateData('fenToYuan',v.settled)}}</td>
+              <td v-if="off.roleShow">
                 <span class="m-wkp" v-if="i!=modifyi">
                   {{translateData('fenToYuan',v.unbilled)}}</span>
                 <el-input
@@ -127,8 +132,8 @@
   </section>
 </template>
 <script>
-  import { getaccountDealer,getaccounts,commission,cmsupdate } from '../../config/service.js';
-  import { errorDeal,translateData } from '../../config/utils';
+  import { getaccountDealer,getaccounts,commission,cmsupdate,cmsDownload } from '../../config/service.js';
+  import { errorDeal,translateData,getStore } from '../../config/utils';
   import { mapActions } from 'vuex';
   import balance from './yexq.vue';
   import pcms from './fllb.vue';
@@ -149,11 +154,13 @@
         total: 0,
         modifyi:0.1,
         newMoney:"",
+        _info:"",
         off: {
           cms: false,
           list: true,
           modify1:false,
           balance: false,
+          roleShow:false
         }
       }
     },
@@ -163,7 +170,8 @@
       getaccountDealer({},true)
       .then((data)=>{
         vm.options=data.data.list;
-      }).catch(e=>errorDeal(e))
+      }).catch(e=>errorDeal(e));
+      vm.off.roleShow = getStore("YFD_NMS_INFO").privileges.indexOf('211001')>-1;
     },
     methods: {
       ...mapActions([
@@ -201,6 +209,10 @@
           vm.modifyi = 0.1;
         }).catch(e => errorDeal(e))
       },
+      download(){
+        let vm=this; 
+        cmsDownload(vm.searchJson,()=>{return "down";})
+      },
       modify(v,i,d){
         let vm=this;
         if(v==1){
@@ -236,6 +248,7 @@
         let vm = this,
           json = {};
           vm._info=v;
+          debugger;
         vm.setaccountDepId(v.departId);
         vm.setDepName(v.departName);
         vm.off.cms = false;

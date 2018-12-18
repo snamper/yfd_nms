@@ -50,13 +50,15 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
   if (type == 'GET'||(load&&typeof load==='function'&&load()=='upload')) {
     let dataStr = ''; //数据拼接字符串
     Object.keys(data).forEach(key => {
-      if(key!='file'){
+      if(key == 'token'){
+        dataStr += key + '=' + encodeURIComponent(userInfo[key]) + '&';
+      }else if(key!='file'){
         dataStr += key + '=' + data[key] + '&';        
       }
     });
     if (dataStr !== '') {
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
-      url = url + '&' + dataStr;
+      url = url + '?' + dataStr;
     }
   }
   if (window.fetch && method == 'fetch') { //FETCH
@@ -109,15 +111,18 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
             reject({ code: data });
           }
         }).catch(error => errorDeal(error));
-      }else if(load&&typeof load !== 'function'&&load()=='down'){
-        fetch(url,requestConfig).then(res => res.blob().then(blob => { 
+      }else if(load&&typeof load == 'function'&&load()=='down'){
+        fetch(url,requestConfig)
+        .then(res => res.blob()
+        .then(blob => {
           var a = document.createElement('a'); 
           var url = window.URL.createObjectURL(blob);   
           var filename = res.headers.get('Content-Disposition'); 
           a.href = url; 
           a.download = filename; 
           a.click(); 
-        window.URL.revokeObjectURL(url); }))
+          window.URL.revokeObjectURL(url);
+        }))
       }
     })
   } else { //XHR对象

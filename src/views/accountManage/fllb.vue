@@ -59,11 +59,11 @@
           </el-col>
           <el-col :span="12" class="f-ta-r" >
             <div  class="grid-content bg-purple-light">
-              <label v-if="false">
+              <label>
                 <span>合计金额 : ￥</span>
-                <b class="yellow f-fs16">{{12345}}</b>
+                <b class="yellow f-fs16">{{translateData('fenToYuan',$parent._info.commission)}}</b>
               </label>
-              <el-button v-if="searchList.list" style="margin-left:20px" type="success" size="mini" @click="download"> 导 出 </el-button>
+              <el-button v-if="false" style="margin-left:20px" type="success" size="mini" @click="download"> 导 出 </el-button>
             </div>
           </el-col>
         </el-row>
@@ -92,7 +92,7 @@
 </template>
 <script>
 import { getTimeFunction, translateData, getDateTime, errorDeal, createDownload,getStore } from "../../config/utils";
-import { cmsdetails,cmstype,cmsDownload } from "../../config/service.js";
+import { cmsdetails,cmstype} from "../../config/service.js";
 import { mapState } from "vuex";
 import Rebate from './flxq';
 export default {
@@ -124,18 +124,17 @@ export default {
   methods: {
     search(p) {
       let vm = this,json;
-      json={ departId: vm.account_depId, startTime:new Date(vm.startTime).getTime()}
+      json={departId: vm.account_depId, startTime:new Date(vm.startTime).getTime()};
       vm.searchJson = json;
       cmsdetails(vm.searchJson)
         .then(res => {
           vm.searchList = res.data;
           vm.searchTime = new Date(vm.startTime).getTime();
-        })
-        .catch(e => errorDeal(e));
+        }).catch(e => errorDeal(e));
     },details(p,v,i){
       let vm=this,json;
       if(i==1){
-        json={departId: vm.account_depId, startTime:new Date(vm.startTime).getTime(),type:v,pageNum:1,pageSize:15};
+        json={departId:vm.account_depId,startTime:new Date(vm.startTime).getTime(),type:v,pageNum:1,pageSize:15};
         vm.detailJson = json;
         vm.detailRebateType = v;
       }else if(i==2){

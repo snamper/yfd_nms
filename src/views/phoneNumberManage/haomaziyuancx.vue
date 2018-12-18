@@ -33,10 +33,9 @@
               </el-row>
               <el-row>
                 <el-row>
-                  <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">搜索条件</div></el-col>
+                  <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">查询</div></el-col>
                 </el-row>
                 <el-row>
-
                   <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12">
                     <div class="grid-content bg-purple-light">
                       <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">手机号码&nbsp;&nbsp;</div></el-col>
@@ -48,7 +47,7 @@
                   </el-col>
                   <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12">
                     <div class="grid-content bg-purple">
-                      <button class="m-btn-orange m-btn-search" @click="search()">搜索</button>
+                      <el-button type="success" size="small" @click="search()">查询</el-button>
                     </div>
                   </el-col>
                 </el-row>
@@ -94,8 +93,8 @@
         <el-pagination 
           v-if="searchlist.length!=0"
           layout="prev, pager, next" 
-          :page-size="15" 
           @current-change="search(currentPage,1)" 
+          :page-size="15" 
           :current-page.sync="currentPage"
           :total="total">
         </el-pagination>

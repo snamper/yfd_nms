@@ -14,7 +14,7 @@
                         <td><a class="powerId">权限ID</a></td>
                         <td>操作</td>
                     </tr>
-                    <tr v-for="(v,i) in rolelist">
+                    <tr v-for="(v,i) in rolelist" :key="i">
                         <td>{{i+1}}</td>
                         <td>{{v.roleName}}</td>
                         <td>{{getDateTime(v.createTime)[6]}}</td>

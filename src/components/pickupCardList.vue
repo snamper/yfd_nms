@@ -19,7 +19,7 @@
                 <el-button slot="reference">
                   <p class="m-number-desc">
                     <label>{{v.phone}}</label><br>
-                    <!-- <span>SIM号:{{v.sim}}</span><br> -->
+                    <span>SIM号:{{v.sim}}</span><br>
                     <span>资费:{{v.voice||'--'}}</span>
                     <span>面额:{{v.faceValue/100}}</span>
                   </p>
