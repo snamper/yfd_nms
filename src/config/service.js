@@ -158,6 +158,11 @@ export const updateAgentInfo=(data,load)=>fetch("/ums/w/application/update",data
 /*审核申请*/
 export const applyReview=(data,load)=>fetch("/ums/w/application/review",data,"POST",load)
 
+/*号码资源查询 */
+export const numberResource=(data,load)=>fetch("/nms/w/number/resources/query",data,"POST",load)
+
+
+
 
 
 

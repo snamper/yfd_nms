@@ -206,43 +206,41 @@
           };
         vm.searchJson = json;
         vm.numberTotal.info = i;
-        for (let x = 0, len = vm.testdata.length; x<len; x++){
-          vm.newSearch.push({simGroupTotal:"",simName:"",numbers:[]})
-          for (let index = 0, l = vm.testdata[x].numbers.length; index<l; index+= 2) {
-            vm.newSearch[x].numbers.push(vm.testdata[x].numbers.slice(index,index+2))
-            
-          }
-          vm.newSearch[x].simGroupTotal=vm.testdata[x].simGroupTotal;
-          vm.newSearch[x].simName=vm.testdata[x].simName;
-        }
-        vm.listSwitch.pu=true;
-        console.log(vm.newSearch);
-        // requestgetOrderSplitNumbers(json)
-        //   .then((data) => {
-        //     if (data.code == 200) {
-        //       this.$set(vm.listSwitch, 'pu', true)
-        //       vm.numberTotal.total = data.data.total;
-        //       let simgroups = data.data.simGroups;
-        //       vm.searchPu = [];
-        //       for (let i = 0, l = simGroups.length; i<l; i++){
-        //         for (let i = 0, l = simGroups[i].numbers.length; i < len; i += 6) {
-        //           vm.searchPu.push(simGroups[i].numbers.slice(i, i + 6));
-        //         }
-        //         vm.searchList.push(simGroups.numbers.slice(i,i+1));
-        //       }
+        requestgetOrderSplitNumbers(json)
+          .then((data) => {
+            if (data.code == 200) {
+              vm.listSwitch.pu = true;
+              vm.numberTotal.total = data.data.total;
+              let simgroups = data.data.simGroups;
+              vm.searchPu = [];
+              for (let x = 0, len = simgroups.length; x<len; x++){
+                vm.newSearch.push({simGroupTotal:"",simName:"",numbers:[]})
+                for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 2) {
+                  vm.newSearch[x].numbers.push(simgroups[x].numbers.slice(index,index+2))
+                  
+                }
+                vm.newSearch[x].simGroupTotal=simgroups[x].simGroupTotal;
+                vm.newSearch[x].simName=simgroups[x].simName;
+              }
+              // for (let i = 0, l = simGroups.length; i<l; i++){
+              //   for (let i = 0, l = simGroups[i].numbers.length; i < len; i += 6) {
+              //     vm.searchPu.push(simGroups[i].numbers.slice(i, i + 6));
+              //   }
+              //   vm.searchList.push(simGroups.numbers.slice(i,i+1));
+              // }
               
-        //       vm.searchPu.len = data.data.numbers.length;
-        //       this.off.notCardDetails = false;
-        //       this.off.cardDetails = true;
-        //     } else {
-        //       layer.open({
-        //         content: "data.msg",
-        //         skin: 'msg',
-        //         time: 2,
-        //         msgSkin: 'error',
-        //       });
-        //     }
-        //   })
+              // vm.searchPu.len = data.data.numbers.length;
+              this.off.notCardDetails = false;
+              this.off.cardDetails = true;
+            } else {
+              layer.open({
+                content: "data.msg",
+                skin: 'msg',
+                time: 2,
+                msgSkin: 'error',
+              });
+            }
+          })
       },
       goBack() {
         let vm = this;

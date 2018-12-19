@@ -3,7 +3,6 @@
     <div class="m-search">
       <div class="greyFont">
         <el-row class="f-mt-10">
-
           <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="20" >
             <div class="grid-content bg-purple">
               <el-row v-if="false">
@@ -84,10 +83,23 @@
           </tr>
           <tr v-for="(v,i) of searchlist" :key="i">
             <td>{{(currentPage-1)*15+(i+1)}}</td>
-            <td>{{getDateTime(v.createTime)[6]}}</td>
-            <td>{{v.username}}</td>
-            <td>{{v.phone}}</td>
-            <td>{{v.fileName}}</td>
+            <td>{{v.phone||'--'}}</td>
+            <td>{{v.sectionId||'--'}}</td>
+            <td>{{translateData(4,v.brand)}}</td>
+            <td>{{v.area||'--'}}</td>
+            <td>{{v.packageName||'--'}}</td>
+            <td>{{'资费'}}</td>
+            <td>{{translateData('fenToYuan',v.faceValue)}}</td>
+            <td>{{translateData('fenToYuan',v.inPrice)}}</td>
+            <td>{{'话分比例'}}</td>
+            <td>{{getDateTime(v.inTime)[6]}}</td>
+            <td>{{getDateTime(v.outTime)[6]}}</td>
+            <td>{{getDateTime(v.returnTime)[6]}}</td>
+            <td>{{v.agentName||'--'}}</td>
+            <td>{{v.dealerManager||'--'}}</td>
+            <td>{{v.phoneState}}</td>
+            <td>{{'号码类型'}}</td>
+            <td>{{'备注'}}</td>
           </tr>
         </table>
         <el-pagination 
@@ -103,7 +115,7 @@
   </section>
 </template>
 <script>
-  import { upRecords,upExcel } from '../../config/service.js';
+  import { upRecords,upExcel,numberResource } from '../../config/service.js';
   import { getTimeFunction, getStore, errorDeal, getDateTime,translateData } from '../../config/utils';
   export default {
     data() {
@@ -133,14 +145,21 @@
     methods: {
       search(p){
         let vm=this,json;
+        if(isNaN(vm.phone)||vm.phone.length!=11){
+          vm.$message({
+            message: '请输入正确的手机号码!',
+            type: 'error'
+          });
+          return false;
+        }
         json={
           "endTime": new Date(vm.endTime2).getTime(),
           "pageNum": p||1,
           "pageSize": 15,
           "startTime": new Date(vm.startTime2).getTime(),
-          "username": vm.operator
+          "username": vm.phone
         };
-        upRecords(json)
+        numberResource(json)
         .then(res=>{
           vm.searchlist = res.data.list;
           vm.total = res.data.total;

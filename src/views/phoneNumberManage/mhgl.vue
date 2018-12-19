@@ -325,23 +325,7 @@ import {
 import numberOperation from "./layer";
 import cardDetails from "../../components/cardDetailsList";
 import layerConfirm from "../../components/layerConfirm";
-const cityOptions = [
-    "远特",
-    "蜗牛",
-    "迪信通",
-    "极信",
-    "小米",
-    "海航",
-    "乐语",
-    "苏宁互联",
-    "国美",
-    "联想",
-    "蓝猫移动",
-    "长城",
-    "中邮",
-    "鹏博士",
-    "天音"
-  ],
+const cityOptions = [ "远特", "蜗牛", "迪信通", "极信", "小米", "海航", "乐语", "苏宁互联", "国美", "联想", "蓝猫移动", "长城", "中邮", "鹏博士", "天音" ],
   cityOptions1 = ["远特"],
   cityOptions2 = ["蜗牛"],
   cityOptions3 = ["迪信通"],
@@ -577,30 +561,49 @@ export default {
       });
       let p2 = new Promise((resolve, reject) => {
         if (v.productType == 1 || v.productType == 3) {
-          url = "/nms/w/number/getProductNumbers";
+          url = "/w/number/getMngNormalNumbers";
           data.phoneLevel = 1;
           data.pageNum = 1;
           data.pageSize = 60;
           requestMethod(data, url)
-            .then(data => {
-              resolve("step1");
-              this.$set(vm.listSwitch, "pu", true);
-              vm.searchPu = [];
-              if (data.data.numbers instanceof Array) {
-                for ( var i = 0, len = data.data.numbers.length; i < len; i += 6 ) {
-                  vm.searchPu.push(data.data.numbers.slice(i, i + 6));
-                }
-                vm.searchPu.total = data.data.total;
+          .then(res=>{
+            resolve('step1');
+            this.$set(vm.listSwitch, "pu", true);
+            vm.searchPu = [];
+            let simgroups = data.data.simGroups;
+            for (let x = 0, len = simgroups.length; x<len; x++){
+              vm.searchPu.push({simGroupTotal:"",simName:"",numbers:[]})
+              for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 2) {
+                vm.searchPu[x].numbers.push(simgroups[x].numbers.slice(index,index+2))
+                
               }
-            })
-            .catch(e => {
-              layer.open({
-                content: e.msg || e,
-                skin: "msg",
-                time: 2,
-                msgSkin: "error"
-              });
-            });
+              vm.searchPu[x].simGroupTotal=simgroups[x].simGroupTotal;
+              vm.searchPu[x].simName=simgroups[x].simName;
+            }
+          })
+          url = "/nms/w/number/getProductNumbers";
+          data.phoneLevel = 1;
+          data.pageNum = 1;
+          data.pageSize = 60;
+          // requestMethod(data, url)
+          // .then(data => {
+          //   resolve("step1");
+          //   this.$set(vm.listSwitch, "pu", true);
+          //   vm.searchPu = [];
+          //   if (data.data.numbers instanceof Array) {
+          //     for ( var i = 0, len = data.data.numbers.length; i < len; i += 6 ) {
+          //       vm.searchPu.push(data.data.numbers.slice(i, i + 6));
+          //     }
+          //     vm.searchPu.total = data.data.total;
+          //   }
+          // }).catch(e => {
+          //   layer.open({
+          //     content: e.msg || e,
+          //     skin: "msg",
+          //     time: 2,
+          //     msgSkin: "error"
+          //   });
+          // });
         } else {
           vm.searchPu = [];
           resolve("step1");
