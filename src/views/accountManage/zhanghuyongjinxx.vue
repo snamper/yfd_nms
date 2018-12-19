@@ -238,10 +238,9 @@
                 message: '更改成功'
               });  
               vm.search();
-            })
-          }).catch(() => {
-            vm.modifyi=0.1;
-          });
+            }).catch(e=>errorDeal(e,vm.modifyi=0.1))
+          })
+          .catch(e => errorDeal(e,vm.modifyi=0.1));
         }
       },
       details(i,v) {

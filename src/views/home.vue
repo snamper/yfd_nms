@@ -109,7 +109,7 @@ span.iconFoldClose {
               <li>
                 <router-link to="/home/card/stock"><b></b>库存管理</router-link>
               </li>
-              <li v-if="false">
+              <li>
                 <router-link to="/home/card/cardSource"><b></b>号码资源查询</router-link>
               </li>
             </ul>

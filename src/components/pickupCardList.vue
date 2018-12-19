@@ -1,14 +1,15 @@
 
 <template>
   <section>
-    <div class="pu" v-if="listSwitch.pu">
+    <div class="pu">
       <div class="m-listTitleFoot">
-        <h3><span>号包详情</span><span class="greyFont"> ({{dataInfo.p||'0'}})</span></h3>
+        <p><span>号码详情</span>【<span class="blue">{{dataInfo.info.productName||'--'}} ({{dataInfo.info.total||'--'}}个)</span>】</p>
       </div>
-      <div class="m-details">
+      <div v-if="listSwitch.pu" v-for="(v,i) in newData" :key='i' class="m-details">
+        <p style="margin:5px 0"><span>SIM号段 : {{newData[i].simName}}({{newData[i].simGroupTotal}})</span></p>
         <table class="m-searchTab" style="width:100%;height:100%;">
-          <tr v-for="(v,i) of dataListPu" :key="i">
-            <td class="m-number" v-for="(v,i) of dataListPu[i]" :key="i">
+          <tr v-for="(value,i) of newData[i].numbers" :key="i">
+            <td class="m-number" v-for="(v,i) of value" :key="i">
               <el-popover placement="bottom-start" title="资费介绍" width="300" trigger="hover">
                 <p style="word-wrap: break-word;white-space:normal; width:180px;font-size:12px;color:grey">{{v.remark||'--'}}</p>
                 <el-button slot="reference">
@@ -21,22 +22,25 @@
                 </el-button>
               </el-popover>
             </td>
+            <td v-if="value.length<2">
+              qushao
+            </td>
           </tr>
-          <tr v-if="!dataListPu.length">
+          <!-- <tr v-if="!dataListPu.length">
             <td class="f-ta-c greyFont f-s-14">此号包下暂无码号详情</td>
-          </tr>
+          </tr> -->
         </table>
       </div>
-      <el-row v-if="dataListPu.length">
-        <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
-          <div class="grid-content bg-purple" style="padding:10px 16px">
-            <el-pagination layout="prev, pager, next" :page-size="48" @current-change="details" :current-page.sync="currentPage"
-              :total="dataInfo.p">
-            </el-pagination>
-          </div>
-        </el-col>
-      </el-row>
     </div>
+    <el-row v-if="dataListPu.length">
+      <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+        <div class="grid-content bg-purple" style="padding:10px 16px">
+          <el-pagination layout="prev, pager, next" :page-size="48" @current-change="details" :current-page.sync="currentPage"
+            :total="dataInfo.total">
+          </el-pagination>
+        </div>
+      </el-col>
+    </el-row>
   </section>
 </template>
 <script>
@@ -51,6 +55,7 @@
   } from "../config/service.js"
   export default {
     props: {
+      newData: Array,
       dataInfo: Object,
       dataListLiang: Array,
       dataListPu: Array,

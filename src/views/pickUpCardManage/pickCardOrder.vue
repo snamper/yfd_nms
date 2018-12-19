@@ -407,20 +407,11 @@ export default {
       if (v instanceof Array) {
         if (v.length === 1) {
           return v[0].splitFlag == 1
-            ? "整包"
-            : v[0].splitFlag == 2
-              ? "拆包"
-              : "--";
+            ? "整包" : v[0].splitFlag == 2 ? "拆包" : "--";
         } else if (v.length > 1) {
           return v.every((value, i, v) => {
             return value.splitFlag == 1;
-          })
-            ? "整包"
-            : v.every((value, i, v) => {
-                return value.splitFlag == 2;
-              })
-              ? "拆包"
-              : "混合";
+          }) ? "整包" : v.every((value, i, v) => { return value.splitFlag == 2; }) ? "拆包" : "混合";
         }
       }
     },
