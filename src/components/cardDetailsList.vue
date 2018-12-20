@@ -5,43 +5,7 @@
             <div class="m-listTitleFoot">
                 <h3><span v-if="!pickCardSwitch">号包详情</span><span><a href="javascript:void(0)" class="fr blue" @click="goBack()">返回列表</a></span></h3>
             </div>
-            <div class="m-box-list f-s-12">
-                <el-row :span=24>
-                    <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-                    <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-                    <p class="f-lh-30"><span class="f-ls-1">号包名称&nbsp;：&nbsp;&nbsp;</span><span>{{dataList.productName||'--'}}
-                        ({{dataList.cuteTotal+dataList.normalTotal}})
-                    </span></p>
-                    </el-col>
-                    <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-                    <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-                    <p class="f-lh-30"><span class="f-ls-1">品牌网络&nbsp;：&nbsp;&nbsp;</span><span>{{translateData(4,dataList.brand)}}{{translateData(1,dataList.isp)}}</span></p>
-                    </el-col>
-                </el-row>
-                <el-row :span=24>
-                    <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-                    <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-                    <p class="f-lh-30"><span class="f-ls-1">操&nbsp;作&nbsp;人&nbsp;：&nbsp;&nbsp;</span><span>{{dataList.operatorName||'--'}}
-                    </span></p>
-                    </el-col>
-                    <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-                    <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-                    <p class="f-lh-30"><span class="f-ls-1">当前状态&nbsp;：&nbsp;&nbsp;</span><span>{{translateData(3,dataList.productState)}}</span></p>
-                    </el-col>
-                </el-row>
-                <el-row :span=24>
-                    <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-                    <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-                    <p class="f-lh-30"><span class="f-ls-1">修改时间&nbsp;：&nbsp;&nbsp;</span><span>{{getDateTime(dataList.modifyTime)[6]}}
-                    </span></p>
-                    </el-col>
-                    <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-                    <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-                    <p class="f-lh-30"><span class="f-ls-1">&nbsp;&nbsp;&nbsp;</span><span></span></p>
-                    </el-col>
-                </el-row>
-            </div>
-            <div v-if="false" class="m-details">
+            <div v-if="!pickCardSwitch" class="m-details">
                 <table class="m-searchTab numberInfo" style="width:100%;height:100%;">
                     <tr>
                         <td>号包名称 ：</td>
@@ -99,17 +63,15 @@
         </div>
         <div class="liang" v-if="listSwitch.liang">
             <div class="m-listTitleFoot">
-                <h3><span>靓号详情</span>({{dataList.cuteTotal}}个)</h3>
+                <h3><span>靓号详情</span><span class="greyFont"> ({{dataListLiang.total||'0'}})</span></h3>
             </div>
-            <div v-for="(value,i) in dataListLiang" :key="i"  class="m-details">
-                <p style="margin:5px 0"><span>SIM号段 : {{value.simName}}({{value.simGroupTotal}})</span></p>
+            <div class="m-details">
                 <div class="m-number-list" style="width:100%;height:100%;">
-                  <p v-for="(v1,i1) in value.numbers" :key="i1">
-                    <span style="text-align:left;padding:10px;" v-for="(v,i) in v1" :key="i">
-                        <span>{{v.phone}}</span><br>
-                        <span class="f-s-12 grey">SIM号 : {{v.sim}}</span>
-                    </span>
-                    <!-- <td v-for="(v,i) in $parent._cuteNum" :key='i'></td> -->
+                    <p v-for="(v,i) of dataListLiang" :key="i">
+                        <span class="f-s-12" style="text-align:center;padding:10px 0;" v-for="(v,i) of dataListLiang[i]" :key="i">
+                            <span>{{v.phone}}</span><br>
+                            <!-- SIM号:<span>{{v.sim}}</span> -->
+                        </span>
                         <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">
                             <el-popover
                             placement="right"
@@ -128,26 +90,47 @@
                             </el-popover>
                         </td> -->
                     </p>
+                    <p class="f-ta-c greyFont f-s-14" v-if="!dataListLiang.length">
+                        <span style="padding:10px 0;">此号包下无靓号详情</span>
+                    </p>
                 </div>
+                <!-- <el-col>
+                  <div class="grid-content bg-purple">
+                      <el-pagination
+                          layout="prev, pager, next"
+                          :page-size="60"
+                          @current-change="searchNumberListCute"
+                          :current-page.sync="currentPage"                                                        
+                          :total="dataList.cuteTotal">
+                      </el-pagination>    
+                  </div>
+                </el-col> -->
             </div> 
-            <p class="f-ta-c" v-if="!dataListLiang.length">
-                此号包下暂无靓号详情
-            </p>
+            <el-row style="padding-left:16px;" v-if="dataListLiang.length">
+                <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                    <div class="grid-content bg-purple">
+                        <el-pagination
+                            layout="prev, pager, next"
+                            :page-size="60"
+                            @current-change="searchNumberListCute"
+                            :current-page.sync="currentPage1"                                                        
+                            :total="dataListLiang.total">
+                        </el-pagination>    
+                    </div>
+                </el-col>
+            </el-row>
         </div>
         <div class="pu" v-if="listSwitch.pu">
             <div class="m-listTitleFoot">
-                <h3><span>普号详情</span>({{dataList.normalTotal}}个)</h3>
+                <h3><span>号包详情</span><span class="greyFont"> ({{dataListPu.total||'0'}})</span></h3>
             </div>
-            <div v-for="(value,i) in dataListPu" :key="i" class="m-details">
-                <p style="margin:5px 0"><span>
-                <span class="grey">SIM号段 : </span>{{value.simName}}({{value.simGroupTotal}})</span></p>
+            <div class="m-details">
                 <div class="m-number-list" style="width:100%;height:100%;">
-                    <p v-for="(v1,i1) in value.numbers" :key="i1">
-                        <span style="text-align:left;padding:10px;" v-for="(v,i) in v1" :key="i">
+                    <p v-for="(v,i) of dataListPu" :key="i">
+                        <span class="f-s-12" style="text-align:center;padding:10px 0;" v-for="(v,i) of dataListPu[i]" :key="i">
                             <span>{{v.phone}}</span><br>
-                            <span class="f-s-12 grey">SIM号 : {{v.sim}}</span>
+                            <!-- SIM号:<span>{{v.sim}}</span> -->
                         </span>
-                        <!-- <td v-for="(v,i) in $parent._normalNum" :key='i'></td> -->
                         <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">
                             <el-popover
                             placement="right"
@@ -166,20 +149,20 @@
                             </el-popover>
                         </td> -->
                     </p>
+                    <p class="f-ta-c greyFont f-s-14" v-if="!dataListPu.length">
+                        <span style="padding:10px 0;">此号包下无普号详情</span>
+                    </p>
                 </div>
             </div> 
-            <p class="f-ta-c" v-if="!dataListPu.length">
-                此号包下暂无普号详情
-            </p>
             <el-row style="padding-left:16px;" v-if="dataListPu.length">
                 <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                     <div class="grid-content bg-purple">
                         <el-pagination
                             layout="prev, pager, next"
-                            :page-size="30"
+                            :page-size="60"
                             @current-change="searchNumberList"
                             :current-page.sync="currentPage"                                                        
-                            :total="$parent.totalPu">
+                            :total="dataListPu.total">
                         </el-pagination>    
                     </div>
                 </el-col>
@@ -213,7 +196,7 @@ export default{
     },
 	methods:{
         goBack(){
-            let vm = this.$parent;
+            let vm=this.$parent;
             vm.off.cardDetails=false;
             vm.off.notCardDetails=true;
             vm.listSwitch={ allDetails: "", liang: "", pu: "" };
@@ -223,27 +206,21 @@ export default{
         },getDateTime(v){
             return getDateTime(v)
         },searchNumberList(v){
-            let vm=this, url = "/nms/w/number/getMngNormalNumbers",data={};
-            data.searchProductId=vm.$parent.searchProductListId;
-            data.sessionType="2";
-            data.phoneLevel=1;  
-            data.pageNum=v||1;
-            data.pageSize=30;
-            requestMethod(data,url)
-            .then((res)=>{
-            this.$set(vm.$parent.listSwitch,'pu',true)                                                      
-            vm.$parent.normalNum=[]
-            let simgroups = res.data.simGroups;
-            for (let x = 0, len = simgroups.length; x<len; x++){
-            vm.$parent.normalNum.push({simGroupTotal:"",simName:"",numbers:[]})
-            for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
-                vm.$parent.normalNum[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
-            }
-            vm.$parent.normalNum[x].simGroupTotal=simgroups[x].simGroupTotal;
-            vm.$parent.normalNum[x].simName=simgroups[x].simName;
-            }
-            vm.$parent.totalPu=res.data.total;                        
-        }).catch(e=>errorDeal(e))
+          let vm=this, url="/nms/w/number/getMngNormalNumbers",data={};
+          data.searchProductId=vm.$parent.searchProductListId;
+          data.sessionType="2";
+          data.phoneLevel=1;
+          data.pageNum=v||1;
+          data.pageSize=60;
+          requestMethod(data,url)
+          .then((data)=>{
+              this.$set(vm.$parent.listSwitch,'pu',true)                                                      
+              vm.$parent.searchPu=[]
+              for(var i=0,len=data.data.numbers.length;i<len;i+=6){
+                  vm.$parent.searchPu.push(data.data.numbers.slice(i,i+6));
+              }
+              vm.$parent.searchPu.total=data.data.total;                        
+          }).catch(e=>errorDeal(e))
         },searchNumberListCute(v){
             let vm=this, url="/nms/w/number/getMngCuteNumbers",data={};
             data.searchProductId=vm.$parent.searchProductListId;
@@ -254,33 +231,21 @@ export default{
             requestMethod(data,url)
             .then((data)=>{
                 this.$set(vm.$parent.listSwitch,'liang',true)                                                      
-                vm.$parent.cuteNum=[]
+                vm.$parent.searchLiang=[]
                 for(var i=0,len=data.data.numbers.length;i<len;i+=6){
-                    vm.$parent.cuteNum.push(data.data.numbers.slice(i,i+6));
+                    vm.$parent.searchLiang.push(data.data.numbers.slice(i,i+6));
                 }
-                vm.$parent.cuteNum.total=data.data.total;                        
+                vm.$parent.searchLiang.total=data.data.total;                        
             }).catch(e=>errorDeal(e))
-        },
-        translateData(type,v){
-            return translateData(type,v)
-        }
+          },translateData(type,v){
+              return translateData(type,v)
+          }
     }
 }
 </script>
 <style scoped>
     table.numberInfo td:nth-child(odd){width: 200px;text-align: right}
     table.numberInfo td:nth-child(even){text-align: left;padding-left:20px; }
-    .m-box-list{
-        width:98%;
-        height: auto;
-        margin:0 auto;
-        border:1px solid #e0e0e0;
-        background:#fff;
-        border-radius: 4px;
-    }
-    .m-box-list div.el-row{
-        line-height: 30px;
-    }
     .m-number-list{
         border: 1px solid #dbdbdb;
     }
@@ -292,4 +257,3 @@ export default{
         width: 16.6667%;
     }
 </style>
-
