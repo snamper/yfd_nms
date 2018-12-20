@@ -298,8 +298,8 @@
     <!-- 号码上架下架同步 -->
     <numberOperation v-if="off.layer1" :layer="layerType1" :operationType="operationType"></numberOperation>
     <!-- 卡详情 -->
-    <card-Details v-if="off.cardDetails" :listSwitch="listSwitch" :dataList="searchResData" :dataListLiang="cuteNum"
-      :dataListPu="normalNum"></card-Details>
+    <card-Details v-if="off.cardDetails" :listSwitch="listSwitch" :dataList="searchResData" :dataListLiang="searchLiang"
+      :dataListPu="searchPu"></card-Details>
     <layer-confirm v-if="off.layerChangePrice" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>
   </section>
 </template>
@@ -325,7 +325,23 @@ import {
 import numberOperation from "./layer";
 import cardDetails from "../../components/cardDetailsList";
 import layerConfirm from "../../components/layerConfirm";
-const cityOptions = [ "远特", "蜗牛", "迪信通", "极信", "小米", "海航", "乐语", "苏宁互联", "国美", "联想", "蓝猫移动", "长城", "中邮", "鹏博士", "天音" ],
+const cityOptions = [
+    "远特",
+    "蜗牛",
+    "迪信通",
+    "极信",
+    "小米",
+    "海航",
+    "乐语",
+    "苏宁互联",
+    "国美",
+    "联想",
+    "蓝猫移动",
+    "长城",
+    "中邮",
+    "鹏博士",
+    "天音"
+  ],
   cityOptions1 = ["远特"],
   cityOptions2 = ["蜗牛"],
   cityOptions3 = ["迪信通"],
@@ -356,8 +372,8 @@ export default {
       total: "", //号包总数
       listSwitch: { allDetails: "", liang: "", pu: "" }, //详情页面开关
       searchResData: {}, //号包详情查询结果
-      cuteNum: [], //靓号详情查询结果
-      normalNum: [], //谱号详情查询结果
+      searchLiang: [], //靓号详情查询结果
+      searchPu: [], //谱号详情查询结果
       dataList: "", //号包详情页面
       dataListLiang: {}, //号包详情页面
       dataListPu: {}, //号包详情页面
@@ -403,10 +419,9 @@ export default {
       dourl: "",
       typeTitle: "", //上架，下架
       isSplit: false, //是否拆分
+      i: 1,
       index: "",
       cuteNumberList: "",
-      totalPu:"",
-      totalLiang:"",
       off: {
         layer: false,
         layer1: false,
@@ -464,7 +479,6 @@ export default {
         checked.unshift(0);
       }
       checked = checked.join(",");
-
       data = {
         brand: checked,
         isp: vm.radio,
@@ -487,7 +501,13 @@ export default {
             vm._copyData = vm.copyData(data.data.products);
             vm.nowStatusHidden = vm.nowStatus;
             vm.searchList.forEach((item, index) => {
-              Object.assign(item, {});
+              Object.assign(item, {
+                type: {
+                  A: { 1: "7A", 3: 100000, 13: "未上架" },
+                  B: { 1: "3B", 3: 6666660, 13: "手动上架" },
+                  C: { 1: "2B", 3: 678911, 13: "手上架" }
+                }
+              });
             });
           } else {
             vm.searchList = "";
@@ -514,7 +534,6 @@ export default {
           })
         );
     },
-
     getDetails(v) {
       let vm = this,
         data = {},
@@ -527,24 +546,18 @@ export default {
         if (v.productType == 1 || v.productType == 2) {
           url = "/nms/w/number/getMngCuteNumbers";
           data.phoneLevel = 2;
+          data.pageNum = 1;
+          data.pageSize = 60;
           requestMethod(data, url)
-            .then(res => {
+            .then(data => {
               resolve("step");
               this.$set(vm.listSwitch, "liang", true);
-              vm.cuteNum = [];
-              vm.totalLiang = res.data.total;
-              let simgroups;
-              if(res.data&&res.data.simGroups){
-                simgroups = res.data.simGroups;
-                for (let x = 0, len = simgroups.length; x<len; x++){
-                  vm.cuteNum.push({simGroupTotal:"",simName:"",numbers:[]})
-                  for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
-                    vm.cuteNum[x].numbers.push(simgroups[x].numbers.slice(index,index+6));
-                  }
-                  vm.cuteNum[x].simGroupTotal=simgroups[x].simGroupTotal;
-                  vm.cuteNum[x].simName=simgroups[x].simName;
-                } 
-                
+              vm.searchLiang = [];
+              if (data.data.numbers instanceof Array) {
+                for ( var i = 0, len = data.data.numbers.length; i < len; i += 6 ) {
+                  vm.searchLiang.push(data.data.numbers.slice(i, i + 6));
+                }
+                vm.searchLiang.total = data.data.total;
               }
             }).catch(e => {
               layer.open({
@@ -555,7 +568,7 @@ export default {
               });
             });
         } else {
-          vm.cuteNum = [];
+          vm.searchLiang = [];
           resolve("step");
         }
       });
@@ -564,28 +577,29 @@ export default {
           url = "/nms/w/number/getMngNormalNumbers";
           data.phoneLevel = 1;
           data.pageNum = 1;
-          data.pageSize = 30;
+          data.pageSize = 60;
           requestMethod(data, url)
-          .then(res=>{
-            resolve('step1');
-            this.$set(vm.listSwitch, "pu", true);
-            vm.normalNum = [];
-            vm.totalPu = res.data.total;
-            let simgroups;
-            if(res.data&&res.data.simGroups){
-              simgroups = res.data.simGroups;
-              for (let x = 0, len = simgroups.length; x<len; x++){
-                vm.normalNum.push({simGroupTotal:"",simName:"",numbers:[]})
-                for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
-                  vm.normalNum[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
+            .then(data => {
+              resolve("step1");
+              this.$set(vm.listSwitch, "pu", true);
+              vm.searchPu = [];
+              if (data.data.numbers instanceof Array) {
+                for ( var i = 0, len = data.data.numbers.length; i < len; i += 6 ) {
+                  vm.searchPu.push(data.data.numbers.slice(i, i + 6));
                 }
-                vm.normalNum[x].simGroupTotal=simgroups[x].simGroupTotal;
-                vm.normalNum[x].simName=simgroups[x].simName;
+                vm.searchPu.total = data.data.total;
               }
-            }
-          })
+            })
+            .catch(e => {
+              layer.open({
+                content: e.msg || e,
+                skin: "msg",
+                time: 2,
+                msgSkin: "error"
+              });
+            });
         } else {
-          vm.normalNum = [];
+          vm.searchPu = [];
           resolve("step1");
         }
       });
@@ -886,31 +900,26 @@ export default {
 input {
   border: 0 none;
 }
-
 .box {
   width: 140px;
   height: 26px;
   background-color: #808000;
   clear: both;
 }
-
 .box span {
   display: inline-block;
   height: 26px;
 }
-
 .span1 {
   width: 100px;
   position: relative;
   background: red;
 }
-
 .span2 {
   width: 40px;
   position: relative;
   background: green;
 }
-
 .input {
   text-align: center;
   height: 26px;
@@ -921,7 +930,6 @@ input {
   border: 1px solid #ccc;
   outline: none;
 }
-
 .button {
   height: 26px;
   width: 40px;
@@ -930,7 +938,6 @@ input {
   color: #fff;
   outline: none;
 }
-
 .m-button-split {
   outline: none;
   border: 1px solid #7a7a7a;
@@ -940,7 +947,6 @@ input {
   padding: 2px 10px;
   cursor: pointer;
 }
-
 .m-button-split2 {
   outline: none;
   border: 1px solid #008800;
@@ -949,11 +955,9 @@ input {
   cursor: pointer;
   background: #008800;
 }
-
 .m-button-split:active {
   box-shadow: 0 0 5px grey;
 }
-
 .m-button-split1 {
   outline: none;
   border: 1px solid #00aa01;
@@ -963,12 +967,10 @@ input {
   background-color: #fff;
   padding: 1px 4px;
 }
-
 /* .m-button-split1 > span::after {
   content: "√";
   font-size: 12px;
 } */
-
 .m-button-split3 {
   outline: none;
   border: 1px solid #4fc7ff;
@@ -978,12 +980,10 @@ input {
   background-color: #fff;
   padding: 1px 4px;
 }
-
 .m-button-split3 > span::after {
   content: "√";
   font-size: 12px;
 }
-
 .buttonModifyYes {
   border-radius: 4px;
   padding: 5px 20px;
@@ -992,22 +992,18 @@ input {
   outline: none;
   color: #fff;
 }
-
 .buttonModifyYes:active {
   box-shadow: 0 0 5px green;
 }
-
 div.operate button {
   padding: 4px 10px;
   margin-left: 10px;
   border-radius: 4px;
   color: #000;
 }
-
 div.operate button:active {
   box-shadow: 0 0 5px grey;
 }
-
 .btnSyncNumber {
   outline: none;
   border-radius: 4px;
@@ -1017,85 +1013,66 @@ div.operate button:active {
   margin-right: 10px;
   color: #fff;
 }
-
 div.borderTopModifyStaffState {
   margin-left: 1%;
   width: 98%;
   border-top: 2px solid #cacaca;
 }
-
 .m-searchTab {
   border: none;
   border-spacing: 0;
 }
-
 .m-searchTab tr:nth-child(odd) {
   background: transparent;
 }
-
 .m-searchTab > tr:nth-child(even) {
   background: #fff;
 }
-
 .m-searchTab .m-table2 {
   border-spacing: 0;
 }
-
 .m-searchTab > tr:nth-child(odd) .m-table3 {
   border-spacing: 0;
 }
-
 .m-searchTab > tr:nth-child(odd) .m-table3 > tr:nth-child(odd) {
   background: #fff;
 }
-
 .m-searchTab > tr:nth-child(odd) .m-table3 > tr:nth-child(even) {
   background: transparent;
 }
-
 .m-searchTab > tr:nth-child(even) .m-table3 > tr:nth-child(odd) {
   background: #f1f2f3;
 }
-
 .m-searchTab > tr:nth-child(even) .m-table3 > tr:nth-child(even) {
   background: transparent;
 }
-
 .m-searchTab .m-table-title td {
   width: 7.14286%;
 }
-
 .m-searchTab .m-table-title td:nth-child(1) {
   width: 2%;
 }
-
 .m-searchTab .m-table1 {
   width: 100%;
   padding: 0;
   margin: 0;
   border-spacing: 0;
 }
-
 .m-searchTab .m-table1 > tr:nth-child(2) > td {
   border-top: 1px solid #e4e4e4;
 }
-
 .m-searchTab .m-table1 > tr:nth-child(2) > td {
   border-bottom: 1px solid #e4e4e4;
 }
-
 .m-searchTab .m-table1 > tr > td {
   width: 7.14286%;
 }
-
 .m-searchTab .m-table1 > tr > td:nth-child(1) {
   width: 2%;
 }
-
 .m-searchTab .m-table3 {
   border-spacing: 0;
 }
-
 .m-searchTab .m-table3 > tr > td {
   width: 9%;
 }
