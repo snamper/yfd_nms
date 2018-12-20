@@ -8,7 +8,7 @@
               <el-row v-if="false">
                 <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">资源查询</div></el-col>
               </el-row>
-              <el-row v-if="false">
+              <!-- <el-row v-if="false">
                 <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2" >
                   <div class="grid-content bg-purple-dark f-ta-r inputTitle">上传文件&nbsp;:&nbsp;</div>
                 </el-col>
@@ -29,7 +29,7 @@
                     <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload">查询</el-button>
                   </el-upload>
                 </el-col>
-              </el-row>
+              </el-row> -->
               <el-row>
                 <el-row>
                   <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">查询</div></el-col>
@@ -57,7 +57,7 @@
         </el-row>
       </div>
       <!-- 查询结果列表 -->
-      <div v-if="searchlist" class="m-details">
+      <div v-if="searchlist.length" class="m-details">
         <el-row><h3>查询结果</h3></el-row>
         <table class="m-searchTab" style="width:100%;height:100%;">
           <tr>
@@ -78,8 +78,6 @@
             <td>渠道经理</td>
             <td>现归属渠道</td>
             <td>当前状态</td>
-            <td>号码类型</td>
-            <td>备注</td>
           </tr>
           <tr v-for="(v,i) of searchlist" :key="i">
             <td>{{(currentPage-1)*15+(i+1)}}</td>
@@ -88,18 +86,23 @@
             <td>{{translateData(4,v.brand)}}</td>
             <td>{{v.area||'--'}}</td>
             <td>{{v.packageName||'--'}}</td>
-            <td>{{'资费'}}</td>
-            <td>{{translateData('fenToYuan',v.faceValue)}}</td>
-            <td>{{translateData('fenToYuan',v.inPrice)}}</td>
-            <td>{{'话分比例'}}</td>
+            <td>{{v.voice || '--'}}</td>
+            <td>{{translateData('fenToYuan',v.faceValue)}}元</td>
+            <td>{{translateData('fenToYuan',v.inPrice)}}元</td>
+            <td>{{v.huafenDesc || '--'}}</td>
             <td>{{getDateTime(v.inTime)[6]}}</td>
             <td>{{getDateTime(v.outTime)[6]}}</td>
             <td>{{getDateTime(v.returnTime)[6]}}</td>
-            <td>{{v.agentName||'--'}}</td>
+            <td>
+              <a v-if="v.agentName" :href="`#/home/accountManage/info?company=${v.agentName}`">{{v.agentName}}</a>
+              <span v-else>--</span>
+            </td>
             <td>{{v.dealerManager||'--'}}</td>
-            <td>{{v.phoneState}}</td>
-            <td>{{'号码类型'}}</td>
-            <td>{{'备注'}}</td>
+            <td>
+              <a v-if="v.dealer" :href="`#/home/organization/yfd?dealerName=${v.dealer}`">{{v.dealer}}</a>
+              <span v-else>--</span>
+            </td>
+            <td>{{translateData(3,v.phoneState)}}</td>
           </tr>
         </table>
         <el-pagination 
@@ -120,12 +123,10 @@
   export default {
     data() {
       return {
-        searchlist:"",
-        total:"",
+        searchlist:[],
+        total:0,
         currentPage:"",
         startTime:"",
-        startTime2:"",
-        endTime2:"",
         phone:"",
         headerInfo:{},
         upInfo:{},
@@ -153,16 +154,14 @@
           return false;
         }
         json={
-          "endTime": new Date(vm.endTime2).getTime(),
           "pageNum": p||1,
           "pageSize": 15,
-          "startTime": new Date(vm.startTime2).getTime(),
-          "username": vm.phone
+          "searchPhone":vm.phone
         };
         numberResource(json)
         .then(res=>{
-          vm.searchlist = res.data.list;
-          vm.total = res.data.total;
+          vm.searchlist = [res.data];
+          vm.total = 1;
           vm.currentPage = p || 1;
         }).catch(e=>errorDeal(e))
       },

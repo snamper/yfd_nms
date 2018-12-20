@@ -137,6 +137,8 @@
   import { mapActions } from 'vuex';
   import balance from './yexq.vue';
   import pcms from './fllb.vue';
+  let _refresh = false;//判断当前页是否是重新刷新
+
   export default {
     data() {
       return {
@@ -165,6 +167,12 @@
       }
     },
     components: { balance,pcms },
+    beforeRouteEnter:function(to, from, next){
+      console.log()
+      if(from.path=='/'){_refresh=true;}
+      else _refresh=false;
+      next();
+    },
     created:function(){
       let vm=this;
       getaccountDealer({},true)
@@ -172,6 +180,12 @@
         vm.options=data.data.list;
       }).catch(e=>errorDeal(e));
       vm.off.roleShow = getStore("YFD_NMS_INFO").privileges.indexOf('211001')>-1;
+
+      if(vm.$route.query.company && !_refresh){//由其它路由跳转过来执行
+        vm.company = vm.$route.query.company;
+        vm.search(1,1)
+      }
+
     },
     methods: {
       ...mapActions([
