@@ -52,7 +52,8 @@
                   <span v-if="v.splitFlag==1">不可拆分</span>
                   <span v-if="v.splitFlag==2">可拆分</span>&nbsp;&nbsp;
                   <span class="yellow">￥{{Math.formatFloat(parseFloat(v.discountPrice/100),2)}}元</span>&nbsp;&nbsp;
-                  <a class="m-jumplink" @click="details('',v)">查看详情</a>
+                  <a class="m-jumplink" @click="details(1,'sim',v)">sim号段列表</a>
+                  <a class="m-jumplink" @click="details(1,'num',v)">号码列表</a>
                 </p>
               </el-col>
             </div>
@@ -100,13 +101,14 @@
         </div>
       </div>
     </div>
-    <card-details v-if="off.numList" :dataInfo="numberTotal" :newData="newSearch"></card-details>
+    <card-details v-if="off.detailslist" :dataInfo="numberTotal" :simlist="simdata" :numlist="numdata"></card-details>
   </section>
 </template>
 <script>
   import {
     requestMethod,
-    requestgetOrderSplitNumbers
+    getPickCardSim,
+    getPickCardNum
   } from '../../config/service';
   import {
     errorDeal,
@@ -125,8 +127,13 @@
         searchLiang: [],
         searchPu: [],
         newSearch:[],
+        numdata:{},
+        simdata:{},
+        listname:"",
         off: {
-          numList:false
+          numList:false,
+          simList:false,
+          detailslist:false
         },
         numberTotal:{
           total:"",
@@ -138,43 +145,71 @@
       "card-details": cardDetails
     },
     methods: {
-      details(p, i) {
-        let vm = this,
-          json = {
-            sysOrderId: i.sysOrderId,
-            numberId: i.numberId,
-            pageNum: p || 1,
-            pageSize: 30
+      details(p,v,i) {
+        let vm = this,json;
+        vm.off.simList=false;
+        vm.off.numList=false;
+        vm.listname = i.productName+'('+i.total+')个';
+        if(v==='sim'){
+          json={
+            "numberId": i.numberId,
+            "sysOrderId": i.sysOrderId,
           };
+          getPickCardSim(json)
+          .then(res=>{
+            if(res&&res.data){
+              vm.simdata = res.data;
+              vm.off.simList=true;
+            }else{
+              errorDeal(res)
+            }
+          }).catch(e=>errorDeal(e))
+        }else if(v==='num'){
+          json = {
+            "sysOrderId": i.sysOrderId,
+            "numberId": i.numberId,
+            "pageNum": p || 1,
+            "pageSize": 60
+          };
+          getPickCardNum(json)
+          .then(res=>{
+            if(res&&res.data){
+              vm.numdata = res.data;
+              vm.off.numList=true;
+            }else{
+              errorDeal(res)
+            }
+          }).catch(e=>errorDeal(e))
+        }
+        vm.off.detailslist = true;
         vm.searchJson = json;
         vm.numberTotal.info = i;
-        vm.off.numList = true;
-        requestgetOrderSplitNumbers(json)
-          .then((data) => {
-            if (data.code == 200) {
-              vm.numberTotal.total = data.data.total;
-              vm.newSearch = [];
-              let simgroups;
-              if(data.data&&data.data.simGroups){
-                simgroups = data.data.simGroups;
-                for (let x = 0, len = simgroups.length; x<len; x++){
-                  vm.newSearch.push({simGroupTotal:"",simName:"",numbers:[]})
-                  for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
-                    vm.newSearch[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
-                  }
-                  vm.newSearch[x].simGroupTotal=simgroups[x].simGroupTotal;
-                  vm.newSearch[x].simName=simgroups[x].simName;
-                }
-              }
-            } else {
-              layer.open({
-                content: "data.msg",
-                skin: 'msg',
-                time: 2,
-                msgSkin: 'error',
-              });
-            }
-          })
+        // requestgetOrderSplitNumbers(json)
+        //   .then((data) => {
+        //     if (data.code == 200) {
+        //       vm.numberTotal.total = data.data.total;
+        //       vm.newSearch = [];
+        //       let simgroups;
+        //       if(data.data&&data.data.simGroups){
+        //         simgroups = data.data.simGroups;
+        //         for (let x = 0, len = simgroups.length; x<len; x++){
+        //           vm.newSearch.push({simGroupTotal:"",simName:"",numbers:[]})
+        //           for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
+        //             vm.newSearch[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
+        //           }
+        //           vm.newSearch[x].simGroupTotal=simgroups[x].simGroupTotal;
+        //           vm.newSearch[x].simName=simgroups[x].simName;
+        //         }
+        //       }
+        //     } else {
+        //       layer.open({
+        //         content: "data.msg",
+        //         skin: 'msg',
+        //         time: 2,
+        //         msgSkin: 'error',
+        //       });
+        //     }
+        //   })
       },
       goBack() {
         let vm = this;

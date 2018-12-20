@@ -161,6 +161,12 @@ export const applyReview=(data,load)=>fetch("/ums/w/application/review",data,"PO
 /*号码资源查询 */
 export const numberResource=(data,load)=>fetch("/nms/w/number/resources/query",data,"POST",load)
 
+/*提卡号码查询SIM号段*/
+export const getPickCardSim=(data,load)=>fetch("/nms/w/order/sim-section",data,"POST",load)
+/*提卡订单查询号码*/
+export const getPickCardNum=(data,load)=>fetch("/nms/w/order/numbers",data,"POST",load)
+
+
 
 
 
