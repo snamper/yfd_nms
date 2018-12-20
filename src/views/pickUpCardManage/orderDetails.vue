@@ -100,8 +100,7 @@
         </div>
       </div>
     </div>
-    <card-details :dataInfo="numberTotal"
-      :listSwitch="listSwitch" :dataListLiang="searchLiang" :dataListPu="searchPu" :newData="newSearch"></card-details>
+    <card-details v-if="off.numList" :dataInfo="numberTotal" :newData="newSearch"></card-details>
   </section>
 </template>
 <script>
@@ -123,73 +122,16 @@
     },
     data() {
       return {
-        searchProductListId: '',
-        pageNumDetails: "", //号包详情
-        pageNumLiang: "", //靓号详情
-        pageNumPu: "", //普号详情
-        listSwitch: {
-          "allDetails": "",
-          "liang": "",
-          "pu": ""
-        }, //详情页面开关                       
         searchLiang: [],
         searchPu: [],
         newSearch:[],
         off: {
-          notCardDetails: true,
+          numList:false
         },
         numberTotal:{
           total:"",
           info:""
-        },
-        testdata: [
-          {"numbers": [
-              {
-                "faceValue": "面值，以分为单位。int。",
-                "phone": "11位手机号码。long。",
-                "sim": "sim卡号",
-                "voice": "资费"
-              },{
-                "faceValue": "面值，以分为单位。int。",
-                "phone": "11位手机号码。long。",
-                "sim": "sim卡号",
-                "voice": "资费"
-              },{
-                "faceValue": "面值，以分为单位。int。",
-                "phone": "11位手机号码。long。",
-                "sim": "sim卡号",
-                "voice": "资费"
-              },{
-                "faceValue": "面值，以分为单位。int。",
-                "phone": "11位手机号码。long。",
-                "sim": "sim卡号",
-                "voice": "资费"
-              },{
-                "faceValue": "面值，以分为单位。int。",
-                "phone": "11位手机号码。long。",
-                "sim": "sim卡号",
-                "voice": "资费"
-              }
-            ],
-            "simGroupTotal": "分组sim号码的总数",
-            "simName": "分组sim号码。例如：2051651——2051655"
-          },{"numbers": [
-              {
-                "faceValue": "面值，以分为单位。int。",
-                "phone": "11位手机号码。long。",
-                "sim": "sim卡号",
-                "voice": "资费"
-              },{
-                "faceValue": "面值，以分为单位。int。",
-                "phone": "11位手机号码。long。",
-                "sim": "sim卡号",
-                "voice": "资费"
-              }
-            ],
-            "simGroupTotal": "分组sim号码的总数",
-            "simName": "分组sim号码。例如：2051651——2051655"
-          }
-        ],
+        }
       }
     },
     components: {
@@ -202,36 +144,28 @@
             sysOrderId: i.sysOrderId,
             numberId: i.numberId,
             pageNum: p || 1,
-            pageSize: 48
+            pageSize: 30
           };
         vm.searchJson = json;
         vm.numberTotal.info = i;
+        vm.off.numList = true;
         requestgetOrderSplitNumbers(json)
           .then((data) => {
             if (data.code == 200) {
-              vm.listSwitch.pu = true;
               vm.numberTotal.total = data.data.total;
-              let simgroups = data.data.simGroups;
-              vm.searchPu = [];
-              for (let x = 0, len = simgroups.length; x<len; x++){
-                vm.newSearch.push({simGroupTotal:"",simName:"",numbers:[]})
-                for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 2) {
-                  vm.newSearch[x].numbers.push(simgroups[x].numbers.slice(index,index+2))
-                  
+              vm.newSearch = [];
+              let simgroups;
+              if(data.data&&data.data.simGroups){
+                simgroups = data.data.simGroups;
+                for (let x = 0, len = simgroups.length; x<len; x++){
+                  vm.newSearch.push({simGroupTotal:"",simName:"",numbers:[]})
+                  for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
+                    vm.newSearch[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
+                  }
+                  vm.newSearch[x].simGroupTotal=simgroups[x].simGroupTotal;
+                  vm.newSearch[x].simName=simgroups[x].simName;
                 }
-                vm.newSearch[x].simGroupTotal=simgroups[x].simGroupTotal;
-                vm.newSearch[x].simName=simgroups[x].simName;
               }
-              // for (let i = 0, l = simGroups.length; i<l; i++){
-              //   for (let i = 0, l = simGroups[i].numbers.length; i < len; i += 6) {
-              //     vm.searchPu.push(simGroups[i].numbers.slice(i, i + 6));
-              //   }
-              //   vm.searchList.push(simGroups.numbers.slice(i,i+1));
-              // }
-              
-              // vm.searchPu.len = data.data.numbers.length;
-              this.off.notCardDetails = false;
-              this.off.cardDetails = true;
             } else {
               layer.open({
                 content: "data.msg",

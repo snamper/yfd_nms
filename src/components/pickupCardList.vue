@@ -1,15 +1,16 @@
 
 <template>
   <section>
-    <div class="pu">
+    <div v-if="newData" class="pu">
       <div class="m-listTitleFoot">
         <p><span>号码详情</span>【<span class="blue">{{dataInfo.info.productName||'--'}} ({{dataInfo.info.total||'--'}}个)</span>】</p>
       </div>
-      <div v-if="listSwitch.pu" v-for="(v,i) in newData" :key='i' class="m-details">
-        <p style="margin:5px 0"><span>SIM号段 : {{newData[i].simName}}({{newData[i].simGroupTotal}})</span></p>
-        <table class="m-searchTab" style="width:100%;height:100%;">
-          <tr v-for="(value,i) of newData[i].numbers" :key="i">
-            <td class="m-number" v-for="(v,i) of value" :key="i">
+      <div v-for="(v,i) in newData" :key='i' class="m-details">
+        <p style="margin:5px 0"><span class="grey">SIM号段 :</span>
+        <span> {{newData[i].simName}}({{newData[i].simGroupTotal}})</span></p>
+        <div class="m-number-list" style="width:100%;height:100%;">
+          <p v-for="(value,i) of newData[i].numbers" :key="i">
+            <span style="text-align:left" class="m-number" v-for="(v,i) of value" :key="i">
               <el-popover placement="bottom-start" title="资费介绍" width="300" trigger="hover">
                 <p style="word-wrap: break-word;white-space:normal; width:180px;font-size:12px;color:grey">{{v.remark||'--'}}</p>
                 <el-button slot="reference">
@@ -21,21 +22,16 @@
                   </p>
                 </el-button>
               </el-popover>
-            </td>
-            <td v-if="value.length<2">
-              qushao
-            </td>
-          </tr>
-          <!-- <tr v-if="!dataListPu.length">
-            <td class="f-ta-c greyFont f-s-14">此号包下暂无码号详情</td>
-          </tr> -->
-        </table>
+            </span>
+          </p>
+        </div>
       </div>
+      <p class="f-ta-c" v-if="!newData.length">此号包下暂无码号详情</p>
     </div>
-    <el-row v-if="dataListPu.length">
+    <el-row v-if="newData.length">
       <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
         <div class="grid-content bg-purple" style="padding:10px 16px">
-          <el-pagination layout="prev, pager, next" :page-size="48" @current-change="details" :current-page.sync="currentPage"
+          <el-pagination layout="prev, pager, next" :page-size="30" @current-change="details" :current-page.sync="currentPage"
             :total="dataInfo.total">
           </el-pagination>
         </div>
@@ -57,9 +53,6 @@
     props: {
       newData: Array,
       dataInfo: Object,
-      dataListLiang: Array,
-      dataListPu: Array,
-      listSwitch: Object,
       pickCardSwitch: Boolean
     },
     data() {
@@ -96,27 +89,20 @@
         requestgetOrderSplitNumbers(json)
           .then((data) => {
             if (data.code == 200) {
-              if (vm.searchJson.phoneLevel == '0,1,2,3,4,5,6') {
-                this.$set(vm.listSwitch, 'pu', false)
-                this.$set(vm.listSwitch, 'liang', true)
-                vm.numberTotal.l = data.data.total;
-                vm.searchLiang = [];
-                for (var i = 0, len = data.data.numbers.length; i < len; i += 6) {
-                  vm.searchLiang.push(data.data.numbers.slice(i, i + 6));
+              vm.numberTotal.total = data.data.total;
+              vm.newSearch = [];
+              let simgroups;
+              if(data.data&&data.data.simGroups){ 
+                simgroups = data.data.simGroups;
+                for (let x = 0, len = simgroups.length; x<len; x++){
+                  vm.newSearch.push({simGroupTotal:"",simName:"",numbers:[]})
+                  for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
+                    vm.newSearch[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
+                  }
+                  vm.newSearch[x].simGroupTotal=simgroups[x].simGroupTotal;
+                  vm.newSearch[x].simName=simgroups[x].simName;
                 }
-                vm.searchLiang.len = data.data.numbers.length;
-              } else {
-                this.$set(vm.listSwitch, 'liang', false)
-                this.$set(vm.listSwitch, 'pu', true)
-                vm.numberTotal.p = data.data.total;
-                vm.searchPu = [];
-                for (var i = 0, len = data.data.numbers.length; i < len; i += 6) {
-                  vm.searchPu.push(data.data.numbers.slice(i, i + 6));
-                }
-                vm.searchPu.len = data.data.numbers.length;
               }
-              this.off.notCardDetails = false;
-              this.off.cardDetails = true;
             } else {
               layer.open({
                 content: "data.msg",
@@ -166,4 +152,14 @@
     font-size: 12px;
     color: #9c9c9c
   }
+  .m-number-list{
+        border: 1px solid #dbdbdb;
+    }
+    .m-number-list>p:nth-child(odd){
+        background: #fff;
+    }
+    .m-number-list>p>span{
+        display: inline-block;
+        width: 16.6667%;
+    }
 </style>

@@ -28,15 +28,15 @@ module.exports = {
         },
         '/ums/':{
             target:'http://192.168.10.103:8080',
-            // target:'http://192.168.10.37:10022',
+            // target:'http://192.168.10.48:10022',
             changeOrigin:true,
             pathRewrite:{
                 '^/ums' : '/ums' 
             }
         },
         '/nms/':{
-            // target:'http://192.168.10.105:8080',
-            target:'http://192.168.10.103:8080',
+            target:'http://192.168.10.48:10023',
+            // target:'http://192.168.10.103:8080',
             changeOrigin:true,
             pathRewrite:{
                 '^/nms/' : '/nms/'

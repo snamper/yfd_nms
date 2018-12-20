@@ -21,7 +21,7 @@ export const requestChangeLogisticsId=(data)=>fetch("/nms/w/order/modifyDelivery
 export const requestConfirmTakeGoods=(data)=>fetch("/nms/w/order/modifyState",data,"POST")
 export const requestConfirmPayMent=(data)=>fetch("/nms/w/order/confirmPayment",data,"POST")
 export const requestModify_Price=(data)=>fetch("/nms/w/number/modifyCartPrice",data,"POST")
-export const requestgetOrderSplitNumbers=(data)=>fetch("/nms/w/order/getOrderSplitNumbers",data,"POST")
+export const requestgetOrderSplitNumbers=(data)=>fetch("/nms/w/order/getOrderNumbers",data,"POST")
 /*提卡订单管理退款操作*/
 export const requestReturnGoods=(data)=>fetch("/nms/w/order/returnOrder",data,"POST")
 
