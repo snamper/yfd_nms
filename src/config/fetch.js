@@ -12,8 +12,8 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
       type: 2,
       shadeClose: false
     });
-    NProgress.start();
   }
+  NProgress.start();
   type = type.toUpperCase();
   const closeLoadLayout = () => {
     typeof load === 'function' ? load() : layer.close(layerIndex);
@@ -58,7 +58,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     });
     if (dataStr !== '') {
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
-      url = url + '?' + dataStr;
+      url = url + '&' + dataStr;
     }
   }
   if (window.fetch && method == 'fetch') { //FETCH
