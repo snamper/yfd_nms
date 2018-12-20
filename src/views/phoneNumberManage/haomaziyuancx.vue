@@ -78,6 +78,7 @@
             <td>渠道经理</td>
             <td>现归属渠道</td>
             <td>当前状态</td>
+            <td>号码类型</td>
           </tr>
           <tr v-for="(v,i) of searchlist" :key="i">
             <td>{{(currentPage-1)*15+(i+1)}}</td>
@@ -103,6 +104,7 @@
               <span v-else>--</span>
             </td>
             <td>{{translateData(3,v.phoneState)}}</td>
+            <td>{{ v.phoneTypeDesc }}</td>
           </tr>
         </table>
         <el-pagination 
