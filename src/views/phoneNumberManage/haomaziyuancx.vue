@@ -103,7 +103,7 @@
               <a v-if="v.dealer" :href="`#/home/organization/yfd?dealerName=${v.dealer}`">{{v.dealer}}</a>
               <span v-else>--</span>
             </td>
-            <td>{{translateData(3,v.phoneState)}}</td>
+            <td>{{ v.agentNamePath }}</td>
             <td>{{ v.phoneTypeDesc }}</td>
           </tr>
         </table>
