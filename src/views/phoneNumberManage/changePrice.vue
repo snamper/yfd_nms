@@ -1,16 +1,3 @@
-<style>
-  .button {
-    height: 26px;
-    width: 40px;
-    font: normal 14px/14px "微软雅黑";
-    background: #5daf34;
-    color: #fff;
-    outline: none
-  }
-  .el-checkbox-group {
-    display: inline-block
-  }
-</style>
 <template>
   <section ref="sec">
     <div v-if="off.searchList">
@@ -325,3 +312,16 @@
     }
   }
 </script>
+<style>
+  .button {
+    height: 26px;
+    width: 40px;
+    font: normal 14px/14px "微软雅黑";
+    background: #5daf34;
+    color: #fff;
+    outline: none
+  }
+  .el-checkbox-group {
+    display: inline-block
+  }
+</style>
