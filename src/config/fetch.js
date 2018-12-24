@@ -6,6 +6,7 @@ NProgress.configure({
 });
 
 export default async (url = '', data = {}, type = 'GET', load, method = 'fetch') => {
+  NProgress.start();
   let headerId;
   if (!load) {
     var layerIndex = layer.open({
@@ -13,54 +14,80 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
       shadeClose: false
     });
   }
-  NProgress.start();
   type = type.toUpperCase();
   const closeLoadLayout = () => {
     typeof load === 'function' ? load() : layer.close(layerIndex);
   };
   //--------------------------------------------------------------------
   let userInfo = getStore("YFD_NMS_INFO");
-  if (userInfo) {
-    if(load&&typeof load === 'function'&&(load()=='upload'||load()=='down')){
-      let dataStr = ''; //数据拼接字符串
-      Object.keys(userInfo).forEach(key => {
-        if(key == 'token'){
-          dataStr += key + '=' + encodeURIComponent(userInfo[key]) + '&';
-        }else{
-          dataStr += key + '=' + userInfo[key] + '&';
-        }
-      });
-      if (dataStr !== '') {
-        dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
-        url = url + '?' + dataStr;
-      }
-    }else{
-      Object.assign(userInfo, data);
-      headerId = userInfo.userId;
-      data = userInfo;
-    }
-  } else {
+  if(!userInfo){
     errorDeal({
       'code': 648
     }, closeLoadLayout);
     headerId = '';
     return false;
   }
-  //--------------------------------------------------------------------
-  if (type == 'GET'||(load&&typeof load==='function'&&(load()=='upload'||load()=='down'))){
-    let dataStr = ''; //数据拼接字符串
-    Object.keys(data).forEach(key => {
+  if(type == 'GET'||load&&typeof load === 'function'&&(load() == 'upload'||load() == 'down')){
+    let dataStr="";
+    Object.assign(data,userInfo);
+    Object.keys(data).forEach(key=>{
       if(key == 'token'){
-        dataStr += key + '=' + encodeURIComponent(userInfo[key]) + '&';
-      }else if(key!='file'){
-        dataStr += key + '=' + data[key] + '&';        
+        dataStr += key + '=' + encodeURIComponent(data[key]) + '&';
+      }else if(key !='file'){
+        dataStr += key + '=' + data[key] + '&';
       }
-    });
+    })
     if (dataStr !== '') {
       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
-      url = url + '&' + dataStr;
+      url = url + '?' + dataStr;
     }
+  }else{
+    Object.assign(userInfo, data);
+    headerId = userInfo.userId;
+    data = userInfo;
   }
+
+  // if (userInfo) {
+  //   if(load&&typeof load === 'function'&&(load()=='upload'||load()=='down')){
+  //     let dataStr = ''; //数据拼接字符串
+  //     Object.keys(userInfo).forEach(key => {
+  //       if(key == 'token'){
+  //         dataStr += key + '=' + encodeURIComponent(userInfo[key]) + '&';
+  //       }else{
+  //         dataStr += key + '=' + userInfo[key] + '&';
+  //       }
+  //     });
+  //     if (dataStr !== '') {
+  //       dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
+  //       url = url + '?' + dataStr;
+  //     }
+  //   }else{
+  //     Object.assign(userInfo, data);
+  //     headerId = userInfo.userId;
+  //     data = userInfo;
+  //   }
+  // } else {
+  //   errorDeal({
+  //     'code': 648
+  //   }, closeLoadLayout);
+  //   headerId = '';
+  //   return false;
+  // }
+  //--------------------------------------------------------------------
+  // if (type == 'GET'||(load&&typeof load==='function'&&(load()=='upload'||load()=='down'))){
+  //   let dataStr = ''; //数据拼接字符串
+  //   Object.keys(data).forEach(key => {
+  //     if(key == 'token'){
+  //       dataStr += key + '=' + encodeURIComponent(userInfo[key]) + '&';
+  //     }else if(key!='file'){
+  //       dataStr += key + '=' + data[key] + '&';        
+  //     }
+  //   });
+  //   if (dataStr !== '') {
+  //     dataStr = dataStr.substr(0, dataStr.lastIndexOf('&'));
+  //     url = url + '&' + dataStr;
+  //   }
+  // }
   if (window.fetch && method == 'fetch') { //FETCH
     let requestConfig;
     if (type == 'POST') {

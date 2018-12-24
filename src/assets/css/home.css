@@ -626,3 +626,7 @@ b.countIcon{
     -moz-transform: translate3d(185px, 0, 0);
   }
 }
+#nprogress .bar {
+  background: #0225ec !important; 
+  height: 4px !important;
+}

@@ -224,7 +224,10 @@
         }).catch(e => errorDeal(e))
       },
       download(){
-        let vm=this; 
+        let vm=this,json; 
+        delete vm.searchJson['pageNum'];
+        delete vm.searchJson['pageSize'];
+        delete vm.searchJson['departName'];
         cmsDownload(vm.searchJson,()=>{return "down";})
       },
       modify(v,i,d){
