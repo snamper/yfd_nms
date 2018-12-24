@@ -2,7 +2,7 @@
 <template>
   <section>
     <div class="m-details">
-      <div class="headTitle f-s-16" style="margin-top:0;height:28px">
+      <div class="headTitle f-s-16" style="padding:5px;height:auto">
           <p><span>
           {{$parent.off.simList?'SIM号段详情':$parent.off.numList?'号码详情':'--'}} : 
           {{$parent.listname}}
@@ -30,9 +30,9 @@
         </div>
       </div>
       <div v-if="$parent.off.numList" class="m-number-list" style="width:100%;height:100%;">
-        <p ><span v-for="(v,i) of numlist.numbers" :key="i" class="f-s-12" style="text-align:center;padding:10px 0;">
-            手机号:<span>{{v.phone}}</span><br>
-            sim号:<span>{{v.sim}}</span><br>
+        <p ><span v-for="(v,i) of numlist.numbers" :key="i" class="f-s-12">
+            手机号 : <span>{{v.phone}}</span><br>
+            sim号 : <span>{{v.sim}}</span><br>
           </span></p>
         <p class="f-ta-c greyFont f-s-14" v-if="!numlist.numbers">
           <span style="padding:10px 0;">此号包下无号码详情</span></p>
@@ -148,11 +148,18 @@
   .m-number-list>p>span{
     display: inline-block;
     width: 16.6667%;
+    padding:10px;
+    text-align: left;
+    border: 1px solid #eee;
   }
+  /* .m-number-list>p>span:nth-child(odd){
+    background: 
+  } */
   .m-sim-list>p>span{
     display: inline-block;
     width: 33.33333%;
     padding: 10px;
-    text-align: center;
+    text-align: left;
+    border: 1px solid #eee;
   }
 </style>
