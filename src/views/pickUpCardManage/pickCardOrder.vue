@@ -140,11 +140,10 @@
                 <td>产品包</td>
                 <td>付款金额(元)</td>
                 <td>提卡人</td>
-                <td>售卖方式</td>
                 <td>付款方式</td>
                 <td>订单状态</td>
                 <td>物流单号</td>
-                <td>状态变更人</td>
+                <td>备注</td>
                 <td>操作</td>
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
@@ -168,7 +167,6 @@
                 <td>
                   <span>{{v.agentName||'--'}}</span>
                 </td>
-                <td><span>{{sealType(v.productList)}}</span></td>
                 <td>
                   <span v-if="v.paymentType==0">未付款</span>
                   <span v-if="v.paymentType==1">支付宝</span>
@@ -186,13 +184,18 @@
                 <td>
                   <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a>
                 </td>
-                <td>{{v.operatorName||'--'}}</td>
                 <td>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="deliverGoods(v)">发货</el-button>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="changeLogisticsInfo(v)">修改单号</el-button>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="confirm(v)">确认收货</el-button>
-                  <el-button v-if="v.paymentState == 1&&v.orderState == 1&&v.paymentType==4" class="m-small-btn" style="margin:5px;" @click="confirmPayMoney(v)">确认付款</el-button>
-                  <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;" @click="returnGoods(v)">退卡</el-button>
+                  <span v-if="upindex!=i">{{v.remark||"--"}}</span>
+                  <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
+                  <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
+                  <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
+                </td>
+                <td>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="changeLogisticsInfo(v)">填写物流信息</el-button>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="confirm(v)">确认收货</el-button>
+                  <el-button v-if="v.paymentState==1&&v.orderState == 1&&v.paymentType==4" class="m-small-btn" style="margin:5px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
+                  <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
                 </td>
               </tr>
               <tr v-if="searchResult.length<=0">
@@ -230,10 +233,10 @@ import {
   getStore,
   cloneObj
 } from "../../config/utils";
-import { requestPickupOrder } from "../../config/service.js";
+import { requestPickupOrder,pickCardDeliver,updateRemark } from "../../config/service.js";
 import { disabledDate } from "../../config/utilsTimeSelect";
-import orderDetails from "./orderDetails";
 import layerConfirm from "../../components/layerConfirm";
+import orderDetails from "./orderDetails";
 export default {
   data() {
     return {
@@ -257,6 +260,8 @@ export default {
       endTime: "",
       downLoadJson: "",
       userPhone: "",
+      newRemark:"",
+      upindex:0.1,
       off: {
         details: false,
         layer: false
@@ -278,6 +283,7 @@ export default {
     search(index) {
       let vm = this,
         data = {};
+        vm.upindex=0.1;
       vm.currentPage = index || 1;
       vm.pa = index || 1;
       if (vm.form.searchKind == 1) {
@@ -402,24 +408,28 @@ export default {
       vm.logistics = v;
       vm.off.layer = true;
     },
-    sealType(v) {
-      let vm = this;
-      if (v instanceof Array) {
-        if (v.length === 1) {
-          return v[0].splitFlag == 1
-            ? "整包" : v[0].splitFlag == 2 ? "拆包" : "--";
-        } else if (v.length > 1) {
-          return v.every((value, i, v) => {
-            return value.splitFlag == 1;
-          }) ? "整包" : v.every((value, i, v) => { return value.splitFlag == 2; }) ? "拆包" : "混合";
-        }
-      }
-    },
     deliverGoods(v) {
-      let vm = this;
-      vm.layerType = "sendGoods";
-      vm.logistics = v;
-      vm.off.layer = true;
+      let vm = this,json={
+        sysOrderId:v.sysOrderId
+      };
+      // vm.layerType = "sendGoods";
+      // vm.logistics = v;
+      // vm.off.layer = true;
+      pickCardDeliver(json)
+      .then(res=>{
+        if(res&&res.data){
+          vm.$message({
+            message: '操作成功',
+            type: 'success'
+          });
+          vm.search(vm.currentPage);
+        }else{
+          vm.$message({
+            message: '操作失败',
+            type: 'error'
+          });
+        }
+      }).catch(e=>errorDeal(e))
     },
     changeLogisticsInfo(v) {
       let vm = this;
@@ -487,8 +497,39 @@ export default {
           style: "green"
         });
       }
-
       // return orderState;
+    },
+    modify(t,v,i){
+      let vm=this;
+      vm.off.updateRemark=true;
+      vm.upindex=i;
+      if(t=='remark'){
+        vm.newRemark=v.remark;
+      }else if(t=="remarkYes"){
+        let json={
+          rebateRemark:vm.newRemark,
+          sysOrderId:v.sysOrderId
+        };
+        updateRemark(json)
+        .then(res=>{
+          if(res&&res.data){
+            if(res.code==200){
+              vm.$message({
+                message:"修改成功",
+                type:"success"
+              })
+            }else{
+              vm.$message({
+                message:"操作失败",
+                type:"error"
+              })
+            }
+            vm.search(vm.currentPage);
+          }else{
+
+          }
+        }).catch(e=>errorDeal(e))
+      }
     },
     searchdelivery(n, v) {
       let url = "https://www.kuaidi100.com/chaxun?com=" + n + "&nu=" + v;
@@ -617,5 +658,10 @@ export default {
 
 table.m-searchTab tr {
   height: 40px;
+}
+.m-input-modifyRemark{
+  max-width:80px;
+  border-radius:4px;
+  border: 1px solid #eee;
 }
 </style>

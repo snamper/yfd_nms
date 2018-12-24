@@ -17,7 +17,7 @@ export const requestsetSyncTime=(data,load)=>fetch("/uus/w/setting/add",data,"PO
 /* 提卡订单管理 */ 
 export const requestPickupOrder=(data,load)=>fetch("/nms/w/order/search",data,"POST",load)
 export const requestProductDetails=(data,load)=>fetch("/nms/w/number/getProductDetail",data,"POST",load)
-export const requestChangeLogisticsId=(data)=>fetch("/nms/w/order/modifyDeliveryOrderId",data,"POST")
+export const requestChangeLogisticsId=(data)=>fetch("/nms/w/order/modifyDeliverOrderId",data,"POST")
 export const requestConfirmTakeGoods=(data)=>fetch("/nms/w/order/modifyState",data,"POST")
 export const requestConfirmPayMent=(data)=>fetch("/nms/w/order/confirmPayment",data,"POST")
 export const requestModify_Price=(data)=>fetch("/nms/w/number/modifyCartPrice",data,"POST")
@@ -165,6 +165,12 @@ export const numberResource=(data,load)=>fetch("/nms/w/number/resources/query",d
 export const getPickCardSim=(data,load)=>fetch("/nms/w/order/sim-section",data,"POST",load)
 /*提卡订单查询号码*/
 export const getPickCardNum=(data,load)=>fetch("/nms/w/order/numbers",data,"POST",load)
+/*提卡订单发货*/
+export const pickCardDeliver=(data,load)=>fetch("/nms/w/order/deliver",data,"POST",load)
+/*编辑订单话分备注*/
+export const updateRemark=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
+
+
 
 
 

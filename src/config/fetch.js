@@ -21,7 +21,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
   //--------------------------------------------------------------------
   let userInfo = getStore("YFD_NMS_INFO");
   if (userInfo) {
-    if(load&&typeof load === 'function'&&load()=='upload'){
+    if(load&&typeof load === 'function'&&(load()=='upload'||load()=='down')){
       let dataStr = ''; //数据拼接字符串
       Object.keys(userInfo).forEach(key => {
         if(key == 'token'){
@@ -47,7 +47,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
     return false;
   }
   //--------------------------------------------------------------------
-  if (type == 'GET'||(load&&typeof load==='function'&&load()=='upload')) {
+  if (type == 'GET'||(load&&typeof load==='function'&&(load()=='upload'||load()=='down'))){
     let dataStr = ''; //数据拼接字符串
     Object.keys(data).forEach(key => {
       if(key == 'token'){
@@ -64,35 +64,35 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
   if (window.fetch && method == 'fetch') { //FETCH
     let requestConfig;
     if (type == 'POST') {
-        if(typeof load === 'function'&&load()=='upload'){
-          let fd = new FormData();
-          fd.append('files',data.file);
-          requestConfig = {
-            credentials: 'include',
-            method: type,
-            headers: {},
-            mode: "cors",
-            cache: "force-cache"
-          }
-          Object.defineProperty(requestConfig,'body',{
-            value:fd
-          });
-        }else{
-          requestConfig = {
-            credentials: 'include',
-            method: type,
-            headers: { 'Content-Type': 'application/json', 'mhscAuth': '3,0,' + headerId, },
-            mode: "cors",
-            cache: "force-cache"
-          };
-          Object.defineProperty(requestConfig, 'body', {
-            value: JSON.stringify(data)
-          });
+      if(typeof load === 'function'&&load()=='upload'){//上传文件
+        let fd = new FormData();
+        fd.append('files',data.file);
+        requestConfig = {
+          credentials: 'include',
+          method: type,
+          headers: {},
+          mode: "cors",
+          cache: "force-cache"
+        }
+        Object.defineProperty(requestConfig,'body',{
+          value:fd
+        });
+      }else{
+        requestConfig = {
+          credentials: 'include',
+          method: type,
+          headers: { 'Content-Type': 'application/json', 'mhscAuth': '3,0,' + headerId, },
+          mode: "cors",
+          cache: "force-cache"
+        };
+        Object.defineProperty(requestConfig, 'body', {
+          value: JSON.stringify(data)
+        });
       }
     }
 
     return new Promise((resolve, reject) => {
-      if(typeof load !== 'function'||load()!='down'){
+      if(typeof load !== 'function'||(typeof load === 'function'&&load()!='down')){
         fetch(url, requestConfig)
         .then(response => {
           NProgress.done();
@@ -114,17 +114,18 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
       }else if(load&&typeof load == 'function'&&load()=='down'){
         fetch(url,requestConfig)
         .then(res =>{
-            if(res.headers.get('Content-Type').indexOf('excel') > -1){
-              res.blob()
-              .then(blob => {
-                var a = document.createElement('a'); 
-                var url = window.URL.createObjectURL(blob);   
-                var filename = '佣金账户列表'; 
-                a.href = url; 
-                a.download = filename; 
-                a.click(); 
-                window.URL.revokeObjectURL(url);
-              })
+          NProgress.done();
+          if(res.headers.get('Content-Type').indexOf('excel') > -1){
+          res.blob()
+          .then(blob => {
+              var a = document.createElement('a'); 
+              var url = window.URL.createObjectURL(blob);   
+              var filename = '佣金账户列表'; 
+              a.href = url; 
+              a.download = filename; 
+              a.click(); 
+              window.URL.revokeObjectURL(url);
+            })
             }else{
               res.json()
               .then(res=>{
