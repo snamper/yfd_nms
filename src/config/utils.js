@@ -29,9 +29,8 @@ export const errorDeal=(res,cb)=>{
  * iframe 文件下载
  */
 export const createDownload=(url,cb)=>{
-    debugger;
-	var body=document.getElementsByTagName("body")[0],
-	ifr=document.getElementById("downLoadForm"),
+	var body = document.getElementsByTagName("body")[0],
+	ifr = document.getElementById("downLoadForm"),
     form = document.createElement("form"),
     input = document.createElement("input");
     if(!ifr){
@@ -58,7 +57,7 @@ export const createDownload=(url,cb)=>{
     form.setAttribute("style","display:none");
     form.setAttribute("target","downLoadForm");
     form.setAttribute("enctype","application/x-www-form-urlencoded;charset=utf-8");
-    form.setAttribute("method","get");
+    form.setAttribute("method","post");
     form.setAttribute("action",url);
 
     input.setAttribute("type","hidden");

@@ -167,6 +167,12 @@ export const getPickCardSim=(data,load)=>fetch("/nms/w/order/sim-section",data,"
 export const getPickCardNum=(data,load)=>fetch("/nms/w/order/numbers",data,"POST",load)
 /*提卡订单发货*/
 export const pickCardDeliver=(data,load)=>fetch("/nms/w/order/deliver",data,"POST",load)
+/*提卡订单列表下载*/
+export const pickCardExcelDownload=(data,load)=>fetch("/nms/w/order/exportPurchase",data,"GET",load)
+/**提卡订单发货单导出 */
+export const pickCardOrderDownload=(data,load)=>fetch("/nms/w/order/export-order",data,"GET",load)
+/**提卡订单发货单批量导出 */
+export const pickCardOrdersDownload=(data,load)=>fetch("/nms/w/order/export-orders",data,"GET",load)
 /*编辑订单话分备注*/
 export const updateRemark=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
 

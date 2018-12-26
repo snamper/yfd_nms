@@ -141,21 +141,22 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
       }else if(load&&typeof load == 'function'&&load()=='down'){
         fetch(url,requestConfig)
         .then(res =>{
-          NProgress.done();
           if(res.headers.get('Content-Type').indexOf('excel') > -1){
           res.blob()
           .then(blob => {
               var a = document.createElement('a'); 
               var url = window.URL.createObjectURL(blob);   
-              var filename = '佣金账户列表'; 
+              var filename = '下载文件'; 
               a.href = url; 
               a.download = filename; 
               a.click(); 
               window.URL.revokeObjectURL(url);
+              NProgress.done(); 
             })
             }else{
               res.json()
               .then(res=>{
+                NProgress.done();
                 errorDeal(res);
               })
             }

@@ -35,8 +35,8 @@ module.exports = {
             }
         },
         '/nms/':{
-            target:'http://192.168.10.48:10023',
-            // target:'http://192.168.10.103:8080',
+            // target:'http://192.168.10.48:10023',
+            target:'http://192.168.10.103:8080',
             changeOrigin:true,
             pathRewrite:{
                 '^/nms/' : '/nms/'

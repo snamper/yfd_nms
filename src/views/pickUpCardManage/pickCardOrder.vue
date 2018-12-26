@@ -127,7 +127,10 @@
                 <td colspan="15">
                   <div class="listHeader">
                     <label style="text-align:left;padding-left:5px;">订单列表<span class="f-fw greyFont">({{form.page||'0'}})</span></label>
-                    <label style="text-align:right;padding-right:20px;"><button v-if="searchResult.length>0" @click="downLoad" class="btnDownload">导出</button></label>
+                    <el-row>
+                      <el-button size="mini" v-if="searchResult.length>0" @click="downLoad(1)" type="success">下载订单列表</el-button>
+                      <el-button style="margin-right:10px" size="mini" v-if="searchResult.length>0" @click="downLoad(2)" type="success">批量下载发货单</el-button>
+                    </el-row>
                   </div>
                 </td>
               </tr>
@@ -139,7 +142,7 @@
                 <td>所属渠道</td>
                 <td>产品包</td>
                 <td>付款金额(元)</td>
-                <td>提卡人</td>
+                <td>操作人</td>
                 <td>付款方式</td>
                 <td>订单状态</td>
                 <td>物流单号</td>
@@ -164,8 +167,11 @@
                   </p>
                 </td>
                 <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
+                <!-- <td>
+                  {{v.agentName||'--'}}
+                </td> -->
                 <td>
-                  <span>{{v.agentName||'--'}}</span>
+                  {{v.operatorName||'--'}}
                 </td>
                 <td>
                   <span v-if="v.paymentType==0">未付款</span>
@@ -182,20 +188,24 @@
                   </span>
                 </td>
                 <td>
-                  <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId||'--'}}</a>
+                  <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId}}</a>
+                  <a @click="changeLogisticsInfo(v)" v-if="v.deliveryState==2">
+                    {{v.deliveryOrderId?'编辑':'填写物流信息'}}
+                  </a>
                 </td>
                 <td>
-                  <span v-if="upindex!=i">{{v.remark||"--"}}</span>
+                  <span v-if="upindex!=i">{{v.remark}}</span>
                   <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
                 </td>
                 <td>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="changeLogisticsInfo(v)">填写物流信息</el-button>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState == 2&&v.orderState == 1&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="confirm(v)">确认收货</el-button>
-                  <el-button v-if="v.paymentState==1&&v.orderState == 1&&v.paymentType==4" class="m-small-btn" style="margin:5px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
-                  <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:5px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
+                  <!-- <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="changeLogisticsInfo(v)">填写物流信息</el-button> -->
+                  <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirm(v)">收货</el-button>
+                  <el-button v-if="v.paymentState==1&&v.orderState==1&&v.paymentType==4" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
+                  <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
+                  <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1&&v.deliveryState==2" class="m-small-btn"  style="margin:0px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
                 </td>
               </tr>
               <tr v-if="searchResult.length<=0">
@@ -233,10 +243,12 @@ import {
   getStore,
   cloneObj
 } from "../../config/utils";
-import { requestPickupOrder,pickCardDeliver,updateRemark } from "../../config/service.js";
+import { requestPickupOrder,pickCardDeliver,updateRemark,pickCardExcelDownload,pickCardOrderDownload,pickCardOrdersDownload } from "../../config/service.js";
 import { disabledDate } from "../../config/utilsTimeSelect";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
+import NProgress from 'nprogress';
+// import 'nprogress/nprogress.css';
 export default {
   data() {
     return {
@@ -358,7 +370,7 @@ export default {
           userPhone: vm.userPhone
         };
       }
-      vm.downLoadJson = cloneObj(data);
+      vm.downLoadJson = data;
       requestPickupOrder(data)
         .then(data => {
           if (data.code == 200) {
@@ -376,25 +388,47 @@ export default {
           })
         );
     },
-    downLoad() {
-      let vm = this,
-        parameter = "",
-        url = "/nms/w/order/exportPurchase?",
-        userInfo = getStore("YFD_NMS_INFO");
-      let json = Object.assign(vm.downLoadJson, userInfo);
-      delete json.pageNum;
-      delete json.pageSize;
-      Object.keys(json).map(key => {
-        url += key + "=" + json[key] + "&";
-      });
-      url = url.substring(0, url.length - 1);
-      // window.location.href=url;
-      url = url.substring(0, url.length - 1);
-      var elemIF = document.createElement("iframe");
-      elemIF.src = url;
-      var ee = elemIF.contentWindow;
-      elemIF.style.display = "none";
-      document.body.appendChild(elemIF);
+    downLoad(i,v) {
+      // NProgress.start();
+      // try{
+      //   let vm = this,
+      //     parameter = "",
+      //     url = "/nms/w/order/exportPurchase?",
+      //     userInfo = getStore("YFD_NMS_INFO");
+      //   let json = Object.assign(vm.downLoadJson, userInfo);
+      //   delete json.pageNum;
+      //   delete json.pageSize;
+      //   Object.keys(json).map(key => {
+      //     url += key + "=" + json[key] + "&";
+      //   });
+      //   url = url.substring(0, url.length - 1);
+      //   url = url.substring(0, url.length - 1);
+      //   createDownload(url,()=>{NProgress.done()})
+      // }catch(err){
+      //   NProgress.done();
+      // }
+      
+      // var elemIF = document.createElement("iframe");
+      // elemIF.src = url;
+      // var ee = elemIF.contentWindow;
+      // elemIF.style.display = "none";
+      // document.body.appendChild(elemIF);
+      // createDownload(url,()=>{})
+      let vm = this,json;
+      if(i==1){
+        json = vm.downLoadJson;
+        delete json.pageNum;
+        delete json.pageSize;
+        pickCardExcelDownload(json,()=>{return "down" })
+      }else if(i==2){
+        json = vm.downLoadJson;
+        json.pageNum=vm.currentPage;
+        json.pageSize=15;
+        pickCardOrdersDownload(json,()=>{return "down" })
+      }else if(i==3){
+        json={sysOrderId:v};
+        pickCardOrderDownload(json,()=>{return "down" })
+      }
     },
     details(v) {
       let vm = this;
@@ -640,7 +674,15 @@ export default {
   display: flex;
 }
 
-.listHeader label {
+.listHeader label:nth-child(1) {
+  flex: 2;
+  line-height: 40px;
+}
+.listHeader label:nth-child(2) {
+  flex: 1;
+  line-height: 40px;
+}
+.listHeader label:nth-child(3) {
   flex: 1;
   line-height: 40px;
 }
