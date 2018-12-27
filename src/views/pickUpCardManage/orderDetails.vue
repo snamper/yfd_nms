@@ -43,7 +43,7 @@
             </el-col>
             <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
             <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-              <!-- <p class="f-lh-30"><span class="f-ls-1">状态变更人&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.operatorName||'--'}}</span></p> -->
+              <p class="f-lh-30"><span class="f-ls-1">状态变更人&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.operatorName||'--'}}</span></p>
             </el-col>
           </el-row>
         </div>
