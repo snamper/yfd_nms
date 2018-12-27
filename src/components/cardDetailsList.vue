@@ -68,9 +68,9 @@
             <div class="m-details">
                 <div class="m-number-list" style="width:100%;height:100%;">
                     <p v-for="(v,i) of dataListLiang" :key="i">
-                        <span class="f-s-12" style="text-align:center;padding:10px 0;" v-for="(v,i) of dataListLiang[i]" :key="i">
-                            <span>{{v.phone}}</span><br>
-                            <!-- SIM号:<span>{{v.sim}}</span> -->
+                        <span class="f-s-12" style="text-align:left;padding:10px;" v-for="(v,i) of dataListLiang[i]" :key="i">
+                            手机号:<span>{{v.phone}}</span><br>
+                            SIM号:<span>{{v.sim}}</span>
                         </span>
                         <!-- <td v-for="(v,i) of dataListLiang[i]" :key="i">
                             <el-popover
@@ -127,9 +127,9 @@
             <div class="m-details">
                 <div class="m-number-list" style="width:100%;height:100%;">
                     <p v-for="(v,i) of dataListPu" :key="i">
-                        <span class="f-s-12" style="text-align:center;padding:10px 0;" v-for="(v,i) of dataListPu[i]" :key="i">
-                            <span>{{v.phone}}</span><br>
-                            <!-- SIM号:<span>{{v.sim}}</span> -->
+                        <span class="f-s-12" style="text-align:left;padding:10px;" v-for="(v,i) of dataListPu[i]" :key="i">
+                            手机号:<span>{{v.phone}}</span><br>
+                            SIM号:<span>{{v.sim}}</span>
                         </span>
                         <!-- <td v-for="(v,i) of dataListPu[i]" :key="i">
                             <el-popover
