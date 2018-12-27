@@ -91,7 +91,7 @@
   </section>
 </template>
 <script>
-import { getTimeFunction, translateData, getDateTime, errorDeal, createDownload,getStore } from "../../config/utils";
+import { getTimeFunction, translateData, getDateTime, errorDeal,getStore } from "../../config/utils";
 import { cmsdetails,cmstype} from "../../config/service.js";
 import { mapState } from "vuex";
 import Rebate from './flxq';

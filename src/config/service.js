@@ -17,7 +17,7 @@ export const requestsetSyncTime=(data,load)=>fetch("/uus/w/setting/add",data,"PO
 /* 提卡订单管理 */ 
 export const requestPickupOrder=(data,load)=>fetch("/nms/w/order/search",data,"POST",load)
 export const requestProductDetails=(data,load)=>fetch("/nms/w/number/getProductDetail",data,"POST",load)
-export const requestChangeLogisticsId=(data)=>fetch("/nms/w/order/modifyDeliverOrderId",data,"POST")
+export const requestChangeLogisticsId=(data)=>fetch("/nms/w/order/modifyDeliveryOrderId",data,"POST")
 export const requestConfirmTakeGoods=(data)=>fetch("/nms/w/order/modifyState",data,"POST")
 export const requestConfirmPayMent=(data)=>fetch("/nms/w/order/confirmPayment",data,"POST")
 export const requestModify_Price=(data)=>fetch("/nms/w/number/modifyCartPrice",data,"POST")
