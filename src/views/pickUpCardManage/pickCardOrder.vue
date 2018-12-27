@@ -194,7 +194,7 @@
                   </a>
                 </td>
                 <td>
-                  <span v-if="upindex!=i">{{v.remark}}</span>
+                  <span v-if="upindex!=i">{{v.rebateRemark}}</span>
                   <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
@@ -389,31 +389,6 @@ export default {
         );
     },
     downLoad(i,v) {
-      // NProgress.start();
-      // try{
-      //   let vm = this,
-      //     parameter = "",
-      //     url = "/nms/w/order/exportPurchase?",
-      //     userInfo = getStore("YFD_NMS_INFO");
-      //   let json = Object.assign(vm.downLoadJson, userInfo);
-      //   delete json.pageNum;
-      //   delete json.pageSize;
-      //   Object.keys(json).map(key => {
-      //     url += key + "=" + json[key] + "&";
-      //   });
-      //   url = url.substring(0, url.length - 1);
-      //   url = url.substring(0, url.length - 1);
-      //   createDownload(url,()=>{NProgress.done()})
-      // }catch(err){
-      //   NProgress.done();
-      // }
-      
-      // var elemIF = document.createElement("iframe");
-      // elemIF.src = url;
-      // var ee = elemIF.contentWindow;
-      // elemIF.style.display = "none";
-      // document.body.appendChild(elemIF);
-      // createDownload(url,()=>{})
       let vm = this,json;
       if(i==1){
         json = vm.downLoadJson;
@@ -538,7 +513,7 @@ export default {
       vm.off.updateRemark=true;
       vm.upindex=i;
       if(t=='remark'){
-        vm.newRemark=v.remark;
+        vm.newRemark=v.rebateRemark;
       }else if(t=="remarkYes"){
         let json={
           rebateRemark:vm.newRemark,
