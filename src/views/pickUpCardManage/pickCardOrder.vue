@@ -191,7 +191,7 @@
                     {{v.deliveryOrderId?'编辑':'填写物流信息'}}
                   </a>
                 </td>
-                <td class="f-ta-r">
+                <td>
                   <span v-if="upindex!=i">{{v.rebateRemark}}</span>
                   <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">

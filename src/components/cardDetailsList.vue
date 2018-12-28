@@ -44,7 +44,6 @@
                                 {{getDateTime(dataList.modifyTime)[6]}}
                             </span>
                         </td>
-                        <!-- <td>修改时间 ：{{new Date(dataList.modifyTime).toLocaleString()||'--'}}</td> -->
                     </tr>
                     <tr>
                         <td>归属品牌 ： </td>
