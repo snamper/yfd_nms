@@ -85,7 +85,7 @@
           <el-col ors:xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
-                <div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div>
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">订单状态：</div>
               </el-col>
               <el-col :xs="18" :sm="16" :md="20" :lg="16" :xl="16">
                 <el-radio v-model="orderState" label="0">全部</el-radio>
@@ -138,12 +138,12 @@
                 <td>序号</td>
                 <td>订单号码</td>
                 <td>创建时间</td>
+                <td>产品包</td>
                 <td>商户名称</td>
                 <td>所属渠道</td>
-                <td>产品包</td>
-                <td>付款金额(元)</td>
                 <td>操作人</td>
                 <td>付款方式</td>
+                <td>付款金额(元)</td>
                 <td>订单状态</td>
                 <td>物流单号</td>
                 <td>备注</td>
@@ -153,10 +153,6 @@
                 <td>{{((pa-1)*15+(i+1))}}</td>
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{v.createTime.split(' ')[0]}}</td>
-                <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
-                <td>
-                  <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
-                </td>
                 <td>
                   <p v-if="v.isShow==true&&v.productList.length>0" class="abcd" v-for="(x,y) in v.productList" :key="y">
                     <span class="listSpan">{{x.productName}}</span>
@@ -166,13 +162,16 @@
                     <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                   </p>
                 </td>
-                <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
+                <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
+                <td>
+                  <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
+                </td>
                 <td>
                   {{v.agentName||'--'}}<br>
                   {{v.agentPhone}}
                 </td>
                 <td>
-                  <span v-if="v.paymentType==0">未付款</span>
+                  <span v-if="v.paymentType==0">--</span>
                   <span v-if="v.paymentType==1">支付宝</span>
                   <span v-if="v.paymentType==2">微信</span>
                   <span v-if="v.paymentType==3">账户支付</span>
@@ -180,6 +179,8 @@
                   <span v-if="v.paymentType==5">支付宝(威富通)</span>
                   <span v-if="v.paymentType==6">微信(威富通)</span>
                 </td>
+                <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
+                
                 <td>
                   <span :class="checkOrderStatus(v).style">
                     {{checkOrderStatus(v).title}}
@@ -467,41 +468,45 @@ export default {
           title: "待付款",
           style: "red"
         });
-      }
-      if (v.paymentState == 1 && v.orderState == 3) {
+      }else if (v.paymentState == 2 && v.orderState == 1) {
+        return (orderState = {
+          title: "已付款",
+          style: "blue"
+        });
+      }else if (v.paymentState == 1 && v.orderState == 3) {
         return (orderState = {
           title: "手动关闭",
           style: "red"
         });
-      }
-      if (v.paymentState == 1 && v.orderState == 4) {
+      }else if (v.paymentState == 1 && v.orderState == 4) {
         return (orderState = {
           title: "自动关闭",
           style: "red"
         });
-      }
-      if (v.paymentState == 2 && v.returnFlag == 1) {
+      }else if (v.paymentState == 2 && v.returnFlag == 1) {
         return (orderState = {
           title: "已退卡",
           style: "red"
         });
-      }
-      if (v.deliveryState == 1) {
+      }else if (v.deliveryState == 1) {
         return (orderState = {
           title: "待发货",
           style: "blue"
         });
-      }
-      if (v.deliveryState == 2) {
+      }else if (v.deliveryState == 2) {
         return (orderState = {
           title: "已发货",
           style: "blue"
         });
-      }
-      if (v.orderState == 2) {
+      }else if (v.orderState == 2) {
         return (orderState = {
           title: "已完成",
           style: "green"
+        });
+      }else{
+        return (orderState = {
+          title: "--",
+          style: "--"
         });
       }
     },
