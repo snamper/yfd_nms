@@ -467,19 +467,19 @@ export default {
       if (v.paymentState == 1 && v.orderState == 1 && v.deliveryState==0) {
         return (orderState = {
           title: "待付款",
-          style: "red"
+          style: "blue"
         });
       }else if (v.paymentState == 2 && v.orderState == 1 && v.deliveryState==1 ) {
         return (orderState = {
           title: "待发货",
           style: "blue"
         });
-      }else if (v.paymentState == 1 && v.orderState == 3 && v.deliveryState==1) {
+      }else if ( v.orderState == 3) {
         return (orderState = {
           title: "手动关闭",
           style: "red"
         });
-      }else if (v.paymentState == 1 && v.orderState == 4&&v.deliveryState==1) {
+      }else if ( v.orderState == 4) {
         return (orderState = {
           title: "自动关闭",
           style: "red"
