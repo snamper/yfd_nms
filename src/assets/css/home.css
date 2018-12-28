@@ -627,6 +627,7 @@ b.countIcon{
   }
 }
 #nprogress .bar {
-  background: #0225ec !important; 
-  height: 4px !important;
+  background: #409eff !important; 
+  border:  #409eff !important; 
+  height: 5px !important;
 }

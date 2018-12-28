@@ -124,9 +124,6 @@
     errorDeal,
     translateData
   } from "../../config/utils";
-  import {
-    Loading
-  } from 'element-ui';
   import cardDetails from "../../components/pickupCardList.vue";
   export default {
     props: {

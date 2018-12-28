@@ -60,7 +60,6 @@
 </section>
 </template>
 <script>
-import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { errorDeal,getStore } from '../../config/utils';
 export default{

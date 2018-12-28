@@ -305,7 +305,6 @@
 </template>
 <script>
 import "element-ui/lib/theme-chalk/display.css";
-import { Loading } from "element-ui";
 import {
   getDateTime,
   errorDeal,
@@ -522,7 +521,6 @@ export default {
       data.searchProductId = v.productId;
       vm.searchProductListId = v.productId;
       data.sessionType = "2";
-      // let load=Loading.service(options);
       let p1 = new Promise((resolve, reject) => {
         if (v.productType == 1 || v.productType == 2) {
           url = "/nms/w/number/getMngCuteNumbers";

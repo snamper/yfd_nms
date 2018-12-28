@@ -226,9 +226,6 @@
 <script>
   import 'element-ui/lib/theme-chalk/display.css';
   import {
-    Loading
-  } from 'element-ui';
-  import {
     getDateTime,
     errorDeal,
     translateData,

@@ -126,7 +126,6 @@
   </div>	 
 </template>
 <script>
-import { Loading } from 'element-ui';
 import {requestMethod} from "../../config/service.js"; 
 import { getStore,getDateTime,getUnixTime,errorDeal,checkMobile,translateData,translateRole } from "../../config/utils.js";
 import staffDetails from "../../components/staffDetails.vue";

@@ -111,9 +111,6 @@
     getDateTime,
     errorDeal
   } from '../../config/utils.js';
-  import {
-    Loading
-  } from 'element-ui';
   import layerConfirm from '../../components/layerConfirm';
   import cardList from "../../components/cardInCartDetailsList.vue";
   export default {
@@ -213,7 +210,6 @@
           vm.searchProductListId = v.productId;
           data.searchProductId = v.productId;
           data.sessionType = "2";
-          let load = Loading.service(options);
           let p1 = new Promise((resolve, reject) => {
             if (v.productType == 1 || v.productType == 2) {
               url = "/nms/w/number/getMngCuteNumbers";

@@ -268,7 +268,6 @@ import companyDetails from "./companyDetails";
 import VDistpicker from "v-distpicker";
 import layerSync from "./layerSyncDls";
 import dlsDetails from "./dlsDetails";
-import { debug } from 'util';
 export default {
   name: "dls",
   data() {
