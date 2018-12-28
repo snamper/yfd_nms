@@ -464,7 +464,7 @@ export default {
     checkOrderStatus(v) {
       var orderState = "";
       if(v.paymentState) 
-      if (v.paymentState == 1 && v.orderState == 1 && v.deliveryState==1) {
+      if (v.paymentState == 1 && v.orderState == 1 && v.deliveryState==0) {
         return (orderState = {
           title: "待付款",
           style: "red"
