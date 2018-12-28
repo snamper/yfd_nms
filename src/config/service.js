@@ -175,6 +175,11 @@ export const pickCardOrderDownload=(data,load)=>fetch("/nms/w/order/export-order
 export const pickCardOrdersDownload=(data,load)=>fetch("/nms/w/order/export-orders",data,"GET",load)
 /*编辑订单话分备注*/
 export const updateRemark=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
+/**库存管理导出 */
+export const exportStorage=(data,load)=>fetch("/nms/w/number/exportStorage",data,"GET",load)
+/**开卡订单导出 */
+export const exportOpenCard=(data,load)=>fetch("/nms/w/openReadyCard/exportOpenCard",data,"GET",load)
+
 
 
 

@@ -166,7 +166,8 @@ import {
 } from "../../config/utils";
 import {
   requestOpenCardOrder,
-  requestOpenCardDetails
+  requestOpenCardDetails,
+  exportOpenCard
 } from "../../config/service.js";
 import orderDetails from "./orderDetails";
 import Base64 from "../../config/utils/base64.js";
@@ -273,20 +274,11 @@ export default {
     },
     downLoad() {
       let vm = this,
-        parameter = "",
-        url = "/nms/w/openReadyCard/exportOpenCard?",
-        userInfo = getStore("YFD_NMS_INFO");
-      let json = Object.assign(vm.searchJson, userInfo);
-      delete json.pageNum;
-      delete json.pageSize;
-      Object.keys(json).map(key => {
-        url += key + "=" + json[key] + "&";
-      });
-      url = url.substring(0, url.length - 1);
-      var elemIF = document.createElement("iframe");
-      elemIF.src = url;
-      elemIF.style.display = "none";
-      document.body.appendChild(elemIF);
+        userInfo = getStore("YFD_NMS_INFO"),
+        json = Object.assign(vm.searchJson, userInfo);
+        delete json.pageNum;
+        delete json.pageSize;
+        exportOpenCard(json,()=>{return 'down'})
     },
     details(v) {
       let vm = this;

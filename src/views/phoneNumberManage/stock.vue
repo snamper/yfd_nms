@@ -234,7 +234,8 @@
   import {
     getNumberStorage,
     getCityList,
-    getNumberStorageThousand
+    getNumberStorageThousand,
+    exportStorage
   } from "../../config/service.js";
   import stockDetails from './stockDetails.vue';
   const cityOptions = ['远特', '蜗牛', '迪信通', '极信', '小米', '海航', '乐语', '苏宁互联', '国美', '联想', '蓝猫移动', '长城', '中邮','鹏博士','天音'],
@@ -357,22 +358,11 @@
       },
       download() {
         let vm = this,
-          parameter = "",
-          url = "/nms/w/number/exportStorage?",
-          userInfo = getStore('YFD_NMS_INFO');
-        let json = Object.assign(vm.downloadData, userInfo);
+          userInfo = getStore('YFD_NMS_INFO'),
+          json = Object.assign(vm.downloadData, userInfo);
         delete json.pageNum;
         delete json.pageSize;
-        Object.keys(json).map((key) => {
-          url += key + '=' + json[key] + '&';
-        })
-        url = url.substring(0, url.length - 1);
-        url = url.substring(0, url.length - 1);
-        var elemIF = document.createElement("iframe");
-        elemIF.src = url;
-        var ee = elemIF.contentWindow;
-        elemIF.style.display = "none";
-        document.body.appendChild(elemIF);
+        exportStorage(json,()=>{ return "down" });
       },
       getSectionDetails(v) {
         let vm = this;
