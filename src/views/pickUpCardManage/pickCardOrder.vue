@@ -464,16 +464,23 @@ export default {
     checkOrderStatus(v) {
       var orderState = "";
       if(v.paymentState) 
-      if (v.paymentState == 1 && v.orderState == 1 && v.deliveryState==0) {
-        return (orderState = {
-          title: "待付款",
-          style: "blue"
-        });
-      }else if (v.paymentState == 2 && v.orderState == 1 && v.deliveryState==1 ) {
-        return (orderState = {
-          title: "待发货",
-          style: "blue"
-        });
+      if(v.orderState==1){
+        if(v.paymentState == 1 && v.deliveryState==0){
+          return {
+            title: "待付款",
+            style: "blue"
+          }
+        }else if(v.paymentState == 2 && v.deliveryState==1){
+          return {
+            title: "待发货",
+            style: "blue"
+          }
+        }else if(v.paymentState == 2 &&v.deliveryState == 2){
+           return {
+            title: "已发货",
+            style: "blue"
+          }
+        }
       }else if ( v.orderState == 3) {
         return (orderState = {
           title: "手动关闭",
@@ -484,12 +491,7 @@ export default {
           title: "自动关闭",
           style: "red"
         });
-      }else if (v.paymentState == 2 && v.orderState == 1&&v.deliveryState == 2) {
-        return (orderState = {
-          title: "已发货",
-          style: "blue"
-        });
-      }else if (v.paymentState == 2 && v.orderState == 2&&v.deliveryState == 2) {
+      }else if (v.orderState == 2) {
         return (orderState = {
           title: "已完成",
           style: "green"
