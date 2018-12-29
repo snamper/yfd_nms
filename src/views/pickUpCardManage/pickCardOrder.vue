@@ -461,54 +461,53 @@ export default {
       this.$set(vm.searchResult[i], "isShow", !vm.searchResult[i].isShow);
     },
     checkOrderStatus(v) {
-      var orderState = "";
       if (v.returnFlag == 1) {
-        return (orderState = {
+        return {
           title: "已退卡",
           style: "red"
-        });
+        }
       }else if (v.orderState == 2) {
-        return (orderState = {
+        return {
           title: "已完成",
           style: "green"
-        });
+        }
       }else if ( v.orderState == 3) {
-        return (orderState = {
+        return {
           title: "手动关闭",
           style: "red"
-        });
+        }
       }else if ( v.orderState == 4) {
-        return (orderState = {
+        return {
           title: "自动关闭",
           style: "red"
-        });
+        }
       }else if(v.orderState==1){
-        if(v.paymentState == 1 && v.deliveryState==0){
-          return (orderState = {
+        if(v.paymentState == 1&&v.deliveryState==0){
+          return {
             title: "待付款",
             style: "blue"
-          })
-        }else if(v.paymentState == 2 && v.deliveryState == 1){
-          return (orderState = {
+          }
+        }else if(v.paymentState == 2&& v.deliveryState == 1){
+          return {
             title: "待发货",
             style: "blue"
-          })
-        }else if(v.paymentState == 2 &&v.deliveryState == 2){
-           return (orderState = {
+          }
+        }else if(v.paymentState == 2&&v.deliveryState == 2){
+           return {
             title: "已发货",
             style: "blue"
-          })
+          }
         }else{
-          return (orderState = {
+          return {
             title: "--",
             style: "--"
-          })
+          }
         }
       }else{
-        return (orderState = {
+        return {
           title: "--",
           style: "--"
-        });
+        }
       }
     },
     modify(t,v,i){
