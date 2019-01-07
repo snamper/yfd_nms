@@ -43,7 +43,7 @@
             </el-col>
             <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
               <div class="block">
-                <el-date-picker v-model="startTime" size="small" type="date" :clearable=false :editable=false style="border-radius:4px 0 4px 0" placeholder="选择开始时间">
+                <el-date-picker v-model="startTime3" size="small" type="date" :clearable=false :editable=false style="border-radius:4px 0 4px 0" placeholder="选择开始时间">
                 </el-date-picker><el-date-picker v-model="endTime" size="small" type="date" :clearable=false :editable=false placeholder="选择结束时间">
                 </el-date-picker>
                 ( <el-radio v-model="timeType" label="1">创建时间</el-radio>
@@ -155,7 +155,7 @@
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{v.createTime.split(' ')[0]}}</td>
                 <td>
-                  <p v-if="v.isShow==true&&v.productList.length>0" v-for="(x,y) in v.productList" :key="y">
+                  <p v-if="v.isShow&&v.productList.length>0" v-for="(x,y) in v.productList" :key="y">
                     <span class="listSpan">{{x.productName}}</span>
                     <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
                   </p>
@@ -267,7 +267,7 @@ export default {
       cardType: ["1", "2", "3"], //产品类型
       splitCheck: "1,2", //售卖方式
       payMent: "0", //支付方式
-      startTime: "",
+      startTime3: "",
       endTime: "",
       downLoadJson: "",
       userPhone: "",
@@ -358,7 +358,7 @@ export default {
           productType: "",
           searchType: vm.form.searchKind,
           timeType: vm.timeType,
-          startTime: new Date(vm.startTime).getTime(),
+          startTime: new Date(vm.startTime3).getTime(),
           endTime: new Date(vm.endTime).getTime(),
           orderState: vm.orderState,
           depName: vm.dealerName,
