@@ -74,7 +74,6 @@
 <script>
   import {
     getDateTime,
-    getUnixTime,
     errorDeal,
     translateData
   } from "../config/utils.js";

@@ -127,34 +127,6 @@ export const getDateTime= e =>{
 }
 
 /**
- * 日期转时间戳
- */
-export const getUnixTime= e =>{
-	var t;
-	if(e){
-		e=e.replace(/-/g,'/');
-		t=new Date(e);
-	}else t= new Date();
-	return t.getTime().toString();
-}
-/**
- * 秒数格式化
- */
-export const secondsFormat=(v)=>{
-	v=parseInt(v);
-    var day,minute,second,hour;
-    day=Math.floor(v/(60*60*24));
-    hour=Math.floor(v%(60*60*24)/(60*60));
-    minute=Math.floor(v%(60*60)/60);
-    second=Math.floor(v%60);
-    hour<10&&(hour='0'+hour);
-    minute<10&&(minute='0'+minute);
-    second<10&&(second='0'+second);
-    return day!='00' ? day+"天"+hour+":"+minute+":"+second : 
-	    hour!='00' ? hour+":"+minute+":"+second : 
-	    minute!='00' ? "00:"+minute+":"+second : "00:00:"+second;
-}
-/**
  * 验证手机号
  */
 export const checkMobile=(v,f)=>{ 
@@ -190,7 +162,7 @@ export const checkNumberSection=(v,f)=>{
  *去除空格
  */
 export const trimFunc=(v)=>{
-    return v.replace(/^\s\s*/, '').replace(/\s\s*$/, '');
+    return v.replace(/^\s\s*/,'').replace(/\s\s*$/,'');
 }
 /**
  * 开卡订单-数据翻译
@@ -260,8 +232,6 @@ export const translateData=(type,v,d)=> {
             v==11?'远特数据费用4%话分奖励':
             v==12?'卡盟达标奖励':'--';
         break;
-            // return v==1?'迪加激活返3元':v==2?'T+2月开来显返款1元':v==3?'连续3个月在网开来显返还1元':v==4?'开通来显返利1元3年期':v==5?'T+2月开来显返0.5元':v==6?'模组套餐返1元、0.5元'
-            // :v==7?'代理话分':v==8?'合创话分':v==9?'数据费用4%话分':v==10?'远特充20返2元':v==11?'苏宁激活充值奖励':v==12?'苏宁来显奖励':'--';
     }
 }
 
@@ -360,23 +330,6 @@ export const initTime=(t,d)=>{
     let endTime=new Date(Next).getTime()-1000;
     vm.optime=[startTime,endTime];
 }
-/**
- * 对象深拷贝
- */
-export const cloneObj =  (obj) => { 
-    if(obj === null) return null 
-    if(typeof obj !== 'object') return obj;
-    if(obj.constructor===Date) return new Date(obj); 
-    if(obj.constructor === RegExp) return new RegExp(obj);
-    var newObj = new obj.constructor ();  //保持继承链
-    for (var key in obj) {
-        if (obj.hasOwnProperty(key)) {   //不遍历其原型链上的属性
-            var val = obj[key];
-            newObj[key] = typeof val === 'object' ? arguments.callee(val) : val; // 使用arguments.callee解除与函数名的耦合
-        }
-    }  
-    return newObj;  
-}; 
 /*解决浮点计算精度丢失的问题*/
 Math.formatFloat = function (f, digit) {
     var m = Math.pow(10, digit);

@@ -147,6 +147,7 @@
                 <td>订单状态</td>
                 <td>物流单号</td>
                 <td>备注</td>
+                <td>已下载发货单</td>
                 <td>操作</td>
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
@@ -154,11 +155,11 @@
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{v.createTime.split(' ')[0]}}</td>
                 <td>
-                  <p v-if="v.isShow==true&&v.productList.length>0" class="abcd" v-for="(x,y) in v.productList" :key="y">
+                  <p v-if="v.isShow==true&&v.productList.length>0" v-for="(x,y) in v.productList" :key="y">
                     <span class="listSpan">{{x.productName}}</span>
                     <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
                   </p>
-                  <p v-if="!v.isShow&&v.productList.length>0" class="abcd">
+                  <p v-if="!v.isShow&&v.productList.length>0">
                     <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                   </p>
                 </td>
@@ -198,6 +199,7 @@
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
                 </td>
+                <td>{{v.receipt==0?'未打印':v.receipt==1?'已打印':'--'}}</td>
                 <td>
                   <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
                   <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirm(v)">收货</el-button>
@@ -239,7 +241,6 @@ import {
   trimFunc,
   createDownload,
   getStore,
-  cloneObj
 } from "../../config/utils";
 import { requestPickupOrder,pickCardDeliver,updateRemark,pickCardExcelDownload,pickCardOrderDownload,pickCardOrdersDownload } from "../../config/service.js";
 import { disabledDate } from "../../config/utilsTimeSelect";
@@ -552,9 +553,6 @@ export default {
     trimFunc(v) {
       return trimFunc(v);
     },
-    cloneObj(v) {
-      return cloneObj(v);
-    }
   }
 };
 </script>

@@ -54,7 +54,7 @@ module.exports = {
             target:'http://192.168.10.103:8080',
             changeOrigin:true,
             pathRewrite:{
-                '^/ors/' : '/ors/'
+              '^/ors/' : '/ors/'
             }
         },
         '/rfs/':{

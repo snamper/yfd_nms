@@ -202,15 +202,19 @@ span.iconFoldClose {
           </li>
         </ul>
         <ul class="g-side-ul">
-          <li :class="{active:crumb[0].name=='开卡订单管理'}">
+          <li :class="{active:crumb[0].name=='开卡管理'}">
             <b></b>
             <router-link to="/home/openCard">
               <div>
                 <i class="u-icon-kaika"></i>
-                <span>开卡订单管理</span>
-                <span :class="crumb[0].name=='开卡订单管理'?'iconFoldOpen':'iconFoldClose'"></span>
+                <span>开卡管理</span>
+                <span :class="crumb[0].name=='开卡管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
             </router-link>
+            <ul class="g-side-subul nav2">
+              <li><router-link to="/home/openCard/orderlist"><b></b>订单管理</router-link></li>
+              <li><router-link to="/home/openCard/operaterId"><b></b>工号管理</router-link></li>
+            </ul>
           </li>
         </ul>
         <ul class="g-side-ul">
@@ -467,9 +471,20 @@ export default {
       }
       if (path.indexOf("/home/openCard") > -1) {
         crumb[0] = {
-          name: "开卡订单管理",
+          name: "开卡管理",
           href: "/home/openCard"
         };
+        if(path.indexOf("/home/openCard/orderlist")>-1){
+          crumb[1] = {
+            name: "订单管理",
+            href: "/home/openCard/orderlist"
+          }
+        }else if(path.indexOf("/home/openCard/operaterId")>-1){
+          crumb[1] = {
+            name: "工号修改",
+            href: "/home/openCard/operaterId"
+          }
+        }
       }
       if (path.indexOf("/home/recharge") > -1) {
         crumb[0] = {

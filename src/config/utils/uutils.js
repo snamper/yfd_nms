@@ -39,6 +39,9 @@ export const errorDeal=(error)=>{
         });
     } 
 };
+export const windowJump=(url)=>{
+    window.location.href=url;
+}
 /**
  * 存储localStorage
  */
@@ -81,20 +84,6 @@ export const getDateTime= e =>{
         c = t.getSeconds();
     return n + "-" + a + "-" + r + " " + o + ":" + i + ":" + c;
 };
-/**
- * 日期转时间戳
- */
-export const getUnixTime= e =>{
-	var t;
-	if(e){
-		e=e.replace(/-/g,'/');
-		t=new Date(e);
-	}else t= new Date();
-	return t.getTime().toString();
-};
-export const windowJump=(url)=>{
-    window.location.href=url;
-}
 /**
  * 品牌翻译
  */
@@ -143,6 +132,7 @@ export const translateBrand=(value)=>{
     }
     return str;
 };
+/*格式化手机号样式*/
 export const phoneFormat=(value)=>{
     if(!value)return '--';
     value=parseInt(value).toString();
@@ -152,30 +142,3 @@ export const phoneFormat=(value)=>{
     w=w.join('');
     return w;
 };
-export const mathCentToYuan=function(value){
-    return (parseFloat(value)/100).toFixed(2);
-};
-
- export const  getBase64Image=function(img) {  
-    var canvas = document.createElement("canvas");  
-    var width = img.width;  
-    var height = img.height;  
-    // calculate the width and height, constraining the proportions   
-    if(width > height) {  
-        if(width > 100) {  
-            height = Math.round(height *= 100 / width);  
-            width = 100;  
-        }  
-    } else {  
-        if(height > 100) {  
-            width = Math.round(width *= 100 / height);  
-            height = 100;  
-        }  
-    }  
-    canvas.width = width; /*设置新的图片的宽度*/  
-    canvas.height = height; /*设置新的图片的长度*/  
-    var ctx = canvas.getContext("2d");  
-    ctx.drawImage(img, 0, 0, width, height); /*绘图*/  
-    var dataURL = canvas.toDataURL("image/png", 0.8);  
-    return dataURL.replace("data:image/png;base64,", "");  
-}  

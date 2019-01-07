@@ -127,7 +127,7 @@
 </template>
 <script>
 import {requestMethod} from "../../config/service.js"; 
-import { getStore,getDateTime,getUnixTime,errorDeal,checkMobile,translateData,translateRole } from "../../config/utils.js";
+import { getStore,getDateTime,errorDeal,checkMobile,translateData,translateRole } from "../../config/utils.js";
 import staffDetails from "../../components/staffDetails.vue";
 import { mapState } from 'vuex';
 export default{

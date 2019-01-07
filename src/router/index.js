@@ -175,10 +175,25 @@ const pickCardOrder = resolve => {
     });
 };
 //开卡订单管理
+
+const openCard = resolve => {
+    load(true);
+    require.ensure(["@/views/openCardManage"], () => {
+        resolve(require("@/views/openCardManage"));
+        load();
+    });
+};
 const openCardOrder = resolve => {
     load(true);
     require.ensure(["@/views/openCardManage/openCardOrder.vue"], () => {
         resolve(require("@/views/openCardManage/openCardOrder.vue"));
+        load();
+    });
+};
+const openCardOpId = resolve => {
+    load(true);
+    require.ensure(["@/views/openCardManage/openCardOpId.vue"], () => {
+        resolve(require("@/views/openCardManage/openCardOpId.vue"));
         load();
     });
 };
@@ -304,8 +319,18 @@ const router = new Router({
                 component: pickCardOrder,
             }, {
                 path: "openCard",
+                redirect: "openCard/orderlist",
                 name: "openCard",
-                component: openCardOrder,
+                component:openCard,
+                children:[{
+                    path:"orderlist",
+                    name:"orderlist",
+                    component:openCardOrder
+                },{
+                    path:"operaterId",
+                    name:"operaterId",
+                    component:openCardOpId
+                }]
             }, {
                 path: "recharge",
                 name: "recharge",

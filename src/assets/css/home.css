@@ -118,6 +118,10 @@ html::-webkit-scrollbar-thumb
   font-family: 'YouYuan';
   font-size:16px;
 }
+
+.g-side-nav{
+  overflow-y: auto;
+}
 .g-side-head img{
     width: 80%;
     margin-top: 10px;

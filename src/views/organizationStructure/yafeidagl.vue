@@ -373,7 +373,6 @@ import { requestMethod } from "../../config/service.js";
 import { mapState, mapMutations, mapActions } from "vuex";
 import {
   getDateTime,
-  getUnixTime,
   errorDeal,
   getStore,
   checkMobile,

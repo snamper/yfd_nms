@@ -188,7 +188,7 @@
     </section>
 </template>
 <script>
-import { getDateTime,getUnixTime,errorDeal,translateData } from "../config/utils.js";
+import { getDateTime,errorDeal,translateData } from "../config/utils.js";
 import { requestMethod } from "../config/service.js"
 export default{
     props:{dataList:Object,

@@ -162,7 +162,6 @@ import {
   getTimeFunction,
   translateData,
   getStore,
-  cloneObj
 } from "../../config/utils";
 import {
   requestOpenCardOrder,
@@ -297,9 +296,6 @@ export default {
     },
     translateData(v, i) {
       return translateData(v, i);
-    },
-    cloneObj(v) {
-      return cloneObj(v);
     }
   }
 };
