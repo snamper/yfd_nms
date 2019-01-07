@@ -8,7 +8,6 @@
         <tr>
           <td>序号</td>
           <td>账号</td>
-          <!-- <td>唯一主键</td> -->
           <td>操作人</td>
           <td>密码</td>
           <td>密钥</td>
@@ -17,7 +16,6 @@
         <tr v-for="(v,i) in searchResult" :key="i">
           <td>{{i+1}}</td>
           <td>{{v.dealerId}}</td>
-          <!-- <td>{{v.id}}</td> -->
           <td>{{v.operator}}</td>
           <td>{{v.password}}</td>
           <td>{{v.secretKey}}</td>
