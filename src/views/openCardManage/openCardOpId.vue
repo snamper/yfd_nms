@@ -1,25 +1,53 @@
 <template>
   <section>
-    <div class="f-fs16 m-title1 f-display-f">
-      <p style="flex:1"><span>工号列表</span></p><p v-if="false" style="flex:1;text-align:right"><el-button type="success" size="mini" @click="operate(1)">添加工号</el-button></p>
+    <div class="m-search">
+      <el-row>
+        <el-col :span="24">
+          <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+          <div class="grid-content bg-purple-light">
+            <el-col class="f-ta-l" :xs="4" :sm="3" :md="3" :lg="4" :xl="4">
+              <div class="grid-content bg-purple-dark f-ta-r inputTitle">归属渠道：</div>
+            </el-col>
+            <el-col :xs="14" :sm="10" :md="8" :lg="8" :xl="6">
+              <el-select @change="getOpId(departId)" size="small" style="width:100%" clearable v-model="departId" placeholder="请选择查询的归属渠道">
+                <el-option  v-for="item in options" :key="item.dealerId" :label="item.dealerIdName" :value="item.dealerId"
+                  size="small">
+                </el-option>
+              </el-select>
+            </el-col>
+          </div>
+        </el-col>
+      </el-row>
     </div>
-    <div class="m-searchlist">
+    <div v-if="searchResult" class="m-searchlist">
       <table>
         <tr>
           <td>序号</td>
-          <td>账号</td>
-          <td>操作人</td>
+          <td>部门名称</td>
+          <td>操作员工</td>
           <td>密码</td>
           <td>密钥</td>
+          <td>账户类型</td>
           <td>操作</td>
         </tr>
         <tr v-for="(v,i) in searchResult" :key="i">
           <td>{{i+1}}</td>
-          <td>{{v.dealerId}}</td>
-          <td>{{v.operator}}</td>
+          <td>{{v.dealerName}}</td>
+          <td>
+            <span v-if="!modifyop">{{v.operator}}</span>
+            <el-input v-if="modifyop" type="text" size="mini" style="max-width:200px;" v-model="roperator"/>
+          </td>
           <td>{{v.password}}</td>
           <td>{{v.secretKey}}</td>
-          <td><el-button type="success" size="mini" @click="operate(2,v)">修改</el-button></td>
+          <td>{{v.type==1?'靓号':v.type==2?'普号':v.type==3?'其他':'--'}}</td>
+          <td>
+            <el-button type="success" size="mini" @click="operate(3,v)">设为开卡员工</el-button>
+            <el-button v-if="!modifyop" type="primary" size="mini" @click="operate(2,v)">修改</el-button>
+            <el-button v-if="modifyop" @click="operate('ok',v)" type="warning" size="mini" style="width:80px;">确定</el-button></td>
         </tr>
         <tr v-if="searchResult.length==0">
           <td colspan="6">暂无数据</td>
@@ -51,7 +79,7 @@
   </section>
 </template>
 <script>
-import { requestOpenCardOpId,updateOpenCardOpId } from "../../config/service.js";
+import { requestOpenCardDepId,requestOpenCardOpId,updateOpenCardOp,updateOpenCardOpId } from "../../config/service.js";
 import { errorDeal } from '../../config/utils.js';
 export default {
   data() {
@@ -77,16 +105,32 @@ export default {
       off:{
         dialog:false
       },
+      options:"",
+      departId:"",
+      roperator:"",
+      rdealerId:"",
+      modifyop:false,
       opMainId:"",
     };
   },
   created: function() {
-    this.getOpId()
+    this.getDepId()
   },
   methods: {
-    getOpId(){
+    getDepId(){
       let vm=this;
-      requestOpenCardOpId()
+      requestOpenCardDepId()
+      .then(res=>{
+        if(res&&res.data){
+          vm.options=res.data.list;
+        }
+      }).catch(e=>errorDeal(e))
+    },
+    getOpId(v){
+      let vm=this;
+      vm.modifyop=false;
+      vm.rdealerId=v;
+      requestOpenCardOpId({"dealerId":v})
       .then(res=>{
         if(res&&res.data){
           vm.searchResult=res.data.list;          
@@ -100,41 +144,45 @@ export default {
         vm.ruleForm={};
         vm.ruleForm.title="新增工号";
       }else if(i===2){
-        vm.off.dialog=true;
-        vm.ruleForm.title="修改工号信息";
-        vm.ruleForm.accountId=v.dealerId;
-        vm.ruleForm.operator=v.operator;
-        vm.ruleForm.key=v.secretKey;
-        vm.ruleForm.pwd=v.password;
-        vm.opMainId = v.id;
-      }else if(i==='ok'){
-        this.$refs.ruleForm.validate((valid) => {
-          if (valid) {
-            let json;
-            json={
-              "id": vm.opMainId,
-              "dealerId": vm.ruleForm.accountId,
-              "operator": vm.ruleForm.operator,
-              "password": vm.ruleForm.pwd,
-              "secretKey": vm.ruleForm.key}
-            updateOpenCardOpId(json)
-            .then(res=>{
-              if(res&&res.code==="200"){
-                vm.$message({
-                  message:'操作成功!',
-                  type:"success"
-                });
-              }
-            })
-            .then(()=>{
-              vm.off.dialog=false;
-              vm.getOpId();
-            })
-            .catch(e=>errorDeal(e,vm.off.dialog=false))
-          } else {
-            return false;
+        let vm=this;
+        vm.modifyop=true;
+        vm.roperator=v.operator;
+      }else if(i===3){
+        updateOpenCardOp({"operator":v.operator})
+        .then(res=>{
+          if(res){
+            vm.$message({
+              message:'操作成功!',
+              type:"success"
+            });
           }
-        });
+        }).then(()=>{
+          vm.getOpId(vm.rdealerId);
+        }).catch(e=>errorDeal(e,vm.modifyop=false))
+      }else if(i==='ok'){
+        let json;
+        if(!vm.roperator){
+          vm.$message({
+            message:'操作人不能为空!',
+            type:"error"
+          });
+        }
+        json={
+          "id": v.id,
+          "operator": vm.roperator}
+        updateOpenCardOpId(json)
+        .then(res=>{
+          if(res&&res.code==="200"){
+            vm.$message({
+              message:'操作成功!',
+              type:"success"
+            });
+          }
+        })
+        .then(()=>{
+          vm.getOpId(vm.rdealerId);
+        })
+        .catch(e=>errorDeal(e,vm.modifyop=false))
       }else if(i===0){
         vm.off.dialog=false;
       }

@@ -28,8 +28,11 @@ export const requestReturnGoods=(data)=>fetch("/nms/w/order/returnOrder",data,"P
 /*开卡订单管理*/
 export const requestOpenCardOrder=(data)=>fetch("/nms/w/openReadyCard/getMngOpenCardOrders",data,"POST")
 export const requestOpenCardDetails=(data)=>fetch("/nms/w/openReadyCard/getMngOpenCardOrderDetail",data,"POST")
-export const requestOpenCardOpId=(data)=>fetch("/nms/w/openReadyCard/yt-accounts",data,"POST")
+export const requestOpenCardDepId=(data)=>fetch("/nms/w/openReadyCard/yt-departs",data,"POST")
+export const requestOpenCardOpId=(data)=>fetch("/nms/w/openReadyCard/employee",data,"POST")
+export const updateOpenCardOp=(data)=>fetch("/nms/w/openReadyCard/select-employee",data,"POST")
 export const updateOpenCardOpId=(data)=>fetch("/nms/w/openReadyCard/update-yt-account",data,"POST")
+
 /*码号管理*/
 export const requestGetCarts=(data)=>fetch("/nms/w/number/getCarts",data,"POST")
 export const requestGetCartDetail=(data)=>fetch("/nms/w/number/getCartDetail",data,"POST")
