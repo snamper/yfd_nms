@@ -57,16 +57,13 @@ export default {
   data() {
     return {
       searchResult: "",
-      // ruleForm:{
-      //   raccountId:"",
-      //   rpwd:""
-      // },
       rules:{
         accountId: [
-          { required: true, message: '账户ID不能为空', trigger: 'blur' }
+          { required: true, message: '请输入账户名称', trigger: 'blur' }
         ],
         pwd:[
-          { required: true, message: '密码不能为空', trigger: 'blur' }
+          {required: true, message: '请输入密码', trigger: 'blur'},
+          {pattern: /^[0-9a-zA-Z_]{1,}$/, message: '密码为字母数字下划线一种或多种组合'}
         ]
       },
       ruleForm:{
@@ -80,7 +77,7 @@ export default {
       off:{
         dialog:false
       },
-      opMainId:""
+      opMainId:"",
     };
   },
   created: function() {
