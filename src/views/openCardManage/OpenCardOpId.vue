@@ -28,20 +28,20 @@
     </div>
     <div class="m-dialog" v-if="off.dialog">
       <div class="m-newinfo">
-        <p class="m-dialog-title">{{form.title}}<span class="m-icon-close" @click="operate(0)"></span></p>
+        <p class="m-dialog-title">{{ruleForm.title}}<span class="m-icon-close" @click="operate(0)"></span></p>
         <div class="m-dialog-content">
-          <el-form label-width="80px">
-            <el-form-item label="账号">
-              <el-input size="small" v-model="form.accountId"></el-input>
+          <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="80px">
+            <el-form-item label="账号" prop="accountId">
+              <el-input size="small" v-model="ruleForm.accountId"></el-input>
             </el-form-item>
             <el-form-item label="操作人">
-              <el-input size="small" v-model="form.operator"></el-input>
+              <el-input size="small" v-model="ruleForm.operator"></el-input>
             </el-form-item>
-            <el-form-item label="密码">
-              <el-input size="small" v-model="form.pwd"></el-input>
+            <el-form-item label="密码" prop="pwd">
+              <el-input size="small" v-model="ruleForm.pwd"></el-input>
             </el-form-item>
             <el-form-item label="密钥">
-              <el-input size="small" v-model="form.key"></el-input>
+              <el-input size="small" v-model="ruleForm.key"></el-input>
             </el-form-item>
           </el-form>
           <p style="text-align:center"><el-button @click="operate('ok')" type="success" size="mini" style="width:80px;">确定</el-button></p>
@@ -56,22 +56,20 @@ import { errorDeal } from '../../config/utils.js';
 export default {
   data() {
     return {
-      searchResult: [
-        {
-          "dealerId": "账号",
-          "id": "唯一主键",
-          "operator": "操作人",
-          "password": "密码",
-          "secretKey": "秘钥"
-        },{
-          "dealerId": "账号2",
-          "id": "唯一主键2",
-          "operator": "操作人2",
-          "password": "密码2",
-          "secretKey": "秘钥2"
-        }
-      ],
-      form:{
+      searchResult: "",
+      // ruleForm:{
+      //   raccountId:"",
+      //   rpwd:""
+      // },
+      rules:{
+        accountId: [
+          { required: true, message: '账户ID不能为空', trigger: 'blur' }
+        ],
+        pwd:[
+          { required: true, message: '密码不能为空', trigger: 'blur' }
+        ]
+      },
+      ruleForm:{
         accountId:"",
         operator:"",
         pwd:"",
@@ -102,38 +100,44 @@ export default {
       let vm=this;
       if(i===1){
         vm.off.dialog=true;
-        vm.form={};
-        vm.form.title="新增工号";
+        vm.ruleForm={};
+        vm.ruleForm.title="新增工号";
       }else if(i===2){
         vm.off.dialog=true;
-        vm.form.title="修改工号信息";
-        vm.form.accountId=v.dealerId;
-        vm.form.operator=v.operator;
-        vm.form.key=v.secretKey;
-        vm.form.pwd=v.password;
+        vm.ruleForm.title="修改工号信息";
+        vm.ruleForm.accountId=v.dealerId;
+        vm.ruleForm.operator=v.operator;
+        vm.ruleForm.key=v.secretKey;
+        vm.ruleForm.pwd=v.password;
         vm.opMainId = v.id;
       }else if(i==='ok'){
-        let json;
-        json={
-          "id": vm.opMainId,
-          "dealerId": vm.form.accountId,
-          "operator": vm.form.operator,
-          "password": vm.form.pwd,
-          "secretKey": vm.form.key}
-        updateOpenCardOpId(json)
-        .then(res=>{
-          if(res&&res.code==="200"){
-            vm.$message({
-              message:'操作成功!',
-              type:"success"
-            });
+        this.$refs.ruleForm.validate((valid) => {
+          if (valid) {
+            let json;
+            json={
+              "id": vm.opMainId,
+              "dealerId": vm.ruleForm.accountId,
+              "operator": vm.ruleForm.operator,
+              "password": vm.ruleForm.pwd,
+              "secretKey": vm.ruleForm.key}
+            updateOpenCardOpId(json)
+            .then(res=>{
+              if(res&&res.code==="200"){
+                vm.$message({
+                  message:'操作成功!',
+                  type:"success"
+                });
+              }
+            })
+            .then(()=>{
+              vm.off.dialog=false;
+              vm.getOpId();
+            })
+            .catch(e=>errorDeal(e,vm.off.dialog=false))
+          } else {
+            return false;
           }
-        })
-        .then(()=>{
-          vm.off.dialog=false;
-          vm.getOpId();
-        })
-        .catch(e=>errorDeal(e,vm.off.dialog=false))
+        });
       }else if(i===0){
         vm.off.dialog=false;
       }
