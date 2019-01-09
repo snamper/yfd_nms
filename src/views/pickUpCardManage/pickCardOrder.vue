@@ -199,7 +199,7 @@
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
                 </td>
-                <td>{{v.receipt==0?'未打印':v.receipt==1?'已打印':'--'}}</td>
+                <td>{{v.receipt==0?'未下载':v.receipt==1?'已下载':'--'}}</td>
                 <td>
                   <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
                   <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirm(v)">收货</el-button>
