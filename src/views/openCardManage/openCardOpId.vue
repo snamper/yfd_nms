@@ -27,26 +27,18 @@
       <table>
         <tr>
           <td>序号</td>
-          <td>部门名称</td>
           <td>操作员工</td>
-          <td>密码</td>
-          <td>密钥</td>
-          <td>账户类型</td>
           <td>操作</td>
         </tr>
         <tr v-for="(v,i) in searchResult" :key="i">
           <td>{{i+1}}</td>
-          <td>{{v.dealerName}}</td>
           <td>
             <span v-if="!modifyop">{{v.operator}}</span>
             <el-input v-if="modifyop" type="text" size="mini" style="max-width:200px;" v-model="roperator"/>
           </td>
-          <td>{{v.password}}</td>
-          <td>{{v.secretKey}}</td>
-          <td>{{v.type==1?'靓号':v.type==2?'普号':v.type==3?'其他':'--'}}</td>
           <td>
             <el-button type="success" size="mini" @click="operate(3,v)">设为开卡员工</el-button>
-            <el-button v-if="!modifyop" type="primary" size="mini" @click="operate(2,v)">修改</el-button>
+            <!-- <el-button v-if="!modifyop" type="primary" size="mini" @click="operate(2,v)">修改</el-button> -->
             <el-button v-if="modifyop" @click="operate('ok',v)" type="warning" size="mini" style="width:80px;">确定</el-button></td>
         </tr>
         <tr v-if="searchResult.length==0">
