@@ -14,7 +14,7 @@
             </el-col>
             <el-col :xs="14" :sm="10" :md="8" :lg="8" :xl="6">
               <el-select @change="getOpId(departId)" size="small" style="width:100%" clearable v-model="departId" placeholder="请选择查询的归属渠道">
-                <el-option  v-for="item in options" :key="item.dealerId" :label="item.dealerIdName" :value="item.dealerId"
+                <el-option  v-for="item in options" :key="item.dealerId" :label="item.dealerName" :value="item.dealerId"
                   size="small">
                 </el-option>
               </el-select>
@@ -28,6 +28,7 @@
         <tr>
           <td>序号</td>
           <td>操作员工</td>
+          <td>是否为默认开卡员工</td>
           <td>操作</td>
         </tr>
         <tr v-for="(v,i) in searchResult" :key="i">
@@ -36,10 +37,12 @@
             <span v-if="!modifyop">{{v.operator}}</span>
             <el-input v-if="modifyop" type="text" size="mini" style="max-width:200px;" v-model="roperator"/>
           </td>
+          <td>{{v.defOperator==0?'否':v.defOperator==1?'是':'--'}}</td>
           <td>
-            <el-button type="success" size="mini" @click="operate(3,v)">设为开卡员工</el-button>
+            <el-button v-if="v.defOperator==0" type="success" size="mini" @click="operate(3,v)">设为开卡员工</el-button>
             <!-- <el-button v-if="!modifyop" type="primary" size="mini" @click="operate(2,v)">修改</el-button> -->
-            <el-button v-if="modifyop" @click="operate('ok',v)" type="warning" size="mini" style="width:80px;">确定</el-button></td>
+            <!-- <el-button v-if="modifyop" @click="operate('ok',v)" type="warning" size="mini" style="width:80px;">确定</el-button> -->
+          </td>
         </tr>
         <tr v-if="searchResult.length==0">
           <td colspan="6">暂无数据</td>
