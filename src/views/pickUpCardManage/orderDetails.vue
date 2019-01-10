@@ -124,7 +124,7 @@
     errorDeal,
     translateData
   } from "../../config/utils";
-  import cardDetails from "../../components/pickupCardList.vue";
+  import cardDetails from "./pickupCardList.vue";
   export default {
     props: {
       detailsData: Object
@@ -181,7 +181,7 @@
           getPickCardNum(json)
           .then(res=>{
             if(res&&res.data){
-              vm.numdata = res.data;
+              vm.numdata = res.data.groups;
               vm.off.numList=true;
             }else{
               errorDeal(res)
