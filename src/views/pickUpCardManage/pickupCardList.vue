@@ -37,7 +37,6 @@
               手机号 : <span>{{v.phone}}</span><br>
               sim号 : <span>{{v.sim}}</span><br>
             </span>
-            <span></span>
             <span v-if="value.numbers.length>6" @click="showAllNum(index)" style="width:100%;text-align:center"><a href="javascript:void(0)" class="m-jumplink">查看全部号码</a></span></p>
             <p class="f-ta-c greyFont f-s-14" v-if="!value.numbers">
               <span style="padding:10px 0;">此号包下无号码详情</span></p>
@@ -96,6 +95,7 @@
       getDateTime(v) {
         return getDateTime(v)
       },
+      
       details(p) {
         let vm = this.$parent,
         json = vm.searchJson;
