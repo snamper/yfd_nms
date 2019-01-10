@@ -14,5 +14,10 @@ export default {
   account_depName:state=>{
     let account_depName = state.account_depName;
     return account_depName;
-  }
+  },
+  commission_rules:state=>{
+    let commission_rules = state.commission_rules;
+    return commission_rules;
+  },
+  
 };

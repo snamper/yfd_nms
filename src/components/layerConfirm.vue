@@ -277,6 +277,41 @@
           </tr>
         </tbody>
       </table>
+      <table v-if="layerType=='commissionRules'">
+        <thead>
+          <tr>
+            <th>
+              设置佣金规则
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              佣金规则 : 
+              <el-select allow-create filterable style="width:70%" v-model="cmsRules" placeholder="请选择"
+                size="small">
+                <el-option v-for="item in commission_rules.type" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              佣金年限 : 
+              <el-select allow-create filterable style="width:70%" v-model="cmsTime" placeholder="请选择"
+                size="small">
+                <el-option v-for="item in commission_rules.time" :key="item.value" :label="item.label" :value="item.value">
+                </el-option>
+              </el-select>
+            </td>
+          </tr>
+          <tr class="tdBtn">
+            <span @click="close()">取消</span>
+            <span @click="btnYes('logistics',logisticsInfo)">确认</span>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </section>
 </template>
@@ -318,12 +353,15 @@
         oddNumbers: '', //流水单号
         orderdeliveryName: '',
         newPrice: "",
+        cmsRules: "",
+        cmsTime:""
         // layerType:"",
       }
     },
     computed:{
       ...mapState([
-        "account_depId"
+        "account_depId",
+        "commission_rules"
       ])
     },
     methods: {

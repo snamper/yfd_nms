@@ -31,29 +31,39 @@
       </div>
       <div v-if="$parent.off.numList">
         <div v-for="(value,index) of numlist" :key="index" class="m-number-list" style="width:100%;height:100%;">
-          <p class="m-packageTitle">{{value.packageDesc||'--'}}</p>
+          <p class="m-packageTitle f-s-12"><span>套餐名称 : {{value.packageDesc||'--'}}</span>
+            <span>【<b class="grey">佣金规则 : </b><b class="green">{{'--'}}</b> <b class="grey">佣金年限 : </b><b class="green">{{'--'}}</b>】</span>
+            <el-button @click="setCommission(1)" size="mini" type="warning" style="padding:5px !important">修改</el-button>
+            <el-button @click="setCommission(2)" size="mini" type="primary" style="padding:5px !important">设置佣金规则</el-button>
+          </p>
           <div class="m-number-list-inner">
-            <p><span v-for="(v,i) of value.numbers.slice(0,6)" :key="i" class="f-s-12">
+            <p><span v-if="showNumber.indexOf(index)==-1" v-for="(v,i) of value.numbers.slice(0,6)" :key="i" class="f-s-12">
               手机号 : <span>{{v.phone}}</span><br>
               sim号 : <span>{{v.sim}}</span><br>
             </span>
-            <span v-if="value.numbers.length>6" @click="showAllNum(index)" style="width:100%;text-align:center"><a href="javascript:void(0)" class="m-jumplink">查看全部号码</a></span></p>
+            <span v-if="showNumber.indexOf(index)>-1" v-for="(v,i) of value.numbers" :key="i" class="f-s-12">
+              手机号 : <span>{{v.phone}}</span><br>
+              sim号 : <span>{{v.sim}}</span><br>
+            </span>
+            <span v-if="value.numbers.length>6&&showNumber.indexOf(index)==-1" @click="showAllNum(index)" style="width:100%;text-align:center"><a href="javascript:void(0)" class="m-jumplink">查看全部号码</a></span></p>
             <p class="f-ta-c greyFont f-s-14" v-if="!value.numbers">
               <span style="padding:10px 0;">此号包下无号码详情</span></p>
-            <el-col v-if="false" ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+            <!-- <el-col v-if="false" ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
               <div class="grid-content bg-purple" style="padding:10px 16px">
                 <el-pagination layout="prev, pager, next" 
                   :page-size="60" @current-change="details" :current-page.sync="currentPage" :total="numlist.total">
                 </el-pagination>
               </div>
-            </el-col>
+            </el-col> -->
           </div>
         </div>
       </div>
     </div>
+    <Dialog v-if="off.layer" :layerType="layerType" :layData="layData"></Dialog>
   </section>
 </template>
 <script>
+  import Dialog from '../../components/layerConfirm';
   import {
     getDateTime,
     errorDeal,
@@ -61,7 +71,8 @@
   } from "../../config/utils.js";
   import {
     getPickCardNum
-  } from "../../config/service.js"
+  } from "../../config/service.js";
+  import { mapActions } from 'vuex';
   export default {
     props: {
       numlist: Object,
@@ -73,17 +84,26 @@
         pageNumDetails: "", //号包详情
         pageNumLiang: "", //靓号详情
         pageNumPu: "", //普号详情
+        showNumber:[],
+        layerType:"",
         off: {
           layer: false,
           dlsDetails: false,
           notDlsDetails: true,
+          allNumber:false
         },
         form: {
           page: 0
         },
       }
     },
+    components:{
+      Dialog
+    },
     methods: {
+      ...mapActions([
+        "setCommissionRules"
+      ]),
       goBack() {
         let vm=this.$parent;
         vm.off.cardDetails = false;
@@ -95,7 +115,21 @@
       getDateTime(v) {
         return getDateTime(v)
       },
-      
+      setCommission(i){
+        let vm=this;
+        vm.off.layer=true;
+        vm.layerType="commissionRules";
+        vm.setCommissionRules({ type:[{value:'1',label:'a'},{value:'2',label:'b'}],time:[{value:'1',label:'a'},{value:'2',label:'b'}] })
+        // if(i==1){
+
+        // }else if(i==2){
+
+        // }
+      },
+      showAllNum(v){
+        let vm=this;
+        vm.showNumber.push(v);
+      },
       details(p) {
         let vm = this.$parent,
         json = vm.searchJson;

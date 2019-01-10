@@ -6,7 +6,8 @@ import {
   GET_ROLE,
   GET_DEPART,
   SET_ACCOUNT_DEPID,
-  SET_DEPNAME
+  SET_DEPNAME,
+  SET_COMMISSION_RULES
 } from './mutation-types';
 export default {
   async getRolesInfo({ id, commit, state }) {
@@ -22,5 +23,8 @@ export default {
   },
   async setDepName({commit},name){
     commit(SET_DEPNAME,name);
+  },
+  async setCommissionRules({commit},res){
+    commit(SET_COMMISSION_RULES,res);
   }
 }
