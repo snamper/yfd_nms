@@ -189,7 +189,6 @@ const cmsRules = resolve => {
     });
 };
 //开卡订单管理
-
 const openCard = resolve => {
     load(true);
     require.ensure(["@/views/openCardManage"], () => {
@@ -208,6 +207,28 @@ const openCardOpId = resolve => {
     load(true);
     require.ensure(["@/views/openCardManage/openCardOpId.vue"], () => {
         resolve(require("@/views/openCardManage/openCardOpId.vue"));
+        load();
+    });
+};
+//设备管理
+const equipment = resolve => {
+    load(true);
+    require.ensure(["@/views/equipment"], () => {
+        resolve(require("@/views/equipment"));
+        load();
+    });
+};
+const equipmentList = resolve => {
+    load(true);
+    require.ensure(["@/views/equipment/orderlist.vue"], () => {
+        resolve(require("@/views/equipment/orderlist.vue"));
+        load();
+    });
+};
+const equipmentSrc = resolve => {
+    load(true);
+    require.ensure(["@/views/equipment/equipmentSrc.vue"], () => {
+        resolve(require("@/views/equipment/equipmentSrc.vue"));
         load();
     });
 };
@@ -367,6 +388,20 @@ const router = new Router({
                 path: "agentApply",
                 name: "agentApply",
                 component: agentApply
+            },{
+                path:"equipment",
+                redirect:"equipment/orderlist",
+                name:"equipment",
+                component:equipment,
+                children:[{
+                    path:'orderlist',
+                    name:'',
+                    component:equipmentList
+                },{
+                    path:'equipmentSrc',
+                    name:'',
+                    component:equipmentSrc
+                }]
             }]
         }
     ]

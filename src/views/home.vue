@@ -110,7 +110,7 @@ span.iconFoldClose {
                 <router-link to="/home/card/stock"><b></b>库存管理</router-link>
               </li>
               <li>
-                <router-link to="/home/card/cardSource"><b></b>号码资源查询</router-link>
+                <router-link to="/home/card/cardSource"><b></b>资源查询</router-link>
               </li>
             </ul>
           </li>
@@ -222,6 +222,22 @@ span.iconFoldClose {
           </li>
         </ul>
         <ul class="g-side-ul">
+          <li :class="{active:crumb[0].name=='设备管理'}">
+            <b></b>
+            <router-link to="/home/equipment">
+              <div>
+                <i class="u-icon-tika"></i>
+                <span>设备管理</span>
+                <span :class="crumb[0].name=='设备管理'?'iconFoldOpen':'iconFoldClose'"></span>
+              </div>
+            </router-link>
+            <ul class="g-side-subul nav2">
+              <li><router-link to="/home/equipment/orderlist"><b></b>订单管理</router-link></li>
+              <li><router-link to="/home/equipment/equipmentSrc"><b></b>设备资源</router-link></li>
+            </ul>
+          </li>
+        </ul>
+        <ul class="g-side-ul">
           <li :class="{active:crumb[0].name=='充值订单管理'}">
             <b></b>
             <router-link to="/home/recharge">
@@ -257,6 +273,7 @@ span.iconFoldClose {
             </router-link>
           </li>
         </ul>
+
       </nav>
     </aside>
     <section class="g-main" id="main">
@@ -507,6 +524,23 @@ export default {
           name: "代理商申请管理",
           href: "/home/agentApply"
         };
+      }
+      if (path.indexOf("/home/equipment") > -1){
+        crumb[0]={
+          name:"设备管理",
+          href:"/home/equipment"
+        }
+        if(path.indexOf("/home/equipment/orderlist") > -1){
+          crumb[1]={
+            name:'订单管理',
+            href:'orderlist'
+          }
+        }else if(path.indexOf("/home/equipment/equipmentSrc") > -1){
+          crumb[1]={
+            name:'设备资源',
+            href:'equipmentSrc'
+          }
+        }
       }
       this.crumb = crumb;
       mainDom.style.overflowY = "hidden";

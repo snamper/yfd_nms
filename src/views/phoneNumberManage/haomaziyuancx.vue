@@ -8,49 +8,35 @@
               <el-row v-if="false">
                 <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">资源查询</div></el-col>
               </el-row>
-              <!-- <el-row v-if="false">
-                <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2" >
-                  <div class="grid-content bg-purple-dark f-ta-r inputTitle">上传文件&nbsp;:&nbsp;</div>
-                </el-col>
-                <el-col class="m-data-picker" :xs="20" :sm="18" :md="18" :lg="18" :xl="18" >
-                  <el-upload
-                    action="customer"
-                    class="m-upload"
-                    ref="upload"
-                    name="files"
-                    accept=".xlsx,.xls"
-                    :data="upInfo"
-                    :file-list="fileList"
-                    :headers="headerInfo"
-                    :on-change="handleChange"
-                    :http-request="handleUpload"
-                    :auto-upload="false">
-                    <el-button slot="trigger" size="small" type="success">选取文件</el-button>
-                    <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload">查询</el-button>
-                  </el-upload>
-                </el-col>
-              </el-row> -->
               <el-row>
                 <el-row>
                   <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">查询</div></el-col>
                 </el-row>
-                <el-row>
+                <el-row :span="24">
                   <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12">
                     <div class="grid-content bg-purple-light">
-                      <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">手机号码&nbsp;&nbsp;</div></el-col>
-                      <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
-                        <el-input v-model="phone" size="small" maxlength=11 placeholder="请输入查询的手机号码"></el-input>
+                      <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4" class="m-form-radio f-ta-r">
+                        <label><span class="radioYes"><input type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">手机号码：</span></label>
                       </el-col>
-                      <el-col :span="2"></el-col> 
+                      <el-col :xs="18" :sm="16" :md="18" :lg="16" :xl="16">
+                        <el-input v-model="phoneNum" size="small" maxlength=25 placeholder="请输入查询的手机号码"></el-input>
+                      </el-col>
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12">
-                    <div class="grid-content bg-purple">
-                      <el-button type="success" size="small" @click="search()">查询</el-button>
+                    <div class="grid-content bg-purple-light">
+                      <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4" class="m-form-radio f-ta-r">
+                        <label><span class="radioYes"><input type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">SIM号码：</span></label>
+                      </el-col>
+                      <el-col :xs="18" :sm="16" :md="18" :lg="16" :xl="16">
+                        <el-input v-model="simNum" size="small" maxlength=25 placeholder="请输入查询的SIM号码"></el-input>
+                      </el-col>
                     </div>
                   </el-col>
                 </el-row>
-                <!-- <el-row style="text-align:center" class="marginTop"></el-row> -->
+                <el-row style="text-align:center" class="marginTop">
+                  <el-button type="success" size="small" @click="search()">搜索</el-button>
+                </el-row>
               </el-row>
             </div>
           </el-col>
@@ -132,7 +118,12 @@
         phone:"",
         headerInfo:{},
         upInfo:{},
-        fileList:[]
+        fileList:[],
+        phoneNum:"",
+        simNum:"",
+        form:{
+          searchKind:1
+        }
       }
     },
     created: function() {
