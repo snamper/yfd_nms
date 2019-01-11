@@ -358,6 +358,13 @@
         // layerType:"",
       }
     },
+    created:function(){
+      
+    },
+    mounted(){
+      let vm=this;
+      vm.payMoney=vm.logisticsInfo.totalStrikePrice;
+    },
     computed:{
       ...mapState([
         "account_depId",

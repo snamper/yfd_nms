@@ -203,7 +203,8 @@
                 <td>
                   <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
                   <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirm(v)">收货</el-button>
-                  <el-button v-if="v.paymentState==1&&v.orderState==1&&v.paymentType==4" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
+                  <!-- <el-button v-if="v.paymentState==1&&v.orderState==1&&v.paymentType==4" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button> -->
+                  <el-button class="m-small-btn" style="margin:0px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
                   <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
                   <el-button v-if="v.orderState!=3&&v.orderState!=4&&(v.orderState==1&&!(v.paymentState==1&&v.deliveryState==0))" class="m-small-btn"  style="margin:0px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
                 </td>
@@ -449,6 +450,7 @@ export default {
       let vm = this;
       vm.layerType = "payMent";
       vm.logistics = v;
+      debugger;
       vm.off.layer = true;
     },
     returnGoods(v) {
