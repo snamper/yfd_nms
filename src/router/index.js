@@ -167,10 +167,24 @@ const Notice = resolve => {
     });
 };
 //提卡订单管理
+const pickCard = resolve => {
+    load(true);
+    require.ensure(["@/views/openCardManage"], () => {
+        resolve(require("@/views/openCardManage"));
+        load();
+    });
+};
 const pickCardOrder = resolve => {
     load(true);
     require.ensure(["@/views/pickUpCardManage/pickCardOrder.vue"], () => {
         resolve(require("@/views/pickUpCardManage/pickCardOrder.vue"));
+        load();
+    });
+};
+const cmsRules = resolve => {
+    load(true);
+    require.ensure(["@/views/pickUpCardManage/cmsRules.vue"], () => {
+        resolve(require("@/views/pickUpCardManage/cmsRules.vue"));
         load();
     });
 };
@@ -315,8 +329,18 @@ const router = new Router({
                 component: Notice,
             }, {
                 path: "pickCard",
-                name: "pickCard",
-                component: pickCardOrder,
+                redirect: "pickCard/orderlist",
+                name:"pickCard",
+                component: pickCard,
+                children:[,{
+                    path:"orderlist",
+                    name:"orderlist",
+                    component:pickCardOrder
+                },{
+                    path:"cmsRules",
+                    name:"cmsRules",
+                    component:cmsRules
+                }]
             }, {
                 path: "openCard",
                 redirect: "openCard/orderlist",

@@ -190,15 +190,19 @@ span.iconFoldClose {
           </li>
         </ul>
         <ul class="g-side-ul">
-          <li :class="{active:crumb[0].name=='提卡订单管理'}">
+          <li :class="{active:crumb[0].name=='提卡管理'}">
             <b></b>
             <router-link to="/home/pickCard">
               <div>
                 <i class="u-icon-tika"></i>
-                <span>提卡订单管理</span>
-                <span :class="crumb[0].name=='提卡订单管理'?'iconFoldOpen':'iconFoldClose'"></span>
+                <span>提卡管理</span>
+                <span :class="crumb[0].name=='提卡管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
             </router-link>
+            <ul class="g-side-subul nav2">
+              <li><router-link to="/home/pickCard/orderlist"><b></b>订单管理</router-link></li>
+              <li><router-link to="/home/pickCard/cmsRules"><b></b>佣金规则查询</router-link></li>
+            </ul>
           </li>
         </ul>
         <ul class="g-side-ul">
@@ -465,7 +469,7 @@ export default {
       }
       if (path.indexOf("/home/pickCard") > -1) {
         crumb[0] = {
-          name: "提卡订单管理",
+          name: "提卡管理",
           href: "/home/pickCard"
         };
       }
