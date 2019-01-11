@@ -35,17 +35,24 @@
             <span>【<b class="grey">佣金规则 : </b><b class="green">{{'--'}}</b> <b class="grey">佣金年限 : </b><b class="green">{{'--'}}</b>】</span>
             <el-button @click="setCommission(1)" size="mini" type="warning" style="padding:5px !important">修改</el-button>
             <el-button @click="setCommission(2)" size="mini" type="primary" style="padding:5px !important">设置佣金规则</el-button>
+            <el-button v-if="value.numbers.length>6&&showNumber.indexOf(index)==-1" @click="showAllNum(1,index)" size="mini" type="success" style="padding:5px !important">查看全部号码</el-button>
+            <el-button v-if="value.numbers.length>6&&showNumber.indexOf(index)>-1" @click="showAllNum(2,index)" size="mini" type="success" style="padding:5px !important">收起号码列表</el-button>
           </p>
           <div class="m-number-list-inner">
-            <p><span v-if="showNumber.indexOf(index)==-1" v-for="(v,i) of value.numbers.slice(0,6)" :key="i" class="f-s-12">
-              手机号 : <span>{{v.phone}}</span><br>
-              sim号 : <span>{{v.sim}}</span><br>
-            </span>
-            <span v-if="showNumber.indexOf(index)>-1" v-for="(v,i) of value.numbers" :key="i" class="f-s-12">
-              手机号 : <span>{{v.phone}}</span><br>
-              sim号 : <span>{{v.sim}}</span><br>
-            </span>
-            <span v-if="value.numbers.length>6&&showNumber.indexOf(index)==-1" @click="showAllNum(index)" style="width:100%;text-align:center"><a href="javascript:void(0)" class="m-jumplink">查看全部号码</a></span></p>
+            <p>
+              <label v-if="showNumber.indexOf(index)==-1" >
+                <span v-for="(v,i) of value.numbers.slice(0,6)" :key="i" class="f-s-12">
+                  手机号 : <span>{{v.phone}}</span><br>
+                  sim号 : <span>{{v.sim}}</span><br>
+                </span>
+              </label>
+              <label v-if="showNumber.indexOf(index)>-1">
+                <span v-for="(v,i) of value.numbers" :key="i" class="f-s-12">
+                  手机号 : <span>{{v.phone}}</span><br>
+                  sim号 : <span>{{v.sim}}</span><br>
+                </span>
+              </label>
+            <span v-if="false" @click="showAllNum(index)" style="width:100%;text-align:center"><a href="javascript:void(0)" class="m-jumplink">查看全部号码</a></span></p>
             <p class="f-ta-c greyFont f-s-14" v-if="!value.numbers">
               <span style="padding:10px 0;">此号包下无号码详情</span></p>
             <!-- <el-col v-if="false" ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
@@ -75,7 +82,7 @@
   import { mapActions } from 'vuex';
   export default {
     props: {
-      numlist: Object,
+      numlist: Array,
       simlist: Object,
     },
     data() {
@@ -100,6 +107,11 @@
     components:{
       Dialog
     },
+    watch:{
+      numlist(){
+        this.showNumber=[];
+      }
+    },
     methods: {
       ...mapActions([
         "setCommissionRules"
@@ -119,16 +131,24 @@
         let vm=this;
         vm.off.layer=true;
         vm.layerType="commissionRules";
-        vm.setCommissionRules({ type:[{value:'1',label:'a'},{value:'2',label:'b'}],time:[{value:'1',label:'a'},{value:'2',label:'b'}] })
+        vm.setCommissionRules({
+          type:[{value:'1',label:'package1'},{value:'2',label:'package2'}],
+          time:[{value:'a',label:'一年'},{value:'b',label:'两年'}]
+        })
         // if(i==1){
 
         // }else if(i==2){
 
         // }
       },
-      showAllNum(v){
+      showAllNum(i,v){
         let vm=this;
-        vm.showNumber.push(v);
+        if(i==1&&vm.showNumber.indexOf(v)==-1){
+          vm.showNumber.push(v);
+        }else if(i==2&&vm.showNumber.indexOf(v)>-1){
+          let index = vm.showNumber.indexOf(v);
+          vm.showNumber.splice(index,1);
+        }
       },
       details(p) {
         let vm = this.$parent,
@@ -180,8 +200,8 @@
     color: #9c9c9c
   }
   .m-number-list>.m-packageTitle{
-    height: 30px;
-    line-height: 30px;
+    height: 35px;
+    line-height: 35px;
   }
   .m-number-list>.m-packageTitle::before{
     content: "";
@@ -199,7 +219,7 @@
   .m-number-list>.m-number-list-inner>p:nth-child(odd),.m-sim-list>p:nth-child(odd){
     background: #fff;
   }
-  .m-number-list>.m-number-list-inner>p>span{
+  .m-number-list>.m-number-list-inner>p>label>span{
     display: inline-block;
     width: 16.6667%;
     padding:10px;

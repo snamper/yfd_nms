@@ -308,7 +308,7 @@
           </tr>
           <tr class="tdBtn">
             <span @click="close()">取消</span>
-            <span @click="btnYes('logistics',logisticsInfo)">确认</span>
+            <span @click="btnYes('cmsRules')">确认</span>
           </tr>
         </tbody>
       </table>
@@ -363,7 +363,9 @@
     },
     mounted(){
       let vm=this;
-      vm.payMoney=vm.logisticsInfo.totalStrikePrice;
+      if(vm.logisticsInfo&&vm.logisticsInfo.totalStrikePrice){
+        vm.payMoney=vm.logisticsInfo.totalStrikePrice;
+      }
     },
     computed:{
       ...mapState([
@@ -411,6 +413,8 @@
           vm.withdrawal(v)
         } else if(e == "deleteAddress"){
           vm.deleteAddress(v)
+        } else if(e == "cmsRules"){
+          vm.changeCmsRules()
         }
       },
       close(i) {
@@ -723,6 +727,11 @@
           vm.$parent.layerData=false;
           vm.$parent.search();
         }).catch(e=>errorDeal(e))
+      },
+      changeCmsRules(){
+        let vm=this.$parent;
+        vm.$parent.details(2,'num',vm.$parent.numberTotal.info);
+        vm.off.layer=false;
       },
       trimFunc(v) {
         return trimFunc(v)
