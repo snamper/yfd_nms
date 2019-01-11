@@ -132,15 +132,15 @@
         <tbody>
           <tr>
             <td>
-              <el-input maxlength=15 v-model="payMoney" placeholder="请输入付款金额，以元为单位" size="small"></el-input>
+              付款金额 : <el-input style="width:75%" maxlength=15 v-model="payMoney" placeholder="请输入付款金额，以元为单位" size="small"></el-input>
             </td>
           </tr>
           <tr>
             <td>
-              <el-input maxlength=30 v-model="oddNumbers" placeholder="请输入支付流水号" size="small"></el-input>
+              支付单号 : <el-input style="width:75%" maxlength=30 v-model="oddNumbers" placeholder="请输入支付流水号" size="small"></el-input>
             </td>
           </tr>
-          <tr>
+          <!-- <tr>
             <td>
               <el-select allow-create filterable style="display:block" v-model="logisticsCompany2" placeholder="请选择"
                 size="small">
@@ -158,7 +158,7 @@
             <td style="padding-top:0px;color:red">
               *注：付款金额必填，物流公司及单号为选填<br>
             </td>
-          </tr>
+          </tr> -->
           <tr class="tdBtn">
             <span @click="close()">取消</span>
             <span @click="btnYes('payMent',logisticsInfo)">确认</span>
@@ -325,6 +325,10 @@
       ...mapState([
         "account_depId"
       ])
+    },
+    created:function(){
+      let vm=this;
+      vm.payMoney=parseFloat(vm.logisticsInfo.totalStrikePrice)/100;
     },
     methods: {
       btnYes(e, v) {
@@ -515,8 +519,8 @@
         }
         let data = {
           "sysOrderId": v.sysOrderId,
-          "deliveryOrderId": vm.orderId,
-          "deliveryName": vm.logisticsCompany2,
+          // "deliveryOrderId": vm.orderId,
+          // "deliveryName": vm.logisticsCompany2,
           "strikePrice": vm.payMoney * 100,
           "paymentSerialNumber": vm.oddNumbers,
         }
