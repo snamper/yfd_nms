@@ -35,3 +35,35 @@
 .m-dialog-content { padding: 20px; }
 .m-icon-close { cursor: pointer; float: right; display: block; width: 18px; height: 18px; background: url("../../assets/images/icon_close.png") no-repeat center; background-size: contain; }
 .f-mt-10{margin-top: 10px}
+
+
+table{font-size: 12px;margin: 0 ;padding: 0;border-spacing:0}
+table tr{ margin: 0;padding: 0}
+table tr td{ margin: 0;padding: 0;}
+.m-searchlist-container{width: 96%;margin: 10px auto}
+.m-searchlist-title{display: flex;}
+.m-searchlist-title>span{flex: 1}
+.m-searchlist-title>span:nth-child(1){font-size:14px;}
+.m-searchlist-title>span:nth-child(2){text-align: right}
+.m-searchlist-title>span:nth-child(2)>button{outline:none;border-radius: 4px;background-color: #00AA01;border: 1px solid #00AA01;padding: 2px 15px;color: #fff}
+.m-searchlist-table{text-align: center;width: 100%;margin-top: 10px;border-collapse: collapse;border: 1px solid #E5E5E5}
+.m-searchlist-table tr{height: 38px;}
+.m-searchlist-table>tr:nth-child(even){background: #fff}
+.m-searchlist-table>tr:nth-child(odd){background: #FAFAFA}
+.m-searchlist-table>tr{border-bottom: 1px solid #e4e4e4}
+.m-searchlist-table>tr:nth-child(1){background: #EEF1F6}
+.m-searchlist-table>tr>td{width: 7.69%}
+.m-searchlist-table2>tr>td{width: 7.69%}
+.m-searchlist-table3>tr>td{width: 14%;}
+.m-searchlist-table3>tr>td:not(:first-child){color: #a0a0a0}
+.m-searchlist-table3{border-collapse: collapse}
+.m-searchlist-table>tr:nth-child(odd) .m-searchlist-table3>tr:nth-child(even){background: #FAFAFA}
+.m-searchlist-table>tr:nth-child(odd) .m-searchlist-table3>tr:nth-child(odd){background: #fff}
+.m-searchlist-table>tr:nth-child(even) .m-searchlist-table3>tr:nth-child(odd){background: #FAFAFA}
+.m-searchlist-table>tr:nth-child(even) .m-searchlist-table3>tr:nth-child(even){background: #fff}
+.m-searchlist-table2>tr.border:first-child{border-top: 1px solid #e6e6e6}
+.m-searchlist-table3>tr.border:not(:last-child){border-bottom: 1px solid #e6e6e6}
+.m-button-switch button{width: 50px;height: 20px;outline: none;border: 1px solid #E5E5E5;background: #fff;font-size: 12px}
+.m-button-switch button.active{background: #FE8800;border: 1px solid #FE8800;color: #fff}
+.m-button-switch button:nth-child(1){border-radius: 10px 0 0 10px}
+.m-button-switch button:nth-child(2){border-radius: 0 10px 10px 0}

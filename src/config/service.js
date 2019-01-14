@@ -187,6 +187,9 @@ export const updateRemark=(data,load)=>fetch("/nms/w/order/update-remark",data,"
 export const exportStorage=(data,load)=>fetch("/nms/w/number/exportStorage",data,"GET",load)
 /**开卡订单导出 */
 export const exportOpenCard=(data,load)=>fetch("/nms/w/openReadyCard/exportOpenCard",data,"GET",load)
+/**设备管理设备资源查询 */
+export const getEquipmentSrc=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
+
 
 
 

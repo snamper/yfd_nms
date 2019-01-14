@@ -121,7 +121,7 @@ import NProgress from 'nprogress';
 export default {
   data() {
     return {
-      timeType:1,
+      timeType:"1",
       commissionRules:"",
       commissionTime:"",
       cmsRules:"",

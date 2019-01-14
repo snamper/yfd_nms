@@ -44,7 +44,8 @@
       </div>
       <!-- 查询结果列表 -->
       <div v-if="searchlist.length" class="m-details">
-        <el-row><h3>查询结果</h3></el-row>
+        <p class="m-searchlist-title"><span>查询结果</span><span>
+              <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
         <table class="m-searchTab" style="width:100%;height:100%;">
           <tr>
             <td>序号</td>

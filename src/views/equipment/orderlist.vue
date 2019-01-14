@@ -198,6 +198,18 @@
           </div>
         </div>
       </div>
+      <el-dialog title="设备号" :visible.sync="dialogFormVisible">
+        <el-checkbox-group 
+          v-model="checkedCities1"
+          :min="1"
+          :max="max">
+          <el-checkbox style="margin:0  0 10px 10px" v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
+        </el-checkbox-group>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="confirmBtn">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
     <order-details v-if="off.details" :detailsData="productDetails"></order-details>
     <layer-confirm v-if="off.layer" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>
@@ -218,9 +230,11 @@ import { disabledDate } from "../../config/utilsTimeSelect";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
 import NProgress from 'nprogress';
+const cityOptions = [{area:'上海',id:"1"}, {area:'北京',id:'2'}, {area:'广州',id:'3'}, {area:'深圳',id:"4"},{area:'上海',id:"5"}, {area:'北京',id:'6'}, {area:'广州',id:'7'}, {area:'深圳',id:"8"},{area:'上海',id:"9"}, {area:'北京',id:'10'}, {area:'广州',id:'11'}, {area:'深圳',id:"12"}];
 export default {
   data() {
     return {
+      max:3,
       currentPage: 0,
       searchResult: "",
       layerType: "", //弹窗类型
@@ -245,12 +259,27 @@ export default {
       upindex:0.1,
       off: {
         details: false,
-        layer: false
+        layer: false,
+        checkEquipment:true,
       },
       form: {
         page: 0,
         searchKind: 3
-      }
+      },
+      dialogTableVisible: true,
+      dialogFormVisible: true,
+      form: {
+        name: '',
+        region: '',
+        date1: '',
+        date2: '',
+        delivery: false,
+        type: [],
+        resource: '',
+        desc: ''
+      },
+      checkedCities1: ['1', '2', '3'],
+      cities: cityOptions
     };
   },
   created: function() {
@@ -387,27 +416,12 @@ export default {
       vm.off.layer = true;
     },
     deliverGoods(v) {
-      let vm = this,json={
-        sysOrderId:v.sysOrderId
-      };
-      // vm.layerType = "sendGoods";
-      // vm.logistics = v;
-      // vm.off.layer = true;
-      pickCardDeliver(json)
-      .then(res=>{
-        if(res&&res.data){
-          vm.$message({
-            message: '操作成功',
-            type: 'success'
-          });
-          vm.search(vm.currentPage);
-        }else{
-          vm.$message({
-            message: '操作失败',
-            type: 'error'
-          });
-        }
-      }).catch(e=>errorDeal(e))
+      let vm = this;
+      
+    },
+    confirmBtn(){
+      let vm=this;
+      console.log(vm.checkedCities1)
     },
     changeLogisticsInfo(v) {
       let vm = this;
@@ -419,7 +433,6 @@ export default {
       let vm = this;
       vm.layerType = "payMent";
       vm.logistics = v;
-      debugger;
       vm.off.layer = true;
     },
     returnGoods(v) {

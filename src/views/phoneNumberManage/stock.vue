@@ -403,6 +403,3 @@
     }
   }
 </script>
-<style scoped>
-  @import "../../assets/css/stock.css";
-</style>
