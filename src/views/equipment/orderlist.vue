@@ -198,17 +198,21 @@
           </div>
         </div>
       </div>
-      <el-dialog title="设备号" :visible.sync="dialogFormVisible">
+      <el-dialog
+        :title='"设备号列表（请选择"+max+"个设备号）"'
+        :visible.sync="centerDialogVisible"
+        width="50%"
+        center>
         <el-checkbox-group 
           v-model="checkedCities1"
-          :min="1"
+          :min="0"
           :max="max">
-          <el-checkbox style="margin:0  0 10px 10px" v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
+          <el-checkbox @change="checkId" v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
         </el-checkbox-group>
-        <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="centerDialogVisible = false">取 消</el-button>
           <el-button type="primary" @click="confirmBtn">确 定</el-button>
-        </div>
+        </span>
       </el-dialog>
     </div>
     <order-details v-if="off.details" :detailsData="productDetails"></order-details>
@@ -230,7 +234,20 @@ import { disabledDate } from "../../config/utilsTimeSelect";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
 import NProgress from 'nprogress';
-const cityOptions = [{area:'上海',id:"1"}, {area:'北京',id:'2'}, {area:'广州',id:'3'}, {area:'深圳',id:"4"},{area:'上海',id:"5"}, {area:'北京',id:'6'}, {area:'广州',id:'7'}, {area:'深圳',id:"8"},{area:'上海',id:"9"}, {area:'北京',id:'10'}, {area:'广州',id:'11'}, {area:'深圳',id:"12"}];
+const cityOptions = [{area:'15684765200',id:"10"}, {area:'15566447854',id:'20'}, {area:'15566661234',id:'30'}, {area:'17744551221',id:"40"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"1"}, {area:'15566447854',id:'2'}, {area:'15566661234',id:'3'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"21"}, {area:'15566447854',id:'22'}, {area:'15566661234',id:'23'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"31"}, {area:'15566447854',id:'32'}, {area:'15566661234',id:'33'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"41"}, {area:'15566447854',id:'42'}, {area:'15566661234',id:'43'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"51"}, {area:'15566447854',id:'52'}, {area:'15566661234',id:'53'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"61"}, {area:'15566447854',id:'62'}, {area:'15566661234',id:'63'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"131"}, {area:'15566447854',id:'132'}, {area:'15566661234',id:'73'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"}
+,{area:'16233554125',id:"71"}, {area:'15566447854',id:'72'}, {area:'15566661234',id:'83'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"81"}, {area:'15566447854',id:'82'}, {area:'15566661234',id:'93'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"91"}, {area:'15566447854',id:'92'}, {area:'15566661234',id:'103'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"101"}, {area:'15566447854',id:'102'}, {area:'15566661234',id:'113'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"111"}, {area:'15566447854',id:'112'}, {area:'15566661234',id:'123'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
+{area:'16233554125',id:"121"}, {area:'15566447854',id:'122'}, {area:'15566661234',id:'133'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"}];
 export default {
   data() {
     return {
@@ -266,18 +283,7 @@ export default {
         page: 0,
         searchKind: 3
       },
-      dialogTableVisible: true,
-      dialogFormVisible: true,
-      form: {
-        name: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: ''
-      },
+      centerDialogVisible: false,
       checkedCities1: ['1', '2', '3'],
       cities: cityOptions
     };
@@ -417,10 +423,13 @@ export default {
     },
     deliverGoods(v) {
       let vm = this;
-      
+      vm.centerDialogVisible=true;      
     },
     confirmBtn(){
       let vm=this;
+      if(vm.checkedCities1.length!=vm.max){
+        vm.$message.error('超出设备数，请取消后重新选择');
+      }
       console.log(vm.checkedCities1)
     },
     changeLogisticsInfo(v) {
@@ -664,5 +673,15 @@ table.m-searchTab tr {
   max-width:80px;
   border-radius:4px;
   border: 1px solid #eee;
+}
+.el-dialog__body{
+  max-height: 400px;
+  overflow:auto;
+}
+.el-checkbox.is-bordered+.el-checkbox.is-bordered{
+  margin-left: 0;
+}
+.el-checkbox{
+  margin: 10px 10px 0 0;
 }
 </style>

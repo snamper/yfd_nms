@@ -29,8 +29,20 @@
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">佣金规则：</div>
             </el-col>
             <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-              <el-select size="small" style="width:100%" v-model="commissionRules" placeholder="请选择查询的佣金规则">
-                <el-option v-for="item in cmsRules" :key="item.areaPinYing" :label="item.areaCn" :value="item.areaCn"
+              <el-select
+                style="width:100%"
+                size="small"
+                v-model="commissionRules"
+                filterable
+                remote
+                placeholder="请输入查询的关键字"
+                :remote-method="remoteMethod"
+                :loading="loading">
+                <el-option
+                  v-for="item in cmsRules"
+                  :key="item.ruleId"
+                  :label="item.rule"
+                  :value="item.rule"
                   size="small">
                 </el-option>
               </el-select>
@@ -42,8 +54,20 @@
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">佣金年限：</div>
             </el-col>
             <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-              <el-select size="small" style="width:100%" v-model="commissionTime" placeholder="请选择查询的佣金年限">
-                <el-option v-for="item in ruleTime" :key="item.areaPinYing" :label="item.areaCn" :value="item.areaCn"
+              <el-select
+                style="width:100%"
+                size="small"
+                v-model="commissionTime"
+                filterable
+                remote
+                placeholder="请输入查询的关键字"
+                :remote-method="remoteMethod2"
+                :loading="loading2">
+                <el-option
+                  v-for="item in ruleTime"
+                  :key="item.ruleId"
+                  :label="item.rule"
+                  :value="item.rule"
                   size="small">
                 </el-option>
               </el-select>
@@ -66,8 +90,7 @@
                       【<span class="grey">佣金规则 : </span><span class="green">{{'--'}}</span> <span class="grey">佣金年限 : </span><span class="green">{{'--'}}</span>】
                     </label>
                     <el-row>
-                      <el-button size="mini" v-if="searchResult.length>0" @click="downLoad(1)" type="success">下载订单列表</el-button>
-                      <el-button style="margin-right:10px" size="mini" v-if="searchResult.length>0" @click="downLoad(2)" type="success">批量下载发货单</el-button>
+                      <el-button size="mini" v-if="searchResult.length>0" @click="downLoad(1)" type="success">导出</el-button>
                     </el-row>
                   </div>
                 </td>
@@ -83,7 +106,9 @@
                 <td>面值( 元 )</td>
                 <td>套餐名称</td>
               </tr>
-              <tr v-for="(v,i) of searchResult" :key="i"></tr>
+              <tr v-for="(v,i) of searchResult" :key="i">
+                <td></td>
+              </tr>
               <tr v-if="searchResult.length<=0">
                 <td style="text-align:center" colspan="14">
                   暂无数据
@@ -130,61 +155,47 @@ export default {
       startTime3:"",
       endTime:"",
       downLoadJson:"",
-      searchResult:"",
+      searchResult:{},
+      loading:false,
+      loading2:false
     };
   },
   created: function() {
     getTimeFunction(this);
   },
   methods: {
+    remoteMethod(){
+      let vm=this;
+      vm.cmsRules=[{ruleId:1,rule:'package1'},{ruleId:2,rule:'package2'},{ruleId:3,rule:'package3'}]
+    },
+    remoteMethod2(){
+      let vm=this;
+      vm.ruleTime=[{ruleId:1,rule:'time1'},{ruleId:2,rule:'time2'},{ruleId:3,rule:'time3'}]
+    },
     search(index) {
-      let vm = this,data = {};
-      vm.upindex = 0.1;
-      vm.pa = index || 1;
-      vm.currentPage = index || 1;
-      data = {
-        timeType: "",
-        startTime: "",
-        endTime: "",
+      let vm = this,json = {
+        timeType:vm.timeType,
+        startTime:vm.startTime3,
+        endTime:vm.endTime,
         cmsRules:vm.cmsRules,
         ruleTime:vm.ruleTime,
-        pageNum: index||1,
-        pageSize: 15,
+        pageNum:index||1,
+        pageSize:15
       };
-      vm.downLoadJson = data;
-      getCommissionRules(vm.downLoadJson)
-      .then(res => {
+      vm.downLoadJson=json;
+      getCommissionRules(json)
+      .then(res=>{
         if(res&&res.data){
-          vm.total = data.data.total;
-          vm.searchResult = data.data.list;
-        } else {
-          vm.total = "";
-          vm.searchResult = "";
-          errorDeal(data);
+          vm.searchResult=res.data;
         }
-      }).catch(e =>
-        errorDeal(e, () => {
-          vm.total = "";
-          vm.searchResult = "";
-        })
-      );
+      })
     },
     downLoad(i,v) {
       let vm = this,json;
-      if(i==1){
-        json = vm.downLoadJson;
-        delete json.pageNum;
-        delete json.pageSize;
-        downloadCommissionRules(json,()=>{return "down" })
-      }else if(i==2){
-        json = vm.downLoadJson;
-        json.pageNum=vm.currentPage;
-        json.pageSize=15;
-        downloadCommissionRules(json,()=>{return "down" })
-      }else if(i==3){
-        json={sysOrderId:v};
-        downloadCommissionRules(json,()=>{return "down" })
-      }
+      json = vm.downLoadJson;
+      delete json.pageNum;
+      delete json.pageSize;
+      downloadCommissionRules(json,()=>{return "down" })
     },
     getDateTime(e) {
       return getDateTime(e);

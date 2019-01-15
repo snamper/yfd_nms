@@ -74,15 +74,15 @@ const Org_powerDeploy = resolve => {
 // 码号管理
 const Card_mhgl = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/mhgl.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/mhgl.vue"));
+    require.ensure(["@/views/phoneNumberManage/numberManagement.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/numberManagement.vue"));
         load();
     });
 };
 const Card_changePrice = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/changePrice.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/changePrice.vue"));
+    require.ensure(["@/views/phoneNumberManage/modifyPrice.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/modifyPrice.vue"));
         load();
     });
 };
@@ -95,15 +95,22 @@ const cardManage = resolve => {
 };
 const stock = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/stock.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/stock.vue"));
+    require.ensure(["@/views/phoneNumberManage/inventoryManagement.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/inventoryManagement.vue"));
         load();
     });
 };
 const cardSource = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/haomaziyuancx.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/haomaziyuancx.vue"));
+    require.ensure(["@/views/phoneNumberManage/resourcesQuery.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/resourcesQuery.vue"));
+        load();
+    });
+};
+const brandConfiguration = resolve => {
+    load(true);
+    require.ensure(["@/views/phoneNumberManage/brandConfiguration.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/brandConfiguration.vue"));
         load();
     });
 };
@@ -306,6 +313,10 @@ const router = new Router({
                     path:"cardSource",
                     name:"cardSource",
                     component:cardSource
+                },{
+                    path:"setBrand",
+                    name:"brandConfiguration",
+                    component:brandConfiguration
                 }]
             },{
                 path:"accountManage",
@@ -353,9 +364,9 @@ const router = new Router({
                 redirect: "pickCard/orderlist",
                 name:"pickCard",
                 component: pickCard,
-                children:[,{
+                children:[{
                     path:"orderlist",
-                    name:"orderlist",
+                    name:"pickCardOrder",
                     component:pickCardOrder
                 },{
                     path:"cmsRules",
@@ -369,7 +380,7 @@ const router = new Router({
                 component:openCard,
                 children:[{
                     path:"orderlist",
-                    name:"orderlist",
+                    name:"openCardOrder",
                     component:openCardOrder
                 },{
                     path:"operaterId",

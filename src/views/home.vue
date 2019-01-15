@@ -112,6 +112,9 @@ span.iconFoldClose {
               <li>
                 <router-link to="/home/card/cardSource"><b></b>资源查询</router-link>
               </li>
+              <li>
+                <router-link to="/home/card/setBrand"><b></b>品牌配置</router-link>
+              </li>
             </ul>
           </li>
         </ul>
@@ -425,6 +428,16 @@ export default {
           crumb[1] = {
             name: "库存管理",
             href: "/home/card/stock"
+          };
+        }else if (path.indexOf("/home/card/cardSource") > -1) {
+          crumb[1] = {
+            name: "资源查询",
+            href: "/home/card/cardSource"
+          };
+        }else if (path.indexOf("/home/card/setBrand") > -1) {
+          crumb[1] = {
+            name: "品牌配置",
+            href: "/home/card/setBrand"
           };
         }
       }

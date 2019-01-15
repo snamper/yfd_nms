@@ -289,26 +289,20 @@
           <tr>
             <td>
               佣金规则 : 
-              <el-select allow-create filterable style="width:70%" v-model="cmsRules" placeholder="请选择"
-                size="small">
-                <el-option v-for="item in commission_rules.type" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
+              <el-input  style="width:70%" v-model="cmsRules" placeholder="请输入佣金规则"
+                size="small"></el-input>
             </td>
           </tr>
           <tr>
             <td>
               佣金年限 : 
-              <el-select allow-create filterable style="width:70%" v-model="cmsTime" placeholder="请选择"
-                size="small">
-                <el-option v-for="item in commission_rules.time" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
+              <el-input style="width:70%" v-model="cmsTime" placeholder="请输入佣金年限"
+                size="small"></el-input>
             </td>
           </tr>
           <tr class="tdBtn">
             <span @click="close()">取消</span>
-            <span @click="btnYes('cmsRules')">确认</span>
+            <span @click="btnYes('cmsRule s')">确认</span>
           </tr>
         </tbody>
       </table>
