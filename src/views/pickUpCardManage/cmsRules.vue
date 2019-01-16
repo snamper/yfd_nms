@@ -36,13 +36,12 @@
                 filterable
                 remote
                 placeholder="请输入查询的关键字"
-                :remote-method="remoteMethod"
                 :loading="loading">
                 <el-option
-                  v-for="item in cmsRules"
-                  :key="item.ruleId"
-                  :label="item.rule"
-                  :value="item.rule"
+                  v-for="(item,index) in cmsRules"
+                  :key="index"
+                  :label="item.cmsDesc"
+                  :value="item.cmsDesc"
                   size="small">
                 </el-option>
               </el-select>
@@ -61,13 +60,12 @@
                 filterable
                 remote
                 placeholder="请输入查询的关键字"
-                :remote-method="remoteMethod2"
                 :loading="loading2">
                 <el-option
-                  v-for="item in ruleTime"
-                  :key="item.ruleId"
-                  :label="item.rule"
-                  :value="item.rule"
+                  v-for="(item,index) in ruleTime"
+                  :key="index"
+                  :label="item.cmsTime"
+                  :value="item.cmsTime"
                   size="small">
                 </el-option>
               </el-select>
@@ -90,7 +88,7 @@
                       【<span class="grey">佣金规则 : </span><span class="green">{{'--'}}</span> <span class="grey">佣金年限 : </span><span class="green">{{'--'}}</span>】
                     </label>
                     <el-row>
-                      <el-button size="mini" v-if="searchResult.length>0" @click="downLoad(1)" type="success">导出</el-button>
+                      <el-button style="padding:5px !important;margin-right:10px" size="mini" v-if="searchResult.length>0" @click="downLoad(1)" type="success">导出</el-button>
                     </el-row>
                   </div>
                 </td>
@@ -107,7 +105,15 @@
                 <td>套餐名称</td>
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
-                <td></td>
+                <td>{{(currentPage-1)*15+(i+1)}}</td>
+                <td>{{getDateTime(v.createTime)[8]}}<br/>{{getDateTime(v.createTime)[5]}}</td>
+                <td>{{v.phone||'--'}}</td>
+                <td>{{translateData('phoneLevel',v.phoneLevel)}}</td>
+                <td>{{translateData(4,v.brand)}}</td>
+                <td>{{v.area||'--'}}</td>
+                <td>{{v.sim}}</td>
+                <td>{{translateData('fenToYuan',v.faceValue)}}</td>
+                <td>{{v.packageDesc}}</td>
               </tr>
               <tr v-if="searchResult.length<=0">
                 <td style="text-align:center" colspan="14">
@@ -140,8 +146,9 @@ import {
   trimFunc,
   createDownload,
   getStore,
+  translateData
 } from "../../config/utils";
-import { getCommissionRules,downloadCommissionRules } from "../../config/service.js";
+import { getCmsRules,getCommissionRules,downloadCommissionRules } from "../../config/service.js";
 import NProgress from 'nprogress';
 export default {
   data() {
@@ -155,38 +162,98 @@ export default {
       startTime3:"",
       endTime:"",
       downLoadJson:"",
-      searchResult:{},
+      searchResult:"",
       loading:false,
-      loading2:false
+      loading2:false,
+      currentPage:"",
     };
   },
   created: function() {
     getTimeFunction(this);
+    this.getAll();
+  },
+  watch:{
+    commissionRules(){
+      if(this.commissionRules){
+        this.commissionTime=""
+      }
+    },
+    commissionTime(){
+      if(this.commissionTime){
+        this.commissionRules=""
+      }
+    }
   },
   methods: {
-    remoteMethod(){
-      let vm=this;
-      vm.cmsRules=[{ruleId:1,rule:'package1'},{ruleId:2,rule:'package2'},{ruleId:3,rule:'package3'}]
+    getAll(){
+      let vm=this,json1,json2;
+      json1 = {
+        "cmsRule": "",
+        "cmsTime": "",
+        "type": 1
+      };json2 = {
+        "cmsRule": "",
+        "cmsTime": "",
+        "type": 2
+      };
+      getCmsRules(json1)
+      .then(res=>{
+        if(res&&res.data){
+          vm.cmsRules=res.data.list;
+        }
+      }).then(()=>{
+        getCmsRules(json2)
+        .then(res=>{
+          if(res&&res.data){
+            vm.ruleTime=res.data.list;
+          }
+        })
+      }).catch(e=>errorDeal(e))
     },
-    remoteMethod2(){
-      let vm=this;
-      vm.ruleTime=[{ruleId:1,rule:'time1'},{ruleId:2,rule:'time2'},{ruleId:3,rule:'time3'}]
+    remoteMethod(v){
+      let vm=this,json;
+      json = {
+        "cmsRule": v,
+        "cmsTime": "",
+        "type": 1
+      };
+      getCmsRules(json)
+      .then(res=>{
+        if(res&&res.data){
+          vm.cmsRules=res.data;
+        }
+      }).catch(e=>errorDeal(e))
+    },
+    remoteMethod2(v){
+      let vm=this,json;
+      json={
+        "cmsRule": "",
+        "cmsTime": v,
+        "type": 2
+      };
+      getCmsRules(json)
+      .then(res=>{
+        if(res&&res.data){
+          vm.ruleTime=res.data;
+        }
+      }).catch(e=>errorDeal(e))
     },
     search(index) {
       let vm = this,json = {
-        timeType:vm.timeType,
-        startTime:vm.startTime3,
-        endTime:vm.endTime,
-        cmsRules:vm.cmsRules,
-        ruleTime:vm.ruleTime,
-        pageNum:index||1,
-        pageSize:15
+        "cmsRule": vm.commissionRules,
+        "cmsTime": vm.commissionTime,
+        "endTime": new Date(vm.endTime).getTime(),
+        "pageNum": index||1,
+        "pageSize": 15,
+        "startTime": new Date(vm.startTime3).getTime()
       };
       vm.downLoadJson=json;
       getCommissionRules(json)
       .then(res=>{
         if(res&&res.data){
-          vm.searchResult=res.data;
+          vm.searchResult=res.data.list;
+          vm.currentPage=index||1;
+          vm.total=res.data.total;
         }
       })
     },
@@ -196,6 +263,9 @@ export default {
       delete json.pageNum;
       delete json.pageSize;
       downloadCommissionRules(json,()=>{return "down" })
+    },
+    translateData(v,i){
+      return translateData(v,i)
     },
     getDateTime(e) {
       return getDateTime(e);

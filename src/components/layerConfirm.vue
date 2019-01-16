@@ -277,11 +277,11 @@
           </tr>
         </tbody>
       </table>
-      <table v-if="layerType=='commissionRules'">
+      <table v-if="layerType=='modifyCommissionRules'||layerType=='setCommissionRules'">
         <thead>
           <tr>
             <th>
-              设置佣金规则
+              {{layerType=='modifyCommissionRules'?'修改':layerType=='setCommissionRules'?'设置':'--'}}佣金规则
             </th>
           </tr>
         </thead>
@@ -302,7 +302,7 @@
           </tr>
           <tr class="tdBtn">
             <span @click="close()">取消</span>
-            <span @click="btnYes('cmsRule s')">确认</span>
+            <span @click="btnYes('cmsRules')">确认</span>
           </tr>
         </tbody>
       </table>
@@ -322,7 +322,8 @@
    requestMethod,
    transfer,
    commission,
-   deleteAddress } from "../config/service.js";
+   deleteAddress,
+   setCmsRules } from "../config/service.js";
   import { errorDeal, getStore, trimFunc } from '../config/utils';
   import { mapState } from 'vuex';
   export default {
@@ -332,7 +333,8 @@
       logisticsInfo: Object,
       info: Object,
       changpowerData: Object,
-      layerData:Object
+      layerData:Object,
+
     },
     data() {
       return {
@@ -723,9 +725,33 @@
         }).catch(e=>errorDeal(e))
       },
       changeCmsRules(){
-        let vm=this.$parent;
-        vm.$parent.details(2,'num',vm.$parent.numberTotal.info);
-        vm.off.layer=false;
+        let vm=this.$parent,json,op;
+        if(vm.layerType=='modifyCommissionRules'){
+          op=2;
+        }else if(vm.layerType=='setCommissionRules'){
+          op=1;
+        }
+        json={
+          "operate": op,
+          "packageDesc": this.layerData.packageDesc,
+          "sysOrderId": vm.$parent.numberTotal.info.sysOrderId,
+          "cmsTime": this.cmsTime,
+          "numberId": vm.$parent.numberTotal.info.numberId,
+          "cmsRule": this.cmsRules
+        }
+        setCmsRules(json)
+        .then(res=>{
+          if(res&&res.data){
+            layer.open({
+              content: '操作成功',
+              skin: 'msg',
+              time: 2,
+              msgSkin: 'success',
+            });
+            vm.off.layer=false;
+            vm.$parent.details(2,'num',vm.$parent.numberTotal.info);
+          }
+        }).catch(e=>errorDeal(e))
       },
       trimFunc(v) {
         return trimFunc(v)

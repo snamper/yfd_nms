@@ -32,9 +32,9 @@
       <div v-if="$parent.off.numList">
         <div v-for="(value,index) of numlist" :key="index" class="m-number-list" style="width:100%;height:100%;">
           <p class="m-packageTitle f-s-12"><span>套餐名称 : {{value.packageDesc||'--'}}</span>
-            <span>【<b class="grey">佣金规则 : </b><b class="green">{{'--'}}</b> <b class="grey">佣金年限 : </b><b class="green">{{'--'}}</b>】</span>
-            <el-button @click="setCommission(1)" size="mini" type="warning" style="padding:5px !important">修改</el-button>
-            <el-button @click="setCommission(2)" size="mini" type="primary" style="padding:5px !important">设置佣金规则</el-button>
+            <span>【<b class="grey">佣金规则 : </b><b class="green">{{value.cmsRule||'--'}}</b> <b class="grey">佣金年限 : </b><b class="green">{{value.cmsTime||'--'}}</b>】</span>
+            <el-button v-if="value.cmsRule||value.cmsTime" @click="setCommission(1,value)" size="mini" type="warning" style="padding:5px !important">修改佣金规则</el-button>
+            <el-button v-if="!value.cmsRule&&!value.cmsTime" @click="setCommission(2,value)" size="mini" type="primary" style="padding:5px !important">设置佣金规则</el-button>
             <el-button v-if="value.numbers.length>6&&showNumber.indexOf(index)==-1" @click="showAllNum(1,index)" size="mini" type="success" style="padding:5px !important">查看全部号码</el-button>
             <el-button v-if="value.numbers.length>6&&showNumber.indexOf(index)>-1" @click="showAllNum(2,index)" size="mini" type="success" style="padding:5px !important">收起号码列表</el-button>
           </p>
@@ -66,7 +66,7 @@
         </div>
       </div>
     </div>
-    <Dialog v-if="off.layer" :layerType="layerType" :layData="layData"></Dialog>
+    <Dialog v-if="off.layer" :layerType="layerType" :layerData="layData"></Dialog>
   </section>
 </template>
 <script>
@@ -93,6 +93,7 @@
         pageNumPu: "", //普号详情
         showNumber:[],
         layerType:"",
+        layData:"",
         off: {
           layer: false,
           dlsDetails: false,
@@ -127,19 +128,19 @@
       getDateTime(v) {
         return getDateTime(v)
       },
-      setCommission(i){
+      setCommission(i,v){
         let vm=this;
         vm.off.layer=true;
-        vm.layerType="commissionRules";
+        vm.layData=v;
         vm.setCommissionRules({
           type:[{value:'1',label:'package1'},{value:'2',label:'package2'}],
           time:[{value:'a',label:'一年'},{value:'b',label:'两年'}]
         })
-        // if(i==1){
-
-        // }else if(i==2){
-
-        // }
+        if(i==1){
+          vm.layerType="modifyCommissionRules";
+        }else if(i==2){
+          vm.layerType="setCommissionRules";
+        }
       },
       showAllNum(i,v){
         let vm=this;

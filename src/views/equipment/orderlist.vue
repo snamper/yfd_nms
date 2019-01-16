@@ -207,7 +207,7 @@
           v-model="checkedCities1"
           :min="0"
           :max="max">
-          <el-checkbox @change="checkId" v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
+          <el-checkbox v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
         </el-checkbox-group>
         <span slot="footer" class="dialog-footer">
           <el-button @click="centerDialogVisible = false">取 消</el-button>

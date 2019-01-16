@@ -177,10 +177,15 @@ export const pickCardExcelDownload=(data,load)=>fetch("/nms/w/order/exportPurcha
 export const pickCardOrderDownload=(data,load)=>fetch("/nms/w/order/export-order",data,"GET",load)
 /**提卡订单发货单批量导出 */
 export const pickCardOrdersDownload=(data,load)=>fetch("/nms/w/order/export-orders",data,"GET",load)
-/**佣金规则查询 */
-export const getCommissionRules=(data,load)=>fetch("/nms/w/order/export-orders",data,"GET",load)
+/**提卡订单管理佣金规则描述 */
+export const getCmsRules=(data,load)=>fetch("/nms/w/cms/desc",data,"POST",load)
+/**设置佣金规则和年限 */
+export const setCmsRules=(data,load)=>fetch("/nms/w/cms/set",data,"POST",load)
+/**佣金规则列表查询 */
+export const getCommissionRules=(data,load)=>fetch("/nms/w/cms/cms-numbers",data,"POST",load)
+
 /**佣金规则列表导出 */
-export const downloadCommissionRules=(data,load)=>fetch("/nms/w/order/export-orders",data,"GET",load)
+export const downloadCommissionRules=(data,load)=>fetch("/nms/w/cms/export",data,"GET",load)
 /*编辑订单话分备注*/
 export const updateRemark=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
 /**库存管理导出 */
