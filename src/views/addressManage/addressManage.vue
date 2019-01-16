@@ -13,11 +13,6 @@
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">代理商名称：</div>
             </el-col>
             <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-              <!-- <el-select size="small" style="width:100%" clearable v-model="departId" placeholder="请选择查询的代理商名称">
-              <el-option v-for="item in options" :key="item.dealerId" :label="item.dealerIdName" :value="item.dealerId"
-                size="small">
-              </el-option>
-            </el-select> -->
               <el-autocomplete v-model="departId" style="width:100%" size="small" value-key="username" :fetch-suggestions="querySearchAsync" placeholder="请选择查询的代理商名称" @select="handleSelect"></el-autocomplete>
             </el-col>
           </div>

@@ -192,7 +192,7 @@
           .then(res=>{
             if(res&&res.code==200){
               this.$message({
-                message: '恭喜你，这是一条成功消息',
+                message: '操作成功',
                 type: 'success'
               });
               vm.off.brand=false;

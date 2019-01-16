@@ -175,9 +175,6 @@ export default {
     getTimeFunction(this);
     this.getAll();
   },
-  watch:{
-    
-  },
   methods: {
     getAll(){
       let vm=this,json1,json2;
@@ -233,11 +230,11 @@ export default {
       }).catch(e=>errorDeal(e))
     },
     search(index) {
-      let vm = this,time1,time2;
-      if(timeType==1){
+      let vm = this,json,time1,time2;
+      if(vm.timeType==1){
         time1="";
         time2="";
-      }else if(timeType==2){
+      }else if(vm.timeType==2){
         time1 = new Date(vm.startTime3).getTime();
         time2 = new Date(vm.endTime).getTime();
       }
