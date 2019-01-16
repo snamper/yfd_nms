@@ -14,11 +14,11 @@
             </el-col>
             <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
               <div class="block">
+                <el-radio v-model="timeType" label="1">全部</el-radio>
+                <el-radio v-model="timeType" label="2">时间区间</el-radio>
                 <el-date-picker v-model="startTime3" size="small" type="date" :clearable=false :editable=false style="border-radius:4px 0 4px 0" placeholder="选择开始时间">
                 </el-date-picker><el-date-picker v-model="endTime" size="small" type="date" :clearable=false :editable=false placeholder="选择结束时间">
                 </el-date-picker>
-                ( <el-radio v-model="timeType" label="1">创建时间</el-radio>
-                <el-radio v-model="timeType" label="2">修改时间</el-radio> )
               </div>
             </el-col>
           </el-col>
@@ -85,7 +85,6 @@
                 <td colspan="15">
                   <div class="listHeader">
                     <label style="text-align:left;padding-left:5px;">列表<span class="f-fw greyFont">({{total||0}})</span>
-                      【<span class="grey">佣金规则 : </span><span class="green">{{'--'}}</span> <span class="grey">佣金年限 : </span><span class="green">{{'--'}}</span>】
                     </label>
                     <el-row>
                       <el-button style="padding:5px !important;margin-right:10px" size="mini" v-if="searchResult.length>0" @click="downLoad(1)" type="success">导出</el-button>
@@ -103,6 +102,8 @@
                 <td>SIM号</td>
                 <td>面值( 元 )</td>
                 <td>套餐名称</td>
+                <td>佣金规则</td>
+                <td>佣金年限</td>
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
                 <td>{{(currentPage-1)*15+(i+1)}}</td>
@@ -114,6 +115,8 @@
                 <td>{{v.sim}}</td>
                 <td>{{translateData('fenToYuan',v.faceValue)}}</td>
                 <td>{{v.packageDesc}}</td>
+                <td>{{v.cmsRule}}</td>
+                <td>{{v.cmsTime}}</td>
               </tr>
               <tr v-if="searchResult.length<=0">
                 <td style="text-align:center" colspan="14">
@@ -173,16 +176,7 @@ export default {
     this.getAll();
   },
   watch:{
-    commissionRules(){
-      if(this.commissionRules){
-        this.commissionTime=""
-      }
-    },
-    commissionTime(){
-      if(this.commissionTime){
-        this.commissionRules=""
-      }
-    }
+    
   },
   methods: {
     getAll(){
@@ -239,13 +233,21 @@ export default {
       }).catch(e=>errorDeal(e))
     },
     search(index) {
-      let vm = this,json = {
+      let vm = this,time1,time2;
+      if(timeType==1){
+        time1="";
+        time2="";
+      }else if(timeType==2){
+        time1 = new Date(vm.startTime3).getTime();
+        time2 = new Date(vm.endTime).getTime();
+      }
+      json = {
         "cmsRule": vm.commissionRules,
         "cmsTime": vm.commissionTime,
-        "endTime": new Date(vm.endTime).getTime(),
+        "endTime": time2,
         "pageNum": index||1,
         "pageSize": 15,
-        "startTime": new Date(vm.startTime3).getTime()
+        "startTime": time1
       };
       vm.downLoadJson=json;
       getCommissionRules(json)

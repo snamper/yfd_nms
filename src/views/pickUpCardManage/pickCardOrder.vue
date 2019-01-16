@@ -449,7 +449,6 @@ export default {
       let vm = this;
       vm.layerType = "payMent";
       vm.logistics = v;
-      debugger;
       vm.off.layer = true;
     },
     returnGoods(v) {

@@ -299,7 +299,6 @@ export default {
       this.$nextTick(() => {
         this.$refs[i].validate(valid => {
           if (valid) {
-            console.log("submit!");
             let vm = this;
             let json = {
               receiverUserId: vm.receiverUserId,

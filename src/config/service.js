@@ -184,6 +184,7 @@ export const setCmsRules=(data,load)=>fetch("/nms/w/cms/set",data,"POST",load)
 /**佣金规则列表查询 */
 export const getCommissionRules=(data,load)=>fetch("/nms/w/cms/cms-numbers",data,"POST",load)
 
+
 /**佣金规则列表导出 */
 export const downloadCommissionRules=(data,load)=>fetch("/nms/w/cms/export",data,"GET",load)
 /*编辑订单话分备注*/
@@ -194,6 +195,12 @@ export const exportStorage=(data,load)=>fetch("/nms/w/number/exportStorage",data
 export const exportOpenCard=(data,load)=>fetch("/nms/w/openReadyCard/exportOpenCard",data,"GET",load)
 /**设备管理设备资源查询 */
 export const getEquipmentSrc=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
+
+/**查询品牌排序顺序 */
+export const getBrandOrder=(data,load)=>fetch("/nms/w/number/query-brand-order",data,"POST",load)
+/*设置品牌排序顺序 */
+export const setBrandOrder=(data,load)=>fetch("/nms/w/number/set-brand-order",data,"POST",load)
+
 
 
 

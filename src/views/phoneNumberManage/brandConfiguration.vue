@@ -5,12 +5,9 @@
         <el-row class="f-mt-10">
           <el-col :xs="24" :sm="24" :md="24" :lg="22" :xl="20" >
             <div class="grid-content bg-purple">
-              <el-row v-if="false">
-                <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">资源查询</div></el-col>
-              </el-row>
               <el-row>
                 <el-row>
-                  <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">查询</div></el-col>
+                  <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">查询条件</div></el-col>
                 </el-row>
                 <el-row :span="24">
                   <el-col>
@@ -67,71 +64,37 @@
       <!-- 查询结果列表 -->
       <div v-if="searchlist.length" class="m-details">
         <p class="m-searchlist-title"><span>查询结果</span><span>
-              <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
+          <el-button v-if="!off.brand" size="mini" style="padding:5px !important;margin-right:10px" @click="setBrand(1)" type="success">
+            品牌配置
+          </el-button>
+          <el-button v-if="off.brand" size="mini" style="padding:5px !important;margin-right:10px" @click="setBrand(2,searchlist)" type="success">
+            修改配置
+          </el-button>
+          </span></p>
         <table class="m-searchTab" style="width:100%;height:100%;">
           <tr>
             <td>序号</td>
-            <td>手机号码</td>
-            <td>所属号段</td>
-            <td>品牌</td>
-            <td>归属地</td>
-            <td>套餐</td>
-            <td>资费</td>
-            <td>面值</td>
-            <td>入库价</td>
-            <td>话分比例</td>
-            <td>入库时间</td>
-            <td>出库时间</td>
-            <td>退卡时间</td>
-            <td>代理商名称</td>
-            <td>渠道经理</td>
-            <td>现归属渠道</td>
-            <td>当前状态</td>
-            <td>号码类型</td>
-            <td>SIM号码</td>
+            <td>品牌名称</td>
+            <td>排序方式</td>
           </tr>
           <tr v-for="(v,i) of searchlist" :key="i">
-            <td>{{(currentPage-1)*15+(i+1)}}</td>
-            <td>{{v.phone||'--'}}</td>
-            <td>{{v.sectionId||'--'}}</td>
+            <td>{{i+1}}</td>
             <td>{{translateData(4,v.brand)}}</td>
-            <td>{{v.area||'--'}}</td>
-            <td>{{v.packageName||'--'}}</td>
-            <td>{{v.voice || '--'}}</td>
-            <td>{{v.faceValue}}元</td>
-            <td>{{v.inPrice}}元</td>
-            <td>{{v.huafenDesc || '--'}}</td>
-            <td>{{getDateTime(v.inTime)[6]}}</td>
-            <td>{{getDateTime(v.outTime)[6]}}</td>
-            <td>{{getDateTime(v.returnTime)[6]}}</td>
             <td>
-              <a v-if="v.agentName" :href="`#/home/accountManage/info?company=${v.agentName}`">{{v.agentName}}</a>
-              <span v-else>--</span>
+              <label v-if="!off.brand">{{v.order==1?'sim号':v.order==2?'号码':'--'}}</label>
+              <label v-if="off.brand">
+                <input type="radio"  value=1 v-model="v.order"> SIM号&nbsp;&nbsp; 
+                <input  type="radio"  value=2 v-model="v.order"> 号码
+              </label>
             </td>
-            <td>{{v.dealerManager||'--'}}</td>
-            <td>
-              <a v-if="v.dealer" :href="`#/home/organization/yfd?dealerName=${v.dealer}`">{{v.dealer}}</a>
-              <span v-else>--</span>
-            </td>
-            <td>{{ v.agentNamePath }}</td>
-            <td>{{ v.phoneTypeDesc }}</td>
-            <td>{{ v.sim }}</td>
           </tr>
         </table>
-        <el-pagination 
-          v-if="searchlist.length!=0"
-          layout="prev, pager, next" 
-          @current-change="search(currentPage,1)" 
-          :page-size="15" 
-          :current-page.sync="currentPage"
-          :total="total">
-        </el-pagination>
       </div>
     </div>
   </section>
 </template>
 <script>
-  import { upRecords,upExcel,numberResource } from '../../config/service.js';
+  import { getBrandOrder,setBrandOrder } from '../../config/service.js';
   import { getTimeFunction, getStore, errorDeal, getDateTime,translateData } from '../../config/utils';
   const cityOptions = ['远特', '蜗牛', '迪信通', '极信', '小米', '海航', '乐语', '苏宁互联', '国美', '联想', '蓝猫移动', '长城', '中邮','鹏博士','天音'],
     cityOptions1 = ['远特'],
@@ -152,17 +115,15 @@
   export default {
     data() {
       return {
-        total:0,
-        simNum:"",
-        upInfo:{},
-        fileList:[],
-        phoneNum:"",
-        startTime:"",
-        headerInfo:{},
-        searchlist:[],
-        currentPage:"",
+        searchlist:"",
+        setOrder:[],
+        isIndeterminate:false,
+        searchJson:"",
         form:{
           searchKind:1
+        },
+        off:{
+          brand:false
         },
         cardType:"1,2",
         checkAll:true,
@@ -185,52 +146,60 @@
         cities15: cityOptions15,
       }
     },
-    created: function() {
-      getTimeFunction(this);
-      let info = getStore('YFD_NMS_INFO'),vm=this,
-      packageName = info.packageName,
-      timestamp = info.timestamp,
-      token = info.token,
-      userId = info.userId;
-      Object.assign(vm.headerInfo,{packageName},{timestamp},{token},{userId}); 
-      Object.assign(vm.upInfo,{userId:userId});
-    },
     methods: {
-      search(p){
-        let vm=this,json;
-        json={
-          searchType:vm.searchKind,
-          cardType:vm.cardType,
-          brand:vm.checkedCities
-        };
-        console.log(json);
-      },
-      handleUpload(p){
-        let vm=this,json;
-        json = {
-          'file':p.file,'fileName':p.file.name,'startTime':new Date(this.startTime).getTime()
+      search(i){
+        let vm=this,json,ids;
+        if(!i){
+          if(vm.form.searchKind==1){
+            if(vm.cardType=='1,2'){
+              ids=[];
+            }else{
+              ids=vm.cardType.split(',')
+            }
+            json={
+              orders:ids,
+              brands:[]
+            };
+          }else if(vm.form.searchKind==2){
+            if(vm.checkAll==true){
+              ids=[];
+            }else{
+              ids=[];
+              for (let i in vm.checkedCities) {
+                ids.push(cityOptions.indexOf(vm.checkedCities[i]) + 1);
+              }
+            }
+            json={
+              orders:[],
+              brands:ids
+            };
+          }
+          vm.searchJson=json;
         }
-        upExcel(json,()=>{return "upload"})
-        .then(function(res){
-          vm.$refs.upload.clearFiles();
-          if(res&&res.code==200){
-            vm.$message({
-              message: '上传成功!',
-              type: 'success'
-            });
-          }else{
-            vm.$message({
-              message: '上传失败!',
-              type: 'error'
-            });
+        getBrandOrder(vm.searchJson)
+        .then(res=>{
+          if(res&&res.data){
+            vm.searchlist=res.data.list;
           }
         }).catch(e=>errorDeal(e))
       },
-      submitUpload(file) {
-        this.$refs.upload.submit();
-      },
-      handleChange(file, fileList) {
-        this.fileList = fileList.slice(-1);
+      setBrand(i,v){
+        let vm=this;
+        if(i==1){
+          vm.off.brand=true;
+        }else if(i==2){
+          setBrandOrder({list:v})
+          .then(res=>{
+            if(res&&res.code==200){
+              this.$message({
+                message: '恭喜你，这是一条成功消息',
+                type: 'success'
+              });
+              vm.off.brand=false;
+              vm.search(2);
+            }
+          }).catch(e=>errorDeal(e))
+        }
       },
       handleCheckAllChange(val) {
         this.checkedCities = val ? cityOptions : [];
@@ -239,7 +208,8 @@
       handleCheckedCitiesChange(value) {
         let checkedCount = value.length;
         this.checkAll = checkedCount === this.cities.length;
-        this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+        this.isIndeterminate =
+          checkedCount > 0 && checkedCount < this.cities.length;
       },
       translateData(i,v){
         return translateData(i,v)
@@ -250,19 +220,4 @@
     }
   }
 </script>
-<style>
-  .m-data-picker .el-date-editor:nth-child(1) .el-input__inner {
-    border-radius: 4px !important;
-  }
-  .m-upload{
-    display: inline-block;
-  }
-  .el-upload-list{
-    display: inline-block;
-    float: left;
-  }
-  .el-upload-list__item{
-    line-height: 2;
-  }
-</style>
 

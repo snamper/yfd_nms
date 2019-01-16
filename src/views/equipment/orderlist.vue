@@ -198,22 +198,24 @@
           </div>
         </div>
       </div>
-      <el-dialog
-        :title='"设备号列表（请选择"+max+"个设备号）"'
-        :visible.sync="centerDialogVisible"
-        width="50%"
-        center>
-        <el-checkbox-group 
-          v-model="checkedCities1"
-          :min="0"
-          :max="max">
-          <el-checkbox v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
-        </el-checkbox-group>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="confirmBtn">确 定</el-button>
-        </span>
-      </el-dialog>
+      <div class="m-dialog-content">
+        <el-dialog
+          :title='"设备号列表（请选择"+max+"个设备号）"'
+          :visible.sync="centerDialogVisible"
+          width="50%"
+          center>
+          <el-checkbox-group 
+            v-model="checkedCities1"
+            :min="0"
+            :max="max">
+            <el-checkbox v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
+          </el-checkbox-group>
+          <span slot="footer" class="dialog-footer">
+            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button type="primary" @click="confirmBtn">确 定</el-button>
+          </span>
+        </el-dialog>
+      </div>
     </div>
     <order-details v-if="off.details" :detailsData="productDetails"></order-details>
     <layer-confirm v-if="off.layer" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>
@@ -430,7 +432,6 @@ export default {
       if(vm.checkedCities1.length!=vm.max){
         vm.$message.error('超出设备数，请取消后重新选择');
       }
-      console.log(vm.checkedCities1)
     },
     changeLogisticsInfo(v) {
       let vm = this;
@@ -674,14 +675,14 @@ table.m-searchTab tr {
   border-radius:4px;
   border: 1px solid #eee;
 }
-.el-dialog__body{
+.m-dialog-content .el-dialog__body{
   max-height: 400px;
   overflow:auto;
 }
-.el-checkbox.is-bordered+.el-checkbox.is-bordered{
+.m-dialog-content .el-checkbox.is-bordered+.el-checkbox.is-bordered{
   margin-left: 0;
 }
-.el-checkbox{
+.m-dialog-content .el-checkbox{
   margin: 10px 10px 0 0;
 }
 </style>
