@@ -181,22 +181,6 @@
           }
         }).catch(e=>errorDeal(e))
       },
-      // beforeUpload(file){
-      //   let vm=this,json;
-      //   let info = getStore('YFD_NMS_INFO');
-      //   json = {
-      //     'file':file,'userId':info.userId,'startTime':new Date(this.startTime).getTime()
-      //   }
-      //   upExcel(json,()=>{return "upload"})
-      //   .then(function(res){
-      //     this.$refs.upload.clearFiles();
-      //     if(res&&res.code==200){
-      //       this.$message('上传文件成功');
-      //     }else{
-      //       this.$message.error('上传文件失败');
-      //     }
-      //   })
-      // },
       submitUpload(file) {
         this.$refs.upload.submit();
       },

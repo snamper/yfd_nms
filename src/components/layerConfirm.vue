@@ -3,16 +3,7 @@
     <div>
       <table v-if="layerType=='notice'">
         <thead>
-          <tr>
-            <td>
-              <p></p>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              确认要删除此公告消息？
-            </th>
-          </tr>
+          <tr> <th> 确认要删除此公告消息？ </th> </tr>
         </thead>
         <tbody>
           <tr class="tdBtn">
@@ -23,17 +14,7 @@
       </table>
       <table v-if="layerType=='takeGoods'">
         <thead>
-          <tr>
-            <td>
-              <p></p>
-            </td>
-          </tr>
-          <tr>
-            <th>
-              商户已收货<br>
-              是否确认收货?
-            </th>
-          </tr>
+          <th> 商户已收货<br> 是否确认收货? </th> </tr>
         </thead>
         <tbody>
           <tr class="tdBtn">
@@ -44,11 +25,7 @@
       </table>
       <table v-if="layerType=='sendGoods'">
         <thead>
-          <tr>
-            <th>
-              填写物流单号
-            </th>
-          </tr>
+          <tr> <th> 填写物流单号 </th> </tr>
         </thead>
         <tbody>
           <tr>
@@ -94,11 +71,7 @@
       </table>
       <table v-if="layerType=='logistics'">
         <thead>
-          <tr>
-            <th>
-              修改物流单号
-            </th>
-          </tr>
+          <tr> <th> 修改物流单号 </th> </tr>
         </thead>
         <tbody>
           <tr>
@@ -138,25 +111,6 @@
           <tr>
             <td>
               <el-input maxlength=30 v-model="oddNumbers" placeholder="请输入支付流水号" size="small"></el-input>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <el-select allow-create filterable style="display:block" v-model="logisticsCompany2" placeholder="请选择"
-                size="small">
-                <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
-                </el-option>
-              </el-select>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <el-input maxlength=30 v-model="orderId" placeholder="请输入物流单号" size="small"></el-input>
-            </td>
-          </tr>
-          <tr class="f-s-12">
-            <td style="padding-top:0px;color:red">
-              *注：付款金额必填，物流公司及单号为选填<br>
             </td>
           </tr>
           <tr class="tdBtn">
@@ -351,16 +305,12 @@
         newPrice: "",
         cmsRules: "",
         cmsTime:""
-        // layerType:"",
       }
-    },
-    created:function(){
-      
     },
     mounted(){
       let vm=this;
       if(vm.logisticsInfo&&vm.logisticsInfo.totalStrikePrice){
-        vm.payMoney=vm.logisticsInfo.totalStrikePrice;
+        vm.payMoney=parseFloat(vm.logisticsInfo.totalStrikePrice)/100;
       }
     },
     computed:{
@@ -423,25 +373,25 @@
       cancelNotice(v) {
         let vm = this;
         requestConfirmDelNotice(v)
-          .then((data) => {
-            if (data.code == 200) {
-              layer.open({
-                content: "删除公告消息成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            } else {
-              layer.open({
-                content: data.msg,
-                skin: "msg",
-                time: 2,
-                msgSkin: "error"
-              })
-            }
-            this.$parent.search(this.$parent.pa);
-            this.$parent.off.layer = false;
-          }).catch(e => errorDeal(e));
+        .then((data) => {
+          if (data.code == 200) {
+            layer.open({
+              content: "删除公告消息成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          } else {
+            layer.open({
+              content: data.msg,
+              skin: "msg",
+              time: 2,
+              msgSkin: "error"
+            })
+          }
+          this.$parent.search(this.$parent.pa);
+          this.$parent.off.layer = false;
+        }).catch(e => errorDeal(e));
       },
       collectGoods(v) {
         let vm = this;
@@ -451,18 +401,18 @@
           "deliveryName": v.deliveryName
         }
         requestConfirmTakeGoods(data)
-          .then((data) => {
-            this.$parent.search(this.$parent.pa);
-            this.$parent.off.layer = false;
-            if (data.code == 200) {
-              layer.open({
-                content: "操作成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            }
-          }).catch(e => errorDeal(e));
+        .then((data) => {
+          this.$parent.search(this.$parent.pa);
+          this.$parent.off.layer = false;
+          if (data.code == 200) {
+            layer.open({
+              content: "操作成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          }
+        }).catch(e => errorDeal(e));
       },
       sendGoods(v) {
         let vm = this,
@@ -472,18 +422,18 @@
             "deliveryName": vm.logisticsCompany,
           };
         requestChangeLogisticsId(data)
-          .then((data) => {
-            this.$parent.search(vm.$parent.pa);
-            this.$parent.off.layer = false;
-            if (data.code == 200) {
-              layer.open({
-                content: "操作成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            }
-          }).catch(e => errorDeal(e));
+        .then((data) => {
+          this.$parent.search(vm.$parent.pa);
+          this.$parent.off.layer = false;
+          if (data.code == 200) {
+            layer.open({
+              content: "操作成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          }
+        }).catch(e => errorDeal(e));
       },
       returnGoods(v) {
         let vm = this;
@@ -524,18 +474,18 @@
           }
         }
         requestChangeLogisticsId(data)
-          .then((data) => {
-            this.$parent.search(vm.$parent.pa);
-            this.$parent.off.layer = false;
-            if (data.code == 200) {
-              layer.open({
-                content: "操作成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            }
-          }).catch(e => errorDeal(e));
+        .then((data) => {
+          this.$parent.search(vm.$parent.pa);
+          this.$parent.off.layer = false;
+          if (data.code == 200) {
+            layer.open({
+              content: "操作成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          }
+        }).catch(e => errorDeal(e));
       },
       payMent(v) {
         let vm = this,
@@ -566,20 +516,22 @@
           "paymentSerialNumber": vm.oddNumbers,
         }
         requestConfirmPayMent(data)
-          .then((data) => {
-            this.$parent.search(vm.$parent.pa);
-            this.$parent.off.layer = false;
-            if (data.code == 200) {
-              layer.open({
-                content: "操作成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            }
-          }).catch(e => errorDeal(e, function () {
-            vm.$parent.off.layer = false;
-          }));
+        .then((data) => {
+          this.$parent.search(vm.$parent.pa);
+          this.$parent.off.layer = false;
+          if (data.code == 200) {
+            layer.open({
+              content: "操作成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          }
+        })
+        .catch(e => errorDeal(e, ()=>{
+            vm.$parent.off.layer = false
+          }
+        ));
       },
       changePrice(v) {
         let vm = this,
@@ -591,22 +543,22 @@
           };
         requestModify_Price(data)
           .then((data) => {
-            for (let i in vm.$parent.off.changePrice) {
-              vm.$set(vm.$parent.off.changePrice, i, false)
-            }
-            if (data.code == 200) {
-              layer.open({
-                content: "修改价格成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            }
-            this.$parent.off.layer = false;
-            this.$parent.search(vm.$parent.pa);
-          }).catch(e => errorDeal(e, function () {
-            vm.$parent.off.layer = false;
-          }));
+          for (let i in vm.$parent.off.changePrice) {
+            vm.$set(vm.$parent.off.changePrice, i, false)
+          }
+          if (data.code == 200) {
+            layer.open({
+              content: "修改价格成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          }
+          this.$parent.off.layer = false;
+          this.$parent.search(vm.$parent.pa);
+        }).catch(e => errorDeal(e,()=>{
+          vm.$parent.off.layer = false}
+        ));
       },
       deletePower() {
         let vm = this.$parent,
@@ -614,69 +566,69 @@
             id: vm.roleId
           };
         deleteRole(json)
-          .then((data) => {
-            if (data.code == 200) {
-              layer.open({
-                content: "删除角色成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            }
-            vm.off.layer = false;
-            vm.layerType = '';
-            vm.fgetRole();
-          }).catch(e => errorDeal(e))
+        .then((data) => {
+          if (data.code == 200) {
+            layer.open({
+              content: "删除角色成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          }
+          vm.off.layer = false;
+          vm.layerType = '';
+          vm.fgetRole();
+        }).catch(e => errorDeal(e))
       },
       modifyPower() {
         let vm = this;
         updateRolePrivilege(vm.changpowerData)
-          .then((data) => {
-            if (data.code == 200) {
-              layer.open({
-                content: "修改角色权限成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-            }
-            vm.$parent.$parent.fgetRole();
-            vm.$parent.close();
-          }).catch(e => errorDeal(e))
+        .then((data) => {
+          if (data.code == 200) {
+            layer.open({
+              content: "修改角色权限成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+          }
+          vm.$parent.$parent.fgetRole();
+          vm.$parent.close();
+        }).catch(e => errorDeal(e))
       },
       modifyDepart() {
         let vm = this;
         updateDealerInfo(vm.$parent.changeDepartInfo)
-          .then((data) => {
-            if (data.code == 200) {
-              layer.open({
-                content: "修改归属渠道成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              })
-              let json = {
-                "startTime": new Date(vm.$parent.$parent.startTime).getTime(),
-                "endTime": new Date(vm.$parent.$parent.endTime).getTime(),
-                "searchType": '1',
-                "departName": '',
-                "managerName": '',
-                "departState": '1,2,3,4',
-                "phone": vm.$parent.lists.phone,
-                "pageSize": 15,
-                "pageNum": 1
-              },
-              url = '/ums/w/user/departSearch';
-              requestMethod(json, url)
-                .then((data) => {
-                  if (data.code == 200) {
-                    vm.$parent.$parent.companyDetails = data.data.departs[0];
-                  }
-                }).catch(e => errorDeal(e));
-            }
-            vm.$parent.change = false;
-            vm.$parent.off.layer = false;
-          }).catch(e => errorDeal(e, vm.$parent.off.layer = false))
+        .then((data) => {
+          if (data.code == 200) {
+            layer.open({
+              content: "修改归属渠道成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            })
+            let json = {
+              "startTime": new Date(vm.$parent.$parent.startTime).getTime(),
+              "endTime": new Date(vm.$parent.$parent.endTime).getTime(),
+              "searchType": '1',
+              "departName": '',
+              "managerName": '',
+              "departState": '1,2,3,4',
+              "phone": vm.$parent.lists.phone,
+              "pageSize": 15,
+              "pageNum": 1
+            },
+            url = '/ums/w/user/departSearch';
+            requestMethod(json, url)
+              .then((data) => {
+                if (data.code == 200) {
+                  vm.$parent.$parent.companyDetails = data.data.departs[0];
+                }
+              }).catch(e => errorDeal(e));
+          }
+          vm.$parent.change = false;
+          vm.$parent.off.layer = false;
+        }).catch(e => errorDeal(e, vm.$parent.off.layer = false))
       },
       withdrawal(v){
         let vm=this,json={

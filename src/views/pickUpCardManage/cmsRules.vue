@@ -198,7 +198,7 @@ export default {
           if(res&&res.data){
             vm.ruleTime=res.data.list;
           }
-        })
+        }).catch(e=>errorDeal(e))
       }).catch(e=>errorDeal(e))
     },
     remoteMethod(v){
@@ -254,7 +254,7 @@ export default {
           vm.currentPage=index||1;
           vm.total=res.data.total;
         }
-      })
+      }).catch(e=>errorDeal(e))
     },
     downLoad(i,v) {
       let vm = this,json;

@@ -256,8 +256,7 @@
               });  
               vm.search();
             }).catch(e=>errorDeal(e,vm.modifyi=0.1))
-          })
-          .catch(e => errorDeal(e,vm.modifyi=0.1));
+          }).catch(e => errorDeal(e,vm.modifyi=0.1));
         }
       },
       details(i,v) {

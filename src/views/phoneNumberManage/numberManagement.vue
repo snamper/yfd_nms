@@ -723,7 +723,7 @@ export default {
         resolve("success!");
       }).then(() => {
         this.btnYes(val);
-      });
+      }).catch(e=>errorDeal(e));
     },
     splitNumber(v, x, i) {
       let vm = this;
@@ -768,7 +768,7 @@ export default {
               productId: v.v.productId
             }).then(data => {
               vm.cuteNumberList = data.data.products;
-            });
+            }).catch(e=>errorDeal(e));
           })
           .catch(e => {
             layer.open({
@@ -792,7 +792,7 @@ export default {
           productId: v.productId
         }).then(data => {
           vm.cuteNumberList = data.data.products;
-        });
+        }).catch(e=>errorDeal(e));
       }
       vm.off.tableDetails.push(i);
     },

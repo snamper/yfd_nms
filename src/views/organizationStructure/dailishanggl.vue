@@ -534,12 +534,8 @@ export default {
               this.search();
             }
           })
-          .catch(res => {
-            this.$message.error(res.msg || res.statusText || res);
-          });
-      }).catch(()=>{
-
-      });
+          .catch(res => {this.$message.error(res.msg || res.statusText || res)});
+      }).catch(e=>{errorDeal(e)});
     },
     getSyncTime() {
       let vm = this,

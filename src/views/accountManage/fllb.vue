@@ -146,7 +146,7 @@ export default {
         vm.detailstotal = res.data.total;
         vm.detailspage = p;
         vm.off.rebate = true;
-      })
+      }).catch(e=>errorDeal(e))
     },
     download(){
       let vm=this; 

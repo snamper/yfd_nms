@@ -231,19 +231,19 @@ export default{
             data.pageSize=30;
             requestMethod(data,url)
             .then((res)=>{
-            this.$set(vm.$parent.listSwitch,'pu',true)                                                      
-            vm.$parent.normalNum=[]
-            let simgroups = res.data.simGroups;
-            for (let x = 0, len = simgroups.length; x<len; x++){
-            vm.$parent.normalNum.push({simGroupTotal:"",simName:"",numbers:[]})
-            for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
-                vm.$parent.normalNum[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
-            }
-            vm.$parent.normalNum[x].simGroupTotal=simgroups[x].simGroupTotal;
-            vm.$parent.normalNum[x].simName=simgroups[x].simName;
-            }
-            vm.$parent.totalPu=res.data.total;                        
-        }).catch(e=>errorDeal(e))
+                this.$set(vm.$parent.listSwitch,'pu',true)                                                      
+                vm.$parent.normalNum=[]
+                let simgroups = res.data.simGroups;
+                for (let x = 0, len = simgroups.length; x<len; x++){
+                vm.$parent.normalNum.push({simGroupTotal:"",simName:"",numbers:[]})
+                for (let index = 0, l = simgroups[x].numbers.length; index<l; index+= 6) {
+                    vm.$parent.normalNum[x].numbers.push(simgroups[x].numbers.slice(index,index+6))
+                }
+                vm.$parent.normalNum[x].simGroupTotal=simgroups[x].simGroupTotal;
+                vm.$parent.normalNum[x].simName=simgroups[x].simName;
+                }
+                vm.$parent.totalPu=res.data.total;                        
+            }).catch(e=>errorDeal(e))
         },searchNumberListCute(v){
             let vm=this, url="/nms/w/number/getMngCuteNumbers",data={};
             data.searchProductId=vm.$parent.searchProductListId;

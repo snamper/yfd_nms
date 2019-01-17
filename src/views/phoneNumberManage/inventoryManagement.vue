@@ -313,7 +313,7 @@
             areaCn: "全部",
             areaPinying: "quanbu"
           })
-        })
+        }).catch(e=>errorDeal(e))
     },
     components: {
       stockDetails

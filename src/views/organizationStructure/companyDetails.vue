@@ -200,9 +200,10 @@ export default {
     ...mapActions(["getDepart"]),
     async init() {
       let vm = this;
-      vm.getDepart().then(() => {
+      vm.getDepart()
+      .then(() => {
         vm.options = vm.depart;
-      });
+      }).catch(e=>errorDeal(e));
     },
     alter() {
       let vm = this,lists=vm.lists;

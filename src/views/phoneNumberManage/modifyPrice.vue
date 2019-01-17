@@ -282,9 +282,8 @@
                 vm.off.searchList = false;
                 vm.off.layer = false;
                 vm.off.cardlistDetails = true;
-              })).catch(e => errorDeal(e, () => {
-              load.close()
-            }));
+              }).catch(e=>errorDeal(e))
+            ).catch(e => errorDeal(e, () => {load.close()}));
         }
       },
       changePrice(v) {

@@ -347,7 +347,7 @@ export default {
           vm.closemidify();
           vm.search(vm.currentPage,2);
         }
-      })
+      }).catch(e=>errorDeal(e))
     },toview(v){
       let vm=this;
       vm.off.picinfo=true;

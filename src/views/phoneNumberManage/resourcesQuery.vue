@@ -19,7 +19,7 @@
                         <label><span class="radioYes"><input type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">手机号码：</span></label>
                       </el-col>
                       <el-col :xs="18" :sm="16" :md="18" :lg="16" :xl="16">
-                        <el-input v-model="phoneNum" size="small" maxlength=25 placeholder="请输入查询的手机号码"></el-input>
+                        <el-input v-model="phoneNum" size="small" maxlength=11 placeholder="请输入查询的手机号码"></el-input>
                       </el-col>
                     </div>
                   </el-col>
@@ -29,7 +29,7 @@
                         <label><span class="radioYes"><input type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">SIM号码：</span></label>
                       </el-col>
                       <el-col :xs="18" :sm="16" :md="18" :lg="16" :xl="16">
-                        <el-input v-model="simNum" size="small" maxlength=25 placeholder="请输入查询的SIM号码"></el-input>
+                        <el-input v-model="simNum" size="small" placeholder="请输入查询的SIM号码"></el-input>
                       </el-col>
                     </div>
                   </el-col>
@@ -45,7 +45,7 @@
       <!-- 查询结果列表 -->
       <div v-if="searchlist.length" class="m-details">
         <p class="m-searchlist-title"><span>查询结果</span><span>
-              <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
+          <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
         <table class="m-searchTab" style="width:100%;height:100%;">
           <tr>
             <td>序号</td>

@@ -485,7 +485,7 @@ export default {
     });
     f1.then(() => {
       vm.getStaffDetails(vm.detailsList[0]);
-    });
+    }).catch(e=>errorDeal(e));
   },
   computed: {
     ...mapState(["rolelist", "rolelist1"])
@@ -558,13 +558,8 @@ export default {
             .catch(res => {
               this.$message.error(res.msg || res.statusText || res);
             });
-        }).catch(()=>{
-          
-        });
-      // this.off.layer=true;
-      // this.off.sync=true;
-      // this.layerType='operationStaff';
-      // this.addUsersData=data;
+        })
+        .catch(e=>{errorDeal(e)});
     },
     search(p) {
       //查询
@@ -696,7 +691,7 @@ export default {
             .catch(res => {
               this.$message.error(res.msg || res.statusText || res);
             });
-        })
+        }).catch(e=>errorDeal(e))
     },
     btnYes() {
       let vm = this;
