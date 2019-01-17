@@ -3,6 +3,11 @@
     <div>
       <table v-if="layerType=='notice'">
         <thead>
+          <tr>
+            <td>
+              <p></p>
+            </td>
+          </tr>
           <tr> <th> 确认要删除此公告消息？ </th> </tr>
         </thead>
         <tbody>
@@ -14,7 +19,14 @@
       </table>
       <table v-if="layerType=='takeGoods'">
         <thead>
-          <th> 商户已收货<br> 是否确认收货? </th> </tr>
+          <tr>
+            <td>
+              <p></p>
+            </td>
+          </tr>
+          <tr>
+            <th> 商户已收货<br> 是否确认收货? </th> 
+          </tr>
         </thead>
         <tbody>
           <tr class="tdBtn">

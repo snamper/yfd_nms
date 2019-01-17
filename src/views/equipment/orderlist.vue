@@ -174,19 +174,19 @@
                 <td>
                   <el-button 
                     v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" 
-                    style="margin:0px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
+                    style="padding:2px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
                   <el-button 
                     v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" 
-                    style="margin:0px;font-size:12px" @click="confirm(v)">收货</el-button>
+                    style="padding:2px;font-size:12px" @click="confirm(v)">收货</el-button>
                   <el-button 
                     v-if="v.paymentState==1&&v.orderState==1&&v.paymentType==4" 
-                    style="margin:0px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
+                    style="padding:2px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
                   <el-button 
                     v-if="v.paymentState==2&&v.returnFlag!=1" 
-                    style="margin:0px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
+                    style="padding:2px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
                   <el-button 
-                    v-if="v.orderState!=3&&v.orderState!=4&&(v.orderState==1&&!(v.paymentState==1&&v.deliveryState==0))||v.returnFlag!=1" 
-                    style="margin:0px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
+                    v-if="v.orderState!=3&&v.orderState!=4&&(v.orderState==1&&!(v.paymentState==1&&v.deliveryState==0))&&v.returnFlag!=1" 
+                    style="padding:2px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
                 </td>
               </tr>
               <tr v-if="searchResult.length<=0">
@@ -246,20 +246,8 @@ import { disabledDate } from "../../config/utilsTimeSelect";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
 import NProgress from 'nprogress';
-const cityOptions = [{area:'15684765200',id:"10"}, {area:'15566447854',id:'20'}, {area:'15566661234',id:'30'}, {area:'17744551221',id:"40"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"1"}, {area:'15566447854',id:'2'}, {area:'15566661234',id:'3'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"21"}, {area:'15566447854',id:'22'}, {area:'15566661234',id:'23'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"31"}, {area:'15566447854',id:'32'}, {area:'15566661234',id:'33'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"41"}, {area:'15566447854',id:'42'}, {area:'15566661234',id:'43'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"51"}, {area:'15566447854',id:'52'}, {area:'15566661234',id:'53'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"61"}, {area:'15566447854',id:'62'}, {area:'15566661234',id:'63'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"131"}, {area:'15566447854',id:'132'}, {area:'15566661234',id:'73'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"}
-,{area:'16233554125',id:"71"}, {area:'15566447854',id:'72'}, {area:'15566661234',id:'83'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"81"}, {area:'15566447854',id:'82'}, {area:'15566661234',id:'93'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"91"}, {area:'15566447854',id:'92'}, {area:'15566661234',id:'103'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"101"}, {area:'15566447854',id:'102'}, {area:'15566661234',id:'113'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"111"}, {area:'15566447854',id:'112'}, {area:'15566661234',id:'123'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"},
-{area:'16233554125',id:"121"}, {area:'15566447854',id:'122'}, {area:'15566661234',id:'133'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'10'}, {area:'15566661234',id:'11'}, {area:'17744551221',id:"12"}];
+const cityOptions = [{area:'15684765200',id:"10"}, {area:'15566447854',id:'20'}, {area:'15566661234',id:'30'}, {area:'17744551221',id:"40"},{area:'16233554125',id:"50"}, {area:'15566447854',id:'60'}, {area:'15566661234',id:'70'}, {area:'17744551221',id:"80"},{area:'16233554125',id:"90"}, {area:'15566447854',id:'100'}, {area:'15566661234',id:'110'}, {area:'17744551221',id:"120"},
+{area:'16233554125',id:"1"}, {area:'15566447854',id:'2'}, {area:'15566661234',id:'3'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'101'}, {area:'15566661234',id:'111'}, {area:'17744551221',id:"121"}];
 export default {
   data() {
     return {

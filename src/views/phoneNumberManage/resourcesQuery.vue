@@ -8,35 +8,49 @@
               <el-row v-if="false">
                 <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">资源查询</div></el-col>
               </el-row>
+              <!-- <el-row v-if="false">
+                <el-col :xs="4" :sm="3" :md="3" :lg="2" :xl="2" >
+                  <div class="grid-content bg-purple-dark f-ta-r inputTitle">上传文件&nbsp;:&nbsp;</div>
+                </el-col>
+                <el-col class="m-data-picker" :xs="20" :sm="18" :md="18" :lg="18" :xl="18" >
+                  <el-upload
+                    action="customer"
+                    class="m-upload"
+                    ref="upload"
+                    name="files"
+                    accept=".xlsx,.xls"
+                    :data="upInfo"
+                    :file-list="fileList"
+                    :headers="headerInfo"
+                    :on-change="handleChange"
+                    :http-request="handleUpload"
+                    :auto-upload="false">
+                    <el-button slot="trigger" size="small" type="success">选取文件</el-button>
+                    <el-button style="margin-left: 10px;" size="small" type="primary" @click="submitUpload">查询</el-button>
+                  </el-upload>
+                </el-col>
+              </el-row> -->
               <el-row>
                 <el-row>
                   <el-col :span="24"><div class="grid-content bg-purple-dark m-search-title black">查询</div></el-col>
                 </el-row>
-                <el-row :span="24">
+                <el-row>
                   <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12">
                     <div class="grid-content bg-purple-light">
-                      <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4" class="m-form-radio f-ta-r">
-                        <label><span class="radioYes"><input type="radio" value="1" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">手机号码：</span></label>
+                      <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4"><div class="grid-content bg-purple-dark f-ta-r inputTitle">手机号码&nbsp;&nbsp;</div></el-col>
+                      <el-col :xs="18" :sm="20" :md="12" :lg="16" :xl="16">
+                        <el-input v-model="phone" size="small" maxlength=11 placeholder="请输入查询的手机号码"></el-input>
                       </el-col>
-                      <el-col :xs="18" :sm="16" :md="18" :lg="16" :xl="16">
-                        <el-input v-model="phoneNum" size="small" maxlength=11 placeholder="请输入查询的手机号码"></el-input>
-                      </el-col>
+                      <el-col :span="2"></el-col> 
                     </div>
                   </el-col>
                   <el-col :xs="24" :sm="20" :md="12" :lg="12" :xl="12">
-                    <div class="grid-content bg-purple-light">
-                      <el-col :xs="4" :sm="4" :md="6" :lg="4" :xl="4" class="m-form-radio f-ta-r">
-                        <label><span class="radioYes"><input type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">SIM号码：</span></label>
-                      </el-col>
-                      <el-col :xs="18" :sm="16" :md="18" :lg="16" :xl="16">
-                        <el-input v-model="simNum" size="small" placeholder="请输入查询的SIM号码"></el-input>
-                      </el-col>
+                    <div class="grid-content bg-purple">
+                      <el-button type="success" size="small" @click="search()">查询</el-button>
                     </div>
                   </el-col>
                 </el-row>
-                <el-row style="text-align:center" class="marginTop">
-                  <el-button type="success" size="small" @click="search()">搜索</el-button>
-                </el-row>
+                <!-- <el-row style="text-align:center" class="marginTop"></el-row> -->
               </el-row>
             </div>
           </el-col>
@@ -44,8 +58,7 @@
       </div>
       <!-- 查询结果列表 -->
       <div v-if="searchlist.length" class="m-details">
-        <p class="m-searchlist-title"><span>查询结果</span><span>
-          <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
+        <el-row><h3>查询结果</h3></el-row>
         <table class="m-searchTab" style="width:100%;height:100%;">
           <tr>
             <td>序号</td>
@@ -66,7 +79,6 @@
             <td>现归属渠道</td>
             <td>当前状态</td>
             <td>号码类型</td>
-            <td>SIM号码</td>
           </tr>
           <tr v-for="(v,i) of searchlist" :key="i">
             <td>{{(currentPage-1)*15+(i+1)}}</td>
@@ -76,8 +88,8 @@
             <td>{{v.area||'--'}}</td>
             <td>{{v.packageName||'--'}}</td>
             <td>{{v.voice || '--'}}</td>
-            <td>{{v.faceValue}}元</td>
-            <td>{{v.inPrice}}元</td>
+            <td>{{translateData('fenToYuan',v.faceValue)}}元</td>
+            <td>{{translateData('fenToYuan',v.inPrice)}}元</td>
             <td>{{v.huafenDesc || '--'}}</td>
             <td>{{getDateTime(v.inTime)[6]}}</td>
             <td>{{getDateTime(v.outTime)[6]}}</td>
@@ -93,7 +105,6 @@
             </td>
             <td>{{ v.agentNamePath }}</td>
             <td>{{ v.phoneTypeDesc }}</td>
-            <td>{{ v.sim }}</td>
           </tr>
         </table>
         <el-pagination 
@@ -114,18 +125,14 @@
   export default {
     data() {
       return {
-        total:0,
-        simNum:"",
-        upInfo:{},
-        fileList:[],
-        phoneNum:"",
-        startTime:"",
-        headerInfo:{},
         searchlist:[],
+        total:0,
         currentPage:"",
-        form:{
-          searchKind:1
-        }
+        startTime:"",
+        phone:"",
+        headerInfo:{},
+        upInfo:{},
+        fileList:[]
       }
     },
     created: function() {
@@ -141,7 +148,7 @@
     methods: {
       search(p){
         let vm=this,json;
-        if(isNaN(vm.phoneNum)||vm.phoneNum.length!=11){
+        if(isNaN(vm.phone)||vm.phone.length!=11){
           vm.$message({
             message: '请输入正确的手机号码!',
             type: 'error'
@@ -151,7 +158,7 @@
         json={
           "pageNum": p||1,
           "pageSize": 15,
-          "searchPhone":vm.phoneNum
+          "searchPhone":vm.phone
         };
         numberResource(json)
         .then(res=>{
