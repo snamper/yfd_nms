@@ -79,6 +79,7 @@
             <td>现归属渠道</td>
             <td>当前状态</td>
             <td>号码类型</td>
+            <td>sim号</td>
           </tr>
           <tr v-for="(v,i) of searchlist" :key="i">
             <td>{{(currentPage-1)*15+(i+1)}}</td>
@@ -86,14 +87,30 @@
             <td>{{v.sectionId||'--'}}</td>
             <td>{{translateData(4,v.brand)}}</td>
             <td>{{v.area||'--'}}</td>
-            <td>{{v.packageName||'--'}}</td>
-            <td>{{v.voice || '--'}}</td>
+            <td>
+              <p style="display:inline-block;
+                max-width:160px;
+                word-wrap: break-word;
+                word-break: break-all;">{{v.packageName||'--'}}</p>
+            </td>
+            <td>
+              <p style="display:inline-block;
+                max-width:160px;
+                word-wrap: break-word;
+                word-break: break-all;">{{v.voice || '--'}}</p>
+            </td>
             <td>{{translateData('fenToYuan',v.faceValue)}}元</td>
             <td>{{translateData('fenToYuan',v.inPrice)}}元</td>
             <td>{{v.huafenDesc || '--'}}</td>
-            <td>{{getDateTime(v.inTime)[6]}}</td>
-            <td>{{getDateTime(v.outTime)[6]}}</td>
-            <td>{{getDateTime(v.returnTime)[6]}}</td>
+            <td>{{getDateTime(v.inTime)[8]}}<br>
+            {{getDateTime(v.inTime)[5]}}
+            </td>
+            <td>{{getDateTime(v.outTime)[8]}}<br>
+            {{getDateTime(v.outTime)[5]}}
+            </td>
+            <td>{{getDateTime(v.returnTime)[8]}}<br>
+            {{getDateTime(v.returnTime)[5]}}
+            </td>
             <td>
               <a v-if="v.agentName" :href="`#/home/accountManage/info?company=${v.agentName}`">{{v.agentName}}</a>
               <span v-else>--</span>
@@ -103,8 +120,12 @@
               <a v-if="v.dealer" :href="`#/home/organization/yfd?dealerName=${v.dealer}`">{{v.dealer}}</a>
               <span v-else>--</span>
             </td>
-            <td>{{ v.agentNamePath }}</td>
-            <td>{{ v.phoneTypeDesc }}</td>
+            <td>{{ v.phoneState==1?'在库':v.phoneState==2?'出库':'--' }}</td>
+            <td>{{ v.phoneTypeDesc||'--' }}</td>
+            <td><p style="display:inline-block;
+                max-width:160px;
+                word-wrap: break-word;
+                word-break: break-all;">{{ v.sim||'--' }}</p></td>
           </tr>
         </table>
         <el-pagination 
