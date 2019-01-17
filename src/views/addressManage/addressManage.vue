@@ -13,11 +13,6 @@
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">代理商名称：</div>
             </el-col>
             <el-col :xs="19" :sm="19" :md="19" :lg="18" :xl="18">
-              <!-- <el-select size="small" style="width:100%" clearable v-model="departId" placeholder="请选择查询的代理商名称">
-              <el-option v-for="item in options" :key="item.dealerId" :label="item.dealerIdName" :value="item.dealerId"
-                size="small">
-              </el-option>
-            </el-select> -->
               <el-autocomplete v-model="departId" style="width:100%" size="small" value-key="username" :fetch-suggestions="querySearchAsync" placeholder="请选择查询的代理商名称" @select="handleSelect"></el-autocomplete>
             </el-col>
           </div>
@@ -251,18 +246,17 @@ export default {
       if (v == 1) {
         let json = { id: i };
         changeDefault(json)
-          .then(data => {
-            if (data.code == 200) {
-              layer.open({
-                content: "修改默认收货地址成功",
-                skin: "msg",
-                time: 2,
-                msgSkin: "success"
-              });
-            }
-            vm.search();
-          })
-          .catch(e => errorDeal(e));
+        .then(data => {
+          if (data.code == 200) {
+            layer.open({
+              content: "修改默认收货地址成功",
+              skin: "msg",
+              time: 2,
+              msgSkin: "success"
+            });
+          }
+          vm.search();
+        }).catch(e => errorDeal(e));
       } else if (v == 2) {
         vm.off.layer = true;
         vm.layerType = "deleteAddress";
@@ -299,7 +293,6 @@ export default {
       this.$nextTick(() => {
         this.$refs[i].validate(valid => {
           if (valid) {
-            console.log("submit!");
             let vm = this;
             let json = {
               receiverUserId: vm.receiverUserId,
@@ -332,20 +325,20 @@ export default {
               delete json.receiverUserId;
               json.id = vm.searchJsonId;
               updateAddress(json)
-                .then(data => {
-                  if (data.code == 200) {
-                    layer.open({
-                      content: "修改成功",
-                      skin: "msg",
-                      time: 2,
-                      msgSkin: "success"
-                    });
-                  }
-                  vm.search();
-                  vm.resetForm();
-                  vm.dialogFormVisible = false;
-                })
-                .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
+              .then(data => {
+                if (data.code == 200) {
+                  layer.open({
+                    content: "修改成功",
+                    skin: "msg",
+                    time: 2,
+                    msgSkin: "success"
+                  });
+                }
+                vm.search();
+                vm.resetForm();
+                vm.dialogFormVisible = false;
+              })
+              .catch(e => errorDeal(e, (vm.dialogFormVisible = false)));
             }
           } else {
             return false;
@@ -383,7 +376,8 @@ export default {
       if (vm.phone.length == 11) {
         let vm = this,
           json = { phone: vm.phone, username: vm.departId };
-        searchUser(json, () => {}).then(data => {
+        searchUser(json, () => {})
+        .then(data => {
           if (data.data.list.length == 0) {
             layer.open({
               content: "未查询到相关用户信息",
@@ -394,7 +388,7 @@ export default {
             return false;
           }
           vm.receiverUserId = data.data.list[0].userId;
-        });
+        }).catch(e=>errorDeal(e));
       }
     },
     querySearchAsync(queryString, cb) {

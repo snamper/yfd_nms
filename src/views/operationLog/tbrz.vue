@@ -310,14 +310,6 @@ export default {
         vm.form.detailsList=v;
         vm.off.logDet=true;
         vm.detRecordType=i;
-        // requestgetSyncTime(data)
-        // .then((data)=>{
-        //     if(data.code==200){
-        //         vm.getSyncTime=data.data.syncLastTime
-        //     }else{
-        //         errorDeal(data)
-        //     }
-        // }).catch(e=>errorDeal(e));
     },
     changeTimeS(e){
         let vm=this,

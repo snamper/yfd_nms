@@ -1,0 +1,192 @@
+<template>
+  <section>
+    <div class="pickCardOrder">
+      <div class="dls greyFont">
+        <el-row>
+          <el-col :span="24">
+            <div class="grid-content bg-purple-dark m-search-title black">搜索条件</div>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col>
+            <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
+              <label><span class="text greyFont">操作时间：</span></label>
+            </el-col>
+            <el-col :xs="16" :sm="8" :md="6" :lg="4" :xl="4">
+              <el-radio v-model="isTime" label="0">全部时间</el-radio>
+              <el-radio v-model="isTime" label="1">时间区间</el-radio>
+            </el-col>
+            <el-col :xs="24" :sm="24" :md="15" :lg="18" :xl="16">
+              <el-col :xs="4" :sm="4" :md="0" :lg="0" :xl="0">&nbsp;</el-col>
+              <el-col :xs="20" :sm="20" :md="24" :lg="24" :xl="24">
+                <el-date-picker v-model="startTime3" size="small" type="date" :clearable=false :editable=false style="width:140px;border-radius:4px 0 4px 0" placeholder="选择开始时间">
+                </el-date-picker><el-date-picker v-model="endTime" size="small" type="date" :clearable=false :editable=false style="width:140px;" placeholder="选择结束时间">
+                </el-date-picker>
+                （
+                  <el-radio v-model="timeType" label="1">入库时间</el-radio>
+                  <el-radio v-model="timeType" label="2">出库时间</el-radio>
+                  <el-radio v-model="timeType" label="3">发货时间</el-radio>
+                ）
+              </el-col>
+            </el-col>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
+              <div class="grid-content bg-purple-dark f-ta-r inputTitle">读写卡设备号：</div>
+            </el-col>
+            <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
+              <el-input v-model="equipmentId" size="small" placeholder="请输入读写卡设备号"></el-input>
+            </el-col>
+            <el-col :span="2"></el-col>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
+              <div class="grid-content bg-purple-dark f-ta-r inputTitle">号段：</div>
+            </el-col>
+            <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
+              <el-input v-model="numberSection" size="small" maxlength=8 placeholder="请输入查询的8位号段"></el-input>
+            </el-col>
+            <el-col :span="2"></el-col>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
+              <div class="grid-content bg-purple-dark f-ta-r inputTitle">代理商名称：</div>
+            </el-col>
+            <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
+              <el-input v-model="agentName" size="small" placeholder="请输入查询的代理商名称"></el-input>
+            </el-col>
+            <el-col :span="2"></el-col>
+          </el-col>
+          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+            <div class="grid-content bg-purple-light">
+              <el-col :xs="8" :sm="8" :md="6" :lg="4" :xl="4">
+                <div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div>
+              </el-col>
+              <el-col :xs="16" :sm="16" :md="18" :lg="20" :xl="20">
+                <el-radio v-model="currentStatus" label="0">全部</el-radio>
+                <el-radio v-model="currentStatus" label="1">在库</el-radio>
+                <el-radio v-model="currentStatus" label="2">出库</el-radio>
+              </el-col>
+            </div>
+          </el-col>
+        </el-row>
+        <el-row style="text-align:center" class="marginTop">
+          <button class="m-btn-orange m-btn-search" @click="search()">搜索</button>
+        </el-row>
+      </div>
+      <div v-if="searchResult">
+        <div>
+          <div class="m-details">
+            <p class="m-searchlist-title"><span>订单列表</span><span>
+              <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
+            <table class="m-searchTab" style="width:100%;height:100%;margin-top:10px;">
+              <tr class="f-s-14">
+                <td>序号</td>
+                <td>读写卡设备号</td>
+                <td>授权牌编码</td>
+                <td>千号段</td>
+                <td>ICCID起始</td>
+                <td>ICCID结束</td>
+                <td>当前状态</td>
+                <td>入库时间</td>
+                <td>出库时间</td>
+                <td>发货时间</td>
+                <td>代理商名称</td>
+                <td>业务员</td>
+              </tr>
+              <tr v-for="(v,i) of searchResult" :key="i">
+                <td>{{(currentPage-1)*15+(i+1)}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+                <td>{{v||'--'}}</td>
+              </tr>
+              <tr v-if="searchResult.length<=0">
+                <td style="text-align:center" colspan="14">
+                  暂无数据
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="m-listTitleFoot" v-if="searchResult.length>0">
+            <el-row>
+              <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                <div class="grid-content bg-purple">
+                  <el-pagination layout="prev, pager, next" :page-size="15" @current-change="search" :current-page.sync="currentPage" :total="total">
+                  </el-pagination>
+                </div>
+              </el-col>
+            </el-row>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</template>
+<script>
+import { getTimeFunction, errorDeal, getDateTime } from "../../config/utils";
+import { getEquipmentSrc } from "../../config/service.js";
+import NProgress from 'nprogress';
+export default {
+  data() {
+    return {
+      searchResult:"",
+      isTime:"0",
+      startTime3:"",
+      endTime:"",
+      timeType:"1",
+      equipmentId:"",
+      numberSection:"",
+      agentName:"",
+      currentStatus:"0",
+      currentPage:"",
+      total:""
+    };
+  },
+  created: function() {
+    getTimeFunction(this);
+  },
+  methods: {
+    search(index) {
+      let vm = this,
+      json={
+        pageSize:15,
+        pageNum:index||1,
+        isTime:vm.isTime,
+        startTime:vm.startTime3,
+        endTime:vm.endTime,
+        timeType:vm.timeType,
+        equipmentId:vm.equipmentId,
+        numberSection:vm.numberSection,
+        agentName:vm.agentName,
+        currentStatus:vm.currentStatus
+      };
+      getEquipmentSrc(json)
+      .then(res=>{
+        if(res&&res.data){
+          vm.searchResult=res.data;
+          vm.total=res.total;
+          vm.currentPage=index||1;
+        }
+      }).catch(e=>errorDeal(e))
+    },
+    downLoad(i,v) {
+      let vm = this,json;
+    },
+    getDateTime(e) {ss
+      return getDateTime(e);
+    },
+  }
+};
+</script>

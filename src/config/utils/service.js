@@ -63,7 +63,6 @@ export default function service (url, params,selfLoad){
 		axios.post(url, params)
 		.then(res => {
 			loading.close();
-			
 			if(res.data.code==200){
 				resolve(res.data);
 			}else{

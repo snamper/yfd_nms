@@ -148,6 +148,7 @@
                 <td>物流单号</td>
                 <td>备注</td>
                 <td>已下载发货单</td>
+                <td>是否设置佣金</td>
                 <td>操作</td>
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
@@ -200,12 +201,23 @@
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
                 </td>
                 <td>{{v.receipt==0?'未下载':v.receipt==1?'已下载':'--'}}</td>
+                <td>{{v.cmsSign==0?'未设置':v.cmsSign==1?'已设置':'--'}}</td>
                 <td>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
-                  <el-button v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirm(v)">收货</el-button>
-                  <el-button v-if="v.paymentState==1&&v.orderState==1&&v.paymentType==4" class="m-small-btn" style="margin:0px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
-                  <el-button v-if="v.paymentState==2&&v.returnFlag!=1" class="m-small-btn" style="margin:0px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
-                  <el-button v-if="v.orderState!=3&&v.orderState!=4&&(v.orderState==1&&!(v.paymentState==1&&v.deliveryState==0))&&v.returnFlag != 1" class="m-small-btn"  style="margin:0px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
+                  <el-button 
+                    v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" 
+                    style="padding:2px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
+                  <el-button 
+                    v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" 
+                    style="padding:2px;font-size:12px" @click="confirm(v)">收货</el-button>
+                  <el-button 
+                    v-if="v.paymentState==1&&v.orderState==1&&v.paymentType==4" 
+                    style="padding:2px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
+                  <el-button 
+                    v-if="v.paymentState==2&&v.returnFlag!=1" 
+                    style="padding:2px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
+                  <el-button 
+                    v-if="v.orderState!=3&&v.orderState!=4&&(v.orderState==1&&!(v.paymentState==1&&v.deliveryState==0))&&v.returnFlag!=1" 
+                    style="padding:2px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
                 </td>
               </tr>
               <tr v-if="searchResult.length<=0">
@@ -537,8 +549,6 @@ export default {
               })
             }
             vm.search(vm.currentPage);
-          }else{
-
           }
         }).catch(e=>errorDeal(e))
       }

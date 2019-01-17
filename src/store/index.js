@@ -12,7 +12,8 @@ const state = {
   rolelist1: [],
   depart: [],
   account_depId:"",
-  account_depName:""
+  account_depName:"",
+  commission_rules:{type:'',time:''}
 };
 
 export default new Vuex.Store({

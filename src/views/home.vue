@@ -110,7 +110,10 @@ span.iconFoldClose {
                 <router-link to="/home/card/stock"><b></b>库存管理</router-link>
               </li>
               <li>
-                <router-link to="/home/card/cardSource"><b></b>号码资源查询</router-link>
+                <router-link to="/home/card/cardSource"><b></b>资源查询</router-link>
+              </li>
+              <li>
+                <router-link to="/home/card/setBrand"><b></b>品牌配置</router-link>
               </li>
             </ul>
           </li>
@@ -190,15 +193,19 @@ span.iconFoldClose {
           </li>
         </ul>
         <ul class="g-side-ul">
-          <li :class="{active:crumb[0].name=='提卡订单管理'}">
+          <li :class="{active:crumb[0].name=='提卡管理'}">
             <b></b>
             <router-link to="/home/pickCard">
               <div>
                 <i class="u-icon-tika"></i>
-                <span>提卡订单管理</span>
-                <span :class="crumb[0].name=='提卡订单管理'?'iconFoldOpen':'iconFoldClose'"></span>
+                <span>提卡管理</span>
+                <span :class="crumb[0].name=='提卡管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
             </router-link>
+            <ul class="g-side-subul nav2">
+              <li><router-link to="/home/pickCard/orderlist"><b></b>订单管理</router-link></li>
+              <li><router-link to="/home/pickCard/cmsRules"><b></b>佣金规则查询</router-link></li>
+            </ul>
           </li>
         </ul>
         <ul class="g-side-ul">
@@ -214,6 +221,22 @@ span.iconFoldClose {
             <ul class="g-side-subul nav2">
               <li><router-link to="/home/openCard/orderlist"><b></b>订单管理</router-link></li>
               <li><router-link to="/home/openCard/operaterId"><b></b>工号管理</router-link></li>
+            </ul>
+          </li>
+        </ul>
+        <ul v-if="false" class="g-side-ul">
+          <li :class="{active:crumb[0].name=='设备管理'}">
+            <b></b>
+            <router-link to="/home/equipment">
+              <div>
+                <i class="u-icon-tika"></i>
+                <span>设备管理</span>
+                <span :class="crumb[0].name=='设备管理'?'iconFoldOpen':'iconFoldClose'"></span>
+              </div>
+            </router-link>
+            <ul class="g-side-subul nav2">
+              <li><router-link to="/home/equipment/orderlist"><b></b>订单管理</router-link></li>
+              <li><router-link to="/home/equipment/equipmentSrc"><b></b>设备资源</router-link></li>
             </ul>
           </li>
         </ul>
@@ -253,6 +276,7 @@ span.iconFoldClose {
             </router-link>
           </li>
         </ul>
+
       </nav>
     </aside>
     <section class="g-main" id="main">
@@ -405,6 +429,16 @@ export default {
             name: "库存管理",
             href: "/home/card/stock"
           };
+        }else if (path.indexOf("/home/card/cardSource") > -1) {
+          crumb[1] = {
+            name: "资源查询",
+            href: "/home/card/cardSource"
+          };
+        }else if (path.indexOf("/home/card/setBrand") > -1) {
+          crumb[1] = {
+            name: "品牌配置",
+            href: "/home/card/setBrand"
+          };
         }
       }
       if (path.indexOf("/home/accountManage") > -1) {
@@ -465,7 +499,7 @@ export default {
       }
       if (path.indexOf("/home/pickCard") > -1) {
         crumb[0] = {
-          name: "提卡订单管理",
+          name: "提卡管理",
           href: "/home/pickCard"
         };
       }
@@ -503,6 +537,23 @@ export default {
           name: "代理商申请管理",
           href: "/home/agentApply"
         };
+      }
+      if (path.indexOf("/home/equipment") > -1){
+        crumb[0]={
+          name:"设备管理",
+          href:"/home/equipment"
+        }
+        if(path.indexOf("/home/equipment/orderlist") > -1){
+          crumb[1]={
+            name:'订单管理',
+            href:'orderlist'
+          }
+        }else if(path.indexOf("/home/equipment/equipmentSrc") > -1){
+          crumb[1]={
+            name:'设备资源',
+            href:'equipmentSrc'
+          }
+        }
       }
       this.crumb = crumb;
       mainDom.style.overflowY = "hidden";

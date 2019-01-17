@@ -119,14 +119,14 @@
         data.pageNum = v || 1;
         data.pageSize = 60;
         requestMethod(data, url)
-          .then((data) => {
-            this.$set(vm.$parent.listSwitch, 'pu', true)
-            vm.$parent.searchPu = []
-            for (var i = 0, len = data.data.numbers.length; i < len; i += 6) {
-              vm.$parent.searchPu.push(data.data.numbers.slice(i, i + 6));
-            }
-            vm.$parent.searchPu.total = data.data.total;
-          }).catch(e => errorDeal(e))
+        .then((data) => {
+          this.$set(vm.$parent.listSwitch, 'pu', true)
+          vm.$parent.searchPu = []
+          for (var i = 0, len = data.data.numbers.length; i < len; i += 6) {
+            vm.$parent.searchPu.push(data.data.numbers.slice(i, i + 6));
+          }
+          vm.$parent.searchPu.total = data.data.total;
+        }).catch(e => errorDeal(e))
       },
       searchNumberListCute(v) {
         let vm = this,
@@ -138,14 +138,14 @@
         data.pageNum = v || 1;
         data.pageSize = 60;
         requestMethod(data, url)
-          .then((data) => {
-            this.$set(vm.$parent.listSwitch, 'liang', true)
-            vm.$parent.searchLiang = []
-            for (var i = 0, len = data.data.numbers.length; i < len; i += 6) {
-              vm.$parent.searchLiang.push(data.data.numbers.slice(i, i + 6));
-            }
-            vm.$parent.searchLiang.total = data.data.total;
-          }).catch(e => errorDeal(e))
+        .then((data) => {
+          this.$set(vm.$parent.listSwitch, 'liang', true)
+          vm.$parent.searchLiang = []
+          for (var i = 0, len = data.data.numbers.length; i < len; i += 6) {
+            vm.$parent.searchLiang.push(data.data.numbers.slice(i, i + 6));
+          }
+          vm.$parent.searchLiang.total = data.data.total;
+        }).catch(e => errorDeal(e))
       },
       translateData(type, v) {
         return translateData(type, v)

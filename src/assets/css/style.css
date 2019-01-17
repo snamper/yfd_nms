@@ -331,12 +331,12 @@ button {
 }
 /*单选按钮2*/
 .m-form-radio > label > .radioYes {
-  white-space: nowrap;
-  cursor: pointer;
+  line-height: 1;
   outline: none;
-  display: inline-block;
-  /*line-height: 1;*/
+  cursor: pointer;
   position: relative;
+  white-space: nowrap;
+  display: inline-block;
   vertical-align: middle;
 }
 .m-form-radio > label > .radioYes > span {

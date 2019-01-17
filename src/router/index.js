@@ -74,15 +74,15 @@ const Org_powerDeploy = resolve => {
 // 码号管理
 const Card_mhgl = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/mhgl.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/mhgl.vue"));
+    require.ensure(["@/views/phoneNumberManage/numberManagement.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/numberManagement.vue"));
         load();
     });
 };
 const Card_changePrice = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/changePrice.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/changePrice.vue"));
+    require.ensure(["@/views/phoneNumberManage/modifyPrice.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/modifyPrice.vue"));
         load();
     });
 };
@@ -95,15 +95,22 @@ const cardManage = resolve => {
 };
 const stock = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/stock.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/stock.vue"));
+    require.ensure(["@/views/phoneNumberManage/inventoryManagement.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/inventoryManagement.vue"));
         load();
     });
 };
 const cardSource = resolve => {
     load(true);
-    require.ensure(["@/views/phoneNumberManage/haomaziyuancx.vue"], () => {
-        resolve(require("@/views/phoneNumberManage/haomaziyuancx.vue"));
+    require.ensure(["@/views/phoneNumberManage/resourcesQuery.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/resourcesQuery.vue"));
+        load();
+    });
+};
+const brandConfiguration = resolve => {
+    load(true);
+    require.ensure(["@/views/phoneNumberManage/brandConfiguration.vue"], () => {
+        resolve(require("@/views/phoneNumberManage/brandConfiguration.vue"));
         load();
     });
 };
@@ -167,6 +174,13 @@ const Notice = resolve => {
     });
 };
 //提卡订单管理
+const pickCard = resolve => {
+    load(true);
+    require.ensure(["@/views/openCardManage"], () => {
+        resolve(require("@/views/openCardManage"));
+        load();
+    });
+};
 const pickCardOrder = resolve => {
     load(true);
     require.ensure(["@/views/pickUpCardManage/pickCardOrder.vue"], () => {
@@ -174,8 +188,14 @@ const pickCardOrder = resolve => {
         load();
     });
 };
+const cmsRules = resolve => {
+    load(true);
+    require.ensure(["@/views/pickUpCardManage/cmsRules.vue"], () => {
+        resolve(require("@/views/pickUpCardManage/cmsRules.vue"));
+        load();
+    });
+};
 //开卡订单管理
-
 const openCard = resolve => {
     load(true);
     require.ensure(["@/views/openCardManage"], () => {
@@ -194,6 +214,28 @@ const openCardOpId = resolve => {
     load(true);
     require.ensure(["@/views/openCardManage/openCardOpId.vue"], () => {
         resolve(require("@/views/openCardManage/openCardOpId.vue"));
+        load();
+    });
+};
+//设备管理
+const equipment = resolve => {
+    load(true);
+    require.ensure(["@/views/equipment"], () => {
+        resolve(require("@/views/equipment"));
+        load();
+    });
+};
+const equipmentList = resolve => {
+    load(true);
+    require.ensure(["@/views/equipment/orderlist.vue"], () => {
+        resolve(require("@/views/equipment/orderlist.vue"));
+        load();
+    });
+};
+const equipmentSrc = resolve => {
+    load(true);
+    require.ensure(["@/views/equipment/equipmentSrc.vue"], () => {
+        resolve(require("@/views/equipment/equipmentSrc.vue"));
         load();
     });
 };
@@ -271,6 +313,10 @@ const router = new Router({
                     path:"cardSource",
                     name:"cardSource",
                     component:cardSource
+                },{
+                    path:"setBrand",
+                    name:"brandConfiguration",
+                    component:brandConfiguration
                 }]
             },{
                 path:"accountManage",
@@ -315,8 +361,18 @@ const router = new Router({
                 component: Notice,
             }, {
                 path: "pickCard",
-                name: "pickCard",
-                component: pickCardOrder,
+                redirect: "pickCard/orderlist",
+                name:"pickCard",
+                component: pickCard,
+                children:[{
+                    path:"orderlist",
+                    name:"pickCardOrder",
+                    component:pickCardOrder
+                },{
+                    path:"cmsRules",
+                    name:"cmsRules",
+                    component:cmsRules
+                }]
             }, {
                 path: "openCard",
                 redirect: "openCard/orderlist",
@@ -324,7 +380,7 @@ const router = new Router({
                 component:openCard,
                 children:[{
                     path:"orderlist",
-                    name:"orderlist",
+                    name:"openCardOrder",
                     component:openCardOrder
                 },{
                     path:"operaterId",
@@ -343,6 +399,20 @@ const router = new Router({
                 path: "agentApply",
                 name: "agentApply",
                 component: agentApply
+            },{
+                path:"equipment",
+                redirect:"equipment/orderlist",
+                name:"equipment",
+                component:equipment,
+                children:[{
+                    path:'orderlist',
+                    name:'',
+                    component:equipmentList
+                },{
+                    path:'equipmentSrc',
+                    name:'',
+                    component:equipmentSrc
+                }]
             }]
         }
     ]

@@ -100,8 +100,8 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
         fetch(url,requestConfig)
         .then(res =>{
           if(res.headers.get('Content-Type').indexOf('excel') > -1){
-          res.blob()
-          .then(blob => {
+            res.blob()
+            .then(blob => {
               let $a = document.createElement('a'); 
               let url = window.URL.createObjectURL(blob);   
               let filename = '下载文件'; 
@@ -111,15 +111,14 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
               $a.click();
               document.body.removeChild($a); 
               NProgress.done(); 
+            }).catch(e=>errorDeal(e))
+          }else{
+            res.json()
+            .then(res=>{
+              errorDeal(res,()=>{NProgress.done()});
             })
-            }else{
-              res.json()
-              .then(res=>{
-                errorDeal(res,()=>{NProgress.done()});
-              })
-            }
           }
-        )
+        }).catch(e=>errorDeal(e))
       }
     })
   } else { //XHR对象

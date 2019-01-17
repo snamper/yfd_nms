@@ -4,7 +4,8 @@ import {
   GET_ROLE,
   GET_DEPART,
   SET_ACCOUNT_DEPID,
-  SET_DEPNAME
+  SET_DEPNAME,
+  SET_COMMISSION_RULES
 } from './mutation-types.js';
 
 import {
@@ -39,5 +40,9 @@ export default {
   },
   [SET_DEPNAME](state,name){
     state.account_depName = name;
+  },
+  [SET_COMMISSION_RULES](state,res){
+    state.commission_rules.type = res.type;
+    state.commission_rules.time = res.time;
   }
 };
