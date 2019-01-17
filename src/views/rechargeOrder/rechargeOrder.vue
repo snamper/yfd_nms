@@ -15,8 +15,7 @@
           <el-col :xs="18" :sm="18" :md="20" :lg="18" :xl="18">
             <div class="f-display-ib">
               <el-date-picker v-model="startTime" size="small" type="datetime" :clearable=false :editable=false placeholder="选择开始时间">
-              </el-date-picker>
-              <el-date-picker v-model="endTime" size="small" type="datetime" :clearable=false :editable=false placeholder="选择结束时间">
+              </el-date-picker><el-date-picker v-model="endTime" size="small" type="datetime" :clearable=false :editable=false placeholder="选择结束时间">
               </el-date-picker>
             </div>
           </el-col>
