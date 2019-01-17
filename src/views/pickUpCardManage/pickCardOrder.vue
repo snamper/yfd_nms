@@ -148,6 +148,7 @@
                 <td>物流单号</td>
                 <td>备注</td>
                 <td>已下载发货单</td>
+                <td>是否设置佣金</td>
                 <td>操作</td>
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
@@ -200,6 +201,7 @@
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
                 </td>
                 <td>{{v.receipt==0?'未下载':v.receipt==1?'已下载':'--'}}</td>
+                <td>{{v.cmsSign==0?'未设置':v.cmsSign==1?'已设置':'--'}}</td>
                 <td>
                   <el-button 
                     v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" 
