@@ -34,10 +34,19 @@
           <p class="m-packageTitle f-s-12"><span>套餐名称 : {{value.packageDesc||'--'}}</span>
             <span>【<b class="grey">佣金规则 : </b><b class="green">{{value.cmsRule||'--'}}</b> <b class="grey">佣金年限 : </b><b class="green">{{value.cmsTime||'--'}}</b>】</span>
             <el-button 
-              v-if="(value.cmsRule||value.cmsTime)&&$parent.detailsData.returnFlag!=1&&$parent.detailsData.orderState!=3&&$parent.detailsData.orderState!=4&&($parent.detailsData.orderState==1&&!($parent.detailsData.paymentState==1&&$parent.detailsData.deliveryState==0))" 
+              v-if="(value.cmsRule||value.cmsTime)
+              &&$parent.detailsData.returnFlag!=1
+              &&$parent.detailsData.orderState!=3
+              &&$parent.detailsData.orderState!=4
+              &&$parent.detailsData.orderState==1" 
               @click="setCommission(1,value)" size="mini" type="warning" style="padding:5px !important">修改佣金规则</el-button>
             <el-button 
-            v-if="!value.cmsRule&&!value.cmsTime&&$parent.detailsData.returnFlag!=1&&$parent.detailsData.orderState!=3&&$parent.detailsData.orderState!=4&&($parent.detailsData.orderState==1&&!($parent.detailsData.paymentState==1&&$parent.detailsData.deliveryState==0))" 
+            v-if="!value.cmsRule
+            &&!value.cmsTime
+            &&$parent.detailsData.returnFlag!=1
+            &&$parent.detailsData.orderState!=3
+            &&$parent.detailsData.orderState!=4
+            &&$parent.detailsData.orderState==1" 
             @click="setCommission(2,value)" size="mini" type="primary" style="padding:5px !important">设置佣金规则</el-button>
             <el-button v-if="value.numbers.length>6&&showNumber.indexOf(index)==-1" @click="showAllNum(1,index)" size="mini" type="success" style="padding:5px !important">查看全部号码</el-button>
             <el-button v-if="value.numbers.length>6&&showNumber.indexOf(index)>-1" @click="showAllNum(2,index)" size="mini" type="success" style="padding:5px !important">收起号码列表</el-button>
