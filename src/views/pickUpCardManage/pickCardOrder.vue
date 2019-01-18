@@ -506,7 +506,7 @@ export default {
             style: "blue"
           }
         }else if(v.paymentState == 2&&v.deliveryState == 2){
-           return {
+          return {
             title: "已发货",
             style: "blue"
           }
