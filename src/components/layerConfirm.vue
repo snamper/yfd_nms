@@ -1,40 +1,6 @@
 <template>
   <section id="detailsView" class="greyFont">
     <div>
-      <table v-if="layerType=='notice'">
-        <thead>
-          <tr>
-            <td>
-              <p></p>
-            </td>
-          </tr>
-          <tr> <th> 确认要删除此公告消息？ </th> </tr>
-        </thead>
-        <tbody>
-          <tr class="tdBtn">
-            <span @click="close()">取消</span>
-            <span @click="btnYes('notice')">确认</span>
-          </tr>
-        </tbody>
-      </table>
-      <table v-if="layerType=='takeGoods'">
-        <thead>
-          <tr>
-            <td>
-              <p></p>
-            </td>
-          </tr>
-          <tr>
-            <th> 商户已收货<br> 是否确认收货? </th> 
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="tdBtn">
-            <span @click="close()">取消</span>
-            <span @click="btnYes('takeGoods',logisticsInfo)">确认</span>
-          </tr>
-        </tbody>
-      </table>
       <table v-if="layerType=='sendGoods'">
         <thead>
           <tr> <th> 填写物流单号 </th> </tr>
@@ -57,27 +23,6 @@
           <tr class="tdBtn">
             <span @click="close()">取消</span>
             <span @click="btnYes('sendGoods',logisticsInfo)">确认</span>
-          </tr>
-        </tbody>
-      </table>
-      <table v-if="layerType=='returnGoods'">
-        <thead>
-          <tr>
-            <th colspan="2">
-              <img style="width:50px;height:50px" src="../assets/images/questionMark.png" alt="">
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td colspan="2">
-              <h3>是否确认退卡</h3>
-            </td>
-          </tr>
-          <tr class="tdBtn">
-            <td colspan="2" style="padding:0;width:100%">
-              <span @click="close()">取消</span><span @click="btnYes('returnGoodsYes',logisticsInfo)">确认</span>
-            </td>
           </tr>
         </tbody>
       </table>
@@ -169,21 +114,6 @@
           <tr class="tdBtn">
             <span @click="close('1')">取消</span>
             <span @click="btnYes('changePriceYes')">确认</span>
-          </tr>
-        </tbody>
-      </table>
-      <table v-if="layerType=='deletePower'">
-        <tbody>
-          <tr style="height:140px;">
-            <td>
-              <span class="f-fs14">删除角色可能会导致数据出现错误</span><br>
-              <p style="height:5px"></p>
-              <span class="f-s-18 red">是否删除？</span>
-            </td>
-          </tr>
-          <tr class="tdBtn">
-            <span @click="close()">取消</span>
-            <span @click="btnYes('deletePower')">确认</span>
           </tr>
         </tbody>
       </table>
@@ -334,16 +264,8 @@
     methods: {
       btnYes(e, v) {
         let vm = this;
-        if (e == 'notice') { //删除公告
-          vm.cancelNotice(vm.$parent.cancelInfo);
-        } else if (e == "takeGoods") { //确认收货
-          vm.collectGoods(v);
-        } else if (e == "sendGoods") { //发货
+        if (e == "sendGoods") { //发货
           vm.sendGoods(v);
-        } else if (e == "returnGoods") { //退货
-          vm.layerType = "returnGoodsConfirm";
-        } else if (e == "returnGoodsYes") {
-          vm.returnGoods(v);
         } else if (e == "logistics") { //修改单号
           vm.changeLogisticsId(v);
         } else if (e == "payMent") { //付款
@@ -361,8 +283,6 @@
               msgSkin: "error"
             })
           }
-        } else if (e == "deletePower") {
-          vm.deletePower(v)
         } else if (e == "modifyPower") {
           vm.modifyPower(v)
         } else if (e == "modifyDepart") {
@@ -382,50 +302,6 @@
         }
         vm.$parent.off.layer = false;
       },
-      cancelNotice(v) {
-        let vm = this;
-        requestConfirmDelNotice(v)
-        .then((data) => {
-          if (data.code == 200) {
-            layer.open({
-              content: "删除公告消息成功",
-              skin: "msg",
-              time: 2,
-              msgSkin: "success"
-            })
-          } else {
-            layer.open({
-              content: data.msg,
-              skin: "msg",
-              time: 2,
-              msgSkin: "error"
-            })
-          }
-          this.$parent.search(this.$parent.pa);
-          this.$parent.off.layer = false;
-        }).catch(e => errorDeal(e));
-      },
-      collectGoods(v) {
-        let vm = this;
-        let data = {
-          "sysOrderId": v.sysOrderId,
-          "deliveryOrderId": v.deliveryOrderId,
-          "deliveryName": v.deliveryName
-        }
-        requestConfirmTakeGoods(data)
-        .then((data) => {
-          this.$parent.search(this.$parent.pa);
-          this.$parent.off.layer = false;
-          if (data.code == 200) {
-            layer.open({
-              content: "操作成功",
-              skin: "msg",
-              time: 2,
-              msgSkin: "success"
-            })
-          }
-        }).catch(e => errorDeal(e));
-      },
       sendGoods(v) {
         let vm = this,
           data = {
@@ -434,27 +310,6 @@
             "deliveryName": vm.logisticsCompany,
           };
         requestChangeLogisticsId(data)
-        .then((data) => {
-          this.$parent.search(vm.$parent.pa);
-          this.$parent.off.layer = false;
-          if (data.code == 200) {
-            layer.open({
-              content: "操作成功",
-              skin: "msg",
-              time: 2,
-              msgSkin: "success"
-            })
-          }
-        }).catch(e => errorDeal(e));
-      },
-      returnGoods(v) {
-        let vm = this;
-        let data = {
-          "sysOrderId": v.sysOrderId,
-          "returnDeliveryId": vm.logisticsOrderId1,
-          "returnDeliveryName": vm.logisticsCompany1
-        }
-        requestReturnGoods(data)
         .then((data) => {
           this.$parent.search(vm.$parent.pa);
           this.$parent.off.layer = false;
@@ -571,26 +426,6 @@
         }).catch(e => errorDeal(e,()=>{
           vm.$parent.off.layer = false}
         ));
-      },
-      deletePower() {
-        let vm = this.$parent,
-          json = {
-            id: vm.roleId
-          };
-        deleteRole(json)
-        .then((data) => {
-          if (data.code == 200) {
-            layer.open({
-              content: "删除角色成功",
-              skin: "msg",
-              time: 2,
-              msgSkin: "success"
-            })
-          }
-          vm.off.layer = false;
-          vm.layerType = '';
-          vm.fgetRole();
-        }).catch(e => errorDeal(e))
       },
       modifyPower() {
         let vm = this;

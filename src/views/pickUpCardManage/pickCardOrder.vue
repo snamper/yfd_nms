@@ -254,7 +254,13 @@ import {
   createDownload,
   getStore,
 } from "../../config/utils";
-import { requestPickupOrder,pickCardDeliver,updateRemark,pickCardExcelDownload,pickCardOrderDownload,pickCardOrdersDownload } from "../../config/service.js";
+import { requestPickupOrder,
+  pickCardDeliver,updateRemark,
+  pickCardExcelDownload,
+  pickCardOrderDownload,
+  pickCardOrdersDownload,
+  requestConfirmTakeGoods,
+  requestReturnGoods } from "../../config/service.js";
 import { disabledDate } from "../../config/utilsTimeSelect";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
@@ -423,18 +429,36 @@ export default {
     },
     confirm(v) {
       let vm = this,
-        data = {};
-      vm.layerType = "takeGoods";
-      vm.logistics = v;
-      vm.off.layer = true;
+        data = {
+          "sysOrderId": v.sysOrderId,
+          "deliveryOrderId": v.deliveryOrderId,
+          "deliveryName": v.deliveryName};
+      this.$confirm('是否确认收货?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        requestConfirmTakeGoods(data)
+        .then(res=>{
+          if(res&&res.code==200){
+            this.$message({
+              type: 'success',
+              message: '操作成功'
+            });  
+             this.search(this.pa);
+          }
+        }).catch(e=>errorDeal(e))
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作已取消'
+        });          
+      });
     },
     deliverGoods(v) {
       let vm = this,json={
         sysOrderId:v.sysOrderId
       };
-      // vm.layerType = "sendGoods";
-      // vm.logistics = v;
-      // vm.off.layer = true;
       pickCardDeliver(json)
       .then(res=>{
         if(res&&res.data){
@@ -464,10 +488,32 @@ export default {
       vm.off.layer = true;
     },
     returnGoods(v) {
-      let vm = this;
-      vm.layerType = "returnGoods";
-      vm.logistics = v;
-      vm.off.layer = true;
+      let vm = this,data = {
+          "sysOrderId": v.sysOrderId,
+          "returnDeliveryId": vm.logisticsOrderId1,
+          "returnDeliveryName": vm.logisticsCompany1
+        };
+      this.$confirm('是否确认退货?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        requestReturnGoods(data)
+        .then(res=>{
+          if(res&&res.code==200){
+            this.$message({
+              type: 'success',
+              message: '操作成功'
+            });  
+             this.search(this.pa);
+          }
+        }).catch(e=>errorDeal(e))
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作已取消'
+        });          
+      });
     },
     getMore(i) {
       let vm = this;

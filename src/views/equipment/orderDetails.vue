@@ -46,7 +46,26 @@
         </el-col>
       </el-row>
     </div>
-    
+    <div class="m-details">
+      <table class="m-searchTab" style="width:100%;height:100%;">
+        <tr>
+          <td>序号</td>
+          <td>设备号</td>
+          <td>授权牌编码</td>
+          <td>千号段</td>
+          <td>ICCID起始</td>
+          <td>ICCID结束</td>
+        </tr>
+        <tr v-for="(v,i) of detailsList" :key="i">
+          <td>{{i+1}}</td>
+          <td>{{v.deviceNo||'--'}}</td>
+          <td>{{v.anthNo||'--'}}</td>
+          <td>{{v.sectionId||'--'}}</td>
+          <td>{{v.iccidStart||'--'}}</td>
+          <td>{{v.iccidEnd||'--'}}</td>
+        </tr>
+      </table>
+    </div>
   </div>
 </section>
 </template>
@@ -63,7 +82,8 @@ import {
 } from "../../config/utils";
 export default {
   props: {
-    detailsData: Object
+    detailsData : Object,
+    detailsList : Array
   },
   data() {
     return {

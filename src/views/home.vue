@@ -224,7 +224,7 @@ span.iconFoldClose {
             </ul>
           </li>
         </ul>
-        <ul v-if="false" class="g-side-ul">
+        <ul class="g-side-ul">
           <li :class="{active:crumb[0].name=='设备管理'}">
             <b></b>
             <router-link to="/home/equipment">

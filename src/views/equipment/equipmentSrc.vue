@@ -37,7 +37,7 @@
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">读写卡设备号：</div>
             </el-col>
             <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-              <el-input v-model="equipmentId" size="small" placeholder="请输入读写卡设备号"></el-input>
+              <el-input v-model="deviceNo" size="small" placeholder="请输入读写卡设备号"></el-input>
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
@@ -100,17 +100,17 @@
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
                 <td>{{(currentPage-1)*15+(i+1)}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
+                <td>{{v.deviceNo||'--'}}</td>
+                <td>{{v.anthNo||'--'}}</td>
+                <td>{{v.sectionId||'--'}}</td>
+                <td>{{v.iccidStart||'--'}}</td>
+                <td>{{v.iccidEnd||'--'}}</td>
+                <td>{{v.status==0?'在库':v.status==1?'出库':'--'}}</td>
+                <td>{{getDateTime(v.storeTime)[2]}}</td>
+                <td>{{getDateTime(v.outTime)[2]}}</td>
+                <td>{{getDateTime(v.deliverTime)[2]}}</td>
+                <td>{{v.agentName||'--'}}<span v-if="v.agentId">({{v.agentId}})</span></td>
+                <td>{{'--'}}</td>
               </tr>
               <tr v-if="searchResult.length<=0">
                 <td style="text-align:center" colspan="14">
@@ -136,7 +136,7 @@
 </template>
 <script>
 import { getTimeFunction, errorDeal, getDateTime } from "../../config/utils";
-import { getEquipmentSrc } from "../../config/service.js";
+import { getDeviceResource } from "../../config/service.js";
 import NProgress from 'nprogress';
 export default {
   data() {
@@ -146,7 +146,7 @@ export default {
       startTime3:"",
       endTime:"",
       timeType:"1",
-      equipmentId:"",
+      deviceNo:"",
       numberSection:"",
       agentName:"",
       currentStatus:"0",
@@ -159,20 +159,22 @@ export default {
   },
   methods: {
     search(index) {
-      let vm = this,
+      let vm = this,json,_status,_startTime,_endTime;
+          _status = vm.currentStatus==0?[]:vm.currentStatus.split(',');
+          _endTime = vm.isTime==0?"":new Date(vm.endTime).getTime();
+          _startTime = vm.isTime==0?"":new Date(vm.startTime3).getTime();
       json={
-        pageSize:15,
-        pageNum:index||1,
-        isTime:vm.isTime,
-        startTime:vm.startTime3,
-        endTime:vm.endTime,
-        timeType:vm.timeType,
-        equipmentId:vm.equipmentId,
-        numberSection:vm.numberSection,
-        agentName:vm.agentName,
-        currentStatus:vm.currentStatus
+        "agentName": vm.agentName,
+        "deviceNo": vm.deviceNo,
+        "endTime": _endTime,
+        "pageNum": index||1,
+        "pageSize": 15,
+        "sectionId": vm.numberSection,
+        "startTime": _startTime,
+        "status": _status,
+        "timeType": vm.timeType
       };
-      getEquipmentSrc(json)
+      getDeviceResource(json)
       .then(res=>{
         if(res&&res.data){
           vm.searchResult=res.data;

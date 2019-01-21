@@ -22,7 +22,7 @@
         <el-row>
           <el-col>
             <el-col :xs="4" :sm="4" :md="3" :lg="2" :xl="2" class="m-form-radio f-ta-r">
-              <label><span class="radioYes"><input type="radio" value="3" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">生成时间：</span></label>
+              <label><span class="radioYes"><input type="radio" value="2" v-model="form.searchKind" checked="checked"><span></span></span><span class="text greyFont">生成时间：</span></label>
             </el-col>
             <el-col :xs="18" :sm="16" :md="20" :lg="18" :xl="8">
               <div class="block">
@@ -48,7 +48,7 @@
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">设备号码：</div>
             </el-col>
             <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-              <el-input v-model="operator" size="small" maxlength=20 placeholder="请输入查询的设备号码"></el-input>
+              <el-input v-model="deviceNo" size="small" maxlength=20 placeholder="请输入查询的设备号码"></el-input>
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
@@ -109,7 +109,8 @@
                 <td>序号</td>
                 <td>订单号码</td>
                 <td>创建时间</td>
-                <td>产品包</td>
+                <td>设备号</td>
+                <td>购买数量</td>
                 <td>商户名称</td>
                 <td>所属渠道</td>
                 <td>操作人</td>
@@ -122,18 +123,21 @@
                 <td>操作</td>
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
-                <td>{{((pa-1)*15+(i+1))}}</td>
+                <td>{{((currentPage-1)*15+(i+1))}}</td>
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{v.createTime.split(' ')[0]}}</td>
                 <td>
-                  <p v-if="v.isShow&&v.productList.length>0" v-for="(x,y) in v.productList" :key="y">
-                    <span class="listSpan">{{x.productName}}</span>
-                    <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
+                  <p v-if="v.isShow&&v.productList.length>0" >
+                    <b v-for="(x,y) in v.productList" :key="y">
+                      <span class="listSpan">{{x.productName}}</span>
+                      <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
+                    </b>
                   </p>
                   <p v-if="!v.isShow&&v.productList.length>0">
                     <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
                   </p>
                 </td>
+                <td>{{v.amount}}</td>
                 <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
                 <td>
                   <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
@@ -151,7 +155,7 @@
                   <span v-if="v.paymentType==5">支付宝(威富通)</span>
                   <span v-if="v.paymentType==6">微信(威富通)</span>
                 </td>
-                <td>{{Math.formatFloat(parseFloat(v.totalStrikePrice/100),2) }}</td>
+                <td>{{Math.formatFloat(parseFloat(v.price/100),2) }}</td>
                 
                 <td>
                   <span :class="checkOrderStatus(v).style">
@@ -165,7 +169,7 @@
                   </a>
                 </td>
                 <td>
-                  <span v-if="upindex!=i">{{v.rebateRemark}}</span>
+                  <span v-if="upindex!=i">{{v.remark}}</span>
                   <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
@@ -174,7 +178,7 @@
                 <td>
                   <el-button 
                     v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" 
-                    style="padding:2px;font-size:12px" @click="deliverGoods(v)">发货</el-button>
+                    style="padding:2px;font-size:12px" @click="deliverGoods(v,1)">发货</el-button>
                   <el-button 
                     v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" 
                     style="padding:2px;font-size:12px" @click="confirm(v)">收货</el-button>
@@ -215,7 +219,7 @@
           width="50%"
           center>
           <el-checkbox-group 
-            v-model="checkedCities1"
+            v-model="checkedDevice"
             :min="0"
             :max="max">
             <el-checkbox v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
@@ -227,22 +231,17 @@
         </el-dialog>
       </div>
     </div>
-    <order-details v-if="off.details" :detailsData="productDetails"></order-details>
+    <order-details v-if="off.details" :detailsList="deviceDetailsList" :detailsData="productDetails"></order-details>
     <layer-confirm v-if="off.layer" :layerType="layerType" :logisticsInfo="logistics"></layer-confirm>
   </section>
 </template>
 <script>
 import {
-  disableTimeRange6,
   getTimeFunction,
   errorDeal,
-  getDateTime,
-  trimFunc,
-  createDownload,
-  getStore,
+  getDateTime
 } from "../../config/utils";
-import { requestPickupOrder,pickCardDeliver,updateRemark,pickCardExcelDownload,pickCardOrderDownload,pickCardOrdersDownload } from "../../config/service.js";
-import { disabledDate } from "../../config/utilsTimeSelect";
+import { getDeviceOrders,getDeviceOrderDetails,deviceDeliver } from "../../config/service.js";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
 import NProgress from 'nprogress';
@@ -257,23 +256,18 @@ export default {
       layerType: "", //弹窗类型
       logistics: {}, //物流信息
       productDetails: {}, //产品包详情
-      pa: 1, //页码
+      deviceDetailsList:[],
       orderId: "", //订单号码
-      pname: "", //产品名称
-      dealerName: "", //商户名称
-      operator: "", //操作人
-      optime: "", //操作时间
-      timeType: "1", //操作时间类型
+      deviceNo: "", //操作人
       orderState: "0", //操作类型
-      cardType: ["1", "2", "3"], //产品类型
-      splitCheck: "1,2", //售卖方式
       payMent: "0", //支付方式
       startTime3: "",
       endTime: "",
-      downLoadJson: "",
       userPhone: "",
-      newRemark:"",
+      searchJson: "",
       upindex:0.1,
+      deviceList:[],
+      _sysOrderId:"",
       off: {
         details: false,
         layer: false,
@@ -281,10 +275,10 @@ export default {
       },
       form: {
         page: 0,
-        searchKind: 3
+        searchKind: 2
       },
       centerDialogVisible: false,
-      checkedCities1: ['1', '2', '3'],
+      checkedDevice: ['1', '2', '3'],
       cities: cityOptions
     };
   },
@@ -296,94 +290,62 @@ export default {
     "layer-confirm": layerConfirm
   },
   methods: {
-    search(index) {
-      let vm = this,
-        data = {};
-        vm.upindex=0.1;
-      vm.currentPage = index || 1;
-      vm.pa = index || 1;
-      if (vm.form.searchKind == 1) {
-        if (vm.orderId == "") {
-          layer.open({
-            content: "请输入要查询的订单号码",
-            skin: "msg",
-            time: 2,
-            msgSkin: "error"
-          });
-          return false;
-        }else{
-          data = {
-            searchType: vm.form.searchKind,
-            sysOrderId: vm.orderId,
-            productName: "",
-            productType: "",
-            timeType: "",
-            startTime: "",
-            endTime: "",
-            orderState: "",
-            depName: "",
-            operatorPhone: "",
-            paymentType: "",
-            pageNum: index||1,
-            pageSize: 15,
-            userPhone: ""
-          };
+    search(index,i) {
+      let vm = this,data;
+      vm.upindex=0.1;
+      if(!i){
+        if (vm.form.searchKind == 1) {
+          if (vm.orderId == "") {
+            layer.open({
+              content: "请输入要查询的订单号码",
+              skin: "msg",
+              time: 2,
+              msgSkin: "error"
+            });
+            return false;
+          }else{
+            data = {
+              "deviceNo": "",
+              "endTime": "",
+              "pageNum": index||1,
+              "pageSize": 15,
+              "paymentType": [],
+              "startTime": "",
+              "states": [],
+              "sysOrderId": vm.orderId,
+              "userPhone": ""
+            };
+          }
+        } else if (vm.form.searchKind == 2) {    
+          let _paymentType,_states;
+            _paymentType = vm.payMent==0?[]:vm.payMent.split(',');
+            _states = vm.orderState==0?[]:vm.orderState.split(',');
+            data = {
+              "deviceNo": vm.deviceNo,
+              "endTime": new Date(vm.endTime).getTime(),
+              "pageNum": index||1,
+              "pageSize": 15,
+              "paymentType": _paymentType,
+              "startTime": new Date(vm.startTime3).getTime(),
+              "states": _states,
+              "sysOrderId": vm.orderId,
+              "userPhone": vm.userPhone
+            };
         }
-      } else if (vm.form.searchKind == 2) {
-        if (vm.pname == "") {
-          layer.open({
-            content: "请输入要查询的产品名称",
-            skin: "msg",
-            time: 2,
-            msgSkin: "error"
-          });
-          return false;
-        }else{
-          data = {
-            searchType: vm.form.searchKind,
-            productName: vm.pname,
-            productType: vm.cardType.join(","),
-            sysOrderId: "",
-            timeType: "",
-            startTime: "",
-            endTime: "",
-            orderState: "",
-            depName: "",
-            operatorPhone: "",
-            paymentType: "",
-            pageNum: index||1,
-            pageSize: "15",
-            userPhone: ""
-          };
-        }
-      }else{
-        data = {
-          sysOrderId: "",
-          productName: "",
-          productType: "",
-          searchType: vm.form.searchKind,
-          timeType: vm.timeType,
-          startTime: new Date(vm.startTime3).getTime(),
-          endTime: new Date(vm.endTime).getTime(),
-          orderState: vm.orderState,
-          depName: vm.dealerName,
-          operatorPhone: vm.operator,
-          paymentType: vm.payMent,
-          pageNum: index || 1,
-          pageSize: 15,
-          userPhone: vm.userPhone
-        };
+        vm.searchJson = data;
       }
-      vm.downLoadJson = data;
-      requestPickupOrder(data)
-        .then(data => {
-          if (data.code == 200) {
+      getDeviceOrders(vm.searchJson)
+        .then(res => {
+          if (res.code == 200) {
+            vm.currentPage = index || 1;
             vm.form.page = data.data.total;
             vm.searchResult = data.data.list;
+            vm.searchJson="";
           } else {
             vm.form.page = "";
             vm.searchResult = "";
-            errorDeal(data);
+            vm.searchJson="";
+            errorDeal(res);
           }
         }).catch(e =>
           errorDeal(e, () => {
@@ -395,12 +357,12 @@ export default {
     downLoad(i,v) {
       let vm = this,json;
       if(i==1){
-        json = vm.downLoadJson;
+        json = vm.searchJson;
         delete json.pageNum;
         delete json.pageSize;
         pickCardExcelDownload(json,()=>{return "down" })
       }else if(i==2){
-        json = vm.downLoadJson;
+        json = vm.searchJson;
         json.pageNum=vm.currentPage;
         json.pageSize=15;
         pickCardOrdersDownload(json,()=>{return "down" })
@@ -411,8 +373,15 @@ export default {
     },
     details(v) {
       let vm = this;
-      vm.off.details = true;
-      vm.productDetails = v;
+      getDeviceOrderDetails({"sysOrderId":v.sysOrderId})
+      .then(res=>{
+        if(res&&res.data){
+          
+        }
+      }).then(()=>{
+        vm.productDetails = v;
+        vm.off.details = true;
+      }).catch(e=>errorDeal(e))
     },
     confirm(v) {
       let vm = this,
@@ -421,15 +390,40 @@ export default {
       vm.logistics = v;
       vm.off.layer = true;
     },
-    deliverGoods(v) {
+    deliverGoods(v,index) {
       let vm = this;
-      vm.centerDialogVisible=true;      
+      getStockDevices({"pageNum":index||1,"pageSize":300})
+      .then(res=>{
+        if(res&&res.data){
+          vm.deviceList.push(res.data);
+          vm.total = res.total;
+        }
+      }).then(()=>{
+        vm.centerDialogVisible=true;   
+        vm._sysOrderId=v.sysOrderId;
+      }).catch(e=>errorDeal(e))
     },
     confirmBtn(){
-      let vm=this;
-      if(vm.checkedCities1.length!=vm.max){
+      let vm=this,json;
+      if(vm.checkedDevice.length!=vm.max){
         vm.$message.error('超出设备数，请取消后重新选择');
+        return false;
       }
+      json={
+        "id": vm.checkedDevice,
+        "sysOrderId": vm._sysOrderId
+      }
+      deviceDeliver(json)
+      .then(res=>{
+        if(res&&res.data){
+          vm.$message({
+            message:"操作成功成功",
+            type:"success"
+          })
+          vm._sysOrderId="";
+          vm.search(0,1);
+        }
+      })
     },
     changeLogisticsInfo(v) {
       let vm = this;
@@ -508,7 +502,7 @@ export default {
       vm.off.updateRemark=true;
       vm.upindex=i;
       if(t=='remark'){
-        vm.newRemark=v.rebateRemark;
+        vm.newRemark=v.remark;
       }else if(t=="remarkYes"){
         let json={
           rebateRemark:vm.newRemark,
@@ -539,9 +533,6 @@ export default {
     },
     getDateTime(e) {
       return getDateTime(e);
-    },
-    trimFunc(v) {
-      return trimFunc(v);
     },
   }
 };

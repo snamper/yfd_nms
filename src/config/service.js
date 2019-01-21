@@ -187,19 +187,59 @@ export const getCommissionRules=(data,load)=>fetch("/nms/w/cms/cms-numbers",data
 
 /**佣金规则列表导出 */
 export const downloadCommissionRules=(data,load)=>fetch("/nms/w/cms/export",data,"GET",load)
-/*编辑订单话分备注*/
+/*编辑订单话分备注 */
 export const updateRemark=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
 /**库存管理导出 */
 export const exportStorage=(data,load)=>fetch("/nms/w/number/exportStorage",data,"GET",load)
 /**开卡订单导出 */
 export const exportOpenCard=(data,load)=>fetch("/nms/w/openReadyCard/exportOpenCard",data,"GET",load)
-/**设备管理设备资源查询 */
-export const getEquipmentSrc=(data,load)=>fetch("/nms/w/order/update-remark",data,"POST",load)
 
 /**查询品牌排序顺序 */
 export const getBrandOrder=(data,load)=>fetch("/nms/w/number/query-brand-order",data,"POST",load)
 /*设置品牌排序顺序 */
 export const setBrandOrder=(data,load)=>fetch("/nms/w/number/set-brand-order",data,"POST",load)
+
+/**设备资源查询 */
+export const getDeviceResource=(data,load)=>fetch("/nms/w/device/device-rsc",data,"POST",load)
+
+/**设备订单查询 */
+export const getDeviceOrders=(data,load)=>fetch("/nms/w/device/orders",data,"POST",load)
+
+/**设备订单详情 */
+export const getDeviceOrderDetails=(data,load)=>fetch("/nms/w/device/orders",data,"POST",load)
+
+/**库存设备列表 */
+export const getStockDevices=(data,load)=>fetch("/nms/w/device/devices",data,"POST",load)
+
+/**发货 */
+export const deviceDeliver=(data,load)=>fetch("/nms/w/device/deliver",data,"POST",load)
+
+/**收货 */
+export const deviceReceived=(data,load)=>fetch("/nms/w/device/received",data,"POST",load)
+
+/**退货 */
+export const deviceReturn=(data,load)=>fetch("/nms/w/device/return",data,"POST",load)
+
+/**下载发货单 */
+export const deviceInvoiceDownload=(data,load)=>fetch("/nms/w/device/deliver-sheet",data,"POST",load)
+
+/**批量下载发货单 */
+export const devicesInvoiceDownload=(data,load)=>fetch("/nms/w/device/deliver-sheets",data,"POST",load)
+
+/**批量下载发货单 */
+export const deviceListDownload=(data,load)=>fetch("/nms/w/device/export-orders",data,"POST",load)
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
