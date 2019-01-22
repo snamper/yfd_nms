@@ -136,7 +136,7 @@
 </template>
 <script>
 import { getTimeFunction, errorDeal, getDateTime } from "../../config/utils";
-import { getDeviceResource } from "../../config/service.js";
+import { getDeviceResource,deviceListDownload } from "../../config/service.js";
 import NProgress from 'nprogress';
 export default {
   data() {
@@ -151,7 +151,8 @@ export default {
       agentName:"",
       currentStatus:"0",
       currentPage:"",
-      total:""
+      total:"",
+      searchJson:""
     };
   },
   created: function() {
@@ -160,7 +161,7 @@ export default {
   methods: {
     search(index) {
       let vm = this,json,_status,_startTime,_endTime;
-          _status = vm.currentStatus==0?[]:vm.currentStatus.split(',');
+          _status = vm.currentStatus==0?"":vm.currentStatus;
           _endTime = vm.isTime==0?"":new Date(vm.endTime).getTime();
           _startTime = vm.isTime==0?"":new Date(vm.startTime3).getTime();
       json={
@@ -174,19 +175,23 @@ export default {
         "status": _status,
         "timeType": vm.timeType
       };
+      vm.searchJson=json;
       getDeviceResource(json)
       .then(res=>{
         if(res&&res.data){
-          vm.searchResult=res.data;
-          vm.total=res.total;
+          vm.searchResult=res.data.list;
+          vm.total=100;
+          // vm.total=res.data.total;
           vm.currentPage=index||1;
         }
       }).catch(e=>errorDeal(e))
     },
     downLoad(i,v) {
       let vm = this,json;
+      deviceListDownload(vm.searchJson,()=>{ return 'down'})
+
     },
-    getDateTime(e) {ss
+    getDateTime(e) {
       return getDateTime(e);
     },
   }

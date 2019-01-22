@@ -125,9 +125,9 @@
               <tr v-for="(v,i) of searchResult" :key="i">
                 <td>{{((currentPage-1)*15+(i+1))}}</td>
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
-                <td>{{v.createTime.split(' ')[0]}}</td>
+                <td>{{v.createTime}}</td>
                 <td>
-                  <p v-if="v.isShow&&v.productList.length>0" >
+                  <!-- <p v-if="v.isShow&&v.productList.length>0" >
                     <b v-for="(x,y) in v.productList" :key="y">
                       <span class="listSpan">{{x.productName}}</span>
                       <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
@@ -135,7 +135,8 @@
                   </p>
                   <p v-if="!v.isShow&&v.productList.length>0">
                     <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
-                  </p>
+                  </p> -->
+                  设备号
                 </td>
                 <td>{{v.amount}}</td>
                 <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
@@ -158,9 +159,10 @@
                 <td>{{Math.formatFloat(parseFloat(v.price/100),2) }}</td>
                 
                 <td>
-                  <span :class="checkOrderStatus(v).style">
+                  <!-- <span :class="checkOrderStatus(v).style">
                     {{checkOrderStatus(v).title}}
-                  </span>
+                  </span> -->
+                  订单状态
                 </td>
                 <td>
                   <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId}}</a>
@@ -170,26 +172,24 @@
                 </td>
                 <td>
                   <span v-if="upindex!=i">{{v.remark}}</span>
-                  <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
+                  <!-- <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
-                  <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a>
+                  <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a> -->
                 </td>
                 <td>{{v.receipt==0?'未下载':v.receipt==1?'已下载':'--'}}</td>
                 <td>
                   <el-button 
-                    v-if="v.paymentState==2&&v.deliveryState==1&&v.returnFlag!=1" 
+                    style="padding:2px;font-size:12px" @click="selectDevice(1,v)">选择设备</el-button>
+                  <el-button 
                     style="padding:2px;font-size:12px" @click="deliverGoods(v,1)">发货</el-button>
                   <el-button 
-                    v-if="v.paymentState==2&&v.deliveryState==2&&v.orderState==1&&v.returnFlag!=1" 
-                    style="padding:2px;font-size:12px" @click="confirm(v)">收货</el-button>
+                    style="padding:2px;font-size:12px" @click="takeGoods(v)">收货</el-button>
                   <el-button 
-                    v-if="v.paymentState==1&&v.orderState==1&&v.paymentType==4" 
+                    v-if="false"
                     style="padding:2px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
                   <el-button 
-                    v-if="v.paymentState==2&&v.returnFlag!=1" 
                     style="padding:2px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
                   <el-button 
-                    v-if="v.orderState!=3&&v.orderState!=4&&(v.orderState==1&&!(v.paymentState==1&&v.deliveryState==0))&&v.returnFlag!=1" 
                     style="padding:2px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
                 </td>
               </tr>
@@ -222,10 +222,18 @@
             v-model="checkedDevice"
             :min="0"
             :max="max">
-            <el-checkbox v-for="city in cities" :label="city.id" :key="city.id" border>{{city.area}}</el-checkbox>
+            <el-checkbox v-for="device in deviceList" :label="device.id" :key="device.deviceNo" border>{{device.deviceNo}}</el-checkbox>
+            <el-row>
+              <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
+                <div class="grid-content bg-purple">
+                  <el-pagination layout="prev, pager, next" :page-size="12" @current-change="selectDevice" :current-page.sync="currentPage" :total="total">
+                  </el-pagination>
+                </div>
+              </el-col>
+            </el-row>
           </el-checkbox-group>
           <span slot="footer" class="dialog-footer">
-            <el-button @click="centerDialogVisible = false">取 消</el-button>
+            <el-button @click="centerDialogVisible=false">取 消</el-button>
             <el-button type="primary" @click="confirmBtn">确 定</el-button>
           </span>
         </el-dialog>
@@ -241,16 +249,26 @@ import {
   errorDeal,
   getDateTime
 } from "../../config/utils";
-import { getDeviceOrders,getDeviceOrderDetails,deviceDeliver } from "../../config/service.js";
+import { 
+  getDeviceOrders,
+  getDeviceOrderDetails,
+  deviceDeliver,
+  getStockDevices,
+  releaseDevices,
+  devicesInvoiceDownload,
+  orderListDownload,
+  deviceInvoiceDownload,
+  deviceReceived,
+  deviceReturn 
+} from "../../config/service.js";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
 import NProgress from 'nprogress';
-const cityOptions = [{area:'15684765200',id:"10"}, {area:'15566447854',id:'20'}, {area:'15566661234',id:'30'}, {area:'17744551221',id:"40"},{area:'16233554125',id:"50"}, {area:'15566447854',id:'60'}, {area:'15566661234',id:'70'}, {area:'17744551221',id:"80"},{area:'16233554125',id:"90"}, {area:'15566447854',id:'100'}, {area:'15566661234',id:'110'}, {area:'17744551221',id:"120"},
-{area:'16233554125',id:"1"}, {area:'15566447854',id:'2'}, {area:'15566661234',id:'3'}, {area:'17744551221',id:"4"},{area:'16233554125',id:"5"}, {area:'15566447854',id:'6'}, {area:'15566661234',id:'7'}, {area:'17744551221',id:"8"},{area:'16233554125',id:"9"}, {area:'15566447854',id:'101'}, {area:'15566661234',id:'111'}, {area:'17744551221',id:"121"}];
 export default {
   data() {
     return {
       max:3,
+      devicePage:1,
       currentPage: 0,
       searchResult: "",
       layerType: "", //弹窗类型
@@ -266,8 +284,9 @@ export default {
       userPhone: "",
       searchJson: "",
       upindex:0.1,
-      deviceList:[],
+      deviceList:"",
       _sysOrderId:"",
+      total:200,
       off: {
         details: false,
         layer: false,
@@ -278,12 +297,18 @@ export default {
         searchKind: 2
       },
       centerDialogVisible: false,
-      checkedDevice: ['1', '2', '3'],
-      cities: cityOptions
+      checkedDevice:[],
     };
   },
   created: function() {
     getTimeFunction(this);
+  },
+  watch:{
+    centerDialogVisible(){
+      if(!this.centerDialogVisible){
+        this.checkedDevice=[]
+      }
+    }
   },
   components: {
     "order-details": orderDetails,
@@ -292,7 +317,6 @@ export default {
   methods: {
     search(index,i) {
       let vm = this,data;
-      vm.upindex=0.1;
       if(!i){
         if (vm.form.searchKind == 1) {
           if (vm.orderId == "") {
@@ -309,17 +333,17 @@ export default {
               "endTime": "",
               "pageNum": index||1,
               "pageSize": 15,
-              "paymentType": [],
+              "paymentType": "",
               "startTime": "",
-              "states": [],
+              "states": "",
               "sysOrderId": vm.orderId,
               "userPhone": ""
             };
           }
         } else if (vm.form.searchKind == 2) {    
           let _paymentType,_states;
-            _paymentType = vm.payMent==0?[]:vm.payMent.split(',');
-            _states = vm.orderState==0?[]:vm.orderState.split(',');
+            _paymentType = vm.payMent==0?"":vm.payMent;
+            _states = vm.orderState==0?"":vm.orderState;
             data = {
               "deviceNo": vm.deviceNo,
               "endTime": new Date(vm.endTime).getTime(),
@@ -336,11 +360,10 @@ export default {
       }
       getDeviceOrders(vm.searchJson)
         .then(res => {
-          if (res.code == 200) {
+          if (res&&res.data) {
             vm.currentPage = index || 1;
-            vm.form.page = data.data.total;
-            vm.searchResult = data.data.list;
-            vm.searchJson="";
+            vm.form.page = res.data.total;
+            vm.searchResult = res.data.list;
           } else {
             vm.form.page = "";
             vm.searchResult = "";
@@ -354,23 +377,6 @@ export default {
           })
         );
     },
-    downLoad(i,v) {
-      let vm = this,json;
-      if(i==1){
-        json = vm.searchJson;
-        delete json.pageNum;
-        delete json.pageSize;
-        pickCardExcelDownload(json,()=>{return "down" })
-      }else if(i==2){
-        json = vm.searchJson;
-        json.pageNum=vm.currentPage;
-        json.pageSize=15;
-        pickCardOrdersDownload(json,()=>{return "down" })
-      }else if(i==3){
-        json={sysOrderId:v};
-        pickCardOrderDownload(json,()=>{return "down" })
-      }
-    },
     details(v) {
       let vm = this;
       getDeviceOrderDetails({"sysOrderId":v.sysOrderId})
@@ -383,47 +389,96 @@ export default {
         vm.off.details = true;
       }).catch(e=>errorDeal(e))
     },
-    confirm(v) {
-      let vm = this,
-        data = {};
-      vm.layerType = "takeGoods";
-      vm.logistics = v;
-      vm.off.layer = true;
-    },
-    deliverGoods(v,index) {
+    
+    selectDevice(index,v) {
       let vm = this;
-      getStockDevices({"pageNum":index||1,"pageSize":300})
+      getStockDevices({"pageNum":index||1,"pageSize":12})
       .then(res=>{
         if(res&&res.data){
-          vm.deviceList.push(res.data);
-          vm.total = res.total;
+          vm.deviceList=res.data.list;
+          // vm.total = res.data.total;
         }
       }).then(()=>{
         vm.centerDialogVisible=true;   
-        vm._sysOrderId=v.sysOrderId;
+        if(v){
+          vm._sysOrderId=v.sysOrderId;
+          vm.max=v.amount;
+        }
       }).catch(e=>errorDeal(e))
     },
     confirmBtn(){
       let vm=this,json;
       if(vm.checkedDevice.length!=vm.max){
-        vm.$message.error('超出设备数，请取消后重新选择');
+        vm.$message.error('已选选择设备数量不正确，请重新选择');
         return false;
       }
       json={
         "id": vm.checkedDevice,
         "sysOrderId": vm._sysOrderId
       }
-      deviceDeliver(json)
+      releaseDevices(json)
       .then(res=>{
         if(res&&res.data){
           vm.$message({
-            message:"操作成功成功",
+            message:"操作成功",
             type:"success"
           })
           vm._sysOrderId="";
-          vm.search(0,1);
+          vm.centerDialogVisible=false;
+          vm.search(vm.currentPage,1);
         }
       })
+    },
+    deliverGoods(v,i){
+      let vm = this;
+      vm.layerType = "sendDevices";
+      vm.logistics = v;
+      vm.logistics.isDelivery = 1;
+      vm.off.layer = true;
+    },
+    takeGoods(v) {
+      let vm = this,
+        data = {
+          "sysOrderId": v.sysOrderId,
+        };
+      this.$confirm('是否确认收货?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deviceReceived(data)
+        .then(res=>{
+          if(res&&res.code==200){
+            this.$message({
+              type: 'success',
+              message: '操作成功'
+            });  
+            vm.search(vm.currentPage,1);
+          }
+        }).catch(e=>errorDeal(e))
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作已取消'
+        });          
+      });
+    },
+    downLoad(i,v) {
+      let vm = this,json;
+      if(i==1){
+        json = vm.searchJson;
+        delete json.pageNum;
+        delete json.pageSize;
+        orderListDownload(json,()=>{return "down" })
+      }else if(i==2){
+        json = vm.searchJson;
+        json.pageNum=vm.currentPage;
+        json.pageSize=15;
+        devicesInvoiceDownload(json,()=>{return "down" })
+      }else if(i==3){
+        json={sysOrderId:v};
+        deviceInvoiceDownload(json,()=>{return "down" })
+      }
     },
     changeLogisticsInfo(v) {
       let vm = this;
@@ -438,10 +493,30 @@ export default {
       vm.off.layer = true;
     },
     returnGoods(v) {
-      let vm = this;
-      vm.layerType = "returnGoods";
-      vm.logistics = v;
-      vm.off.layer = true;
+      let vm = this,data = {
+          "sysOrderId": v.sysOrderId
+        };
+      this.$confirm('是否确认退货?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deviceReturn(data)
+        .then(res=>{
+          if(res&&res.code==200){
+            this.$message({
+              type: 'success',
+              message: '操作成功'
+            });  
+             this.search(this.pa);
+          }
+        }).catch(e=>errorDeal(e))
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作已取消'
+        });          
+      });
     },
     getMore(i) {
       let vm = this;

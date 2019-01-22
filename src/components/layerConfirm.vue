@@ -1,7 +1,7 @@
 <template>
   <section id="detailsView" class="greyFont">
     <div>
-      <table v-if="layerType=='sendGoods'">
+      <table v-if="layerType=='sendGoods'||layerType=='sendDevices'">
         <thead>
           <tr> <th> 填写物流单号 </th> </tr>
         </thead>
@@ -219,7 +219,8 @@
    transfer,
    commission,
    deleteAddress,
-   setCmsRules } from "../config/service.js";
+   setCmsRules,
+   deviceDeliver } from "../config/service.js";
   import { errorDeal, getStore, trimFunc } from '../config/utils';
   import { mapState } from 'vuex';
   export default {
@@ -309,19 +310,36 @@
             "deliveryOrderId": vm.logisticsOrderId,
             "deliveryName": vm.logisticsCompany,
           };
-        requestChangeLogisticsId(data)
-        .then((data) => {
-          this.$parent.search(vm.$parent.pa);
-          this.$parent.off.layer = false;
-          if (data.code == 200) {
-            layer.open({
-              content: "操作成功",
-              skin: "msg",
-              time: 2,
-              msgSkin: "success"
-            })
+          if(vm.logisticsInfo.isDelivery){
+            data.operate=vm.logisticsInfo.isDelivery; 
+            deviceDeliver(data)
+            .then((data) => {
+              this.$parent.search(vm.$parent.pa);
+              this.$parent.off.layer = false;
+              if (data.code == 200) {
+                layer.open({
+                  content: "操作成功",
+                  skin: "msg",
+                  time: 2,
+                  msgSkin: "success"
+                })
+              }
+            }).catch(e => errorDeal(e));
+          }else if(!vm.logisticsInfo.isDelivery){
+            requestChangeLogisticsId(data)
+            .then((data) => {
+              this.$parent.search(vm.$parent.pa);
+              this.$parent.off.layer = false;
+              if (data.code == 200) {
+                layer.open({
+                  content: "操作成功",
+                  skin: "msg",
+                  time: 2,
+                  msgSkin: "success"
+                })
+              }
+            }).catch(e => errorDeal(e));
           }
-        }).catch(e => errorDeal(e));
       },
       changeLogisticsId(v) {
         let data, vm = this;

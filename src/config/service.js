@@ -206,10 +206,13 @@ export const getDeviceResource=(data,load)=>fetch("/nms/w/device/device-rsc",dat
 export const getDeviceOrders=(data,load)=>fetch("/nms/w/device/orders",data,"POST",load)
 
 /**设备订单详情 */
-export const getDeviceOrderDetails=(data,load)=>fetch("/nms/w/device/orders",data,"POST",load)
+export const getDeviceOrderDetails=(data,load)=>fetch("/nms/w/device/order-prods",data,"POST",load)
 
 /**库存设备列表 */
 export const getStockDevices=(data,load)=>fetch("/nms/w/device/devices",data,"POST",load)
+
+/**发放设备 */
+export const releaseDevices=(data,load)=>fetch("/nms/w/device/release-devices",data,"POST",load)
 
 /**发货 */
 export const deviceDeliver=(data,load)=>fetch("/nms/w/device/deliver",data,"POST",load)
@@ -221,13 +224,16 @@ export const deviceReceived=(data,load)=>fetch("/nms/w/device/received",data,"PO
 export const deviceReturn=(data,load)=>fetch("/nms/w/device/return",data,"POST",load)
 
 /**下载发货单 */
-export const deviceInvoiceDownload=(data,load)=>fetch("/nms/w/device/deliver-sheet",data,"POST",load)
+export const deviceInvoiceDownload=(data,load)=>fetch("/nms/w/device/deliver-sheet",data,"GET",load)
 
 /**批量下载发货单 */
-export const devicesInvoiceDownload=(data,load)=>fetch("/nms/w/device/deliver-sheets",data,"POST",load)
+export const devicesInvoiceDownload=(data,load)=>fetch("/nms/w/device/deliver-sheets",data,"GET",load)
 
-/**批量下载发货单 */
-export const deviceListDownload=(data,load)=>fetch("/nms/w/device/export-orders",data,"POST",load)
+/**导出订单列表 */
+export const orderListDownload=(data,load)=>fetch("/nms/w/device/export-orders",data,"GET",load)
+
+/**导出设备列表 */
+export const deviceListDownload=(data,load)=>fetch("/nms/w/device/export-devices",data,"GET",load)
 
 
 

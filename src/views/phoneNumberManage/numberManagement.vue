@@ -229,8 +229,8 @@
                       <td colspan="3" :rowspan="v.type.length" style="border-right:1px solid #e4e4e4;"></td>
                       <td colspan="11" :rowspan="v.type.length">
                         <table class="m-table2" style="width:100%">
-                          <tr v-if="cuteNumberList.length>0" v-for="(v1,i1) in cuteNumberList" :key="i1" style="border-top:1px solid #E6E6E6">
-                            <td>
+                          <tr v-if="cuteNumberList.length>0" style="border-top:1px solid #E6E6E6">
+                            <td v-for="(v1,i1) in cuteNumberList" :key="i1">
                               <table class="m-table3" style="width:100%">
                                 <tr class="border">
                                   <td>{{v1.ruleDesc}}({{v1.total}})</td>

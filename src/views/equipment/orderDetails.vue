@@ -18,7 +18,7 @@
       <el-row :span="24">
         <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
         <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-          <p class="f-lh-30"><span class="f-ls-1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.totalStrikePrice/100).toFixed(2)||'--'}}元</span></p>
+          <p class="f-lh-30"><span class="f-ls-1">支付金额&nbsp;：&nbsp;&nbsp;</span><span>{{(detailsData.price/100).toFixed(2)||'--'}}元</span></p>
         </el-col>
         <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
         <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
@@ -35,18 +35,8 @@
           <p class="f-lh-30"><span class="f-ls-1">收货地址&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.address||'--'}}</span></p>
         </el-col>
       </el-row>
-      <el-row :span=24>
-        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-        <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-          <p class="f-lh-30"><span class="f-ls-1">售卖方式&nbsp;：&nbsp;&nbsp;</span><span>{{sealType(detailsData.productList)}}</span></p>
-        </el-col>
-        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
-        <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
-          <p class="f-lh-30"><span class="f-ls-1">状态变更人&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.operatorName||'--'}}</span></p>
-        </el-col>
-      </el-row>
     </div>
-    <div class="m-details">
+    <div style="width:98%;margin-left:1%;margin-top:20px;">
       <table class="m-searchTab" style="width:100%;height:100%;">
         <tr>
           <td>序号</td>
@@ -63,6 +53,9 @@
           <td>{{v.sectionId||'--'}}</td>
           <td>{{v.iccidStart||'--'}}</td>
           <td>{{v.iccidEnd||'--'}}</td>
+        </tr>
+        <tr v-if="detailsList.length==0">
+          <td colspan="6">暂无数据</td>
         </tr>
       </table>
     </div>
