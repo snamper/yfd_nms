@@ -106,9 +106,9 @@
                 <td>{{v.iccidStart||'--'}}</td>
                 <td>{{v.iccidEnd||'--'}}</td>
                 <td>{{v.status==0?'在库':v.status==1?'出库':'--'}}</td>
-                <td>{{getDateTime(v.storeTime)[2]}}</td>
-                <td>{{getDateTime(v.outTime)[2]}}</td>
-                <td>{{getDateTime(v.deliverTime)[2]}}</td>
+                <td>{{getDateTime(v.storeTime)[6]}}</td>
+                <td>{{getDateTime(v.outTime)[6]}}</td>
+                <td>{{getDateTime(v.deliverTime)[6]}}</td>
                 <td>{{v.agentName||'--'}}<span v-if="v.agentId">({{v.agentId}})</span></td>
                 <td>{{'--'}}</td>
               </tr>
