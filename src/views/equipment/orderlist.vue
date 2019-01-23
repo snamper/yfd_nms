@@ -109,7 +109,7 @@
                 <td>序号</td>
                 <td>订单号码</td>
                 <td>创建时间</td>
-                <td v-if="false">设备号</td>
+                <td>设备号</td>
                 <td>购买数量</td>
                 <td>商户名称</td>
                 <td>所属渠道</td>
@@ -126,8 +126,8 @@
                 <td>{{((currentPage-1)*15+(i+1))}}</td>
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{getDateTime(v.createTime)[8]}}<br>{{getDateTime(v.createTime)[5]}}</td>
-                <td v-if="false">
-                  <p v-if="v.isShow&&v.productList.length>0" >
+                <td>
+                  <!-- <p v-if="v.isShow&&v.productList.length>0" >
                     <b v-for="(x,y) in v.productList" :key="y">
                       <span class="listSpan">{{x.productName}}</span>
                       <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
@@ -135,22 +135,19 @@
                   </p>
                   <p v-if="!v.isShow&&v.productList.length>0">
                     <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
-                  </p>
+                  </p> -->
+                  设备号
                 </td>
                 <td>{{v.amount}}</td>
                 <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
                 <td>
-                  <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
+                  <a :href="v.dealerName?'#/home/organization/yfd?dealerName='+v.dealerName:'javascript:void(0)'">{{v.dealerName||'--'}}<br>
+                    <span>{{v.dealerId||'--'}}</span>
+                  </a>
                 </td>
                 <td>
-                  <span v-if="v.agentFlag==1">
-                    {{v.agentName||'--'}}<br>
-                    {{v.agentPhone}}
-                  </span>
-                  <span v-if="v.agentFlag==0">
                     {{v.operatorName||'--'}}<br>
                     {{v.operatorPhone}}
-                  </span>
                 </td>
                 <td>
                   <span v-if="v.paymentType==0">--</span>
@@ -172,7 +169,7 @@
                   <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">
                     {{v.deliveryName}}-
                     {{v.deliveryOrderId}}</a>
-                  <a @click="changeLogisticsInfo(v)" v-if="v.deliveryName||v.deliveryOrderId">
+                  <a @click="changeLogisticsInfo(v)" v-if="v.state==5">
                     编辑
                   </a>
                 </td>
@@ -194,11 +191,11 @@
                     v-if="v.state==5"
                     style="padding:2px;font-size:12px" @click="takeGoods(v)">收货</el-button>
                   <el-button 
-                    v-if="false"
+                    v-if="v.state==1"
                     style="padding:2px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
                   <el-button 
-                    v-if="v.state==6"
-                    style="padding:2px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
+                    v-if="false"
+                    style="padding:2px;font-size:12px" @click="returnGoods(v)">退货</el-button>
                   <el-button 
                     v-if="v.state==5||v.state==6"
                     style="padding:2px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
@@ -270,7 +267,8 @@ import {
   orderListDownload,
   deviceInvoiceDownload,
   deviceReceived,
-  deviceReturn 
+  deviceReturn ,
+  devicesConfirmPayment,
 } from "../../config/service.js";
 import layerConfirm from "../../components/layerConfirm";
 import orderDetails from "./orderDetails";
@@ -442,11 +440,39 @@ export default {
       })
     },
     deliverGoods(v,i){
-      let vm = this;
-      vm.layerType = "sendDevices";
-      vm.logistics = v;
-      vm.logistics.isDelivery = 1;
-      vm.off.layer = true;
+      // let vm = this;
+      // vm.layerType = "sendDevices";
+      // vm.logistics = v;
+      // vm.logistics.isDelivery = 1;
+      // vm.off.layer = true;
+      let vm = this,
+        data = {
+          "sysOrderId": v.sysOrderId,
+          "operate":1,
+          "deliveryOrderId": "",
+          "deliveryName": "",
+        };
+      this.$confirm('是否确认发货?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        deviceDeliver(data)
+        .then(res=>{
+          if(res&&res.code==200){
+            this.$message({
+              type: 'success',
+              message: '操作成功'
+            });  
+            vm.search(vm.currentPage,1);
+          }
+        }).catch(e=>errorDeal(e))
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作已取消'
+        });          
+      });
     },
     takeGoods(v) {
       let vm = this,
@@ -486,10 +512,13 @@ export default {
         json = vm.searchJson;
         json.pageNum=vm.currentPage;
         json.pageSize=15;
-        devicesInvoiceDownload(json,()=>{return "down" })
+        devicesInvoiceDownload(json,()=>{ return "down" })
       }else if(i==3){
         json={sysOrderId:v};
-        deviceInvoiceDownload(json,()=>{return "down" })
+        deviceInvoiceDownload(json,()=>{ return "down" })
+        .then(()=>{
+          vm.search(vm.currentPage,1);
+        });
       }
     },
     changeLogisticsInfo(v) {
@@ -500,10 +529,35 @@ export default {
       vm.off.layer = true;
     },
     confirmPayMoney(v) {
-      let vm = this;
-      vm.layerType = "payMent";
-      vm.logistics = v;
-      vm.off.layer = true;
+      // let vm = this;
+      // vm.layerType = "payMentDevices";
+      // vm.logistics = v;
+      // vm.off.layer = true;
+      let vm = this,
+        data = {
+          "sysOrderId": v.sysOrderId,
+        };
+      this.$confirm('是否确认付款?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        devicesConfirmPayment(data)
+        .then(res=>{
+          if(res&&res.code==200){
+            this.$message({
+              type: 'success',
+              message: '操作成功'
+            });  
+            vm.search(vm.currentPage,1);
+          }
+        }).catch(e=>errorDeal(e))
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '操作已取消'
+        });          
+      });
     },
     returnGoods(v) {
       let vm = this,data = {

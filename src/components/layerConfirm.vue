@@ -51,7 +51,7 @@
           </tr>
         </tbody>
       </table>
-      <table v-if="layerType=='payMent'" style="width:300px;">
+      <table v-if="layerType=='payMent'||layerType=='payMentDevices'" style="width:300px;">
         <thead>
           <tr>
             <th>
@@ -206,9 +206,10 @@
   </section>
 </template>
 <script>
-  import { requestConfirmDelNotice,
-   requestConfirmTakeGoods, 
-   requestChangeLogisticsId, 
+  import { 
+    requestConfirmDelNotice,
+    requestConfirmTakeGoods, 
+    requestChangeLogisticsId, 
    requestConfirmPayMent, 
    requestModify_Price, 
    requestReturnGoods, 
@@ -220,7 +221,8 @@
    commission,
    deleteAddress,
    setCmsRules,
-   deviceDeliver } from "../config/service.js";
+   deviceDeliver,
+ } from "../config/service.js";
   import { errorDeal, getStore, trimFunc } from '../config/utils';
   import { mapState } from 'vuex';
   export default {
@@ -231,7 +233,6 @@
       info: Object,
       changpowerData: Object,
       layerData:Object,
-
     },
     data() {
       return {
@@ -400,23 +401,24 @@
           "strikePrice": vm.payMoney * 100,
           "paymentSerialNumber": vm.oddNumbers,
         }
-        requestConfirmPayMent(data)
-        .then((data) => {
-          this.$parent.search(vm.$parent.pa);
-          this.$parent.off.layer = false;
-          if (data.code == 200) {
-            layer.open({
-              content: "操作成功",
-              skin: "msg",
-              time: 2,
-              msgSkin: "success"
-            })
-          }
-        })
-        .catch(e => errorDeal(e, ()=>{
-            vm.$parent.off.layer = false
-          }
-        ));
+        if(vm.layerType=='payMent'){
+          requestConfirmPayMent(data)
+          .then((data) => {
+            vm.$parent.search(vm.$parent.pa);
+            vm.$parent.off.layer = false;
+            if (data.code == 200) {
+              layer.open({
+                content: "操作成功",
+                skin: "msg",
+                time: 2,
+                msgSkin: "success"
+              })
+            }
+          })
+          .catch(e => errorDeal(e, ()=>{ vm.$parent.off.layer = false } ));
+        }else if(vm.layerType=='payMentDevices'){
+          vm.$parent.search(vm.$parent.currentPage);
+        }
       },
       changePrice(v) {
         let vm = this,

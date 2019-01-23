@@ -41,7 +41,7 @@
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+          <el-col v-if="false" :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">号段：</div>
             </el-col>
@@ -50,8 +50,6 @@
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">代理商名称：</div>
@@ -61,6 +59,8 @@
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="8" :sm="8" :md="6" :lg="4" :xl="4">
@@ -81,7 +81,7 @@
       <div v-if="searchResult">
         <div>
           <div class="m-details">
-            <p class="m-searchlist-title"><span>订单列表</span><span>
+            <p class="m-searchlist-title"><span>订单列表({{total}})</span><span>
               <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
             <table class="m-searchTab" style="width:100%;height:100%;margin-top:10px;">
               <tr class="f-s-14">
@@ -106,11 +106,18 @@
                 <td>{{v.iccidStart||'--'}}</td>
                 <td>{{v.iccidEnd||'--'}}</td>
                 <td>{{v.status==0?'在库':v.status==1?'出库':'--'}}</td>
-                <td>{{getDateTime(v.storeTime)[6]}}</td>
-                <td>{{getDateTime(v.outTime)[6]}}</td>
-                <td>{{getDateTime(v.deliverTime)[6]}}</td>
-                <td>{{v.agentName||'--'}}<span v-if="v.agentId">({{v.agentId}})</span></td>
-                <td>{{'--'}}</td>
+                <td>{{getDateTime(v.storeTime)[8]}}<br>
+                  {{getDateTime(v.storeTime)[5]}}
+                </td>
+                <td>{{getDateTime(v.outTime)[8]}}<br>
+                  {{getDateTime(v.outTime)[5]}}
+                </td>
+                <td>{{getDateTime(v.deliverTime)[8]}}<br>
+                  {{getDateTime(v.deliverTime)[5]}}</td>
+                <td>{{v.agentName||'--'}}<br><span v-if="v.agentId">({{v.agentId}})</span></td>
+                <td>{{v.dealerName}}<br>{{v.dealerId}}
+                  <span v-if="!v.dealerName&&!v.dealerId">--</span>
+                </td>
               </tr>
               <tr v-if="searchResult.length<=0">
                 <td style="text-align:center" colspan="14">

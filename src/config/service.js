@@ -214,6 +214,9 @@ export const getStockDevices=(data,load)=>fetch("/nms/w/device/devices",data,"PO
 /**发放设备 */
 export const releaseDevices=(data,load)=>fetch("/nms/w/device/release-devices",data,"POST",load)
 
+/**确认付款 */
+export const devicesConfirmPayment=(data,load)=>fetch("/nms/w/device/confirm-payment",data,"POST",load)
+
 /**发货 */
 export const deviceDeliver=(data,load)=>fetch("/nms/w/device/deliver",data,"POST",load)
 
