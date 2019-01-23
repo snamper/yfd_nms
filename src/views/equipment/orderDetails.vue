@@ -36,7 +36,10 @@
         </el-col>
       </el-row>
     </div>
-    <div style="width:98%;margin-left:1%;margin-top:20px;">
+    <div style="margin-top:10px" class="headTitle f-s-16">
+      <span class="fl">设备号详情</span>
+    </div>
+    <div style="width:98%;margin-left:1%;">
       <table class="m-searchTab" style="width:100%;height:100%;">
         <tr>
           <td>序号</td>

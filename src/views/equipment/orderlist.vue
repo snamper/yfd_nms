@@ -109,7 +109,7 @@
                 <td>序号</td>
                 <td>订单号码</td>
                 <td>创建时间</td>
-                <td>设备号</td>
+                <td v-if="false">设备号</td>
                 <td>购买数量</td>
                 <td>商户名称</td>
                 <td>所属渠道</td>
@@ -125,9 +125,9 @@
               <tr v-for="(v,i) of searchResult" :key="i">
                 <td>{{((currentPage-1)*15+(i+1))}}</td>
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
-                <td>{{v.createTime}}</td>
-                <td>
-                  <!-- <p v-if="v.isShow&&v.productList.length>0" >
+                <td>{{getDateTime(v.createTime)[8]}}<br>{{getDateTime(v.createTime)[5]}}</td>
+                <td v-if="false">
+                  <p v-if="v.isShow&&v.productList.length>0" >
                     <b v-for="(x,y) in v.productList" :key="y">
                       <span class="listSpan">{{x.productName}}</span>
                       <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
@@ -135,8 +135,7 @@
                   </p>
                   <p v-if="!v.isShow&&v.productList.length>0">
                     <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
-                  </p> -->
-                  设备号
+                  </p>
                 </td>
                 <td>{{v.amount}}</td>
                 <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
@@ -144,8 +143,14 @@
                   <a :href="v.dealerIdName?'#/home/organization/yfd?dealerName='+v.dealerIdName:'javascript:void(0)'">{{v.dealerIdName||'--'}}</a>
                 </td>
                 <td>
-                  {{v.agentName||'--'}}<br>
-                  {{v.agentPhone}}
+                  <span v-if="v.agentFlag==1">
+                    {{v.agentName||'--'}}<br>
+                    {{v.agentPhone}}
+                  </span>
+                  <span v-if="v.agentFlag==0">
+                    {{v.operatorName||'--'}}<br>
+                    {{v.operatorPhone}}
+                  </span>
                 </td>
                 <td>
                   <span v-if="v.paymentType==0">--</span>
@@ -159,19 +164,20 @@
                 <td>{{Math.formatFloat(parseFloat(v.price/100),2) }}</td>
                 
                 <td>
-                  <!-- <span :class="checkOrderStatus(v).style">
+                  <span :class="checkOrderStatus(v).style">
                     {{checkOrderStatus(v).title}}
-                  </span> -->
-                  订单状态
+                  </span>
                 </td>
                 <td>
-                  <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">{{v.deliveryName}}{{v.deliveryOrderId}}</a>
+                  <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">
+                    {{v.deliveryName}}-
+                    {{v.deliveryOrderId}}</a>
                   <a @click="changeLogisticsInfo(v)" v-if="v.deliveryState==2">
                     {{v.deliveryOrderId?'编辑':'填写物流信息'}}
                   </a>
                 </td>
                 <td>
-                  <span v-if="upindex!=i">{{v.remark}}</span>
+                  <span>{{v.remark||'--'}}</span>
                   <!-- <a v-if="upindex!=i" @click="modify('remark',v,i)" class="linka">编辑</a>
                   <input class="m-input-modifyRemark" v-if="upindex==i" type="text" v-model="newRemark">
                   <a v-if="upindex==i" @click="modify('remarkYes',v,i)" class="linka">确认</a> -->
@@ -226,7 +232,7 @@
             <el-row>
               <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                 <div class="grid-content bg-purple">
-                  <el-pagination layout="prev, pager, next" :page-size="12" @current-change="selectDevice" :current-page.sync="currentPage" :total="total">
+                  <el-pagination layout="prev, pager, next" :page-size="120" @current-change="selectDevice" :current-page.sync="currentPage" :total="total">
                   </el-pagination>
                 </div>
               </el-col>
@@ -382,7 +388,7 @@ export default {
       getDeviceOrderDetails({"sysOrderId":v.sysOrderId})
       .then(res=>{
         if(res&&res.data){
-          
+          vm.deviceDetailsList=res.data;
         }
       }).then(()=>{
         vm.productDetails = v;
@@ -392,11 +398,11 @@ export default {
     
     selectDevice(index,v) {
       let vm = this;
-      getStockDevices({"pageNum":index||1,"pageSize":12})
+      getStockDevices({"pageNum":index||1,"pageSize":120})
       .then(res=>{
         if(res&&res.data){
-          vm.deviceList=res.data.list;
-          // vm.total = res.data.total;
+          vm.deviceList = res.data.list;
+          vm.total = res.data.total;
         }
       }).then(()=>{
         vm.centerDialogVisible=true;   
@@ -603,8 +609,10 @@ export default {
       }
     },
     searchdelivery(n, v) {
-      let url = "https://www.kuaidi100.com/chaxun?com=" + n + "&nu=" + v;
-      window.open(url);
+      if(n&&v){
+        let url = "https://www.kuaidi100.com/chaxun?com=" + n + "&nu=" + v;
+        window.open(url);
+      }
     },
     getDateTime(e) {
       return getDateTime(e);

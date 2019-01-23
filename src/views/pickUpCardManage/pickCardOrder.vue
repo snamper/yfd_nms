@@ -156,9 +156,11 @@
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{v.createTime.split(' ')[0]}}</td>
                 <td>
-                  <p v-if="v.isShow&&v.productList.length>0" v-for="(x,y) in v.productList" :key="y">
-                    <span class="listSpan">{{x.productName}}</span>
-                    <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
+                  <p v-if="v.isShow&&v.productList.length>0">
+                    <label v-for="(x,y) in v.productList" :key="y">
+                      <span class="listSpan">{{x.productName}}</span>
+                      <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i><br>
+                    </label>
                   </p>
                   <p v-if="!v.isShow&&v.productList.length>0">
                     <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
