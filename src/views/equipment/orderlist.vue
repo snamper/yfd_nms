@@ -172,8 +172,8 @@
                   <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">
                     {{v.deliveryName}}-
                     {{v.deliveryOrderId}}</a>
-                  <a @click="changeLogisticsInfo(v)" v-if="v.deliveryState==2">
-                    {{v.deliveryOrderId?'编辑':'填写物流信息'}}
+                  <a @click="changeLogisticsInfo(v)" v-if="v.deliveryName||v.deliveryOrderId">
+                    编辑
                   </a>
                 </td>
                 <td>
@@ -185,17 +185,22 @@
                 <td>{{v.receipt==0?'未下载':v.receipt==1?'已下载':'--'}}</td>
                 <td>
                   <el-button 
+                    v-if="v.state==4"
                     style="padding:2px;font-size:12px" @click="selectDevice(1,v)">选择设备</el-button>
                   <el-button 
+                    v-if="v.state==4"
                     style="padding:2px;font-size:12px" @click="deliverGoods(v,1)">发货</el-button>
                   <el-button 
+                    v-if="v.state==5"
                     style="padding:2px;font-size:12px" @click="takeGoods(v)">收货</el-button>
                   <el-button 
                     v-if="false"
                     style="padding:2px;font-size:12px" @click="confirmPayMoney(v)">确认付款</el-button>
                   <el-button 
+                    v-if="v.state==6"
                     style="padding:2px;font-size:12px" @click="returnGoods(v)">退卡</el-button>
                   <el-button 
+                    v-if="v.state==5||v.state==6"
                     style="padding:2px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
                 </td>
               </tr>
@@ -232,7 +237,7 @@
             <el-row>
               <el-col ors:xs="24" :sm="12" :md="12" :lg="12" :xl="12">
                 <div class="grid-content bg-purple">
-                  <el-pagination layout="prev, pager, next" :page-size="120" @current-change="selectDevice" :current-page.sync="currentPage" :total="total">
+                  <el-pagination layout="prev, pager, next" :page-size="120" @current-change="selectDevice" :current-page.sync="currentPage2" :total="total">
                   </el-pagination>
                 </div>
               </el-col>
@@ -276,6 +281,7 @@ export default {
       max:3,
       devicePage:1,
       currentPage: 0,
+      currentPage2: 0,
       searchResult: "",
       layerType: "", //弹窗类型
       logistics: {}, //物流信息
@@ -488,8 +494,9 @@ export default {
     },
     changeLogisticsInfo(v) {
       let vm = this;
-      vm.layerType = "logistics";
+      vm.layerType = "sendDevices";
       vm.logistics = v;
+      vm.logistics.isDelivery = 2;
       vm.off.layer = true;
     },
     confirmPayMoney(v) {
@@ -514,7 +521,7 @@ export default {
               type: 'success',
               message: '操作成功'
             });  
-             this.search(this.pa);
+             this.search(this.currentPage);
           }
         }).catch(e=>errorDeal(e))
       }).catch(() => {
@@ -529,52 +536,41 @@ export default {
       this.$set(vm.searchResult[i], "isShow", !vm.searchResult[i].isShow);
     },
     checkOrderStatus(v) {
-      if (v.returnFlag == 1) {
+      let vm=this;
+      if(v.state==1){
         return {
-          title: "已退卡",
-          style: "red"
+          title:'未完成',
+          style:'red'
         }
-      }else if (v.orderState == 2) {
+      }else if(v.state==2){
         return {
-          title: "已完成",
-          style: "green"
+          title:'手动取消',
+          style:'red'
         }
-      }else if ( v.orderState == 3) {
+      }else if(v.state==3){
         return {
-          title: "手动关闭",
-          style: "red"
+          title:'系统超时取消',
+          style:'red'
         }
-      }else if ( v.orderState == 4) {
+      }else if(v.state==4){
         return {
-          title: "自动关闭",
-          style: "red"
+          title:'已支付',
+          style:'green'
         }
-      }else if(v.orderState==1){
-        if(v.paymentState == 1&&v.deliveryState==0){
-          return {
-            title: "待付款",
-            style: "blue"
-          }
-        }else if(v.paymentState == 2&& v.deliveryState == 1){
-          return {
-            title: "待发货",
-            style: "blue"
-          }
-        }else if(v.paymentState == 2&&v.deliveryState == 2){
-           return {
-            title: "已发货",
-            style: "blue"
-          }
-        }else{
-          return {
-            title: "--",
-            style: "--"
-          }
-        }
-      }else{
+      }else if(v.state==5){
         return {
-          title: "--",
-          style: "--"
+          title:'已发货',
+          style:'green'
+        }
+      }else if(v.state==6){
+        return {
+          title:'已收货',
+          style:'green'
+        }
+      }else if(v.state==7){
+        return {
+          title:'已退货',
+          style:'red'
         }
       }
     },
