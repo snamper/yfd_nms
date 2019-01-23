@@ -358,7 +358,7 @@ export default {
               "paymentType": _paymentType,
               "startTime": new Date(vm.startTime3).getTime(),
               "states": _states,
-              "sysOrderId": vm.orderId,
+              "sysOrderId": "",
               "userPhone": vm.userPhone
             };
         }
