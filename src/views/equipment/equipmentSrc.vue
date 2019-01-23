@@ -67,9 +67,9 @@
                 <div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div>
               </el-col>
               <el-col :xs="16" :sm="16" :md="18" :lg="20" :xl="20">
-                <el-radio v-model="currentStatus" label="0">全部</el-radio>
-                <el-radio v-model="currentStatus" label="1">在库</el-radio>
-                <el-radio v-model="currentStatus" label="2">出库</el-radio>
+                <el-radio v-model="currentStatus" label="-1">全部</el-radio>
+                <el-radio v-model="currentStatus" label="0">在库</el-radio>
+                <el-radio v-model="currentStatus" label="1">出库</el-radio>
               </el-col>
             </div>
           </el-col>
@@ -149,7 +149,7 @@ export default {
       deviceNo:"",
       numberSection:"",
       agentName:"",
-      currentStatus:"0",
+      currentStatus:"-1",
       currentPage:"",
       total:"",
       searchJson:""
@@ -161,7 +161,7 @@ export default {
   methods: {
     search(index) {
       let vm = this,json,_status,_startTime,_endTime;
-          _status = vm.currentStatus==0?"":vm.currentStatus;
+          _status = vm.currentStatus==-1?"":vm.currentStatus;
           _endTime = vm.isTime==0?"":new Date(vm.endTime).getTime();
           _startTime = vm.isTime==0?"":new Date(vm.startTime3).getTime();
       json={
@@ -180,8 +180,7 @@ export default {
       .then(res=>{
         if(res&&res.data){
           vm.searchResult=res.data.list;
-          vm.total=100;
-          // vm.total=res.data.total;
+          vm.total=res.data.total;
           vm.currentPage=index||1;
         }
       }).catch(e=>errorDeal(e))
