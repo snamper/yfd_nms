@@ -437,7 +437,7 @@ export default {
           vm.centerDialogVisible=false;
           vm.search(vm.currentPage,1);
         }
-      })
+      }).catch(e=>errorDeal(e,vm.centerDialogVisible=false))
     },
     deliverGoods(v,i){
       // let vm = this;
