@@ -197,7 +197,7 @@
                     v-if="false"
                     style="padding:2px;font-size:12px" @click="returnGoods(v)">退货</el-button>
                   <el-button 
-                    v-if="v.state==5||v.state==6"
+                    v-if="v.state==4||v.state==5||v.state==6"
                     style="padding:2px;font-size:12px" @click="downLoad(3,v.sysOrderId)">下载发货单</el-button>
                 </td>
               </tr>
