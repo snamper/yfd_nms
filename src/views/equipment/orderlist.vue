@@ -166,9 +166,9 @@
                   </span>
                 </td>
                 <td>
-                  <a @click="searchdelivery(v.deliveryName,v.deliveryOrderId)" href="javascript:void(0)">
+                  <a @click="searchdelivery(v.deliveryName,v.deliveryId)" href="javascript:void(0)">
                     {{v.deliveryName}}-
-                    {{v.deliveryOrderId}}</a>
+                    {{v.deliveryId}}</a>
                   <a @click="changeLogisticsInfo(v)" v-if="v.state==5">
                     编辑
                   </a>
@@ -446,12 +446,12 @@ export default {
       // vm.logistics.isDelivery = 1;
       // vm.off.layer = true;
       let vm = this,
-        data = {
-          "sysOrderId": v.sysOrderId,
-          "operate":1,
-          "deliveryOrderId": "",
-          "deliveryName": "",
-        };
+      data = {
+        "sysOrderId": v.sysOrderId,
+        "operate":1,
+        "deliveryId": "",
+        "deliveryName": "",
+      };
       this.$confirm('是否确认发货?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

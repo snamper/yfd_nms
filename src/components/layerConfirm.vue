@@ -308,11 +308,11 @@
         let vm = this,
           data = {
             "sysOrderId": v.sysOrderId,
-            "deliveryOrderId": vm.logisticsOrderId,
             "deliveryName": vm.logisticsCompany,
           };
           if(vm.logisticsInfo.isDelivery){
             data.operate=vm.logisticsInfo.isDelivery; 
+            data.deliveryId=vm.logisticsOrderId;
             deviceDeliver(data)
             .then((data) => {
               this.$parent.search(vm.$parent.pa);
@@ -327,6 +327,7 @@
               }
             }).catch(e => errorDeal(e));
           }else if(!vm.logisticsInfo.isDelivery){
+            data.deliveryOrderId = vm.logisticsOrderId;
             requestChangeLogisticsId(data)
             .then((data) => {
               this.$parent.search(vm.$parent.pa);
