@@ -127,16 +127,16 @@
                 <td @click="details(v)"><a href="javascript:void(0)">{{v.sysOrderId||'--'}}</a> </td>
                 <td>{{getDateTime(v.createTime)[8]}}<br>{{getDateTime(v.createTime)[5]}}</td>
                 <td>
-                  <!-- <p v-if="v.isShow&&v.productList.length>0" >
-                    <b v-for="(x,y) in v.productList" :key="y">
-                      <span class="listSpan">{{x.productName}}</span>
-                      <i v-if="v.isShow&&v.productList.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i>
+                  <p v-if="v.isShow&&v.list.length>0" >
+                    <b v-for="(x,y) in v.list" :key="y">
+                      <span class="listSpan">{{x.deviceNo}}</span>
+                      <i v-if="v.isShow&&v.list.length>1&&y==0" @click="getMore(i)" class="iconMore1"></i><br>
                     </b>
                   </p>
-                  <p v-if="!v.isShow&&v.productList.length>0">
-                    <span>{{v.productList[0].productName}}</span> <i v-if="v.productList.length>1" @click="getMore(i)" class="iconMore"></i>
-                  </p> -->
-                  设备号
+                  <p v-if="!v.isShow&&v.list.length>0">
+                    <span>{{v.list[0].deviceNo}}</span> <i v-if="v.list.length>1" @click="getMore(i)" class="iconMore"></i>
+                  </p>
+                  <span v-if="v.list.length==0">--</span>
                 </td>
                 <td>{{v.amount}}</td>
                 <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>

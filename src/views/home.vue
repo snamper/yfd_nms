@@ -229,7 +229,7 @@ span.iconFoldClose {
             <b></b>
             <router-link to="/home/equipment">
               <div>
-                <i class="u-icon-tika"></i>
+                <i class="u-icon-shebei"></i>
                 <span>设备管理</span>
                 <span :class="crumb[0].name=='设备管理'?'iconFoldOpen':'iconFoldClose'"></span>
               </div>
