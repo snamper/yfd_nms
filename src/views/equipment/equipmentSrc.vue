@@ -37,11 +37,11 @@
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">读写卡设备号：</div>
             </el-col>
             <el-col :xs="18" :sm="16" :md="17" :lg="16" :xl="16">
-              <el-input v-model="equipmentId" size="small" placeholder="请输入读写卡设备号"></el-input>
+              <el-input v-model="deviceNo" size="small" placeholder="请输入读写卡设备号"></el-input>
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
-          <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
+          <el-col v-if="false" :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">号段：</div>
             </el-col>
@@ -50,8 +50,6 @@
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
-        </el-row>
-        <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <el-col :xs="4" :sm="4" :md="3" :lg="4" :xl="4">
               <div class="grid-content bg-purple-dark f-ta-r inputTitle">代理商名称：</div>
@@ -61,15 +59,17 @@
             </el-col>
             <el-col :span="2"></el-col>
           </el-col>
+        </el-row>
+        <el-row>
           <el-col :xs="24" :sm="24" :md="24" :lg="12" :xl="12">
             <div class="grid-content bg-purple-light">
               <el-col :xs="8" :sm="8" :md="6" :lg="4" :xl="4">
                 <div class="grid-content bg-purple-dark f-ta-r inputTitle">当前状态：</div>
               </el-col>
               <el-col :xs="16" :sm="16" :md="18" :lg="20" :xl="20">
-                <el-radio v-model="currentStatus" label="0">全部</el-radio>
-                <el-radio v-model="currentStatus" label="1">在库</el-radio>
-                <el-radio v-model="currentStatus" label="2">出库</el-radio>
+                <el-radio v-model="currentStatus" label="-1">全部</el-radio>
+                <el-radio v-model="currentStatus" label="0">在库</el-radio>
+                <el-radio v-model="currentStatus" label="1">出库</el-radio>
               </el-col>
             </div>
           </el-col>
@@ -81,7 +81,7 @@
       <div v-if="searchResult">
         <div>
           <div class="m-details">
-            <p class="m-searchlist-title"><span>订单列表</span><span>
+            <p class="m-searchlist-title"><span>订单列表({{total}})</span><span>
               <el-button size="mini" style="padding:5px !important;margin-right:10px" @click="downLoad()" type="success">导出</el-button></span></p>
             <table class="m-searchTab" style="width:100%;height:100%;margin-top:10px;">
               <tr class="f-s-14">
@@ -100,17 +100,24 @@
               </tr>
               <tr v-for="(v,i) of searchResult" :key="i">
                 <td>{{(currentPage-1)*15+(i+1)}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
-                <td>{{v||'--'}}</td>
+                <td>{{v.deviceNo||'--'}}</td>
+                <td>{{v.anthNo||'--'}}</td>
+                <td>{{v.sectionId||'--'}}</td>
+                <td>{{v.iccidStart||'--'}}</td>
+                <td>{{v.iccidEnd||'--'}}</td>
+                <td>{{v.status==0?'在库':v.status==1?'出库':'--'}}</td>
+                <td>{{getDateTime(v.storeTime)[8]}}<br>
+                  {{getDateTime(v.storeTime)[5]}}
+                </td>
+                <td>{{getDateTime(v.outTime)[8]}}<br>
+                  {{getDateTime(v.outTime)[5]}}
+                </td>
+                <td>{{getDateTime(v.deliverTime)[8]}}<br>
+                  {{getDateTime(v.deliverTime)[5]}}</td>
+                <td>{{v.agentName||'--'}}<br><span v-if="v.agentId">({{v.agentId}})</span></td>
+                <td>{{v.dealerName}}<br>{{v.dealerId}}
+                  <span v-if="!v.dealerName&&!v.dealerId">--</span>
+                </td>
               </tr>
               <tr v-if="searchResult.length<=0">
                 <td style="text-align:center" colspan="14">
@@ -136,7 +143,7 @@
 </template>
 <script>
 import { getTimeFunction, errorDeal, getDateTime } from "../../config/utils";
-import { getEquipmentSrc } from "../../config/service.js";
+import { getDeviceResource,deviceListDownload } from "../../config/service.js";
 import NProgress from 'nprogress';
 export default {
   data() {
@@ -146,12 +153,13 @@ export default {
       startTime3:"",
       endTime:"",
       timeType:"1",
-      equipmentId:"",
+      deviceNo:"",
       numberSection:"",
       agentName:"",
-      currentStatus:"0",
+      currentStatus:"-1",
       currentPage:"",
-      total:""
+      total:"",
+      searchJson:""
     };
   },
   created: function() {
@@ -159,32 +167,37 @@ export default {
   },
   methods: {
     search(index) {
-      let vm = this,
+      let vm = this,json,_status,_startTime,_endTime;
+          _status = vm.currentStatus==-1?"":vm.currentStatus;
+          _endTime = vm.isTime==0?"":new Date(vm.endTime).getTime();
+          _startTime = vm.isTime==0?"":new Date(vm.startTime3).getTime();
       json={
-        pageSize:15,
-        pageNum:index||1,
-        isTime:vm.isTime,
-        startTime:vm.startTime3,
-        endTime:vm.endTime,
-        timeType:vm.timeType,
-        equipmentId:vm.equipmentId,
-        numberSection:vm.numberSection,
-        agentName:vm.agentName,
-        currentStatus:vm.currentStatus
+        "agentName": vm.agentName,
+        "deviceNo": vm.deviceNo,
+        "endTime": _endTime,
+        "pageNum": index||1,
+        "pageSize": 15,
+        "sectionId": vm.numberSection,
+        "startTime": _startTime,
+        "status": _status,
+        "timeType": vm.timeType
       };
-      getEquipmentSrc(json)
+      vm.searchJson=json;
+      getDeviceResource(json)
       .then(res=>{
         if(res&&res.data){
-          vm.searchResult=res.data;
-          vm.total=res.total;
+          vm.searchResult=res.data.list;
+          vm.total=res.data.total;
           vm.currentPage=index||1;
         }
       }).catch(e=>errorDeal(e))
     },
     downLoad(i,v) {
       let vm = this,json;
+      deviceListDownload(vm.searchJson,()=>{ return 'down'})
+
     },
-    getDateTime(e) {ss
+    getDateTime(e) {
       return getDateTime(e);
     },
   }

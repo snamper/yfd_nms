@@ -479,7 +479,13 @@ b.countIcon{
     background-image: url(../assets/images/back-off.png);
     width: 0.2rem;
     height: 0.2rem;
-  }
+}
+.u-icon-shebei {
+  cursor: pointer;
+  background-image: url(../assets/images/icon_shebei.png);
+  width: 0.2rem;
+  height: 0.2rem;
+}
   .u-icon-del{display: inline-block;width: 20px;height:20px;background: url('../assets/images/icon/delete.svg') no-repeat;background-size: 100%;cursor: pointer;}
 /*头部用户组件*/
 

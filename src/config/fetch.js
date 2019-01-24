@@ -111,6 +111,7 @@ export default async (url = '', data = {}, type = 'GET', load, method = 'fetch')
               $a.click();
               document.body.removeChild($a); 
               NProgress.done(); 
+              resolve('success');
             }).catch(e=>errorDeal(e))
           }else{
             res.json()

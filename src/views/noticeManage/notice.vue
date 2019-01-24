@@ -162,7 +162,7 @@
               <td>公司名称</td>
             </tr>
             <tr v-for="(v,i) of usersInfoArray" :key="i" :class="{'greyFont':v.departState==3}">
-              <td> {{((pa-1)*20+(i+1))}} </td>
+              <td> {{((currentPage-1)*20+(i+1))}} </td>
               <td> {{v.username}} </td>
               <td> <span href="javascript:void(0)">{{v.phone}}</span> </td>
               <td> {{v.departName}} </td>
@@ -184,15 +184,12 @@
         查询结果为空!
       </div>
     </div>
-    <layer-confirm v-if="off.layer" :layerType="layerT"></layer-confirm>
   </section>
 </template>
 <script>
 import { ImgToBase64 } from "../../config/utils/ImgToBase64";
-import { requestMethod } from "../../config/service.js";
+import { requestMethod,requestConfirmDelNotice } from "../../config/service.js";
 import { errorDeal, getDateTime } from "../../config/utils";
-import layerConfirm from "../../components/layerConfirm";
-import imgBiger from "../../components/ImgBiger";
 import successIcon from "../../assets/images/icon/success-circle.svg";
 import errorIcon from "../../assets/images/icon/ava_error.svg";
 export default {
@@ -200,10 +197,8 @@ export default {
     return {
       showImg: false,
       imgSrc: "",
-      imgBase64: "",
-      pa: 1,
+      currentPage: 1,
       cancelInfo: "",
-      layerT: "notice",
       usersInfoArray: "",
       usersTotal: "",
       addMsg: true,
@@ -221,8 +216,6 @@ export default {
       checkSendUserData: "",
       imgFileName: "",
       off: {
-        layer: false,
-        isConfirm: false,
         imgIcon: false
       },
       form: {
@@ -230,14 +223,7 @@ export default {
         page2: 0
       },
       searchList: "",
-
-      showImg: false,
-      imgSrc: ""
     };
-  },
-  components: {
-    "layer-confirm": layerConfirm,
-    "big-img": imgBiger
   },
   created: function() {
     let vm = this;
@@ -328,7 +314,7 @@ export default {
       requestMethod(sendData, "/mns/w/msg/add")
         .then(data => {
           if (data.code == 200) {
-            this.search(vm.pa);
+            this.search(vm.currentPage);
             layer.open({
               content: "发送成功",
               skin: "msg",
@@ -394,8 +380,6 @@ export default {
     cancelMsg() {
       let vm = this,
         data = { msgIds: [] };
-      vm.off.layer = false;
-      vm.off.isConfirm = false;
       vm.isCancel = false;
       for (let i = 0; i < vm.searchList.length; i++) {
         if (vm.searchList[i].ischecked == true) {
@@ -405,20 +389,38 @@ export default {
       }
       vm.cancelInfo = data;
       if (vm.isCancel == false) {
-        layer.open({
-          content: "请选择要删除的公告消息",
-          skin: "msg",
-          time: 3,
-          msgSkin: "error"
+        this.$message({
+          message:"请选择要删除的公告消息",
+          type:'warning'
         });
         return false;
       } else if (vm.isCancel == true) {
-        vm.off.layer = true;
+        this.$confirm('是否删除选中的公告消息?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          requestConfirmDelNotice(vm.cancelInfo)
+          .then(res=>{
+            if(res&&res.code==200){
+              this.$message({
+                type: 'success',
+                message: '删除成功'
+              });  
+              vm.search(vm.currentPage);
+            }
+          })
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
       }
     },
     search(index) {
       let vm = this;
-      vm.pa = index || 1;
+      vm.currentPage = index || 1;
       requestMethod(
         { pageSize: 15, pageNum: index },
         "/mns/w/msg/searchBulletin"
@@ -437,7 +439,7 @@ export default {
     checkSendUser(p, v) {
       //查看公告发送对象信息
       let vm = this;
-      vm.pa = p || 1;
+      vm.currentPage = p || 1;
       if (v != undefined) {
         let data = {
           msgId: v.msgId,
