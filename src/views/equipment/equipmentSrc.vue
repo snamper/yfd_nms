@@ -106,21 +106,29 @@
                 <td>{{v.iccidStart||'--'}}</td>
                 <td>{{v.iccidEnd||'--'}}</td>
                 <td>{{v.status==0?'在库':v.status==1?'出库':'--'}}</td>
-                <td>{{getDateTime(v.storeTime)[8]}}<br>
+                <td>
+                  {{getDateTime(v.storeTime)[8]}}<br>
                   {{getDateTime(v.storeTime)[5]}}
                 </td>
-                <td>{{getDateTime(v.outTime)[8]}}<br>
+                <td>
+                  {{getDateTime(v.outTime)[8]}}<br>
                   {{getDateTime(v.outTime)[5]}}
                 </td>
-                <td>{{getDateTime(v.deliverTime)[8]}}<br>
+                <td>
+                  {{getDateTime(v.deliverTime)[8]}}<br>
                   {{getDateTime(v.deliverTime)[5]}}</td>
-                <td>{{v.agentName||'--'}}<br><span v-if="v.agentId">({{v.agentId}})</span></td>
-                <td>{{v.dealerName}}<br>{{v.dealerId}}
+                <td>
+                  {{v.agentName||'--'}}<br>
+                  <span v-if="v.agentId">{{v.agentId}}</span>
+                </td>
+                <td>
+                  {{v.dealerName}}<br>
+                  {{v.dealerId}}
                   <span v-if="!v.dealerName&&!v.dealerId">--</span>
                 </td>
               </tr>
               <tr v-if="searchResult.length<=0">
-                <td style="text-align:center" colspan="14">
+                <td style="text-align:center" colspan="15">
                   暂无数据
                 </td>
               </tr>
