@@ -226,7 +226,11 @@
           :visible.sync="centerDialogVisible"
           width="50%"
           center>
+          <el-input style="width:50%;" placeholder="请输入筛选的设备号" v-model="searchDeviceNo" class="input-with-select">
+            <el-button slot="append"  @click="selectDevice(1,v)">查询</el-button>
+          </el-input>
           <el-checkbox-group 
+            style="display:block"
             v-model="checkedDevice"
             :min="0"
             :max="max">
@@ -287,6 +291,7 @@ export default {
       deviceDetailsList:[],
       orderId: "", //订单号码
       deviceNo: "", //操作人
+      searchDeviceNo:"",
       orderState: "0", //操作类型
       payMent: "0", //支付方式
       startTime3: "",
@@ -316,7 +321,8 @@ export default {
   watch:{
     centerDialogVisible(){
       if(!this.centerDialogVisible){
-        this.checkedDevice=[]
+        this.checkedDevice=[];
+        this.searchDeviceNo="";
       }
     }
   },
@@ -402,7 +408,7 @@ export default {
     
     selectDevice(index,v) {
       let vm = this;
-      getStockDevices({"pageNum":index||1,"pageSize":120})
+      getStockDevices({"deviceNo":vm.searchDeviceNo,"pageNum":index||1,"pageSize":120})
       .then(res=>{
         if(res&&res.data){
           vm.deviceList = res.data.list;
