@@ -128,7 +128,7 @@ export default {
       requestOpenCardOpId({"dealerId":v})
       .then(res=>{
         if(res&&res.data){
-          vm.searchResult=res.data.list;          
+          vm.searchResult=res.data.list;
         }
       }).catch(e=>errorDeal(e))
     },
@@ -197,4 +197,3 @@ export default {
     .m-searchlist table tr .powerId{display: inline-block;max-width: 200px;overflow: hidden;text-overflow: ellipsis}
     .m-searchlist table tr .roleDesc{display: inline-block;max-width: 200px;}
 </style>
-
