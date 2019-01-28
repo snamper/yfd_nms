@@ -95,7 +95,7 @@
           <div class="m-details">
             <table class="m-searchTab" style="width:100%;height:100%;">
               <tr>
-                <td colspan="15">
+                <td colspan="16">
                   <div class="listHeader">
                     <label style="text-align:left;padding-left:5px;">订单列表<span class="f-fw greyFont">({{form.page||'0'}})</span></label>
                     <el-row>
@@ -113,6 +113,7 @@
                 <td>购买数量</td>
                 <td>商户名称</td>
                 <td>所属渠道</td>
+                <td>渠道手机号</td>
                 <td>操作人</td>
                 <td>付款方式</td>
                 <td>付款金额(元)</td>
@@ -145,6 +146,7 @@
                     <span>{{v.dealerId||'--'}}</span>
                   </a>
                 </td>
+                <td>{{v.dealerPhone||'--'}}</td>
                 <td>
                     {{v.agentName||'--'}}<br>
                     {{v.agentPhone||'--'}}
