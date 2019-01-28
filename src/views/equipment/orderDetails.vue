@@ -35,6 +35,18 @@
           <p class="f-lh-30"><span class="f-ls-1">收货地址&nbsp;：&nbsp;&nbsp;</span><span>{{detailsData.address||'--'}}</span></p>
         </el-col>
       </el-row>
+      <el-row :span=24>
+        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+        <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
+          <p class="f-lh-30"><span class="f-ls-1">操&nbsp;&nbsp;作&nbsp;&nbsp;人：&nbsp;&nbsp;&nbsp;</span><span>{{detailsData.operatorName||'--'}}</span>
+            <span v-if="detailsData.operatorPhone">({{detailsData.operatorPhone||'--'}})</span>
+          </p>
+        </el-col>
+        <el-col :xs="1" :sm="1" :md="1" :lg="1" :xl="2"> &nbsp; </el-col>
+        <el-col :xs="23" :sm="11" :md="11" :lg="11" :xl="10">
+          
+        </el-col>
+      </el-row>
     </div>
     <div style="margin-top:10px" class="headTitle f-s-16">
       <span class="fl">设备号详情</span>

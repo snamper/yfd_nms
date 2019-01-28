@@ -146,8 +146,8 @@
                   </a>
                 </td>
                 <td>
-                    {{v.operatorName||'--'}}<br>
-                    {{v.operatorPhone}}
+                    {{v.agentName||'--'}}<br>
+                    {{v.agentPhone||'--'}}
                 </td>
                 <td>
                   <span v-if="v.paymentType==0">--</span>
