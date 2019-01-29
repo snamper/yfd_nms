@@ -24,7 +24,6 @@
           </el-col>
           <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
             <div class="grid-content bg-purple-light">
-              <!-- 同步的员工和店长不允许修改姓名信息 -->
               <p v-if="off.noModify||(off.modify&&$parent.isuserOrigin==2)">{{forms.username}}</p>
               <input class="modifyInput" v-if="off.modify&&$parent.isuserOrigin!=2" type="text" v-model="forms.username">
             </div>
@@ -41,7 +40,7 @@
             <div class="grid-content bg-purple-light">
               <p v-if="off.noModify">{{forms.phone}}</p>
               <input class="modifyInput" :maxlength="11" v-if="off.modify" type="text" v-model="forms.phone">
-            </div>
+                            </div>
           </el-col>
         </el-row>
       </li>
@@ -304,7 +303,7 @@ export default {
     };
   },
   created: function () {
-    console.log(this.$parent);
+    console.log(this.$parent)
     let vm = this;
     vm.user = getStore("YFD_NMS_INFO");
     vm.topId = getStore("departId");

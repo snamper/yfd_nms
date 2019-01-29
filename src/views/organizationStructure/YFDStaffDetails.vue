@@ -24,10 +24,10 @@
           </el-col>
           <el-col :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
             <div class="grid-content bg-purple-light">
-              <!-- 同步的员工和店长不允许修改姓名信息 -->
-              <p v-if="off.noModify||(off.modify&&$parent.isuserOrigin==2)">{{forms.username}}</p>
+              <p v-if="off.noModify">{{forms.username}}</p>
+              <p v-if="!off.noModify&&$parent.isuserOrigin==2">{{forms.username}}</p>
               <input class="modifyInput" v-if="off.modify&&$parent.isuserOrigin!=2" type="text" v-model="forms.username">
-            </div>
+                            </div>
           </el-col>
         </el-row>
       </li>
@@ -41,7 +41,7 @@
             <div class="grid-content bg-purple-light">
               <p v-if="off.noModify">{{forms.phone}}</p>
               <input class="modifyInput" :maxlength="11" v-if="off.modify" type="text" v-model="forms.phone">
-            </div>
+                            </div>
           </el-col>
         </el-row>
       </li>
@@ -50,14 +50,14 @@
           <el-col :xs="7" :sm="3" :md="3" :lg="2" :xl="2">
             <div class="grid-content bg-purple fr">角色&nbsp;&nbsp;:&nbsp;&nbsp;</div>
           </el-col>
-          <el-col v-if="off.noModify||(off.modify&&$parent.isuserOrigin==2)" :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
+          <el-col v-if="!off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
             <div class="grid-content bg-purple-light">
               <span v-for="(v,i) in forms.userRole.split(',')" :key="i">
-                {{translateRole(v,rolelist)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
+                                    {{translateRole(v,rolelist)}} <span v-if="forms.userRole.split(',').length-1>i">,</span>
               </span>
             </div>
           </el-col>
-          <el-col v-if="off.modify&&$parent.isuserOrigin!=2" :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
+          <el-col v-if="off.modify" :xs="12" :sm="18" :md="18" :lg="19" :xl="19">
             <div class="grid-content bg-purple-light">
               <el-select size="mini" v-model="value" placeholder="请选择">
                 <el-option v-for="item in rolelist" :key="item.id" :label="item.roleName" :value="item.id">
@@ -230,7 +230,7 @@
       <el-row v-if="off.noModify">
         <el-col style="text-align:center" :span="24">
           <div class="grid-content bg-purple">
-            <button class="change" @click="checkBtn">修改</button>
+            <button class="change" @click="checkBtn" v-if="$parent.isuserOrigin==1||($parent.isuserOrigin==2&&forms.userRole!=3)">修改</button>
           </div>
         </el-col>
       </el-row>
@@ -304,7 +304,6 @@ export default {
     };
   },
   created: function () {
-    console.log(this.$parent);
     let vm = this;
     vm.user = getStore("YFD_NMS_INFO");
     vm.topId = getStore("departId");

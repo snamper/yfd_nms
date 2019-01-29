@@ -220,7 +220,7 @@ import {
   translateData,
   translateRole
 } from "../../config/utils";
-import staffDetails from "./staffDetails.vue";
+import staffDetails from "./DLSStaffDetails.vue";
 import layerConfrim from "./layerConfirmDls";
 import { mapState } from "vuex";
 export default {
@@ -350,7 +350,6 @@ export default {
         vm = this;
       vm.searchStaffInfo = p;
       vm.isuserOrigin = p.userOrigin;
-      debugger;
       data = {
         searchUserId: p.userId,
         sessionType: "2"
