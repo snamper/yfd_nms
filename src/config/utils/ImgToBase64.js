@@ -9,7 +9,6 @@ export const ImgToBase64 = ((file, maxLen, callBack)=> {
             //生成比例
             var width = img.width, height = img.height;
             if(!img.width||!img.height){
-                debugger;
                 layer.open({
                     content:"图片格式错误,请重新选择",
                     skin:"msg",

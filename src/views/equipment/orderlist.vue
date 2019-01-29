@@ -113,7 +113,6 @@
                 <td>购买数量</td>
                 <td>商户名称</td>
                 <td>所属渠道</td>
-                <td>渠道手机号</td>
                 <td>操作人</td>
                 <td>付款方式</td>
                 <td>付款金额(元)</td>
@@ -143,10 +142,9 @@
                 <td>{{v.userName||'--'}}<br>{{v.userPhone}}</td>
                 <td>
                   <a :href="v.dealerName?'#/home/organization/yfd?dealerName='+v.dealerName:'javascript:void(0)'">{{v.dealerName||'--'}}<br>
-                    <span>{{v.dealerId||'--'}}</span>
+                    <span>{{v.dealerPhone||'--'}}</span>
                   </a>
                 </td>
-                <td>{{v.dealerPhone||'--'}}</td>
                 <td>
                     {{v.agentName||'--'}}<br>
                     {{v.agentPhone||'--'}}

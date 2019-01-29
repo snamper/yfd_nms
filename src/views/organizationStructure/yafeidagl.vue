@@ -379,7 +379,7 @@ import {
   translateData,
   translateRole
 } from "../../config/utils.js";
-import staffDetails from "../../components/staffDetails.vue";
+import staffDetails from "./YFDStaffDetails.vue";
 export default {
   data() {
     return {
